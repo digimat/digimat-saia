@@ -138,15 +138,12 @@ class SAIAItem(object):
             self.signalPull()
 
 
-class SAIAItemFlag(SAIAItem):
+class SAIABooleanItem(SAIAItem):
     def validateValue(self, value):
         try:
             return bool(value)
         except:
             return False
-
-    def onInit(self):
-        self.logger.debug('creating item %d->flag[%d]' % (self.server.lid, self.index))
 
     def on(self):
         self.value=True
@@ -157,12 +154,38 @@ class SAIAItemFlag(SAIAItem):
     def toggle(self):
         self.value=not self.value
 
+
+class SAIAItemFlag(SAIABooleanItem):
+    def onInit(self):
+        self.logger.debug('creating item %d->flag[%d]' % (self.server.lid, self.index))
+
     def pull(self):
         return self.server.link.readFlags(self.index, 1)
 
     def push(self):
         print "TODO: flag->push"
-        return False
+
+
+class SAIAItemInput(SAIABooleanItem):
+    def onInit(self):
+        self.logger.debug('creating item %d->input[%d]' % (self.server.lid, self.index))
+
+    def pull(self):
+        return self.server.link.readInputs(self.index, 1)
+
+    def push(self):
+        print "TODO: input->push"
+
+
+class SAIAItemOutput(SAIABooleanItem):
+    def onInit(self):
+        self.logger.debug('creating item %d->output[%d]' % (self.server.lid, self.index))
+
+    def pull(self):
+        return self.server.link.readOutputs(self.index, 1)
+
+    def push(self):
+        print "TODO: output->push"
 
 
 class SAIAItems(object):
@@ -263,11 +286,21 @@ class SAIAFlags(SAIAItems):
         super(SAIAFlags, self).__init__(memory, SAIAItemFlag, maxsize)
 
 
+class SAIAInputs(SAIAItems):
+    def __init__(self, memory, maxsize=65535):
+        super(SAIAInputs, self).__init__(memory, SAIAItemInput, maxsize)
+
+
+class SAIAOutputs(SAIAItems):
+    def __init__(self, memory, maxsize=65535):
+        super(SAIAOutputs, self).__init__(memory, SAIAItemOutput, maxsize)
+
+
 class SAIAMemory(object):
     def __init__(self, server):
         self._server=server
-        self._inputs=None
-        self._outputs=None
+        self._inputs=SAIAInputs(self)
+        self._outputs=SAIAOutputs(self)
         self._flags=SAIAFlags(self)
         self._registers=None
         self._queuePendingPull=UniqueQueue()
@@ -393,6 +426,10 @@ class SAIARequest(object):
             self._retry-=1
             return True
 
+    def isValid(self):
+        if self._command is not None:
+            return True
+
     def build(self, command, address, count=1, payload=None):
         try:
             data=self._msgfactory.SBRequest(self.generateMsgSeq(),
@@ -437,24 +474,27 @@ class SAIARequest(object):
         self.logger.error('TODO')
 
     def processRequestResponse(self, payload):
-        if self._command==SAIARequest.SAIA_COMMAND_READ_FLAGS:
-            return self.processReadFlagsResponse(payload)
-        if self._command==SAIARequest.SAIA_COMMAND_READ_INPUTS:
-            return self.processReadInputsResponse(payload)
-        if self._command==SAIARequest.SAIA_COMMAND_READ_OUTPUTS:
-            return self.processReadOuputsResponse(payload)
-        if self._command==SAIARequest.SAIA_COMMAND_READ_REGISTERS:
-            return self.processReadRegistersResponse(payload)
+        if self.isValid():
+            if self._command==SAIARequest.SAIA_COMMAND_READ_FLAGS:
+                return self.processReadFlagsResponse(payload)
+            if self._command==SAIARequest.SAIA_COMMAND_READ_INPUTS:
+                return self.processReadInputsResponse(payload)
+            if self._command==SAIARequest.SAIA_COMMAND_READ_OUTPUTS:
+                return self.processReadOuputsResponse(payload)
+            if self._command==SAIARequest.SAIA_COMMAND_READ_REGISTERS:
+                return self.processReadRegistersResponse(payload)
 
-        self.logger.error('processRequestResponse(%s) un implemented!' % self._command)
+            self.logger.error('processRequestResponse(%s) un implemented!' % self._command)
 
     def abortRequest(self):
-        self.logger.error('request:abort')
-        print "TODO: restart communication"
-        pass
+        if self.isValid():
+            self.logger.error('request:abort')
+            print "TODO: restart communication"
+            self.reset()
 
-    def processRequestAck(self, result):
-        pass
+    def processRequestAck(self, result, code):
+        if self.isValid():
+            print "ACK/NAK", result, code
 
     def processMessage(self, data):
         try:
@@ -470,8 +510,9 @@ class SAIARequest(object):
 
             elif mtype==2:  # Ack/Nak
                 if mseq==self._msgseq and self.link.isWaitingResponse():
-                    result=bool(payload[0])
-                    self.processRequestAck(result)
+                    code=int(payload[0])
+                    result=bool(code)
+                    self.processRequestAck(result, code)
 
         except:
             self.logger.exception('processResponse')
@@ -510,6 +551,7 @@ class SAIALink(object):
         self._delayXmitInhibit=delay
 
     def reset(self):
+        self._request.abortRequest()
         self.setState(SAIALink.SAIA_COMMSTATE_IDLE)
 
     def isIdle(self):
@@ -539,16 +581,13 @@ class SAIALink(object):
                 if time.time()<self._timeoutXmitInhibit:
                     return
 
-                if self._delayXmitInhibit>0:
-                    self._timeoutXmitInhibit=time.time()+self._delayXmitInhibit
-
                 if self._request.consumeRetry():
                     if self.server.client.sendMessageToHost(self._request.data, self.server.host):
+                        self._timeoutXmitInhibit=time.time()+self._delayXmitInhibit
                         self.setState(SAIALink.SAIA_COMMSTATE_WAITRESPONSE, 3.0)
                         return
 
                 print "*****LINK-RESET"
-                self._request.abortRequest()
                 self.reset()
                 return
 
@@ -595,16 +634,30 @@ class SAIALink(object):
 
 
 class SAIAServer(object):
-    def __init__(self, client, lid, host):
+    def __init__(self, client, host, lid=None):
         self._client=client
-        self._lid=lid
         self._host=host
+        self._lid=lid
         self._memory=SAIAMemory(self)
         self._link=SAIALink(self)
+        self.setLid(lid)
 
     @property
     def lid(self):
-        return self._lid
+        if self._lid is not None:
+            return self._lid
+
+        # broadcast (don't care)<Del> address
+        return 255
+
+    def setLid(self, lid):
+        try:
+            lid=int(lid)
+            if lid>=0 and lid<255:
+                self._lid=lid
+                self.client.declareServerLid(self, lid)
+        except:
+            pass
 
     @property
     def host(self):
@@ -650,6 +703,7 @@ class SAIAClient(object):
         self._indexServersByLid={}
         self._indexServersByHost={}
         self._timeoutSocketInhibit=0
+        self._currentServer=0
 
     @property
     def logger(self):
@@ -696,22 +750,45 @@ class SAIAClient(object):
 
     def getServerFromLid(self, lid):
         try:
-            return self._indexServersByLid[lid]
+            return self._indexServersByLid[int(lid)]
         except:
             pass
 
-    def __getitem__(self, key):
-        return self.getServerFromLid(key)
-
-    def registerServer(self, lid, host, port=SAIA_UDP_DEFAULT_PORT):
-        server=self.getServerFromLid(lid)
+    def getServer(self, key):
+        server=self.getServerFromHost(key)
         if server is None:
-            server=SAIAServer(self, lid, host)
-            self._servers.append(server)
-            self._indexServersByLid[lid]=server
-            self._indexServersByHost[host]=server
-            self.logger.info('server(%d, %s:%d) registered' % (lid, host, port))
+            server=self.getServerFromLid(key)
         return server
+
+    def __getitem__(self, key):
+        return self.getServer(key)
+
+    def registerServer(self, host, lid=None, port=SAIA_UDP_DEFAULT_PORT):
+        server=self.getServerFromHost(host)
+        if server is None:
+            server=SAIAServer(self, host, lid)
+            self._servers.append(server)
+            self._indexServersByHost[host]=server
+            self.logger.info('server(%s:%d) registered' % (host, port))
+        return server
+
+    def declareServerLid(self, server, lid):
+        if self.getServerFromLid():
+            self.logger.error('duplicate server lid %d' % lid)
+            return
+
+        try:
+            del self._indexServersByLid[server.lid]
+        except:
+            pass
+
+        try:
+            if lid>=0 and lid<255:
+                self._indexServersByLid[lid]=server
+                self.logger.info('assign server %s with lid %d' % (server.host, lid))
+                return True
+        except:
+            pass
 
     def sendMessageToHost(self, data, host):
         try:
@@ -728,9 +805,9 @@ class SAIAClient(object):
     def dispatchMessage(self):
         try:
             s=self.open()
-            (data, address)=s.recv(4096)
+            (data, address)=s.recv(2048)
             if data:
-                server=self.getServer(address[0])
+                server=self.getServerFromHost(address[0])
                 if server:
                     try:
                         server.onMessage(data)
@@ -745,16 +822,19 @@ class SAIAClient(object):
     def manager(self):
         count=32
         while count>0:
+            count-=1
             if not self.dispatchMessage():
                 break
-            count-=1
 
-        if self._servers:
-            for server in self._servers:
-                try:
-                    server.manager()
-                except:
-                    self.logger.exception('manager()')
+        count=8
+        while count>0:
+            count-=1
+            try:
+                self._servers[self._currentServer].manager()
+                self._currentServer+=1
+            except:
+                self._currentServer=0
+                break
 
     def start(self):
         try:
