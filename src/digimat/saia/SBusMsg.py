@@ -190,6 +190,12 @@ class SBusClientMessages:
             msg = struct.pack('>LBBHB BBBH %ds' % len(msgdata), msglength, 0, 0, msgsequence, 0,
                 stnaddr, cmdcode, bytecount, dataaddr, msgdata)
 
+        # Read Station Number
+        elif (cmdcode == 0x1d):
+            # todo: pack
+            msg = struct.pack('>LBBHB BBBH %ds' % len(msgdata), msglength, 0, 0, msgsequence, 0,
+                255, cmdcode)
+
         # Command code is not supported.
         else:
             raise ParamError, 'Command code not supported'
