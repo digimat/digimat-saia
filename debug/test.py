@@ -3,7 +3,7 @@ from digimat.saia import SAIAClient
 
 c=SAIAClient()
 
-s=c.registerServer('192.168.0.45', 10)
+s=c.registerServer('192.168.0.45')
 f=s.memory.flags[1]
 
 s.dump()
