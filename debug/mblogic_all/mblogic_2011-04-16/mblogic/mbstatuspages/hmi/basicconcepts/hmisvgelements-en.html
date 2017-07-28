@@ -1,0 +1,665 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - HMI</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Basic Concepts</h3>
+		<ul>
+			<li><a href="/hmi/basicconcepts/hmibasics-en.html">HMI Web Basics</a></li>
+			<li><a href="/hmi/basicconcepts/hmiserver-en.html">HMI Server Functions</a></li>
+			<li><a href="/hmi/basicconcepts/hmiclients-en.html">Building Web Clients</a></li>
+			<li><a href="/hmi/basicconcepts/hmijavascript-en.html">Javascript</a></li>
+			<li><a href="/hmi/basicconcepts/hmisvgelements-en.html">HMI SVG Graphic Elements</a></li>
+		</ul>
+
+
+
+	</div>
+
+	<!-- Put main content here -->
+	<div id="datadisplay">
+
+<h1>Help - HMI SVG Graphics Elements</h1>
+
+<hr>
+
+<h2>Overview<a name="Overview"></a></h2>
+
+<p>SVG stands for <i>Scalable Vector Graphics</i>. SVG is one of the 
+<a href="http://www.w3.org/TR/SVG/">web standards</a> specified by the 
+W3C, which is the group responsible for defining and documenting the 
+standards used by modern web browsers. SVG allows high quality 
+interactive graphics to be embedded directly into a web page. 
+</p>
+
+<p>Unlike simple PNG or JPEG graphics, SVG is an XML based description
+of a graphic element which can be directly manipulated by client scripting.
+That is, the SVG graphic or image can be changed dynamically without having
+to reload the web page or download a new image. This allows graphical web 
+based HMI applications to be created which have the sort of interactive
+graphics normally associated with conventional HMI programs. 
+</p>
+
+
+<hr>
+
+<h2>SVG and Industrial HMI<a name="SVG and Industrial HMI"></a></h2>
+
+<p>SVG can be used for industrial HMI systems in two ways. One is to provide
+static vector graphics for background images, plans, maps, etc. Because
+the drawing is a "vector" representation rather than a simple "raster" (also
+known as a "bit map") image, the SVG graphic can be zoomed and resized without 
+losing any resolution. This makes it suitable for displaying high quality 
+drawings and plans on a web page.
+</p>
+
+<p>The other use, and the one we will concentrate on here, is using SVG to 
+create HMI symbols which we can manipulate dynamically. These symbols can 
+included such things as pilot lights, gauges, tanks, pumps, etc. The dynamic
+manipulations can include such things as changing colours, rotation angles, 
+or simple animations.
+</p>
+
+<hr>
+
+<h2>Example 1, A Simple Pilot Light<a name="Example 1, A Simple Pilot Light"></a></h2>
+
+<p>The following shows an example of a symbol built using a single basic 
+SVG command.
+</p>
+
+<p>
+<img src="plsimple.png" width="50" height="50" alt="Round Pilot Light">
+A simple round pilot light can be created as a circle. The SVG XML to create 
+this is shown below.
+</p>
+
+<pre class="examples">
+
+		&lt;circle id="PL1" cx="25px" cy="25px" r="25px" fill="red" 
+				stroke="black" stroke-width="5px"/&gt;
+
+</pre>
+		
+<p>This creates a circle which we can reference by the name "PL1" (id="PL1").
+We can change any characteristic of this circle via Javascript, but for pilot
+lights we would typically want to change colour. The following example shows
+how easy this can be. 
+</p>
+
+<pre class="examples">
+
+		svgdoc.getElementById("PL1").setAttribute('fill', "green");
+
+</pre>
+
+
+<hr>
+
+<h2>Example 2, Bulding a Complex Graphic<a name="Example 2, Bulding a Complex Graphic"></a></h2>
+
+<p>The following shows how several SVG commands can be combined to create
+a more complex symbol.
+</p>
+
+<p>
+<img src="dial2.png" width="200" height="200" alt="Dial Gauge">
+</p>
+<p>Example 1, a dial gauge. The SVG code to create this is shown below.
+</p>
+
+<pre class="examples">
+
+	&lt;!-- This adds the outer ring. --&gt;
+	&lt;circle cx="0px" cy="0px" r="275px" fill="silver" stroke="black" stroke-width="5px"/&gt;
+	&lt;!-- This adds the outer part of the dial background. --&gt;
+	&lt;circle cx="0px" cy="0px" r="250px" fill="blue" stroke="black" stroke-width="5px"/&gt;
+	&lt;!-- These add the "tick" marks to the dial. --&gt;
+	&lt;g stroke="white" stroke-width="10px"&gt;
+	&lt;line x1="0" y1="-250" x2="0" y2="0"/&gt;
+	&lt;g transform="rotate(30)"&gt;
+		&lt;line x1="0" y1="-250" x2="0" y2="250"/&gt;
+	&lt;/g&gt;
+	&lt;g transform="rotate(60)"&gt;
+		&lt;line x1="0" y1="-250" x2="0" y2="250"/&gt;
+	&lt;/g&gt;
+	&lt;g transform="rotate(90)"&gt;
+		&lt;line x1="0" y1="-250" x2="0" y2="250"/&gt;
+	&lt;/g&gt;
+	&lt;g transform="rotate(120)"&gt;
+		&lt;line x1="0" y1="-250" x2="0" y2="250"/&gt;
+	&lt/g&gt;
+	&lt;g transform="rotate(150)"&gt;
+		&lt;line x1="0" y1="-250" x2="0" y2="250"/&gt;
+	&lt;/g&gt;
+	&lt;/g&gt;
+	&lt;!-- This covers the inner part of the "tick" marks and 
+		provides most of the dial background. --&gt;
+	&lt;circle  cx="0px" cy="0px" r="225px" fill="blue" 
+		stroke="none" stroke-width="0px"/&gt;
+
+	&lt;!-- This is the centre part of the pointer. --&gt;
+	&lt;circle cx="0px" cy="0px" r="25px" fill="yellow" stroke="black" stroke-width="2px"/&gt;
+	&lt;circle cx="0px" cy="0px" r="5px" fill="black" stroke="black" stroke-width="2px"/&gt;
+
+
+	&lt;!-- This is the actual pointer which we rotate. --&gt;
+	&lt;g  id="Dial1" transform="rotate(0)"&gt;
+		&lt;polygon fill="yellow" stroke="black" stroke-width="2px" 
+				points="-25,0 -3,200 3,200 25,0 0,25" /&gt;
+		&lt;line x1="0" y1="25" x2="0" y2="200" stroke="black" stroke-width="2px"/&gt;
+	&lt;/g&gt;
+
+</pre>
+		
+<p>Most of the dial is static SVG which provides "decoration". The part we
+want to manipulate is the pointer, which we want to rotate. The following
+Javascript code shows how this can be done. 
+</p>
+
+<pre class="examples">
+
+	svgdoc.getElementById("Dial1").setAttribute("transform", "rotate(" + newangle +")");
+
+</pre>
+
+<hr>
+
+<h2>Visual Effects<a name="Visual Effects"></a></h2>
+
+<p>SVG allows for visual effects such as colour gradients and drop shadows 
+as shown in the push button below.
+</p> 
+
+<p>
+<img src="pb2.png" width="150" height="150" alt="Square Push Button">
+The SVG code to create this is shown below.
+</p>
+
+<pre class="examples">
+
+	&lt !-- This shows a push button. -- &gt 
+	&lt g transform="translate(0,0)" 
+		onmousedown="MBHMIProtocol.WriteToggleImmediate('PB2', 'PL2');" &gt 
+
+		&lt !-- The following filter is used to add a drop shadown. -- &gt 
+		&lt filter id="PB2dropshadow" &gt 
+			&lt feGaussianBlur stdDeviation="2" &gt 
+			&lt /feGaussianBlur &gt 
+		&lt /filter &gt 
+							
+		&lt !-- This applies a linear colour gradient across the button. -- &gt 
+		&lt linearGradient id="PB2Gradient" x1="0" y1="1" x2="0" y2="0" &gt 
+			&lt stop offset="50%" stop-color="red" / &gt 
+			&lt stop offset="100%" stop-color="white" / &gt 
+		&lt /linearGradient &gt 
+
+		&lt !-- This rectangle is used for the drop shadown and needs to match 
+			the size used for the button. -- &gt 
+		&lt rect x="7" y="7" width="75" height="75" rx="15"
+			fill="grey" stroke="none" stroke-width="0px" 
+			filter="url(#PB2dropshadow)"/ &gt 
+
+		&lt !-- This is the actual button. The button "class" connects it with the
+			css style which animates it. -- &gt 
+		&lt g class="svgbuttondef" &gt 
+			&lt rect x="0" y="0" width="75" height="75" rx="15"
+				fill="url(#PB2Gradient)" stroke-width="5px"/ &gt 
+
+	 		&lt !-- This is the text label. -- &gt 
+			&lt text x="15" y="45" font-size="24" &gt PB2&lt /text &gt  
+		&lt /g &gt 
+	&lt /g &gt 
+
+</pre>
+
+<hr>
+
+<h2>CSS Animation<a name="CSS Animation"></a></h2>
+
+<p>SVG can be styled using CSS just like ordinary HTML. This means that
+simple animation effects can be achieved without requiring any scripting.
+If we apply the following style to the push button in the example above, 
+then when we click on the button the outline of the square and the 
+lettering inside the button (which are both affected by the "stroke"
+property) turn white. When we release the button, the "strokes" turn
+back to black. This is a simple way of providing immediate feed back 
+to the operator when they click on a button.
+</p>
+
+<pre class="examples">
+
+		/* The following style is used to animate SVG push buttons. It causes the 
+			outline (stroke) of the button to reverse when activated. */
+		.svgbuttondef {
+			stroke: black;
+		}
+		
+		.svgbuttondef:active {
+			stroke: white;
+		}
+
+</pre>
+
+<p>Button when normal:
+<img src="pb2.png" width="85" height="85" alt="Square Push Button">
+Button when clicked:
+<img src="pb2activate.png" width="85" height="85" alt="Square Push Button">
+</p>
+
+<p>CSS animation in SVG appears to work reliably with most web browsers. 
+If there is some reason for not using CSS animation, then some simple 
+Javascript animation can produce an equivalent result. 
+</p>
+
+<hr>
+
+<h2>More Examples<a name="More Examples"></a></h2>
+
+<p>The following are more examples of the types of graphics that can be created. 
+</p>
+
+<p>
+<img src="pl1.png" width="50" height="50" alt="Round Pilot Light">
+<img src="pl2.png" width="50" height="50" alt="Rectangular Pilot Light">
+<img src="pl3.png" width="50" height="50" alt="Octagonal Pilot Light">
+<img src="lguage.png" width="30" height="100" alt="Linea gauge">
+<img src="dialblue.png" width="100" height="100" alt="Dial gauge">
+<img src="pb2.png" width="50" height="50" alt="Square Button">
+<img src="numericdisplay2.png" width="85" height="44" alt="Numeric Display">
+<img src="sswitch2.png" width="56" height="66" alt="Selector switch">
+</p>
+
+
+<hr>
+
+<h2>Basic SVG Elements<a name="Basic SVG Elements"></a></h2>
+
+<p>The complete SVG standard can be found at the link mentioned above. The 
+following however provides a simple overview of some of the basic shapes. 
+</p>
+
+<h3>Line</h3>
+
+<p>A line is the most basic shape. The following shows a simple line. The line
+extends from coordinates (x1,y1) to (x2,y2).
+</p>
+
+<pre class="examples">
+
+	&lt;line x1="0" y1="50" x2="150" y2="50"/&gt;
+
+</pre>
+
+
+<h3>Polyline</h3>
+
+<p>A polyline is like a line, except it is specified as a series of (x,y) points.
+There is no limit to the number of points which can be specified.
+</p>
+
+<pre class="examples">
+
+	&lt;polyline points="0,0 0,50 140,50" /&gt;
+
+</pre>
+
+
+<h3>Polygon</h3>
+
+<p>A polygon is like a polyline, but forms a closed shape. The following
+is used to form a hexagon.
+</p>
+
+<pre class="examples">
+
+
+	&lt;polygon points="0,0 -12,25 0,50 25,50 37,25 25,0" /&gt;
+
+</pre>
+
+
+<h3>Rectangle</h3>
+
+<p>A rectange is specified with the upper left corner at position (x,y),
+a width, and a height. The radius of the corners can also be specified.
+</p>
+
+<pre class="examples">
+
+	&lt;rect x="7" y="7" width="150" height="50" rx="15"/&gt;
+
+</pre>
+
+<h3>Circle</h3>
+
+<p>A circle is specified with the x and y coordinates of its centre, and
+a radius.
+</p>
+
+<pre class="examples">
+
+	&lt;circle cx="25px" cy="25px" r="25px"/&gt;
+
+</pre>
+
+
+<h3>Text</h3>
+
+<p>Text can be displayed by specifying the (x,y) coordinates, and the text
+which is desired.
+</p>
+
+<pre class="examples">
+
+	&lt;text x="50" y="30" &gt;Some sample text&lt;/text&gt; 
+
+</pre>
+
+
+<h3>Stroke and Fill</h3>
+
+<p><em>Stroke</em> refers to the outline of an element, or in the case of text,
+to the width of the lines making up the characters. The colour of the stroke
+can be set using the "stroke" property. The width of the stroke can be set 
+using "stroke-width". Stroke width is normally specified in "pixels" (px).
+</p>
+
+<p><em>Fill</em> refers to the colour which fills an enclosed shape. This can
+be set by using "fill".
+</p>
+
+<p><em>Font size</em> in text can be modified by using "font-size".
+</p>
+
+<pre class="examples">
+
+ 	&lt;circle cx="25px" cy="25px" r="25px" fill="red" 
+				stroke="black" stroke-width="5px"/&gt;
+
+	&lt;text x="50" y="30" font-size="24"&gt;Some sample text&lt;/text&gt; 
+
+</pre>
+
+<p>As well as specifying them directly, properties can also be set by refering
+to a definition located elsewhere. For example, the following shows the fill
+being defined by refering to a linear gradient definition (not shown here).
+The reference is in the form "url(#SomeDefinition)". 
+</p>
+
+<pre class="examples">
+
+	&lt;rect x="7" y="7" width="150" height="50" rx="15" fill="url(#PB2Gradient)"/&gt;
+
+</pre>
+
+
+<h3>Comments</h3>
+
+<p>SVG comments follow the same format as HTML comments.
+
+<pre class="examples">
+
+	&lt;!-- This is a comment. --&gt;
+
+</pre>
+
+<hr>
+
+<h2>SVG Document Definitions</h2>
+
+<p>Like HTML, SVG requires that the web browser be informed what sort of mark 
+up the content is. That is, the web browser has to be told to expect SVG. This
+allows blocks of SVG to be mixed in with HTML in the same web page. 
+</p>
+
+<p>The following defines a block of SVG, with a canvas area 250 pixels wide
+and 60 pixels high. It then draws a rectangle in that area and closes off the
+block with an SVG close tag.
+</p>
+
+<pre class="examples">
+
+	&lt;svg xmlns="http://www.w3.org/2000/svg" 
+ 	    xmlns:html="http://www.w3.org/1999/xhtml" width="250px" height="60"&gt;
+
+		&lt;!-- Display a rectangle. --&gt;
+		&lt;rect x="7" y="7" width="150" height="35" rx="15"
+			fill="red" stroke="black" stroke-width="5px" /&gt;
+
+	&lt;/svg&gt;
+
+</pre>
+
+<hr>
+
+<h2>SVG Libraries</h2>
+
+<p>SVG elements can be collected into groups and re-used rather than having to
+repeat the same text over and over again. The following shows a simple example.  
+</p>
+
+<p>First we will define a few colours. The details of how these work will be 
+explained elsewhere, but it is sufficient to say that these provide a "drop
+shadow" (a blurred background shadow effect) and a silver colour "gradient" 
+(a colour which gradually shades into another - sliver into white in this case).
+These colours can be addressed by using their "id". These are 
+"MB_DropShadowFilter" in the case of the drop shadow, and "MB_SilverGradient"
+in the case of the silver colour gradient. Note that these elaborate colour
+effects are not strictly necessary, but this does show how such decorative
+effects can be re-used.
+</p>
+
+
+<pre class="examples">
+
+	&lt;!-- These are some colour definitions which are used below. --&gt;
+	&lt;defs&gt;
+		&lt;!-- The following filter is used to add a drop shadown. --&gt;
+		&lt;filter id="MB_DropShadowFilter"&gt;
+			&lt;feGaussianBlur stdDeviation="2"&gt;
+			&lt;/feGaussianBlur&gt;
+		&lt;/filter&gt;
+
+		&lt;!-- This provides a silver shading colour. --&gt;
+		&lt;linearGradient id="MB_SilverGradient" 
+				x1="1" y1="1" x2="0" y2="0"&gt;
+			&lt;stop offset="50%" stop-color="silver" /&gt;
+			&lt;stop offset="100%" stop-color="white" /&gt;
+		&lt;/linearGradient&gt;
+
+	&lt;/defs&gt;
+
+</pre>
+
+<p>Next, we define some geometric shapes. The first is a a decorative nut which
+we call "MB_NUT". Again, this decorative nut can be addressed by using its "id"
+(id="MB_NUT"). This nut is made from two octagonal polygons. The first polygon 
+provides a background shadow which is slightly offset from the actual nut 
+itself, which is formed from the second polygon. 
+</p>
+
+<p>Here we use the two colours which we defined above. The shadow is given a 
+blurred background effect using the colour filter="url(#MB_DropShadowFilter)".
+The nut itself is given a shaded silver effect using the colour 
+fill="url(#MB_SilverGradient)".
+</p>
+
+<p>Below that we define the actual pilot light which we identify as 
+"MB_PilotLightRound". The actual pilot light is just a simple circle which sits
+on top of the nut we defined above. The same nut can also be used in additional
+widgets. 
+</p>
+
+<pre class="examples">
+
+	&lt;!-- Define the actual Pilot lights. --&gt;
+	&lt;defs&gt;
+		&lt;!-- This is a decorative octagonal nut. --&gt;
+		&lt;g id="MB_NUT"&gt;
+			&lt;polygon transform="translate(5,5)" fill="grey" stroke="none"
+				filter="url(#MB_DropShadowFilter)"
+				points="18,-45 -18,-45 -45,-18 -45,18 -18,45 18,45 45,18 45,-18 18,-45" /&gt;
+			&lt;polygon  fill="url(#MB_SilverGradient)" stroke="none"
+				points="18,-45 -18,-45 -45,-18 -45,18 -18,45 18,45 45,18 45,-18 18,-45" /&gt;
+		&lt;/g&gt;
+
+		&lt;!-- Circular pilot light. r = 35 px --&gt;
+		&lt;g id="MB_PilotLightRound"&gt;
+			&lt;!-- This is a decorative nut. --&gt;
+			&lt;use xlink:href="#MB_NUT"/&gt;
+			&lt;!-- This is the part which changes colour. --&gt;
+			&lt;circle cx="0px" cy="0px" r="35px" stroke="black" stroke-width="5px"/&gt;
+		&lt;/g&gt;
+
+		&lt;!-- We can defined more things here if we wish. --&gt;
+
+	&lt;/defs&gt;
+
+</pre>
+
+<p>This gives us a pilot light which looks something like the following 
+(although the actual colour of the centre of the pilot light is undefined at 
+this point).
+</p>
+<p><img src="pl1.png" width="100" height="100" alt="Round Pilot Light">
+</p>
+
+
+<p>Next, we use the pilot light we have defined. In this example we use it
+three times to create pilot lights "PL1", "PL2", and "PL3". Each of these
+pilot lights has three components.
+</p>
+
+<ul>
+	<li>First we position it using transform statements (e.g. 
+	transform="translate(835,110)"). This simply positions it on the page using
+	X and Y coordinates.
+	</li>
+	
+	<li>Next we give each one a unique name (e.g. id="PL1"). These names are used
+	elsewhere (not shown here) to connect the pilot lights to their data sources
+	and to animate them.
+	</li>
+	
+	<li>Finally, we call the SVG widgets we defined above (e.g. 
+	use xlink:href="#MB_PilotLightRound"). The same definition can be reused as
+	many times as desired. It is the "id" which distinguishes one instance
+	from another.
+	</li>
+
+</ul>
+
+<pre class="examples">
+
+		&lt;!-- ... Much further down the page ... --&gt;
+
+	&lt;!-- Now we use the pilot light we defined above. --&gt;
+	&lt;g transform="translate(835,110)"&gt;
+		&lt;g id="PL1"&gt;
+			&lt;use xlink:href="#MB_PilotLightRound" /&gt;
+		&lt;/g&gt;
+	&lt;/g&gt;
+
+	&lt;!-- And we use it again for another pilot light. --&gt;
+	&lt;g transform="translate(835,210)"&gt;
+		&lt;g id="PL2"&gt;
+			&lt;use xlink:href="#MB_PilotLightRound" /&gt;
+		&lt;/g&gt;
+	&lt;/g&gt;
+
+	&lt;!-- And again for a third one. --&gt;
+	&lt;g transform="translate(835,310)"&gt;
+		&lt;g id="PL3"&gt;
+			&lt;use xlink:href="#MB_PilotLightRound" /&gt;
+		&lt;/g&gt;
+	&lt;/g&gt;
+
+</pre>
+
+<p>A number of common devices such as push buttons, pilot lights, selector 
+switches, etc. are provided with the HMI system. Simply copy the definitions
+into your own HMI web page and use them as desired. You can also create your
+own widgets using the same principles.  
+</p>
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - HMI Graphics Elements</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

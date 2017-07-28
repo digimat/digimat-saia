@@ -1,0 +1,323 @@
+/* Page layout CSS for the MBLogic ladder edit system. 
+	This contains the CSS which controls the overall page layout
+	and appearance, as well as the display of the navigation menu.
+*/
+
+/* This controls the appearance of the area outside of the defined screens. */
+body,
+html {
+	margin:0px;
+	padding:0px;
+	background:white;
+	color:black;
+	}
+/* This provides the background image. */
+body {
+	min-width:1000px;
+	min-height:800px;
+	background-image:url('systembackground.png')
+	}
+
+/* This provides a filler strip between the nav menu and the main display area. */
+#filler {
+	background:wheat;
+	margin:0px auto;
+	width:1000px;
+	}
+
+/* This is the "header" area at the top. */
+#header {
+	background:cornflowerblue;
+	}
+
+#header h1.pos_left {
+	padding:5px;
+	margin:0px;
+	width:750px;
+	  }
+
+#header h1.pos_right {
+	padding:5px;
+	margin:0px;
+	width:250px;
+	position:absolute;
+	right:100px;
+	top:10px
+	}
+
+/* This handles the navigation (menu) bar. */
+#nav {
+	background:tomato;
+	font-size: 150%;
+	margin-top:0px;
+	margin-bottom:0px;
+	padding-bottom:2px;
+	}
+#nav ul{
+	padding-top:5px;
+	padding-bottom:10px;
+	list-style:none;
+	}
+#nav li{
+	display:inline;
+	}
+
+#nav a {
+	float:left;
+	text-decoration:underline;
+	color:white;
+	background-color:grey;
+	border-right:2px solid white;
+	padding-top:2px;
+	padding-bottom:2px;
+	padding-left:5px;
+	padding-right:5px;
+	}
+#nav a:hover {
+	background-color:green;
+	}
+
+
+/* This provides a filler strip at the bottom of the main display area. */
+#footer {
+	background:wheat;
+	clear:both;
+	}
+#footer p {
+	padding:5px;
+	margin:0px;
+	}
+
+/* This controls display of the main screen. */
+#datadisplay {
+	padding:5px;
+	background:whitesmoke;
+	width:1000px;
+	}
+
+#datadisplay h2, #datadisplay h3, #datadisplay p {
+	padding:0px 10px;
+	}
+
+/*  Regular push buttons. */
+.buttonactivate {
+	stroke: black;
+	stroke-width: 5px;
+}
+
+.buttonactivate:hover {
+	stroke: black;
+	stroke-width: 7px;
+}
+
+.buttonactivate:active {
+	stroke: white;
+	stroke-width: 5px;
+}
+
+/*  Instruction edit tabs. */
+.buttontabs {
+	font-size: 100%;
+	text-anchor: middle;
+	stroke: black;
+	stroke-width: 2px;
+}
+.buttontabs:hover {
+	font-size: 100%;
+	text-anchor: middle;
+	stroke: black;
+	stroke-width: 3px;
+}
+.buttontabs:active {
+	font-size: 100%;
+	text-anchor: middle;
+	stroke: white;
+	stroke-width: 3px;
+}
+
+
+/* This is used to hide the ladder prototypes. */
+#ladderprototypes {display: none;}
+
+
+/* This determines the appearance of an empty edit cell. */
+.emptyeditcell {stroke: black;
+		stroke-width: 0.5px;
+}
+
+/* This is used to hide or show individual rungs. */
+.rungshow {display: block;}
+.runghide {display: none;}
+
+/* This is for the rung edit buttons. */
+.rungeditbuttons {float:left;}
+
+/* The following are used to hide and show the address editing fields.
+   This is done by means of classes because setting the attributes directly
+   does not seeme to work for some reason. */
+.editaddrshow {display: block;}
+.editaddrhide {display: none;}
+
+/* Address editing form layout. */
+.editaddrfields {
+	float:left;
+}
+
+
+/* Comment editing form layout. */
+.editcommentfields {
+	float:right;
+}
+
+/* Used to clear the float layout from comment editing. */
+.editcommentdone {
+	clear:both;
+}
+
+/* Address edit positioning. */
+.addresseditfields {
+	float:right;
+}
+
+
+/* Used to indicate an error or OK in an address edit field. */
+.editerror {
+	background:red;
+}
+.editok {
+	background:white;
+}
+
+
+/* Rung insert buttons. This positions the insert button on the right within 
+the rung number area which immediately follows it. */
+.insertbuttonstyle {
+	position:absolute;
+	right:225px;
+	}
+
+
+/* Rung number areas. */
+.rungnumberarea {
+	width:800px;
+	background:olivedrab;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	font-size: 125%;
+	}
+.rungnumberarea p {
+	padding-top:5px;
+	padding-bottom:5px;
+	padding-left:5px;
+	padding-right:5px;
+	margin-left:50px;
+	}
+
+/* comment areas. */
+.commentarea {
+	width:800px;
+	background:wheat;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	}
+.commentarea p {
+	padding-top:5px;
+	padding-bottom:5px;
+	padding-left:5px;
+	padding-right:5px;
+	margin-left:50px;
+	}
+
+/* Subroutine header area. */
+.subheaderarea {
+	width:800px;
+	background:silver;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	font-size: 150%;
+	}
+.subheaderarea p {
+	padding-top:5px;
+	padding-bottom:5px;
+	padding-left:5px;
+	padding-right:5px;
+	margin-left:50px;
+	}
+
+/* This is for display of ladder items which are not being edited. */
+.ladderdisplayshow {
+	stroke: blue;
+	stroke-width: 0.5px;
+	fill: whitesmoke;
+	display:block;
+}
+
+/* This is for display of ladder items which are not being edited. */
+.ladderdisplayhide {
+	stroke: blue;
+	stroke-width: 0.5px;
+	fill: whitesmoke;
+	display:none;
+}
+
+/* This is for the display of IL items which are not being edited. */
+.ildisplayshow {
+	background:lightgrey;
+	display:block;
+	white-space:pre;
+	width:800px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+
+/* This is used to hide the IL display when we are showing ladder instead. */
+.ildisplayhide {
+	background:lightgrey;
+	display:none;
+	white-space:pre;
+	width:800px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+
+
+/* Subroutine header area. */
+.subrcommandarea {
+	width:800px;
+	background:olive;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	font-size: 100%;
+	}
+.subrcommandarea p {
+	padding-top:5px;
+	padding-bottom:5px;
+	padding-left:5px;
+	padding-right:5px;
+	margin-left:650px;
+	}
+
+/* This defines the background for the rung edit buttons (delete, save, etc.). */
+#rungeditor {
+	padding:16px;
+	background-color:antiquewhite;
+	border:2px solid grey;
+	opacity:1.0;
+}
+
+
+/* This is where the actual ladder gets edited. */
+#laddereditor {
+	padding:16px;
+	background-color:whitesmoke;
+	border:2px solid grey;
+	opacity:1.0;
+}
+
+/* The background used for buttons which edit ladder. */
+.ladderbuttons {
+	fill:lightgrey;
+	stroke:none;
+}
+
+

@@ -1,0 +1,302 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Field Device Communications Basics</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- Page navigation style sheet. -->
+<link rel="stylesheet" href="/pagenav.css" type="text/css">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo">
+			<span class="headtitle1">HMIServer </span>
+			<span class="headtitle2"> Help</span>
+		</p>
+	</div>
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statushmi.html">Config</a></li>
+			<li><a href="/statuscontrol.html">Control</a></li>
+			<li><a href="/datamsgsfield.html">Data Messages</a></li>
+			<li><a href="/hmiserverintro-en.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/hmiserverintro-en.html">Help</a></li>
+			<li><a href="/about-en.html">About</a></li>
+			<li><a href="/installation/install-en.html">Installation</a></li>
+			<li><a href="/installation/demos-en.html">Demo Applications</a></li>
+			<li><a href="/hmiserverstartparameters-en.html">Server Start Parameters</a></li>
+			<li><a href="/hmiservermonitor-en.html">HMI Server Monitoring</a></li>
+			<li><a href="/commsbasics-en.html">Communications Basics</a></li>
+			<li><a href="/hmiconfig-en.html">HMI Server Configuration</a></li>
+		</ul>
+
+		<h3>Topic Details for Communications Basics</h3>
+		<ul>
+			<li><a href="/modbusbasics-en.html">Modbus/TCP</a></li>
+			<li><a href="/sbusbasics-en.html">SAIA SBus</a></li>
+		</ul>
+
+	</div>
+
+
+<div id="datadisplay">
+
+<h1>Help - Field Device Communications Basics</h1>
+
+<hr>
+
+<h2>Overview:</h2> 
+
+<p>HMIServer communicates with field devices such as I/O modules or PLCs
+by using the communications protocol which is native to that device. This
+section deals with the basics of field device communications and the
+protocols which are supported by HMIServer.
+</p>
+
+<hr>
+
+<h2>Field Device Protocols:</h2> 
+
+<p>HMIServer supports the following field device protocols:
+</p>
+
+<ul>
+	<li><a href="/modbusbasics-en.html">Modbus/TCP</a></li>
+	<li><a href="/sbusbasics-en.html">SAIA SBus</a></li>
+</ul>
+
+<p>Click on the links above to read more details about these particular 
+protocols.
+</p>
+
+<hr>
+
+<h2>Client/Server or Master/Slave:</h2>
+
+<p>Most protocols use a client/server model. This is also sometimes referred 
+to as <em>master/slave</em>. A "master" is the same thing as a "client", while 
+a "slave" is the same thing as a "server". The master/slave terms originated 
+in industry, while the client/server terms originated in the computer 
+industry. The different terms arose due to historical differences as to how 
+they were being applied, but the computer industry terms have to a large 
+degree replaced the industrial terms as industary has adopted more off the 
+shelf computer technology.
+</p>
+
+<p>A client/server protocol operates as follows:
+</p>
+
+<ol>
+	<li>The client sends a <em>request</em>.</li>
+	<li>The server receives the request.</li>
+	<li>The server processes the request and returns a <em>response</em>.</li>
+	<li>The client receives the response, and the transaction (communications 
+		cyle) is complete.</li>
+	<li>The client may then send another request.</li>
+</ol>
+
+<p>For example, when you use a web browser to view a web page on the internet, 
+your web browser sends a "page request" to the web server. The web server
+decodes the request and sends back a web page as a "response". Your e-mail
+client program fetches your e-mail in the same way from a mail server.
+</p>
+
+<hr>
+
+<h2>Ethernet:</h2>
+
+<p>"Ethernet" is the most widely used network communications media. However,
+Ethernet by itself is not a communications protocol. Instead, additional 
+protocol layers are added on top of Ethernet. 
+</p>
+
+<h3>IP Addresses</h3>
+
+<p>An "IP address" is the network address of the device which the message is
+being sent to. Each device on a network must have a unique IP address. The 
+number of possible IP addresses is very large (billions of addresses).  
+</p>
+
+<h3>TCP Versus UDP</h3>
+
+<p>Layered on top of IP, there are two main additional layers - TCP and UDP.
+When TCP is used, the IP communications software "stack" establishes a 
+"connection" between two points and messages are sent between these end
+points. When UDP is used, no "connection" is established before a message is
+sent.
+</p>  
+
+<p>This "connection" is not a physical connection. All it means is that the
+IP software "stack" (or operating system) will track where the messages are
+intended to go, and will automatically re-send them if they don't arrive.
+With UDP there is no virtual "connection", so the application program needs
+to do any message tracking itself.  
+</p>
+
+<p>It is sometimes said that UPD is "faster" than "TCP' because there is less
+message tracking overhead involved. However, IP software "stacks" are usually
+highly optimised and so are very fast and efficient. The details of the field 
+device protocols themselves are usually have far more influence on speed or 
+efficiency than thc choice of TCP or UDP.      
+</p>
+
+<hr>
+
+<h2>Server Ports</h2>
+
+<h3>Port Numbers</h3>
+
+<p>In addition to the IP address, the "port number" is required. An Ethernet
+"port number" does not refer to the physical connector. A port number is an 
+number send in the Ethernet header used by the operating system or firmware 
+in a device to determine which program a message should be sent to. This 
+allows multiple programs to share the same Ethernet adaptor without conflict.
+When a client sends a message, it sends it specifies a particular port number. 
+When the message is recieved by the server, the operating system or firmware
+will look at the port number and route the message to the correct program.
+</p>
+
+<h3>Binding to Ports</h3>
+
+<p>When a server program starts up it will "bind to a port". That simply means
+that it will ask the operating system to be assigned a particular port
+number. Only one server may bind to the same port number at any time. If the 
+port number is already in use by another program the new server program will not
+be allowed to use it, and will encounter an error. When a server program shuts
+down, it frees the use of the port. The operating system will then wait for a
+certain time-out to pass (the standard is 70 seconds) before allowing that
+port number to be used again. 
+</p>
+
+<h3>Alternate Ports</h3>
+
+<p>Most protocols will have a port number which they expect applications to 
+use. However, it is usually possible to use an alternate port number provided
+both the client and the server can be instructed to use it. The reasons for
+using a different port number are usually related to avoiding conflicts with
+other programs using that port (including running multiple copies of the same
+program on the same computer), problems with firewalls, or avoiding security
+problems.   
+</p>
+
+<p>Operating systems such as Linux have features which allow ports to be 
+"remapped" such that the port actually used by the application is different
+from the port which it appears to be using from the outside. This can be
+used to operate the program on an alternate port number, while still making
+it appear from the outside to use the "standard" port.  
+</p>
+
+<h3>TCP/IP Ports Versus UDP/IP Ports</h3>
+
+<p>TCP/IP and UDP/IP port numbers are independent of each other. This means
+it is possible for two different programs to use the same port number, provided
+that one is a TCP port while the other is a UDP port.  
+</p>
+
+
+<hr>
+
+<h2>Field Device Application Protocols</h2>
+
+<p>The actual industrial field device protocol is layered on top of TCP/IP 
+or UDP/IP. This is the "application layer" protocol. It is this protocol layer 
+which determines whether two devices can communicate with each other. A good
+analogy is is a telephone system. You may be able to connect to someone on a
+telephone, but unless you can both understand the same language, no real 
+communications can take place. 
+</p>
+
+<p>Examples of field device application protocols include Modbus/TCP and
+SAIA Ether SBus.
+</p>
+
+
+<hr>
+
+<h2>HTTP or the "Web" Protocol</h2>
+
+<p>Web browsers such as Firefox, Chrome, or Opera use a protocol called "HTTP"
+(Hyper Text Transport Protocol). This is a client/server protocol which is most
+commonly used to transmit web pages between web servers and web browsers. A 
+"web server" is simply a server program which understands the HTTP protocol
+and can use it to send data. The data may simply be files containing web
+pages, or the data may be created entirely "on the fly" in response to a 
+request, or it may be a combination of the two.  
+</p>
+
+<p>When a web browser receives a web page from web server from a web server, it
+will examine the web page to see if it has links to additional files. These 
+links may include images (e.g. PNG files), Javascript program files, style
+sheets, or other content. If it sees these links, it will then ask the web
+browser for this additional content. 
+</p>
+
+<p>As well as web browsers, other programs can use HTTP to request data from 
+a web server. Indeed, there are many instances where the intended recipient is
+not an ordinary web browser. If the data is organised in a way that it 
+constitutes another application protocol on top of HTTP, this is known as
+a "web service protocol". Web service protocols are used in many applications 
+which involve interfacing different systems together, and many of the protocols
+involved tend to be ad hoc and application specific. 
+</p>
+
+<p>When a web browser runs a program (including a Javascript program) which
+opens up an independent communications channel to load data from the web 
+server independently of loading the web page itself, this is called "AJAX" 
+(Asynchronous Javascript And XML). Despite the name, the data does not need
+to be formatted using XML to be considered AJAX. The HMI system used in 
+HMIServer uses AJAX techniques to continuously refresh the data in the web
+page without reloading the page itself.
+</p>
+
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Field Device Communications Basics</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2010. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

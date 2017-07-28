@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<link rel="icon" type="image/png" href="/systemicon.png" >
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/statuspagelayout.css" type="text/css">
+
+<!-- This controls the page display. -->
+<script type="text/javascript" src="/statuspages/libprogxref.js"></script>
+<script type="text/javascript" src="/statuspages/libdatamulti.js"></script>
+<script type="text/javascript" src="/statuspages/libstatutils.js"></script>
+
+<!-- Native JSON doesn't seem to be working in Opera 10.10. -->
+<script type="text/javascript" src="/statuspages/json2.js"></script>
+
+
+<title>XRef</title>
+
+</head>
+
+<body onload="pageinit();">
+
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo">
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<div id="datadisplay">
+	
+	<h1>XRef</h1>
+
+
+	<hr>
+
+	<h2>Address Cross Reference:</h2>
+
+	<p>The following is a cross reference of data table addresses, subroutine 
+		names, and constants. Items are classified by their first character.
+	</p>
+
+	<ul id="addrxref" class="xrefstyle">
+	</ul>
+
+	<!-- The address xref details go here. -->
+	<div id="addrxrefdetails" class="datahide">
+
+	<hr>
+
+	<button onclick="AXRef.HideAddrDetails();">Hide Details</button>
+
+		<h2>Address Xref Details</h2>
+
+		<table id="addrxreftable" class="displaytable"  border="1">
+			<tr> 
+				<th onclick="AXRef.SortAddrTable('addr');">Address <img src="/sort.png"></th>
+				<th onclick="AXRef.SortAddrTable('subr');">Subroutine <img src="/sort.png"></th>
+				<th>Rung/Network #</th>
+			</tr>
+		</table>
+	</div>
+	 
+	<hr>
+
+	<h2>Instruction Cross Reference:</h2>
+
+	<p>Cross references showing where instructions are used.
+	</p>
+
+	<!-- This is where the instruction names are listed. -->
+	<ul id="instrxref" class="xrefstyle">
+	</ul>
+
+	<!-- The instruction xref details go here. -->
+	<div id="instrxrefdetails" class="datahide">
+
+	<hr>
+
+	<button onclick="IXRef.HideInstrDetails();">Hide Details</button>
+
+
+		<p><span class="itemheading">Instruction Xref Details for: </span> 
+		<span id="ixrefheading" class="itemtitle"></span>
+		</p> 
+
+		<table id="instrxreftable" class="displaytable"  border="1">
+			<tr> 
+				<th>Subroutine</th>
+				<th>Rung/Network #</th>
+			</tr>
+		</table>
+	</div>
+
+	<hr>
+
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Program</p>
+</div>
+
+</div>
+
+<!-- This is the code for creating the data in the page. -->
+
+	<script type="text/javascript">
+
+	// These take care of updating the screen.
+	// The objects need to be easily addressible so we
+	// can call them from "onclick" functions.
+	var libutils = new libstatutils();
+	var CallBackList = [];
+	AXRef = new AddrXref(libutils);
+	IXRef = new InstrXref(libutils);
+	CallBackList[0] = AXRef;
+	CallBackList[1] = IXRef;
+
+	var URLList = ["/statdata/plcaddrxref.js", "/statdata/plcinstrxref.js"];
+
+
+	// Handles communications with the server.
+	var host = window.location.hostname;
+	var port = window.location.port;
+	var ServerData = new StatusDataIFMulti(host, port, URLList, CallBackList); 
+
+	// Run a single update cycle.
+	function Update() {
+
+		// Get the soft xref data and display it.
+		ServerData.SendGetRequest();
+
+	}
+
+	// Start up and initialisation.
+	function pageinit() {
+		// Start, after a short delay. 
+		window.setTimeout("Update()", 1000);
+	}
+
+
+	</script>
+
+
+</body>
+
+</html>
+
+<!-- Copyright 2008 - 2010. Michael Griffin 
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License 
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>. 
+-->
+

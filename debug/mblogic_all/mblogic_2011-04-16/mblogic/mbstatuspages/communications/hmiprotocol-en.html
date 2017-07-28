@@ -1,0 +1,400 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - HMI Protocol</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Communications</h3>
+		<ul>
+			<li><a href="serverconfig-en.html">Server Communications Configuration</a></li>
+			<li><a href="clienconfig-en.html">Client Communications Configuration</a></li>
+			<li><a href="genericclientsprotocols.html">Generic Client Protocols</a></li>
+			<li><a href="ComsFaults-en.html">Communications Faults</a></li>
+			<li><a href="ComsMonitor-en.html">Communications Monitoring and Trouble 
+				Shooting</a></li>
+			<li><a href="ComsExpRegs-en.html">Expanded Register Map</a></li>
+			<li><a href="ModbusSupport-en.html">Modbus/TCP Server and 
+				Client Protocol</a></li>
+			<li><a href="MBRest-en.html">MB-REST Web Service Protocol</a></li>
+			<li><a href="hmiprotocol-en.html">HMI Protocol</a></li>
+			<li><a href="genericclients.html">Generic Clients</a></li>
+			<li><a href="genframework.html">Generic Client Framework</a></li>
+			<li><a href="genuserprotocol.html">Generic Client User Protocols</a></li>
+			<li><a href="ModbusBasics-en.html">Modbus/TCP Basics</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>Help - HMI Protocol</h1>
+
+<hr>
+
+<h2>Overview:</h2> 
+
+<p>The HMI protocol is intended to support a web based HMI system. It supports: 
+</p>
+
+<ul>
+	<li>Tag based data table access.</li>
+	<li>Automatic data conversion and scaling.</li>
+	<li>Events.</li>
+	<li>Alarms.</li>
+</ul>
+
+
+<p>The HMI protocol is based on JSON. While it is primarily intended for HMI 
+systems, it can also be used as a general purpose web service for other 
+applications such as enterprise integration. 
+</p>
+
+<p>The protocol itself is not described in detail here. Please consult the help
+pages for the HMI system for more details. The following provides a brief 
+overview.
+</p>
+
+<p>The HMI system uses a protocol called "Cascadas" which was developed for 
+the purpose.  
+</p>
+
+
+<hr>
+
+<h2>HMI Servers and Services</h2>
+
+<p>The HMI protocol can be configured to provide multiple services. These are:
+</p>
+
+<ul>
+	<li><strong>HMI (Standard)</strong> - This is the standard HMI service and
+		includes an integrated web server for loading HMI web pages. It allows
+		read/write access via the HMI protocol.</li>
+	<li><strong>Restricted HMI</strong> - This provides access to the same HMI
+		protocol as the standard version, except that access is read-only. This
+		can be used to provide HMI access to users without providing them the
+		ability to write to the system data table or acknowledge alarms. </li>
+	<li><strong>RSS Monitoring</strong> - This provides an RSS feed of selected
+		HMI events. This is available on both the standard and restricted HMI 
+		ports. </li>
+	<li><strong>ERP Protocol</strong> - This is a limited version of the HMI
+		protocol intended to allow access for ERP/MRP applications. The ERP
+		version however limits the features available, and allows tag access to 
+		be limited. </li>
+	<li><strong>Alarm and Event Database Access</strong> - The alarm and event
+		database can be queried via a web service API. This does not use the HMI
+		protocol, but is accessed via the HMI servers (both normal and restricted
+		versions). </li>
+</ul>
+
+<p>The normal and restricted HMI servers will use different IP ports. Any 
+available port may be used for either. Both the normal and restricted HMI
+servers use the same HMI configuration. 
+</p>
+
+
+<hr>
+
+<h2>Address Tags</h2>
+
+<p>Address tags are aliases for addresses in the system data table. They can
+be used when reading from or writing to individual addresses (or series of 
+addresses) when using the HMI protocol. For example, the tag name "PB1" may
+be used to represent the system data table coil address 100.  
+</p>
+
+<h3>Type Conversions</h3>
+
+<p>Different data types may be associated with a tag, including integers, 
+floating point numbers and strings. Details of these may be found in the 
+section on "HMI Configuration". However, it is suffice to say here that the 
+HMI configuration system can be used to automatically convert between different
+data types. For example, numbers can be converted between integers and floating
+point, depending on what is required for the application.
+</p>
+
+<h3>Scaling</h3>
+
+<p>Numerical values can be automatically scaled to convert between raw analogue 
+values and engineering units. For example, a 12 bit analogue number (0 to 4095)  
+representing an LVDT reading could be scaled to read the equivalent value in 
+millimeters. The same applies when converting values input from an HMI screen 
+and being written back to the system data table. This scaling can be specified
+in the configuration and requires no special logic to be written to support it.
+</p>
+
+<h3>Reserved Tags</h3>
+
+<p>The protocol has several pre-defined "reserved" tags. These are: 
+</p>
+
+<ul>
+	<li><strong>timeutc</strong> - This is the current time as UTC. This is a 
+		floating point number representing a POSIX time stamp.</li>
+	<li><strong>timelocal</strong> - This is the current time as local time
+		on the server. This is also a POSIX time stamp.</li>
+	<li><strong>clientversion</strong> - This is a string representing the 
+		current version of the <em>client</em>. </li>
+	<li><strong>protocolversion</strong> - This is a string representing the 
+		version of the HMI protocol supported by the server.</li>
+</ul>
+
+
+<hr>
+
+<h2>Alarms</h2>
+
+<p>Alarms are messages which are brought to the attention of the operator and
+which the operator must acknowledge. Each alarm is associated with an "alarm
+tag". Each alarm tag is in turn associated with a coil address in the system
+data table. The HMI protocol provides alarm messages with the following 
+features:
+</p>
+
+<ul>
+	<li><strong>Alarm Tag</strong> - The alarm message passes the alarm tag to
+		the HMI client (e.g. web page), not the actual alarm message. Associating
+		the alarm tag with an actual text message is the responsibility of the 
+		HMI client. This means it is possible for the same HMI message to support
+		multiple languages (e.g. both English and French) simultaneously.  
+		</li>
+	<li><strong>Time</strong> - The time at which the alarm condition was 
+		detected is included in the message. This time is sent as UTC (GMT) so
+		the system can operate independently of time zones.
+		</li>
+	<li><strong>Time OK</strong> - The time at which the alarm condition became
+		"OK" (the cause is no longer present) is also part of the message.
+		</li>
+	<li><strong>State</strong> - The state of the alarm is also included (see
+		below for an explanation of alarm states).
+		</li>
+	<li><strong>Count</strong> - The number of times that an alarm occured 
+		before "going away" is included. This means that if an alarm condition 
+		occurs multiple times before being corrected, the number of times this
+		happens can be displayed to the operator. This allows alarms to be
+		summarised in a compact and easy to understand form. 
+		</li>
+</ul>
+
+<h3>Acknowledging Alarms</h3>
+
+<p>Alarms must be <em>acknowledged</em> by the operator. Acknowledging an 
+alarms means sending a message that the operator has been made aware of the
+alarm. This is accomplished by sending a message from the HMI client to the
+HMI server. 
+</p>
+
+
+<h3>Alarm States</h3>
+
+<p>Alarms can be in the following states:
+</p>
+
+<ul>
+	<li><strong>alarm</strong> - The alarm condition is true, and the alarm has 
+		not been acknowledged.</li>
+	<li><strong>ackalarm</strong> - The alarm condition is true, and the alarm 
+		has been acknowledged.</li>
+	<li><strong>ok</strong> - The alarm condition is false, but the alarm has 
+		not been acknowledged yet.</li>
+	<li><strong>ackok</strong> - The alarm condition is false, and the alarm 
+		has been acknowledged.</li>
+	<li><strong>inactive</strong> - The alarm condition is false, and the alarm 
+		has been acknowledged.</li>
+</ul>
+
+
+<h3>Alarm History</h3>
+
+<p>Once an alarm message has been acknowledged and the condition causing the
+alarm is no longer present, the alarm message itself goes into the "alarm 
+history". The alarm history is available for viewing by the operator. The alarm
+history also includes which operator station acknowledged the alarm.  
+</p>
+
+
+<h3>Triggering Alarm</h3>
+
+<p>Once an alarm has been defined in the HMI configuration it can be triggered 
+by turning on the associated coil address in the system data table. The alarm 
+address may be turned on by any source able to write to the system data table.
+</p>
+
+<p>An alarm is present when the alarm adress is <em>on</em> (or "1", or 
+"true"). 
+</p>
+
+<hr>
+
+<h2>Events</h2>
+
+<p>Events are similar to alarms in that they represent occurances which are
+brought to the attention of the operator. Unlike alarms, events do not require
+the operator to acknowledge them. While alarms normally represent problems 
+which require the operator to take corrective actions, events are usually 
+simply status information which the operator can review. Like alarms, events
+are associated with coil addresses in the system data table. Event messages 
+include the following:  
+</p>
+
+<ul>
+	<li><strong>Event Tag</strong> - Like alarm messages, event messages include
+		an "event tag" representing the event, but not the actual event message 
+		text. Again, the reason for this is to allow the HMI system to support
+		multiple languages simultaneously. </li>
+	<li><strong>Time</strong> - This is the time at which the event occured (in 
+		UTC).</li>
+</ul>
+
+
+<h3>Triggering Events</h3>
+
+<p>Once an event has been defined in the HMI configuration it can be triggered 
+by turning on the associated coil address in the system data table. The event 
+address may be turned on by any source able to write to the system data table.
+</p>
+
+<p>Events are "edge triggered". That is, they are triggered when the event
+address changes from <em>off</em> to <em>on</em> (or "0" to "1", or "false" 
+to "true"). 
+</p>
+
+<p>On start up, the system initialses the event system with the current state
+of the event addresses. That means that events addresses which are initially 
+"on" will not trigger an event until the event address turns "off" and then 
+"on" again.
+</p>
+
+<hr>
+
+<h2>Alarm and Event Zones</h2>
+
+<p>Alarms, alarm history, and events are grouped into user defined "zones". 
+These zones allow an individual HMI client to ask for and receive only those
+alarms or events of interest to it. Typical small to medium size HMI systems
+would normally simply group all alarms and events into a single set of zones 
+(zone definitions for alarms and events are independent of each other). Larger
+HMI applications however may wish to use several different zones to represent
+different areas of a machine, production line, or plant.   
+</p>
+
+
+<hr>
+
+<h2>Alarm and Event Serial Numbers</h2>
+
+<p>The system uses message serial numbers to track messages. The actual values
+used for these serial numbers is not significant and should not be relied on
+for any other purposes.
+</p>
+
+<hr>
+
+<h2>Supporting Multiple HMI Systems</h2>
+
+<p>The HMI protocol is designed to inherently support multiple HMI displays 
+without requring any explicit coordination between them. This includes data, 
+alarms, events, and alarm acknowledge messages. 
+</p>
+
+<hr>
+
+<h2>Logging Alarm History and Events</h2>
+
+<p>Alarm history and events are automatically logged to a database. On start 
+up, the system will retrieve the most recent set of alarm history and event
+messages from the database and make them available for an HMI client.   
+</p>
+
+<p>Current alarms are <em>not</em> logged in the database as they represent
+a dynamically changing condition. Once the alarm has become part of the
+alarm history however (the alarm condition is no longer present, and the
+operator has acknowledged it), it is automatically logged as part of the 
+alarm history.
+</p>
+
+<p>The contents of the database can be retrieved by other programs via a web 
+service protocol. This protocol is documented as one of the sytem services.
+</p>
+
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - HMI Protocol</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

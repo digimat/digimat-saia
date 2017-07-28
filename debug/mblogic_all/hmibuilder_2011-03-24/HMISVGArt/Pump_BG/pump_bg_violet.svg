@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.0"
+   width="85"
+   height="85">
+
+<defs>
+	<!-- Colour gradients. -->
+	<linearGradient id="MB_VioletGradient" x1="1" y1="1" x2="0" y2="0">
+		<stop offset="50%" stop-color="violet" />
+		<stop offset="100%" stop-color="white" />
+	</linearGradient>
+</defs>
+
+<!-- Pump frame. -->
+<polygon fill="url(#MB_VioletGradient)" points="15,40 0,80 80,80 65,40" />
+<circle cx="40" cy="40" r="25" fill="yellow"/>
+<circle cx="40" cy="40" r="2" fill="black"/>
+<circle stroke="url(#MB_VioletGradient)" cx="40" cy="40" r="25" fill="none" stroke-width="10" />
+
+</svg>

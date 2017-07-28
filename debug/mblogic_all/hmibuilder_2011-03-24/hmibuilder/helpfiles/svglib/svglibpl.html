@@ -1,0 +1,662 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+	<title>Help - HMI - SVG Pilot Lights</title>
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Edit SVG</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Inkscape</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">Templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assemble Page</a></li>
+		</ul>
+	</div>
+
+
+
+
+<hr>
+
+	<!-- Put main content here -->
+
+<div class="datadisplay">
+
+
+<h1>Pilot Lights</h1>
+
+
+<p>Pilot lights are output devices and are controlled via their SVG "id". Also 
+see push buttons for illuminated push buttons.
+</p>
+
+
+<hr>
+
+<h2>Bi-Coloured Pilot Lights</h2>
+
+<p>Bi-coloured pilot lights may have their colours of the central object set to 
+one of two defined colours, depending on the state of a boolean tag. 
+</p>
+
+<table class="helptable" border="1">
+<tr>
+	<th></th>
+	<th>Type</th>
+	<th>Name</th>
+	<th>Description</th>
+	<th>HMIBuilder Name</th>
+</tr>
+<tr>
+
+	<td><img src="pl_octagonal.png" width="75" alt="clip-art">
+	</td>
+	<td>Pilot light.
+	</td>
+	<td>pl_octagonal
+	</td>
+	<td>Octagonal pilot light.
+	</td>
+	<td>Pilot Light
+	</td>
+</tr>
+
+<tr>
+	
+	<td><img src="pl_round.png" width="75" alt="clip-art">
+	</td>
+	<td>Pilot light.
+	</td>
+	<td>pl_round
+	</td>
+	<td>Round pilot light.
+	</td>
+	<td>Pilot Light
+	</td>
+</tr>
+
+<tr>
+	
+	<td><img src="pl_square.png" width="75" alt="clip-art">
+	</td>
+	<td>Pilot light.
+	</td>
+	<td>pl_square
+	</td>
+	<td>Square pilot light.
+	</td>
+	<td>Pilot Light
+	</td>
+</tr>
+
+<tr>
+	
+	<td><img src="pl_labelled.png" width="75" alt="clip-art">
+	</td>
+	<td>Pilot light with label.
+	</td>
+	<td>pl_labelled_&lt;colour&gt;
+	</td>
+	<td>Oblong pilot light with text label (text comes in various 
+	colours). 
+	</td>
+	<td>Labelled Pilot Light
+	</td>
+</tr>
+
+
+</table>
+	
+<h3>HMIBuilder Parameters</h3>
+
+<table class="helptable" border="1">
+<tr>
+	<th>Parameter</th>
+	<th>Type</th>
+	<th>Values</th>
+	<th>Description</th>
+</tr>
+
+<tr>
+	<td>Output Tag
+	</td>
+	<td>Option menu
+	</td>
+	<td>Address tags
+	</td>
+	<td>The HMI server tag to read the current state from 
+	</td>
+</tr>
+
+<tr>
+	<td>Init Colour
+	</td>
+	<td>Option menu
+	</td>
+	<td>Colour
+	</td>
+	<td>The colour to before use starting
+	</td>
+</tr>
+
+<tr>
+	<td>Off Colour
+	</td>
+	<td>Option menu
+	</td>
+	<td>Colour
+	</td>
+	<td>The colour to use when the output tag is 0
+	</td>
+</tr>
+
+<tr>
+	<td>On Colour
+	</td>
+	<td>Option menu
+	</td>
+	<td>Colour
+	</td>
+	<td>The colour to use when the output tag is not 0
+	</td>
+</tr>
+
+</table>
+
+<p>The available colours are: aqua, blue, cyan, grey, green, indigo, khaki, 
+lime, maroon, navy, olive, orange, purple, red, silver, tan, teal, violet, 
+white, yellow.
+</p>
+
+<p><strong>Note:</strong> When the HMI web page starts up, it will use the 
+"init" colour until the first scan is able to set the correct colour. This 
+means you will not see either the "on" or "off" colours until valid data is
+available. 
+</p>
+
+
+<hr>
+
+<h2>Multi-Coloured Pilot Lights</h2>
+
+<p>Multi-coloured pilot lights may have their colours of the central object set to 
+one of a list of colours, depending on the state of an integer value. 
+</p>
+
+<table class="helptable" border="1">
+<tr>
+	<th></th>
+	<th>Type</th>
+	<th>Name</th>
+	<th>Description</th>
+	<th>HMIBuilder Name</th>
+</tr>
+<tr>
+
+	<td><img src="pl_octagonal.png" width="75" alt="clip-art">
+	</td>
+	<td>Pilot light, multi-colour.
+	</td>
+	<td>pl_multi_octagonal
+	</td>
+	<td>Octagonal pilot light.
+	</td>
+	<td>Pilot Light Multi-colour
+	</td>
+</tr>
+
+<tr>
+	
+	<td><img src="pl_round.png" width="75" alt="clip-art">
+	</td>
+	<td>Pilot light, multi-colour.
+	</td>
+	<td>pl_multi_round
+	</td>
+	<td>Round pilot light.
+	</td>
+	<td>Pilot Light Multi-colour
+	</td>
+</tr>
+
+<tr>
+	
+	<td><img src="pl_square.png" width="75" alt="clip-art">
+	</td>
+	<td>Pilot light, multi-colour.
+	</td>
+	<td>pl_multi_square
+	</td>
+	<td>Square pilot light.
+	</td>
+	<td>Pilot Light Multi-colour
+	</td>
+</tr>
+
+<tr>
+	
+	<td><img src="pl_labelled.png" width="75" alt="clip-art">
+	</td>
+	<td>Pilot light with label, multi-colour.
+	</td>
+	<td>pl_multi_labelled_&lt;colour&gt;
+	</td>
+	<td>Oblong pilot light with text label (text comes in various 
+	colours). 
+	</td>
+	<td>Labelled Pilot Light Multi-colour
+	</td>
+</tr>
+
+</table>
+	
+<h3>HMIBuilder Parameters</h3>
+
+<table class="helptable" border="1">
+<tr>
+	<th>Parameter</th>
+	<th>Type</th>
+	<th>Values</th>
+	<th>Description</th>
+</tr>
+
+<tr>
+	<td>Output Tag
+	</td>
+	<td>Option menu
+	</td>
+	<td>Address tags
+	</td>
+	<td>The HMI server tag to read the current state from 
+	</td>
+</tr>
+
+<tr>
+	<td>Init Colour
+	</td>
+	<td>Option menu
+	</td>
+	<td>Colour
+	</td>
+	<td>The colour to before use starting
+	</td>
+</tr>
+
+</table>
+
+<h3>Colour Codes</h3>
+
+<p>The following are the colour codes used for multi-colour pilot lights.
+For example, setting the <em>output tag</em> address to 4 will cause the
+pilot light to turn green.  
+</p>
+
+<p>Different colour combinations are possible by constructing a custom widget.
+</p>
+
+<table class="helptable" border="1">
+	<tr> <th>Index</th> <th>Colour</th> <th></th>  <th>Index</th> <th>Colour</th></tr>
+
+	<tr> <td>0</td> <td>aqua</td> <td> </td> <td>10</td> <td>olive</td> </tr>
+	<tr> <td>1</td> <td>blue</td> <td> </td> <td>11</td> <td>orange</td> </tr>
+	<tr> <td>2</td> <td>cyan</td> <td> </td> <td>12</td> <td>purple</td> </tr>
+	<tr> <td>3</td> <td>grey</td> <td> </td> <td>13</td> <td>red</td> </tr>
+	<tr> <td>4</td> <td>green</td> <td> </td> <td>14</td> <td>silver</td> </tr>
+	<tr> <td>5</td> <td>indigo</td> <td> </td> <td>15</td> <td>tan</td> </tr>
+	<tr> <td>6</td> <td>khaki</td> <td> </td> <td>16</td> <td>teal</td> </tr>
+	<tr> <td>7</td> <td>lime</td> <td> </td> <td>17</td> <td>violet</td> </tr>
+	<tr> <td>8</td> <td>maroon</td> <td> </td> <td>18</td> <td>white</td> </tr>
+	<tr> <td>9</td> <td>navy</td> <td> </td> <td>19</td> <td>yellow</td> </tr>
+
+</table>
+
+
+<hr>
+
+<h2>Animated Pilot Lights</h2>
+
+<p>Animated pilot lights alternate between two colours, with one colour
+"growing" (increasing in diameter) from the centre outwards. This provides
+a "flashing" effect. Animated pilot lights are only available in certain
+colours and "flash" by alternating between two fixed colours. The flash
+rate is fixed at a period of 1 second.
+</p>
+
+<p>
+<img src="plglow1a.png" width="60" alt="clip-art">
+<img src="plglow1b.png" width="60" alt="clip-art">
+<img src="plglow1c.png" width="60" alt="clip-art">
+</p>
+
+<p>SVG animations are a comparitively new feature in web browsers and may not
+work correctly in all browser versions even if that browser supports 
+(non-animated) SVG. Test all your target browsers to see if they will work 
+for you. SVG animations may place significant CPU load on the PC used to 
+display them. Avoid using a large number of simultaneous animations and 
+check the resulting CPU load on the target PC.  
+</p>
+
+<table class="helptable" border="1">
+<tr>
+	<th></th>
+	<th>Type</th>
+	<th>Name</th>
+	<th>Description</th>
+	<th>HMIBuilder Name</th>
+</tr>
+
+<tr>
+
+	<td><img src="plglowoct.png" width="75" alt="clip-art">
+	</td>
+	<td>Pilot light.
+	</td>
+	<td>pl_glow_oct_&lt;colour&gt;
+	</td>
+	<td>Animated octagonal pilot light.
+	</td>
+	<td>Pilot Light Animated
+	</td>
+</tr>
+
+<tr>
+
+	<td><img src="plglowround.png" width="75" alt="clip-art">
+	</td>
+	<td>Pilot light.
+	</td>
+	<td>pl_glow_round_&lt;colour&gt;
+	</td>
+	<td>Animated round pilot light.
+	</td>
+	<td>Pilot Light Animated
+	</td>
+	
+</tr>
+
+<tr>
+
+	<td><img src="plglowsquare.png" width="75" alt="clip-art">
+	</td>
+	<td>Pilot light.
+	</td>
+	<td>pl_glow_square_&lt;colour&gt;
+	</td>
+	<td>Animated square pilot light.
+	</td>
+	<td>Pilot Light Animated
+	</td>
+	
+</tr>
+</table>
+
+<h3>Available Colours</h3>
+
+<table class="helptable" border="1">
+	<tr>
+		<th>Nominal Colour</th>
+		<th>"Off" Colour</th>
+		<th>"Flash" Colour</th>
+	</tr>
+	
+	<tr><td>white</td>		<td>darkgrey</td>		<td>white</td></tr>
+	<tr><td>darkblue</td>	<td>darkblue</td>		<td>lightblue</td></tr>
+	<tr><td>blue</td>			<td>blue</td>			<td>violet</td></tr>
+	<tr><td>green</td>		<td>darkgreen</td>	<td>lightgreen</td></tr>
+	<tr><td>grey</td>			<td>darkgrey</td>		<td>lightgrey</td></tr>
+	<tr><td>indigo</td>		<td>indigo</td>		<td>blue</td></tr>
+	<tr><td>orange</td>		<td>orange</td>		<td>yellow</td></tr>
+	<tr><td>red</td>			<td>red</td>			<td>brown</td></tr>
+</table>
+
+	
+<h3>HMIBuilder Parameters</h3>
+
+<table class="helptable" border="1">
+<tr>
+	<th>Parameter</th>
+	<th>Type</th>
+	<th>Values</th>
+	<th>Description</th>
+</tr>
+
+<tr>
+	<td>Output Tag
+	</td>
+	<td>Option menu
+	</td>
+	<td>Address tags
+	</td>
+	<td>The HMI server tag to read the current state from 
+	</td>
+</tr>
+
+</table>
+
+<p><strong>Note:</strong> When the value of the output tag is 0, the pilot
+light will show the "off" colour. When the value is not zero, the pilot light
+will flash. There is no "init" colour to indicate that data is not available 
+yet.
+</p>
+
+<p>Also, be aware that continuous animation can take a lot of CPU power in
+the web browser. Check to make sure you are not overloading your HMI PC with
+excessive animations. 
+</p>
+
+
+<hr>
+
+<h2>Special Purpose Pilot Lights</h2>
+
+<p>There are several special purpose pilot lights which indicate the status of
+either the HMI system itself or of alarms. The data for each of these is not 
+derived from normal address tags, so there is no need to specify the address
+tag. 
+</p>
+
+
+<table class="helptable" border="1">
+<tr>
+	<th></th>
+	<th>Type</th>
+	<th>Name</th>
+	<th>Description</th>
+	<th>HMIBuilder Name</th>
+</tr>
+
+<tr>
+
+	<td><img src="pl_labelled.png" width="75" alt="clip-art">
+	</td>
+	<td>Pilot light - alarm.
+	</td>
+	<td>pl_alarmstat_&lt;colour&gt;
+	</td>
+	<td>Oblong pilot light with text label (text comes in various 
+	colours). Used to indicate HMI alarm status. 
+	</td>
+	<td>Alarm Status Pilot Light
+	</td>
+</tr>
+
+<tr>
+	
+	<td><img src="pl_labelled.png" width="75" alt="clip-art">
+	</td>
+	<td>HMI status pilot light.
+	</td>
+	<td>pl_stat_&lt;colour&gt;
+	</td>
+	<td>Oblong pilot light with text label (text comes in various 
+	colours). Used to indicate HMI communications errors. 
+	</td>
+	<td>Status Pilot Light
+	</td>
+</tr>
+
+<tr>
+	
+	<td><img src="pl_labelled.png" width="75" alt="clip-art">
+	</td>
+	<td>HMI watchdog pilot light.
+	</td>
+	<td>pl_watchdog_&lt;colour&gt;
+	</td>
+	<td>Oblong pilot light with text label (text comes in various 
+	colours).  Used to indicate HMI communications timeouts. 
+	</td>
+	<td>Watchdog Pilot Light
+	</td>
+</tr>
+
+</table>
+
+<h3>Alarm Status Colours</h3>
+
+<p>The following colours are used for the alarm status pilot light. These are
+intended to mirror the colours used for the alarm table in the standard web 
+page template. If the standard template is modified, the colours used in the 
+widget should also be modified to match.
+</p>
+
+<p>Only one colour at a time will be displayed. States listed closer to the
+bottom of the table will take priority over those listed above them.
+</p>
+
+
+<table class="helptable" border="1">
+<tr>
+	<th>Status Colour</th>
+	<th>Description</th>
+</tr>
+
+<tr>
+	<td>white</td>
+	<td>No alarms are present.</td>
+</tr>
+
+<tr>
+	<td>green</td>
+	<td>Unacknowledged alarms are present, but are in the 'Ok' state.</td>
+</tr>
+
+<tr>
+	<td>orange</td>
+	<td>Acknowledged alarms are present which are still in the 'not Ok' 
+		state.</td>
+</tr>
+
+<tr>
+	<td>red</td>
+	<td>Unacknowledged alarms are present which are not in the 'Ok' state.</td>
+</tr>
+
+</table>
+
+	
+<h3>HMIBuilder Parameters</h3>
+
+<table class="helptable" border="1">
+<tr>
+	<th>Parameter</th>
+	<th>Type</th>
+	<th>Values</th>
+	<th>Description</th>
+</tr>
+
+
+<tr>
+	<td>Init Colour
+	</td>
+	<td>Option menu
+	</td>
+	<td>Colour
+	</td>
+	<td>The colour to before use starting
+	</td>
+</tr>
+
+<tr>
+	<td>Ok Colour<sup><strong>1</strong></sup>
+	</td>
+	<td>Option menu
+	</td>
+	<td>Colour
+	</td>
+	<td>The colour to use when Ok
+	</td>
+</tr>
+
+<tr>
+	<td>Error Colour<sup><strong>1</strong></sup>
+	</td>
+	<td>Option menu
+	</td>
+	<td>Colour
+	</td>
+	<td>The colour to use when an error is present
+	</td>
+</tr>
+
+</table>
+
+
+<p><sup><strong>1</strong></sup><strong><em>Note:</em></strong> Not present in 
+alarm status pilot lights.
+</p>
+
+
+<hr>
+
+	</div>
+
+	<!-- Standard footer -->
+	<div id="footer">
+		<p>MB-HMI</p>
+	</div>
+
+</div>
+
+
+</body>
+</html>
+
+
+<!-- Copyright 2008 - 2011. Michael Griffin
+ This file is part of MBLogic.
+ MBLogic is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ MBLogic is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+ You should have received a copy of the GNU General Public License
+ along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Boolean Output Instructions</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Soft Logic</h3>
+		<ul>
+			<li><a href="SLSpecs-en.html">Specifications</a></li>
+			<li><a href="SLAddressing-en.html">Addressing</a></li>
+			<li><a href="SLInstructions-en.html">Instructions</a></li>
+			<li><a href="SLPrograms-en.html">Programming</a></li>
+			<li><a href="SLConfig-en.html">Configuration</a></li>
+			<li><a href="SLStatus-en.html">Program Monitoring and Reloading</a></li>
+			<li><a href="SLMemSave-en.html">Data Table Save/Restore</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>Boolean Output Instructions</h1>
+
+<hr>
+
+<p>Boolean output instructions output the value on the top of the logic stack
+to an address given as an explicit parameter. Output instructions do not
+modify the logic stack. This means that multiple output instructions can be
+used in series without the result of one instruction affecting the next.
+</p>
+
+<table class="helptable"  border="1">
+
+<tr>
+	<th>Instruction</th>
+	<th>Description</th>
+	<th># Params</th> 
+	<th>X</th>
+	<th>Y</th>
+	<th>C</th>
+	<th>T</th> 
+	<th>CT</th>
+	<th>SC</th>
+	<th>Bit Range</th> 
+	<th>Symbol</th> 
+</tr>
+
+
+<tr><td>OUT</td>
+	<td>Output logic stack to bit</td>
+	<td>1</td>
+	<td></td>
+	<td>X</td> 
+	<td>X</td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td><img src="LadOut1.png" width="50" height="50" alt="Out 1"></td>
+</tr>
+
+<tr><td>OUT</td>
+	<td>Output logic stack to multiple bits</td>
+	<td>2</td>
+	<td></td> 
+	<td>X</td>
+	<td>X</td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td>X</td>
+	<td><img src="LadOut2.png" width="100" height="50" alt="Out 1"></td>
+</tr>
+
+<tr><td>PD</td>
+	<td>Output logic stack one shot</td>
+	<td>1</td>
+	<td></td>
+	<td>X</td> 
+	<td>X</td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td><img src="LadPD1.png" width="50" height="50" alt="Out 1"></td> 
+</tr>
+
+<tr><td>PD</td>
+	<td>Output logic stack one shot to multiple bits</td>
+	<td>2</td> 
+	<td></td>
+	<td>X</td>
+	<td>X</td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td>X</td>
+	<td><img src="LadPD2.png" width="100" height="50" alt="Out 1"></td> 
+</tr>
+
+<tr><td>RST</td>
+	<td>Reset bit if logic stack true</td>
+	<td>1</td>
+	<td></td>
+	<td>X</td> 
+	<td>X</td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td><img src="LadRst1.png" width="50" height="50" alt="Out 1"></td> 
+</tr>
+
+<tr><td>RST</td>
+	<td>Reset multiple bits if logic stack true</td>
+	<td>2</td>
+	<td></td> 
+	<td>X</td>
+	<td>X</td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td>X</td>
+	<td><img src="LadRst2.png" width="100" height="50" alt="Out 1"></td> 
+</tr>
+
+<tr><td>SET</td>
+	<td>Set bit if logic stack true</td>
+	<td>1</td>
+	<td></td>
+	<td>X</td> 
+	<td>X</td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td><img src="LadSet1.png" width="50" height="50" alt="Out 1"></td> 
+</tr>
+
+<tr><td>SET</td>
+	<td>Set multiple bits if logic stack true</td>
+	<td>2</td>
+	<td></td> 
+	<td>X</td>
+	<td>X</td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td>X</td>
+	<td><img src="LadSet2.png" width="100" height="50" alt="Out 1"></td> 
+</tr>
+
+</table>
+
+
+<p>Boolean output instructions come in two forms: single output and bit range output.
+The system distinguishes between the two forms by the number of parameters given. 
+</p>
+
+<p>The PD instruction is a one-shot instruction. The output will be turned on for 
+one scan if the logic stack input is true. 
+</p>
+
+<p>Example: </p>
+<pre class="examples">
+
+	// Output to a single bit.
+	NETWORK 1
+	STR X1
+	OUT Y1
+	RST Y2
+	SET Y3
+	
+	// Output to a range of bits.
+	NETWORK 2
+	STR X2
+	OUT C1 C9
+	RST C10 C19
+	SET C20 C21
+	
+	// Output using one-shot.
+	NETWORK 3
+	STR X3
+	PD C30
+	PD C40 C60
+
+</pre>
+
+
+</div>
+
+<div id="ladsampledisplay">
+
+<hr>
+
+<h2>Ladder Examples</h2>
+
+<p>The following shows examples in ladder format. Each example shows the IL
+code as comments, followed by the ladder equivalent.
+</p>
+
+<p>
+<img src="LadBoolOut1.png" width="840" height="282" alt="boolean output example 1">
+<img src="LadBoolOut2.png" width="840" height="285" alt="boolean output example 2">
+<img src="LadBoolOut3.png" width="840" height="281" alt="boolean output example 3">
+<img src="LadBoolOut4.png" width="840" height="285" alt="boolean output example 4">
+</p>
+
+</div>
+
+<hr>
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Soft Logic</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

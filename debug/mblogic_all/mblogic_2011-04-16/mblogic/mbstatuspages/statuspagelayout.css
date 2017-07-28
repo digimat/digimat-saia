@@ -1,0 +1,642 @@
+/* Page layout CSS for the MBLogic status system. 
+	This contains the CSS which controls the overall page layout
+	and appearance, as well as the display of the navigation menu.
+*/
+
+/* This controls the appearance of the area outside of the defined screens. */
+body,
+html {
+	margin:0px;
+	padding:0px;
+	background:white;
+	color:black;
+	}
+/* This provides the background image. */
+body {
+	min-width:1000px;
+	min-height:800px;
+	background-image:url('systembackground.png')
+	}
+
+/* This provides a filler strip between the nav menu and the main display area. */
+#filler {
+	background:whitesmoke;
+	margin:0px auto;
+	width:1000px;
+	
+	}
+
+/* This is the "header" area at the top. */
+#header {
+	background:cornflowerblue;
+	-moz-border-radius-topleft: 20px;
+	-moz-border-radius-topright: 20px;
+	-webkit-border-top-left-radius: 20px;
+	-webkit-border-top-right-radius: 20px;
+	border-top-left-radius: 20px;
+	border-top-right-radius: 20px;
+	}
+.headlogo {
+	padding-top:15px;
+	padding-bottom:5px;
+	padding-left:15px;
+	padding-right:5px;
+}
+.headtitle1 {
+	font-size: 300%;
+	font-family: Verdana, sans-serif;
+	font-weight:900;
+	}
+.headtitle2 {
+	font-size: 150%;
+	font-family: Verdana, sans-serif;
+	font-weight:500;
+	font-style:italic;
+	}
+
+/* This handles the navigation (menu) bar. */
+#nav {
+	background:aqua;
+	font-size: 115%;
+	margin-top:0px;
+	margin-bottom:0px;
+	padding-bottom:5px;
+	font-family: Verdana, sans-serif;
+	}
+#nav ul{
+	padding-top:2px;
+	padding-bottom:15px;
+	list-style:none;
+	}
+#nav li{
+	display:inline;
+	}
+
+#nav a {
+	float:left;
+	text-decoration:underline;
+	color:black;
+	background-color:cadetblue;
+	border-right:3px solid aqua;
+	border-top:3px solid aqua;
+	border-left:3px solid aqua;
+	padding-top:5px;
+	padding-bottom:5px;
+	padding-left:15px;
+	padding-right:15px;
+	-moz-border-radius-topleft: 20px;
+	-moz-border-radius-topright: 20px;
+	-webkit-border-top-left-radius: 20px;
+	-webkit-border-top-right-radius: 20px;
+	border-top-left-radius: 20px;
+	border-top-right-radius: 20px;
+	}
+
+#nav a:hover {
+	background-color:darkcyan;
+	}
+
+
+/* This provides a filler strip at the bottom of the main display area. */
+#footer {
+	background:wheat;
+	clear:both;
+	}
+#footer p {
+	padding:5px;
+	margin:0px;
+	}
+
+/* This controls display of the main screen. */
+#datadisplay {
+	padding:0px;
+	background:antiquewhite;
+	width:1000px;
+	}
+
+#datadisplay h2, #datadisplay h3, #datadisplay p {
+	padding:0px 10px;
+	}
+
+
+/* This controls the appearance of tables that need visible
+	borders between each item. */
+.displaytable {
+	border-collapse: separate;
+	border-spacing: 1px 1px;
+
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+
+	}
+/* This controls the cell padding. */
+.displaytable td {
+	padding-left: 10px;
+	padding-right: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+	}
+
+
+.displaytable td.t1 {
+	background:lightcyan;
+}
+.displaytable td.t2 {
+	background:aquamarine;
+}
+
+
+/* This is used to look like a heading */
+.displaytable td.theadstyle {
+	background:lightseagreen;
+}
+
+.displaytable th {
+	background:lightseagreen;
+	padding: 5px;
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+	}
+
+.displaytable tr {
+	padding: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+
+
+/* This controls the appearance of tables that contain items
+	that can be edited. */
+.edittable {
+	border-collapse: separate;
+	border-spacing: 1px 1px;
+
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+
+	}
+/* This controls the cell padding. */
+.edittable td {
+	padding-left: 10px;
+	padding-right: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+	}
+
+
+.edittable td.t1 {
+	background:lightcyan;
+}
+.edittable td.t1:hover {
+	background:lightblue;
+}
+.edittable td.t2 {
+	background:aquamarine;
+}
+.edittable td.t2:hover {
+	background:aqua;
+}
+
+/* This is used to look like a heading */
+.edittable td.theadstyle {
+	background:lightseagreen;
+}
+
+.edittable th {
+	background:lightseagreen;
+	padding: 5px;
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+	}
+
+.edittable tr {
+	padding: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+
+
+
+
+
+/* This is used to display lists of errors. */
+
+.errortable {
+	background:coral;
+	border-spacing: 0px 0px;
+	padding-left: 10px;
+	padding-right: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+/* This is used to error messages embedded in web pages. */
+
+.errortextparagraph {
+	font-size: 125%;
+	font-family: Verdana, sans-serif;
+	font-weight:600;
+}
+p.errortextparagraph {color:coral;}
+
+/* This is for status log tables. */
+.logtable {
+	background:antiquewhite;
+	border-spacing: 0px 0px;
+	padding-left: 10px;
+	padding-right: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.logtable th {
+	background:lightseagreen;
+	padding: 5px;
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+	}
+
+
+/* This controls the appearance of tables with *no* visible borders
+	around each item. */
+.displaylist {
+	border-collapse: separate;
+	border-spacing: 0px 0px
+	}
+/* This controls the cell padding. */
+.displaylist td {
+	padding: 1px
+	}
+/* This controls the padding for table headings. */
+.displaylist th {
+	padding: 0px
+	}
+
+/* This controls the appearance of the source listing. */
+#sourcelist {
+	border-collapse: separate;
+	border-spacing: 0px 0px
+	}
+/* This controls the cell padding. */
+#sourcelist td {
+	padding: 2px
+	}
+/* This controls the padding for table headings. */
+#sourcelist th {
+	padding: 0px
+	}
+
+
+/* This controls the appearance of tables in the help pages. */
+#helptable {
+	border-collapse: separate;
+	border-spacing: 5px 5px
+	}
+/* This controls the cell padding. */
+#helptable td {
+	padding: 5px
+	}
+/* This controls the padding for table headings. */
+#helptable th {
+	padding: 5px
+	}
+
+
+
+/* This is used to indicate fault conditions. */
+.statusfault {
+	background-color:red;
+	}
+/* This is used to indicate a condition may have a problem. */
+.statusalert {
+	background-color:yellow;
+	}
+
+/* This is used to indicate a condition is OK. */
+.statusok {
+	background-color:green
+	}
+
+/* This handles the entry of data table addresses for monitoring. */
+.softaddr {
+	padding-top:5px;
+	padding-bottom:0px;
+	padding-left:5px;
+	padding-right:5px;
+	}
+.softaddr ul{
+	margin:0px;
+	padding:0px;
+	list-style:none;
+	}
+.softaddr li{
+	display:inline;
+	margin:10px;
+	padding:0px;
+	}
+
+/* This determines how the list of soft logic xref addresses appears. */
+.xrefstyle {
+	padding-top:5px;
+	padding-bottom:0px;
+	padding-left:5px;
+	padding-right:5px;
+	}
+.xrefstyle ul{
+	margin:0px;
+	padding:0px;
+	list-style:none;
+	}
+.xrefstyle li{
+	display:inline;
+	margin:10px;
+	padding:0px;
+	}
+.xrefstyle button{
+	width:115px;
+	}
+
+
+
+/* These are used to show or hide areas of pages. */
+.datashow {display:block}
+.datahide {display:none}
+
+
+/* These set up the comms status pages in columns. */
+#clientpolling {
+	float:left;
+	width:300px;
+	margin:auto;
+	}
+
+#clientfault {
+	float:right;
+	padding:5px;
+	width:600px;
+	margin:auto;
+	}
+
+#genclientparams {
+	float:left;
+	width:400px;
+	margin:auto;
+	}
+
+#genclientfault {
+	float:right;
+	padding:5px;
+	width:500px;
+	margin:auto;
+	}
+
+
+/* This clears the columns after the client display. */
+.clientclear {
+	clear:both;
+	}
+
+/* The client title text. */
+.itemtitle {
+	font-size: 200%;
+	font-weight:900;
+	text-decoration:underline;
+}
+
+/* Acts as a heading for client details. */
+.itemheading {
+	font-size: 150%;
+	font-weight:600;
+	}
+
+/* HMI display styles. */
+#hmialarms {
+	float:left;
+	width:400px;
+	margin:auto;
+	}
+
+#hmievents {
+	float:right;
+	padding:5px;
+	width:500px;
+	margin:auto;
+	}
+
+/* This clears the columns. */
+#hmiclear {
+	clear:both;
+	}
+
+
+/* These set up the pages in columns. */
+.datatablelcolumn {
+	float:left;
+	width:350px;
+	margin:auto;
+	}
+
+.datatablercolumn {
+	float:right;
+	width:450px;
+	margin:auto;
+	}
+
+/* This clears the columns. */
+.datatableclear {
+	clear:both;
+	}
+
+
+/* This is used for displaying IL text. */
+.viewil {
+	margin-left:50px;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+/* Control buttons. */
+.controlbuttons {
+	font-size: 150%;
+	padding-top:5px;
+	padding-bottom:5px;
+	padding-left:10px;
+	padding-right:10px;
+	}
+
+
+/* Shutdown confirmation overlay. */
+.shutdownmask {
+	padding:16px;
+	background-color:grey;
+	border:2px solid grey;
+	opacity:0.5;
+}
+/* Background for shutdown buttons. */
+.shutdownbuttonback {
+	background-color:white;
+	border:2px solid black;
+	opacity:1.0;
+}
+
+/* Provides padding for shutdown buttons. */
+.shutdownbuttonpad {
+	padding:15px;
+}
+
+/* Shutdown buttons. */
+.shutdownbuttons {
+	font-size: 150%;
+	color:black;
+	font-weight:600;
+	border-spacing: 50px 50px;
+	padding-top:5px;
+	padding-bottom:5px;
+	padding-left:10px;
+	padding-right:10px;
+	opacity:1.0;
+	}
+
+
+
+
+
+
+
+/* These set up the monitor pages in columns. */
+.monitorlcolumn {
+	float:left;
+	width:410px;
+	margin:auto;
+	}
+
+.monitorrcolumn {
+	float:right;
+	padding:5px;
+	width:550px;
+	margin:auto;
+	}
+
+/* This clears the columns. */
+.monitorclear {
+	clear:both;
+	}
+
+
+
+
+/* These set up the system status pages in columns. */
+.systemlcolumn {
+	float:left;
+	width:500px;
+	margin:auto;
+	padding-left:25px;
+	}
+
+.systemrcolumn {
+	float:right;
+	padding:5px;
+	width:350px;
+	margin:auto;
+	}
+
+/* This clears the columns. */
+.systemclear {
+	clear:both;
+	}
+
+
+/* These set up the expanded register map display in columns on the communications page. */
+.expdatalcolumn {
+	float:left;
+	width:200px;
+	margin:auto;
+	}
+
+.expdatarcolumn {
+	float:right;
+	padding:5px;
+	width:650px;
+	margin:auto;
+	}
+
+/* This clears the columns. */
+.expdataclear {
+	clear:both;
+	}
+
+
+/* This handles the layout for parameter form editing. */
+.configedit {
+	float:left;
+}
+/* Clear the column float. */
+.configeditclear {
+	clear:both;
+}
+
+
+/* Background for edit configurations. */
+.editconfigback {
+	background-color:lightseagreen;
+	color:black;
+	border:2px solid black;
+	opacity:1.0;
+}
+
+/* Style for showing that an option group is Ok. */
+.editconfigoptionok {
+	color:black;
+}
+
+/* Style for showing that an option group has an error. */
+.editconfigoptionerrors {
+	color:red;
+}
+
+/* Style for editing configuration fields. */
+.editconfigfields {
+	padding:5px;
+	margin:5px;
+	background-color:white;
+	border:2px solid black;
+	opacity:1.0;
+}
+
+/* Style for editing configuration fields when has an error. */
+.editconfigerrors {
+	padding:5px;
+	margin:5px;
+	background-color:red;
+	border:2px solid black;
+	opacity:1.0;
+}
+
+/* Style for editing configuration buttons. */
+.editconfigbuttons {
+	font-size: 100%;
+	color:black;
+	font-weight:600;
+	border-spacing: 10px 10px;
+	padding-top:5px;
+	padding-bottom:5px;
+	padding-left:15px;
+	padding-right:15px;
+	opacity:1.0;
+}
+

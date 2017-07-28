@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - The Logic Stack</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Soft Logic</h3>
+		<ul>
+			<li><a href="SLSpecs-en.html">Specifications</a></li>
+			<li><a href="SLAddressing-en.html">Addressing</a></li>
+			<li><a href="SLInstructions-en.html">Instructions</a></li>
+			<li><a href="SLPrograms-en.html">Programming</a></li>
+			<li><a href="SLConfig-en.html">Configuration</a></li>
+			<li><a href="SLStatus-en.html">Program Monitoring and Reloading</a></li>
+			<li><a href="SLMemSave-en.html">Data Table Save/Restore</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>The Logic Stack</h1>
+
+<hr>
+
+<p>A logic stack is one of the fundamental features of all conventional PLCs,
+although its presence is often not explicitly mentioned. The logic stack is the
+location where the results of logic operations are stored, and where many
+instructions implicitly draw one or more of their Boolean parameters. 
+</p>
+
+<p>The logic stack is implemented as a stack. This stack has an undefined maximum
+size, but the limit may be assumed to be very large, and for all practical purposes
+unlimited. The minimum size is zero. 
+</p>
+
+<p>Instructions which use the logic stack may push a value onto the stack, modify
+the top of the stack, read the top of the stack, or read any value below the top
+of the stack. In the instruction documentation, the top of the logic stack is
+refered to as "the top of the logic stack", "top of stack", or just "logic stack".
+Values in locations below the top of the stack are refered to as the logic stack 
+value (top - 1) (the value just below the top of stack), or logic stack 
+value (top - 2)(the value two positions below the top of stack). No instruction
+reads more than two positions below the top of stack.
+</p>
+
+<p>Whenever a new network (rung) is started, the logic stack is cleared and the top
+of the stack is initialised to "false". If an instruction attempts to read a logic 
+stack location which does not exist a value of "false" is returned to the instruction.
+This means that attempting to read an invalid logic stack location does not result
+in a run time error, but it does mean the instruction will never become true.
+</p>
+
+<p>When a subroutine is called, the logic stack is re-initialised. When the 
+subroutine returns, the state of the logic stack is undefined. This means that
+a subroutine must not rely on the logic stack being in a particular state
+when called, and the calling location must not rely on the logic stack being
+either set by the subroutine or being in the same state as before the
+subroutine call.
+</p>
+
+<p>Example: </p>
+<pre class="examples">
+	// Re-initialise the logic stack.
+	// Push a value onto the stack. The top of stack is now true.
+	NETWORK 1
+	STR SC1
+	
+	// Re-initialise the logic stack again.
+	// The previous value is now gone.
+	NETWORK 2
+	
+	// Re-initialise the logic stack again.
+	// Push four values onto the stack. The top is true,
+	// (top - 1) is false, (top - 2) and (top - 3) are true.
+	NETWORK 3
+	STR SC1
+	STR SC1
+	STRN SC1
+	STR SC1
+	
+	// Re-initialise the logic stack again.
+	// The previous values are now gone.
+	NETWORK 4
+</pre>
+
+
+
+<hr>
+
+</div>
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Soft Logic</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

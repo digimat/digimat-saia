@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<link rel="icon" type="image/png" href="/systemicon.png" >
+<!-- Edit page layout style sheet. -->
+<link rel="stylesheet" href="/systemedit.css" type="text/css">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/statuspagelayout.css" type="text/css">
+
+<!-- This controls the page display. -->
+<script type="text/javascript" src="/statuspages/libprogcontrol.js"></script>
+<script type="text/javascript" src="/statuspages/libdata.js"></script>
+<script type="text/javascript" src="/statuspages/libdatapost.js"></script>
+<script type="text/javascript" src="/statuspages/libstatutils.js"></script>
+<script type="text/javascript" src="/statuspages/libtexts_en.js"></script>
+
+<!-- Native JSON doesn't seem to be working in Opera 10.10. -->
+<script type="text/javascript" src="/statuspages/json2.js"></script>
+
+<title>IL Editor</title>
+
+</head>
+
+<body onload="pageinit();">
+
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo">
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+
+	<div id="datadisplay">
+	
+		<!-- Subroutine name. -->
+		<p><span class="itemheading">Edit Subroutine: </span> 
+		<span id="subrheading" class="itemtitle"></span>
+		</p> 
+
+		<!-- Page status. -->
+		<div id="pagestatus">
+
+		<table id="errortable" class="errortable"  border="1">
+		</table>
+
+		</div>
+
+		<!-- Program edit text area. -->
+		<table class="displaylist" border="0">
+		</table>
+
+		<form id="formname" name="ileditor" action="ileditor.html" method="post"> 
+
+			<!-- Subroutine comments text area. -->
+			<p>
+			<textarea name="subrcomments" rows="1" cols="80"> 
+			</textarea>
+			</p>
+
+
+			<!-- Editor text area. -->
+			<p>
+			<textarea name="content" rows="30" cols="80"> 
+			</textarea>
+			</p>
+
+		</form>
+
+		<!-- This will save the data. -->
+		<p>
+			<button class="controlbuttons" onclick="EditSaveIL();">Save</button>
+		</p> 
+		
+		<!-- Error messages get displayed here. -->
+		<div id="plcerrordisplay" class="datahide">
+			<h3>Soft Logic Program Errors:</h3>
+			<table id="plcerrortable" class="errortable"  border="1">
+			</table>
+			<hr>
+		</div>
+
+	</div>
+
+
+	<!-- Standard footer -->
+	<div id="footer">
+		<p>MBEdit IL Editor</p>
+	</div>
+
+</div>
+
+<!-- This is the code for creating the data in the page. -->
+
+	<script type="text/javascript">
+
+	// Get the subroutine name.
+	var subrname = GetSubrnameFromQueryString();
+	
+	// Handles displaying page data.
+	var libutils = new libstatutils();
+	var ILEditor = new ProgILEdit(libutils);
+
+	// Handles communications with the server.
+	var host = window.location.hostname;
+	var port = window.location.port;
+	var ServerData = new StatusDataIF(host, port, ILEditor);
+
+	// Save the IL text.
+	function EditSaveIL() {
+		var savedata = ILEditor.FormatSaveRequest(subrname);
+		var savecmd = new StatusDataSend(host, port, EditSaveResult);
+		savecmd.SendPostRequest("/statdata/plcnewsource.js", savedata);
+	}
+
+
+	var ErrorDisplay = new DisplayErrors(libutils, TextDefsGeneralStat, 
+			"plccompilemsg", "plcerrortable", "plcerrordisplay");
+
+	// This is the response from the server for the save command.
+	function EditSaveResult(responseobj) {
+		// Check to see if there were any errors.
+		var EditError = new StatusDataIF(host, port, ErrorDisplay);
+		EditError.SendGetRequest("/statdata/plcnewconfig.js");
+	}
+
+
+	// Start up and initialisation.
+	function pageinit() {
+
+		// Display the headings.
+		ILEditor.PopulateHeadings(subrname);
+
+		// Get the IL data and display it.
+		ServerData.SendGetRequest("/statdata/plcnewsource.js?subrname=" + subrname);
+	}
+
+	</script>
+
+
+</body>
+
+
+</html>
+
+<!-- Copyright 2009 - 2010. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

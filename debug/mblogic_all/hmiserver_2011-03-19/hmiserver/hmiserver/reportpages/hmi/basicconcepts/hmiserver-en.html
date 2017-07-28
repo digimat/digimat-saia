@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+	<title>Help - HMI - Server Functions</title>
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- Page navigation style sheet. -->
+<link rel="stylesheet" href="/pagenav.css" type="text/css">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo">
+			<span class="headtitle1">HMIServer </span>
+			<span class="headtitle2"> Help</span>
+		</p>
+	</div>
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statushmi.html">Config</a></li>
+			<li><a href="/statuscontrol.html">Control</a></li>
+			<li><a href="/datamsgsfield.html">Data Messages</a></li>
+			<li><a href="/hmiserverintro-en.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/hmiserverintro-en.html">Help</a></li>
+			<li><a href="/about-en.html">About</a></li>
+			<li><a href="/installation/install-en.html">Installation</a></li>
+			<li><a href="/installation/demos-en.html">Demo Applications</a></li>
+			<li><a href="/hmiserverstartparameters-en.html">Server Start Parameters</a></li>
+			<li><a href="/hmiservermonitor-en.html">HMI Server Monitoring</a></li>
+			<li><a href="/commsbasics-en.html">Communications Basics</a></li>
+			<li><a href="/hmiconfig-en.html">HMI Server Configuration</a></li>
+		</ul>
+
+		<h3>Topic Details for HMI Web Pages</h3>
+		<ul>
+			<li><a href="/hmi/hmibuilder/hmibuilder.html">MBLogic HMIBuilder</a></li>
+			<li><a href="/hmi/hmilib/hmilib.html">HMI Javascript Client Libraries</a></li>
+			<li><a href="/hmi/basicconcepts/basicconcepts.html">Basic Concepts</a></li>
+		</ul>
+
+		<h3>Basic Concepts</h3>
+		<ul>
+			<li><a href="/hmi/basicconcepts/hmibasics-en.html">HMI Web Basics</a></li>
+			<li><a href="/hmi/basicconcepts/hmiserver-en.html">HMI Server Functions</a></li>
+			<li><a href="/hmi/basicconcepts/hmiclients-en.html">Building Web Clients</a></li>
+			<li><a href="/hmi/basicconcepts/hmijavascript-en.html">Javascript</a></li>
+			<li><a href="/hmi/basicconcepts/hmisvgelements-en.html">HMI SVG Graphic Elements</a></li>
+		</ul>
+
+
+
+	</div>
+
+	<!-- Put main content here -->
+	<div id="datadisplay">
+
+<h1>Help - HMI Server Functions</h1>
+
+<hr>
+
+<h2>Overview:<a name="Overview"></a></h2>
+
+<p>A web based client cannot operate on its own. It requires a server to load
+the client web page from, and to communicate with. This system has a special
+server built into it which provides both functions.  
+</p>
+
+	<hr>
+
+<h2>Server Features:<a name="Server Features"></a></h2>
+
+<p>The HMI server provides the following features to an application.
+</p>
+
+<ul>
+	<li>A web server. The server will load web pages requested by a web browser.
+	This includes the web page itself, external Javascript files, CSS files, 
+	graphics images such as PNG or JPEG files, and icons ("favicons"). </li>
+	<li>A common data table. All server data is stored in the common system
+	(communications) data table. This means that a client can interact with other 
+	protocols and devices through the common data table. This includes monitoring 
+	inputs, setting outputs, and viewing events and alarms. 
+	(<em>This is in MBLogic only. In in HMIServer data is read directly
+	from the external source.)</em></li>
+	<li>Events and alarms. The server detects events and alarms, time stamps them, 
+	constructs the messages, stores them in an event queue where they can be 
+	requested by the client, and responds to alarm acknoweldge messages. More 
+	details on events and alarms can be found below. </li>
+	<li>Read only tags. Some tags can be defined as "read only" to protect their
+	contents from being inadvertantly changed. </li>
+	<li>Range limits and scaling. Numeric tags can have range limits and scale 
+	factors applied by the server. Range limits can be used to prevent invalid
+	data from being accepted by the server. Scale factors allow server data table
+	values to be converted to a different range (e.g. convert to engineering units)
+	for the client. </li>
+	<li>A configuration system. Tags, data table addresses, and other features 
+	are all configurable. More details on configuration can be found below. </li>
+</ul>
+
+<hr>
+
+<h2>Events and Alarms:<a name="Events and Alarms"></a></h2>
+
+
+<p>Events and alarms are represented as boolean conditions. An event
+occurs when the boolean value changes from false to true, or from true to 
+false. An alarm occurs when the boolean value changes from false to true. 
+</p>
+<p>The event and alarm manager does not directly "create" events or alarms
+by monitoring conditions such as analogue values. Events and alarms must
+be created by other logic (e.g. via the soft logic or by other systems).
+</p>
+<p>The addresses used for events and alarms can be anywhere in the coils 
+area of the data table. External protocol clients, internal clients and 
+integrated software modules can all write to the coils area
+to trigger and event or alarm. 
+</p>
+
+<hr>
+
+<h2>Event and Alarm Buffering:<a name="Event and Alarm Buffering"></a></h2>
+
+<p>Events and alarms are "buffered" in the server. This means that when an
+event or alarm occurs, a copy of each message is retained in the server so that
+a client can retrieve all or some of them later. This means the client does not 
+need persistent (disk based) local storage to maintain a (recent) history of 
+events and alarms. They can be retrieved from the server at any time.
+</p>
+
+<p>At present, the system stores the event and alarm	buffers in memory. This 
+means they do not (at present) retain a permanent event or alarm history. 
+If the server is restarted, the existing history is lost. Permanent event 
+and alarm storage will be addressed in a future version.
+</p>
+
+<hr>
+
+<h2>Data Scaling and Conversion:<a name="Data Scaling and Conversion"></a></h2>
+
+<p>The HMI server offers automatic scaling of numbers as part of the configuration
+system. Values in the data table may be automatically scaled when read from
+the server, with the reverse scaling being applied on writing data to the 
+server. Scaling is user selected parameters as part of the configuration.  
+</p>
+
+<p>The server also automatically converts data types as required. Conversion
+is implemented as follows:
+</p>
+
+<h3>Scaling When Receiving Data</h3>
+
+<ul>
+	<li>On receiving a value which is intended to be written to a register, the
+	server first attempts to convert it to an integer. If this fails, it attempts
+	to convert it to a floating point number. If that in turn fails, it reports
+	it as a 'badtype' error.</li>
+	<li>The server then checks to see if the number is within the user defined
+	range. If not, then it reports it as an 'outofrange' error.</li>
+	<li>Next, the server attempts to apply the scale factors. The equation used 
+	is scaledvalue = (datavalue - scaleoffset)/scalespan. If an error occurs,
+	it is reported as a 'servererror'.</li>
+	<li>Next, the scaled value is checked to see if it will fit within a data
+	table register.</li>
+	<li>If there are no failures at this point, the value is converted to an
+	integer and stored in the data table.</li>
+</ul>
+
+<h3>Scaling  When Sending Data</h3>
+
+<ul>
+	<li>When sending data, the value is first read from the data table.</li>
+	<li>Next, the server attempts to apply the scale factors. The equation used 
+	is scaledvalue = (scalespan * datavalue) + scaleoffset. If an error occurs,
+	it is reported as a 'servererror'.</li>
+	<li>The scaled value is next converted to the configured data type. If an 
+	error occurs, it is reported as a 'badtype'.</li>
+	<li>Finally, the the number is checked to see if it is within the user defined
+	range. If not, then it reports it as an 'outofrange' error.</li>
+</ul>
+
+
+<hr>
+
+<h2>Platform Data Limits:<a name="Platform Data Limits"></a></h2>
+
+<p>Because all data values are mapped to data table addresses, the data
+must exist within the limits of that data table. These are limitations
+of the server platform and not HMI protocol limits. 
+</p>
+
+<ul>
+	<li>Native integers must be within the range -32768 to 32767 (after scaling
+	is applied). </li>
+	<li>Extended data types offer integers in the range -2147483648 to 2147483647.
+	However, these require two registers per value. </li>
+	<li>Native floating point numbers are automatically converted to integers when 
+	stored in the data table.</li>
+	<li>Extended data types offer single and double precision floating point.
+	However, these	require 2 (single precision) or 4 (double precision) registers 
+	per value. </li>
+	<li>There are no limits on string length, but a single register may hold 
+	only 1 or 2 characters. </li>
+	<li>Discrete inputs and input registers are read-only addresses. </li>
+</ul>
+
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - HMI Server Functions</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

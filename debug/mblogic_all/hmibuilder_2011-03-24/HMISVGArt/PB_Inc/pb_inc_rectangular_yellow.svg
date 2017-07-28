@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:mblogic="http://www.example.com/mblogic"
+   version="1.0"
+   width="150"
+   height="55">
+
+<defs>
+
+	<!-- Colour Gradients. -->
+	<linearGradient id="MB_YellowGradient" x1="1" y1="1" x2="0" y2="0">
+		<stop offset="50%" stop-color="yellow" />
+		<stop offset="100%" stop-color="white" />
+	</linearGradient>
+
+
+	<!-- The following filter is used to add a drop shadown. -->
+	<filter id="MB_DropShadowFilter">
+		<feGaussianBlur stdDeviation="2">
+		</feGaussianBlur>
+	</filter>
+
+</defs>
+
+<!-- Push button. -->
+<g class="buttonactivate" 
+	mblogic:widgettype="pb_inc" 
+	mblogic:widgetname="Increment Push Button"
+	mblogic:editcount="0"
+	mblogic:menu='[{"param": "inputtag", "type": "tag", "name": "Input Tag", "value": ""}, {"param": "reftag", "type": "tag", "name": "Reference Tag", "value": ""}, {"param": "inc", "type": "int", "name": "Increment", "value": 1}, {"param": "limit", "type": "int", "name": "Limit", "value": 99}]'
+	mblogic:inputfunc='[{"event": "onclick", "func": "MBHMIProtocol.WriteIncImmediate(\"%(inputtag)s\", \"%(reftag)s\", %(inc)s, %(limit)s);"}]'
+	mblogic:outputfunc=""
+	>
+
+	<rect x="7" y="7" width="140" height="50" rx="15" fill="grey" 
+		stroke="none" stroke-width="0px" filter="url(#MB_DropShadowFilter)"/>
+	<rect fill="url(#MB_YellowGradient)" x="0" y="0" width="140" height="50" rx="15"/>
+	<text x="70" y="30" font-size="24" stroke-width="2px" text-anchor="middle">PB</text>
+
+</g>
+
+</svg>
+

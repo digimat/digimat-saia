@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - HMIBuilder</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Edit SVG</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Inkscape</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">Templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assemble Page</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Editing SVG with Inkscape</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Using the SVG Library with Inkscape</a></li>
+			<li><a href="/customwidgets/customwidgets.html">Custom Widgets</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">HMI web templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assembling web pages</a></li>
+			<li><a href="/hmilib/hmilib.html">HMI Javascript Client Libraries</a></li>
+			<li><a href="/basicconcepts/basicconcepts.html">Basic Concepts</a></li>
+			<li><a href="/manualpage/manualpage.html">Manual HMI Web Page Construction</a></li>
+		</ul>
+
+		<h3>Using HMIBuilder</h3>
+		<ul>
+			<li><a href="/hmibuilder/selectfiles.html">Select input files</a></li>
+			<li><a href="/hmibuilder/selectoptions.html">Select options</a></li>
+			<li><a href="/hmibuilder/editwidgets.html">Edit widgets</a></li>
+			<li><a href="/hmibuilder/assemblepage.html">Assemble page</a></li>
+			<li><a href="/hmibuilder/help.html">Help</a></li>
+		</ul>
+
+	</div>
+
+
+
+
+
+<div id="datadisplay">
+
+
+	<h1>Select Options</h1>
+
+	<hr>
+
+	<p>This step selects the overall drawing options. This consists of the
+	following:
+	</p>
+
+	<ul>
+		<li><strong>Layers</strong> - This will scan the SVG drawing for any 
+			layers which may exist. It will automatically assign ids to those 
+			layers which match the layer names which you assigned in the drawing
+			(Inkscape layers names are separate from the actual ids). You will 
+			need to select which layers you wish to use in the SVG menu system
+			(if you are using multiple "screens"). Be careful which layers you 
+			select. Do not select the layer you have your menu buttons on!
+			This information will be used to generate the "screen list" used by
+			the SVG menu system. 
+		</li>
+
+		<li><strong>Alarm and event zones</strong> - This will allow you to 
+			select which alarms and events you wish to monitor in this HMI
+			web page. Any alarm or events zones which are not selected will
+			not be monitored. This information is used to generate the the
+			alarm and event zone polling lists. The zone names are read from
+			the hmi configuration file which you selected in a previous step.  
+		</li>
+
+	</ul>
+
+	<p>This information will be stored inside the SVG drawing when you save
+	the SVG file after editing it. This will allow you to save your work and 
+	resume editing at a later time if you wish. 
+	</p>
+
+
+	<hr>
+
+		<p>
+		<img src="selectoptions.png" width="600" alt="Select options">
+		</p>
+
+	<h2>Steps</h2>
+
+<ol>
+	<li>Check the layers you wish to use as part of the SVG screen menues. 
+		These are the drawing layers you created. Select the layers that you
+		wish to have controlled as part of the screen menu system. Do <em>not</em>
+		select layers that you do not wish to have controlled by the menu system.
+	</li>
+
+	<li>Select the alarm zones that you wish to monitor.
+	</li>
+
+
+	<li>Select the event zones that you wish to monitor.
+	</li>
+
+	<li>You may at this step save your work by selecting the "Save" button.
+	</li>
+
+	<li>Click on the "Next" button before proceeding to the next step.
+	</li>
+
+</ol>
+
+
+	<hr>
+
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - HMI</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2011. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

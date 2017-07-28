@@ -1,0 +1,476 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Hart Generic Client Protocol</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Communications</h3>
+		<ul>
+			<li><a href="serverconfig-en.html">Server Communications Configuration</a></li>
+			<li><a href="clienconfig-en.html">Client Communications Configuration</a></li>
+			<li><a href="genericclientsprotocols.html">Generic Client Protocols</a></li>
+			<li><a href="ComsFaults-en.html">Communications Faults</a></li>
+			<li><a href="ComsMonitor-en.html">Communications Monitoring and Trouble 
+				Shooting</a></li>
+			<li><a href="ComsExpRegs-en.html">Expanded Register Map</a></li>
+			<li><a href="ModbusSupport-en.html">Modbus/TCP Server and 
+				Client Protocol</a></li>
+			<li><a href="MBRest-en.html">MB-REST Web Service Protocol</a></li>
+			<li><a href="hmiprotocol-en.html">HMI Protocol</a></li>
+			<li><a href="genericclients.html">Generic Clients</a></li>
+			<li><a href="genframework.html">Generic Client Framework</a></li>
+			<li><a href="genuserprotocol.html">Generic Client User Protocols</a></li>
+			<li><a href="ModbusBasics-en.html">Modbus/TCP Basics</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>Help - Hart Generic Client Protocol</h1>
+
+<hr>
+
+<h2>Overview</h2> 
+
+<p>The Hart generic client support is experiment at this time and is subject 
+to change. This is currently a <strong><em>beta</em></strong> version.
+</p>
+
+<hr>
+
+
+<h2>HART</h2>
+
+<p>The Hart Foundation <a href="www.hartcomm.org">(www.hartcomm.org)</a>
+generic client implements a single serial Hart Foundation master (this version 
+does not consider a secondary master) that can read/write data to one up to 
+16 hart slaves, in a point-multipoint scheme (using a Bell202 serial Hart 
+modem, connected to a RS232 port). Each slave can be polled by one or more 
+commands.
+</p>
+
+<p>The commands are sent sequentially (in alphabetical order), with a time 
+spacing defined by ‘cmdtime’. When last command for the list is sent the 
+client will wait ‘repeattime’ before starting the sequence again with the first 
+command.
+</p>
+
+<p>To optimize the use of the serial channel, when a command reaches a 
+pre-defined quantity (5) of consecutive failed queries the client declares 
+this command as “faulted” and retries are suspended for this command until 
+a valid response is received and the command is returned to the normal (Ok) 
+state.
+</p>
+
+<p>The use of Bell202 serial Hart modems implies the mandatory use of hardware 
+handshaking. Because of some limitations in the "pyserial" library used by this 
+client, hardware handshaking is implemented using timing calculations. In 
+some cases, this could cause some desynchronization in sending / receiving 
+messages.
+</p>
+
+<p>The client makes the proper conversion for the exchange of data (for 
+example, a “0” binary coil converts to “0” in a input register, and an 
+non-zero value in a holding register converts to “1” in an input status), 
+either between the client and the MBLogic server, or between the client and 
+the slaves (field devices).
+</p>
+
+<p>The implementation covers the following files (contained in /genclient 
+directory): 
+</p>
+
+<ul>
+	<li>hartclient.py</li>
+	<li>hartconfig.py</li>
+	<li>hartmsg.py</li>
+</ul>
+
+<p>This generic client has been tested with a Hart Foundation emulator 
+(FrameAlyst v7.0) and a Rosemount Hart Digital Transmitter with Rev 5 
+Universal Commands.
+</p>
+
+<h3>Standard Parameters</h3>
+
+<p>The following are the standard generic client parameters for this generic 
+client. 
+</p>
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Item</th> 
+	<th>Value</th>
+	<th>Description</th> 
+</tr>
+<tr>
+	<td>protocol</td>
+	<td>hart</td>
+	<td>Selects hart protocol</td>
+</tr>
+
+<tr>
+	<td>type</td>
+	<td>genericclient</td>
+	<td>Selects genericclient</td>
+</tr>
+
+<tr>
+	<td>clientfile</td>
+	<td>hartclient.py -d 1</td>
+	<td>Specifies the name of the file used to implement the client.
+		The parameter "-d" will specify a start-up delay in seconds.</td>
+</tr>
+
+</table>
+
+<h4>Example:</h4>
+
+<pre class="examples">
+
+	type = genericclient
+	protocol = hart
+	clientfile = hartclient.py -d 1
+
+</pre>
+
+
+
+<h3>Client Parameters</h3>
+
+
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Item</th> 
+	<th>Description</th> 
+	<th>Valid Values</th>
+</tr>
+<tr>
+	<td>serialport</td>
+	<td>The serial port to use. This must be a valid serial port name. 
+		E.g. "/dev/ttyS0". </td>
+	<td>See "serial port names" below.</td>
+</tr>
+
+<tr>
+	<td>statisticstable</td>
+	<td>Command's statistical table index/offset (inside inpreg group of 
+		writetable). </td>
+	<td>An integer between 0 and the maximum size of the input registers for 
+		"writetable"</td>
+</tr>
+
+<tr>
+	<td>cmdtime</td>
+	<td>This is the delay time in milli-seconds between commands. </td>
+	<td>An integer greater than or equal to 0. </td>
+</tr>
+
+<tr>
+	<td>repeattime</td>
+	<td>This is the delay time in milli-seconds between repeating sets of 
+		commands. </td>
+	<td>An integer greater than or equal to 0. </td>
+</tr>
+
+<tr>
+	<td>retrytime</td>
+	<td>This is the delay time in milli-seconds between retrying commands in 
+		the event of an error. </td>
+	<td>An integer greater than or equal to 0. </td>
+</tr>
+
+<tr>
+	<td>retries</td>
+	<td>Maximum number of consecurtive command retries to allow.</td>
+	<td>An integer greater than or equal to 0.</td>
+</tr>
+
+</table>
+
+
+<h4>Example:</h4>
+
+<pre class="examples">
+
+	serialport = /dev/ttyS1
+	statisticstable = 60
+	cmdtime = 500
+	repeattime = 1000
+	retrytime = 1000
+	retries = 0
+
+</pre>
+
+
+<h3>Commands</h3>
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Item</th> 
+	<th>Description</th> 
+	<th>Valid Values</th>
+</tr>
+<tr>
+	<td>action</td>
+	<td>The command action. If ‘disabled’, the command will not be executed. 
+		For ‘oneshot’ action, if the current command is ‘Read’ type send the 
+		command until one successful response (valid or not) from field device 
+		(slave) is received. If the current command is ‘Write’ type send the 
+		command only if data to write has changed since last succesfully query. 
+		For ‘poll’ action, send the command in the normal sequence. </td>
+	<td>poll, oneshot, disabled</td>
+</tr>
+
+
+<tr>
+	<td>uid</td>
+	<td>The HART unit id.</td>
+	<td>0 to 15</td>
+</tr>
+
+<tr>
+	<td>function</td>
+	<td>The HART function code. Functions 0, 1, 2 and 3 write the data received 
+		from the slaves to the ‘Data Table Write Addresses’.</td>
+	<td>0, 1, 2, 3</td>
+</tr>
+
+<tr>
+	<td>datatype</td>
+	<td>The host system data table.</td>
+	<td>coil, inp, holdingreg, inpreg</td>
+</tr>
+
+<tr>
+	<td>dataoffset</td>
+	<td>Data offset index.</td>
+	<td>Greater than or equal to 0. Must be less than the maximum address 
+		transferred for the selected datatype.</td>
+</tr>
+
+</table>
+
+
+<h4>Example:</h4>
+
+<pre class="examples">
+
+	&readprimaryvar = action=poll, uid=0, function=1, datatype=inpreg, dataoffset=0
+	&readuniqueid = action=poll, uid=0, function=0, datatype=holdingreg, dataoffset=10
+	&readallvar = action=oneshot, uid=0, function=3, datatype=inpreg, dataoffset=10
+	&readcurrentrange = action=poll, uid=0, function=2, datatype=holdingreg, dataoffset=0
+
+</pre>
+
+
+<hr>
+
+<h2>Serial Port Names</h2>
+
+<p>Serial ports must use the naming conventions defined by pyserial python 
+library 
+<a href="http://pyserial.sourceforge.net">(http://pyserial.sourceforge.net)</a>
+</p>
+
+<p>For either Linux or MS Windows, serial ports may be named as: 
+</p>
+
+<ul>
+	<li>0 is the first serial port</li>
+	<li>1 is the second serial port</li>
+	<li>etc.</li>
+</ul>
+
+<p>For Linux, it is also possible to use standard tty names: 
+</p>
+
+<ul>
+	<li>/dev/tty0 is the first serial port</li>
+	<li>/dev/tty1 is the second serial port</li>
+	<li>/dev/ttyUSB0 is the first serial port (using an USB-Serial Port adapter)</li>
+	<li>etc.</li>
+</ul>
+
+
+<h4>Example:</h4>
+
+<pre class="examples">
+
+	serialport=/dev/ttyS0
+
+	serialport=1
+
+</pre>
+
+<hr>
+
+
+<h3>Statistics</h3>
+
+<p>Each generic client has a additional statistic table, where results of each 
+command are summarized. This table is contained into the “Input Register” 
+section of “Data Table Write Addresses”, and its use is mandatory, so this 
+section must have at least (Qty of Commands * 10) addresses. For example, if 
+a generic client has 3 commands and must return 8 Input Registers of field 
+data to the server, the size of “Input Register” must be at least 
+38 (3*10 + 8) .
+</p>
+
+<p>Collection of statistics begins when the generic client starts and can not 
+be reset (in this version).
+</p>
+
+<p>The client alphabetically sorts all commands defined in the client 
+configuration file, and the statistics of all commands are showed 
+consecutively following that order. Each command has 10 registers whose 
+function is described below:
+</p>
+
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Offset</th> 
+	<th>Description</th> 
+</tr>
+
+<tr>
+	<td>0</td>
+	<td>Result of last query/poll. Value is 1 if Ok, or 0 if an error is 
+		present.</td>
+</tr>
+
+<tr>
+	<td>1</td>
+	<td>Total number of queries.</td>
+</tr>
+
+<tr>
+	<td>2</td>
+	<td>Total number of valid queries.</td>
+</tr>
+
+<tr>
+	<td>3</td>
+	<td>Total number of invalid queries.</td>
+</tr>
+
+<tr>
+	<td>4</td>
+	<td>Total number of frame errors.</td>
+</tr>
+
+<tr>
+	<td>5</td>
+	<td>Total number of command time-outs.</td>
+</tr>
+
+<tr>
+	<td>6</td>
+	<td>Total number of times a command was retried.</td>
+</tr>
+
+<tr>
+	<td>7</td>
+	<td>Command efficieny, calculated as: 
+		(valid queries) * 100 / (total queries). </td>
+</tr>
+
+<tr>
+	<td>8</td>
+	<td>Spare, reserved for future use.</td>
+</tr>
+
+<tr>
+	<td>9</td>
+	<td>Spare, reserved for future use.</td>
+</tr>
+
+</table>
+
+
+
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Hart Generic Client Protocol</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2010. Michael Griffin
+Copyright 2010, Juan Pomares
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

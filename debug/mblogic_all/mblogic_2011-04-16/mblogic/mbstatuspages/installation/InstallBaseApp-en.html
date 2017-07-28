@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Install Base</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Installation</h3>
+		<ul>
+			<li><a href="InstallBaseApp-en.html">Installing the Base Application</a></li>
+			<li><a href="InstallTwisted-en.html">Installing Third Pary Support Software</a></li>
+			<li><a href="InstallStarting-en.html">Starting the Application</a></li>
+			<li><a href="InstallAppTesting-en.html">Testing the Application</a></li>
+			<li><a href="InstallStop-en.html">Stopping (Shutting Down) the Application</a></li>
+			<li><a href="InstallPort502-en.html">Using Port 502</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>Help - Installing the Base Application</h1>
+
+<hr>
+
+<h2>Overview:</h2>
+
+<p>The application is distributed as a source archive file. For most platforms
+(including Linux), this is a "tar.gz" file. For MS-Windows, this is a "zip" 
+file. The MS-Windows version has the special new-line character combination 
+(CR-LF) required by that platform, but is otherwise identical to 
+the standard version. 
+</p>
+
+<hr>
+
+<h2>Installation:</h2>
+
+<ol>
+	<li>Select or create a directory into which to extract the application files.</li>
+	<li>Extract the archive file into the desired location. </li>
+	<li>Several sub-directories will be created as part of the extraction
+	process. </li>
+	<li>The application itself will now be installed. However, you cannot run it
+	until you install the third party support software (see the help instructions
+	on how to perform that step). </li>
+</ol>
+
+
+<hr>
+
+<h2>Application Directory Contents:</h2>
+
+<p>You should see the following items present in the application directory.
+</p>
+
+<h3>Application Directory Contents:</h3>
+
+<p>There will be a directory called "mblogic". It will contain a number of 
+files with ".py" extensions. These are part of the application program 
+itself. These files will be automatically compiled to ".pyc" files when 
+the application first starts. There will also be several sub-directories
+with additional code files, as well as html web pages for the help system
+and the status monitorin system. There is nothing in these directories
+that you will need to change.
+</p>
+
+<h3>HMI Directory Contents:</h3>
+
+<p>There will be a directory called "hmipages". It will contain a number
+of files with ".xhtml", ".js", ".css", and ".png" extensions. These files
+constitute a sample HMI client (web page) that comes with the system.
+You will replace some of these files with your own versions later if you create 
+your own HMI application. 
+</p>
+
+<h3>Sample Soft Logic Program:</h3>
+
+<p>There will be several files which are provided as a sample soft
+logic application. This sample application works with the sample
+HMI client (web page). These files are: 
+</p>
+
+<ul>
+	<li>"plcprog.txt". This is a sample soft logic	program. </li>
+	<li>"mbserver.config". This is provided as a sample server communication
+	configuration file. You will need this file to use the sample HMI demo.
+	You will also need it to access the on-line help functions and system
+	status functions until you replace it with your own configuration. </li>
+	<li>"mbclient.config". This is provided as a sample client communication
+	configuration file. You will need this file to use the sample HMI demo. </li>
+	<li>"mblogic.config". This is provided as a sample soft logic IO configuration
+	file. You will need this file to run the sample soft logic program and to use
+	the HMI demo. </li>
+	<li>"mbhmi.config". This is provided as a sample HMI server configuration
+	file. You will need this file to use the HMI demo. </li>
+</ul>
+
+
+<h3>Shell Script to Start the System:</h3>
+
+<p>There will also be a shell script which is used to start the system. For
+the Linux version, this is called "mblogic.sh". For the MS-Windows version, this
+is called "mblogic.bat". This file simply calls the main program file in the
+"mblogic" directory. 
+</p>
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Installing the Base Application</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009 - 2010. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

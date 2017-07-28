@@ -1,0 +1,225 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Monitor Data and Program</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+
+</head>
+
+<body>
+
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Status</h3>
+		<ul>
+			<li><a href="helpstatussummary.html">System Status Summary</a></li>
+			<li><a href="helpstatusconfigure.html">Configure Summary</a></li>
+			<li><a href="helpstatusconfiguresedit.html">Editing Configurations</a></li>
+			<li><a href="helpstatusconfigureservers.html">Servers Configuration</a></li>
+			<li><a href="helpstatusconfigureclients.html">Clients Configuration</a></li>
+			<li><a href="helpstatusconfigurehmi.html">HMI Configuration</a></li>
+			<li><a href="helpstatusconfigureslio.html">Soft Logic IO Configuration</a></li>
+			<li><a href="helpstatusconfigureprogram.html">Soft Logic Program</a></li>
+			<li><a href="helpstatuscontrol.html">Control</a></li>
+			<li><a href="helpstatusmonitor.html">Monitor Data</a></li>
+			<li><a href="helpstatussystem.html">Monitor System</a></li>
+			<li><a href="helpstatusplatform.html">Platform Data</a></li>
+			<li><a href="helpstatusxref.html">Cross Reference</a></li>
+		</ul>
+
+	</div>
+
+
+
+	
+<div id="datadisplay">
+<h1>Help - Monitor Data and Program</h1>
+
+<hr>
+
+<h2>Overview</h2>
+
+<p>The "Monitor Data and Program" pages allows monitoring of the following items:
+</p>
+
+<ul>
+	<li>The contents of selected addresses in the soft logic data table. 
+		This is the data table which is directly used by the soft logic 
+		program.</li>
+	<li>The contents of selected addresses in the  system data table. This is 
+		the data table which links the soft logic, HMI, communications, and 
+		other systems. </li>
+	<li>The current soft logic program in IL format.</li>
+	<li>The current soft logic program in ladder format. The ladder display
+		can be animated with live data to provide on line monitoring of the
+		soft logic program.</li>
+</ul>
+
+
+<hr>
+
+<p>The main "Monitor Data" page provides access to additional monitoring pages.
+Links to pages for viewing the soft logic and system data tables are located
+in the section titled "Monitor Data Table". 
+</p>
+
+<p>Below that is a section titled "Monitor Soft Logic Program Online". This
+provides a list of the subroutines in the currently running program, together
+with links to the ladder and IL monitoring pages.  
+</p>
+
+
+<p>
+<img src="monitordata.png" width="500" alt="data table">
+</p>
+
+<hr>
+
+<h2>Monitor Data Table</h2>
+
+<p>To monitor addresses in the soft logic data table, enter the desired 
+addresses in the data entry boxes (with one address per box). Next,
+click on the "monitor" button to continuously poll the system for the
+requested data and display it on the page. Click on "stop" to stop
+the update, or "single scan" to request a single update (not continuous)
+only. If Monitor is selected, updates will continue until either "stop"
+is selected, or the page is closed. 
+</p>
+
+<p>
+<img src="monitorsldatatable.png" width="500" alt="data table">
+</p>
+
+<p>The system data table can be monitored in a similar manner, with 
+the addition of drop-down menus to select the address type.
+</p>
+
+<p>
+<img src="monitorsysdatatable.png" width="500" alt="data table">
+</p>
+
+<hr>
+
+<h2>Monitor Ladder</h2>
+
+<p>The "monitor soft logic program" section allows viewing the current soft
+logic program in ladder or IL format, and also monitoring the execution of the
+soft logic ladder program on line. 
+</p>
+
+<h3>Viewing a Subroutine in Ladder</h3>
+
+<p>To view a subroutine in IL format, click on one of the links in the 
+"Monitor Ladder" column. This will display the selected subroutine in
+ladder format. Any rungs which are not in valid ladder format will be
+displayed in IL.
+</p>
+
+<p>On line montoring can be enabled by selecting the "monitor" button. This
+will case the page to poll the system for data on a regular basis. Instructions
+which "true" will change to a different colour. Instructions which are "false"
+will be the default colour. Selecting "stop" will stop the on-line monitor. 
+Selecting "single scan" will result in a single update.  
+</p>
+
+<p>Only boolean instructions (including boolean compare instructions) can
+be monitored in ladder format. To see the values present in word instructions,
+use the data table monitor page. 
+</p>
+
+<p>If a subroutine is changed while the page is displayed, the page will 
+automatically download the new subroutine data and re-display the subroutine
+using the updated subroutine. 
+</p>
+
+
+<p>
+<img src="monitorladder.png" width="500" alt="ladder">
+</p>
+
+
+<h3>Viewing a Subroutine in IL</h3>
+
+<p>To view a subroutine in IL format, click on one of the links in the "View 
+Instruction List" column.
+</p>
+
+<p>
+<img src="programil.png" width="500" alt="soft logic program">
+</p>
+
+
+<hr>
+
+</div>
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Monitor Data and Program</p>
+</div>
+
+</div>
+
+</body>
+
+</html>
+
+
+<!-- Copyright 2008 - 2010. Michael Griffin 
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License 
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>. 
+-->

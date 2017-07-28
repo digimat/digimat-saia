@@ -1,0 +1,343 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Start Parameters</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- Page navigation style sheet. -->
+<link rel="stylesheet" href="/pagenav.css" type="text/css">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo">
+			<span class="headtitle1">HMIServer </span>
+			<span class="headtitle2"> Help</span>
+		</p>
+	</div>
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statushmi.html">Config</a></li>
+			<li><a href="/statuscontrol.html">Control</a></li>
+			<li><a href="/datamsgsfield.html">Data Messages</a></li>
+			<li><a href="/hmiserverintro-en.html">Help</a></li>
+		</ul>
+	</div>
+
+
+
+
+
+
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/hmiserverintro-en.html">Help</a></li>
+			<li><a href="/about-en.html">About</a></li>
+			<li><a href="/installation/install-en.html">Installation</a></li>
+			<li><a href="/installation/demos-en.html">Demo Applications</a></li>
+			<li><a href="/hmiserverstartparameters-en.html">Server Start Parameters</a></li>
+			<li><a href="/hmiservermonitor-en.html">HMI Server Monitoring</a></li>
+			<li><a href="/commsbasics-en.html">Communications Basics</a></li>
+			<li><a href="/hmiconfig-en.html">HMI Server Configuration</a></li>
+		</ul>
+
+	</div>
+
+
+
+
+
+<div id="datadisplay">
+
+<h1>Help - HMI Server Start Parameters</h1>
+
+<hr>
+
+
+<h2>Overview:</h2> 
+
+<p>The HMI server requires certain command line parameters to be set at start
+up. These parameters specify the communications connections. Any parameters 
+which are not specified will use their default values. 
+</p>
+
+<hr>
+
+<h2>HMIServer for Modbus/TCP</h2>
+
+<h3>Configuration for Modbus/TCP Client Version</h3>
+
+<p>This program provides a simple combination HMI http server and Modbus/TCP 
+client (master). The parameters include:
+</p>
+
+<table class="helptable"  border="1">
+	<tr>
+		<th>Parameter Flag</th>
+		<th>Description</th>
+		<th>Default</th>
+	</tr>
+	<tr>
+		<td>-p</td>
+		<td>Port number of HMI web server.</td>
+		<td>8082</td>
+	</tr>
+	<tr>
+		<td>-h</td>
+		<td>Name or address of remote field server.</td>
+		<td>localhost</td>
+	</tr>
+	<tr>
+		<td>-r</td>
+		<td>Port number of remote field server.</td>
+		<td>502</td>
+	</tr>
+	<tr>
+		<td>-u</td>
+		<td>Unit ID of remote Modbus server.</td>
+		<td>1</td>
+	</tr>
+	<tr>
+		<td>-t</td>
+		<td>Timeout for remote communications.</td>
+		<td>5.0 seconds</td>
+	</tr>
+</table>
+
+<h3>Configuration for Modbus/TCP Server</h3>
+
+<p>This program provides a simple combination HMI http server and Modbus/TCP 
+server (slave). The parameters include:
+</p>
+
+<table class="helptable"  border="1">
+	<tr>
+		<th>Parameter Flag</th>
+		<th>Description</th>
+		<th>Default</th>
+	</tr>
+	<tr>
+		<td>-p</td>
+		<td>Port number of HMI web server.</td>
+		<td>8082</td>
+	</tr>
+	<tr>
+		<td>-r</td>
+		<td>Port number of Modbus/TCP server.</td>
+		<td>502</td>
+	</tr>
+</table>
+
+<hr>
+
+
+<h2>HMIServer for SAIA Ether SBus</h2>
+
+<h3>Configuration for Ether SBus Client Version</h3>
+
+<p>This program provides a simple combination HMI http server and SAIA
+Ether SBus client (master). The parameters include:
+</p>
+
+<table class="helptable"  border="1">
+	<tr>
+		<th>Parameter Flag</th>
+		<th>Description</th>
+		<th>Default</th>
+	</tr>
+	<tr>
+		<td>-p</td>
+		<td>Port number of HMI web server.</td>
+		<td>8082</td>
+	</tr>
+	<tr>
+		<td>-h</td>
+		<td>Name or address of remote field server.</td>
+		<td>localhost</td>
+	</tr>
+	<tr>
+		<td>-r</td>
+		<td>Port number of remote field server.</td>
+		<td>5050</td>
+	</tr>
+	<tr>
+		<td>-u</td>
+		<td>Station address of remote SBus server.</td>
+		<td>1</td>
+	</tr>
+	<tr>
+		<td>-t</td>
+		<td>Timeout for remote communications.</td>
+		<td>5.0 seconds</td>
+	</tr>
+</table>
+
+<h3>Configuration for SAIA Ether SBus Server</h3>
+
+<p>This program provides a simple combination HMI http server and Ether SBus 
+server (slave). The parameters include:
+</p>
+
+<table class="helptable"  border="1">
+	<tr>
+		<th>Parameter Flag</th>
+		<th>Description</th>
+		<th>Default</th>
+	</tr>
+	<tr>
+		<td>-p</td>
+		<td>Port number of HMI web server.</td>
+		<td>8082</td>
+	</tr>
+	<tr>
+		<td>-r</td>
+		<td>Port number of SBus server.</td>
+		<td>5050</td>
+	</tr>
+</table>
+
+
+
+<hr>
+
+<h2>Examples:</h2>
+
+<h3>Examples for Modbus/TCP Client with Linux:</h3>
+
+<pre class="examples">
+
+	./hmiservermbc.py -p 8082 -h localhost -r 8600 -u 1 -t 5.0
+
+</pre>
+
+<pre class="examples">
+
+	./hmiservermbc.py -p 8082 -h 192.168.10.5 -r 502 -u 1 -t 5.0
+
+</pre >
+
+
+<h3>Examples for Modbus/TCP Client with MS Windows:</h3>
+
+<pre class="examples">
+
+	c:\python26\python hmiservermbc.py -p 8082 -h localhost -r 8600 -u 1 -t 5.0
+
+</pre>
+
+
+<h3>Examples for Modbus/TCP Server with Linux:</h3>
+
+<pre class="examples">
+
+	./hmiservermbs.py -p 8082 -r 8600
+
+</pre>
+
+
+<h3>Examples for Modbus/TCP Server with MS Windows:</h3>
+
+<pre class="examples">
+
+	c:\python26\python hmiservermbs.py -p 8082 -r 8600
+
+</pre>
+
+
+
+<h3>Examples for SAIA Ether SBus Client with Linux:</h3>
+
+<pre class="examples">
+
+	./hmiserversbc.py -p 8082 -h localhost -r 5050 -u 1 -t 5.0
+
+</pre>
+
+<pre class="examples">
+
+	./hmiserversbc.py -p 8082 -h 192.168.10.5 -r 5050 -u 1 -t 5.0
+
+</pre >
+
+
+<h3>Examples for SAIA Ether SBus Client with MS Windows:</h3>
+
+<pre class="examples">
+
+	c:\python26\python hmiserversbc.py -p 8082 -h localhost -r 5050 -u 1 -t 5.0
+
+</pre>
+
+
+<h3>Examples for SAIA Ether SBus Server with Linux:</h3>
+
+<pre class="examples">
+
+	./hmiserversbs.py -p 8082 -r 5050
+
+</pre>
+
+
+<h3>Examples for SAIA Ether SBus Server with MS Windows:</h3>
+
+<pre class="examples">
+
+	c:\python26\python hmiserversbs.py -p 8082 -r 5050
+
+</pre>
+
+
+<hr>
+
+<h3>Notes:</h3>
+
+<p>With MS Windows the path to the Python installation
+includes the version number. If you are using a different version of Python, you
+may need to alter the path accordingly (e.g. "c:\python25\python").
+</p>
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - HMI Server Start Parameters</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

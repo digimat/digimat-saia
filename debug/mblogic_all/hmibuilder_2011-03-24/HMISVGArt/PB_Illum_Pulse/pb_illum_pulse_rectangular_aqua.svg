@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:mblogic="http://www.example.com/mblogic"
+   version="1.0"
+   width="150"
+   height="55">
+
+<defs>
+
+	<!-- The following filter is used to add a drop shadown. -->
+	<filter id="MB_DropShadowFilter">
+		<feGaussianBlur stdDeviation="2">
+		</feGaussianBlur>
+	</filter>
+
+</defs>
+
+<!-- Illuminated push button. -->
+<g class="buttonactivate" 
+	mblogic:widgettype="pb_pulse_illum" 
+	mblogic:widgetname="Pulse Illuminated Push Button"
+	mblogic:editcount="0"
+	mblogic:menu='[{"value": "", "type": "tag", "name": "Input Tag", "param": "inputtag"}, {"value": 1000, "type": "int", "name": "Pulse Length (msec)", "param": "pulse"}, {"value": "", "type": "tag", "name": "Output Tag", "param": "outputtag"}, {"value": "black", "type": "colour", "name": "Init Colour", "param": "initcolour"}, {"value": "", "type": "colour", "name": "Off Colour", "param": "offcolour"}, {"value": "", "type": "colour", "name": "On Colour", "param": "oncolour"}]'
+	mblogic:inputfunc='[{"event": "onclick", "func": "MBHMIProtocol.WriteImmediate(\"%(inputtag)s\", 1); window.setTimeout(MBHMIProtocol.WritePulse, %(pulse)s, \"%(inputtag)s\", 0, MBHMIProtocol);"}]'
+	mblogic:outputfunc='MBHMIProtocol.AddToDisplayList(new MB_PilotLight(document, "%(widgetid)s", "%(initcolour)s", "%(offcolour)s", "%(oncolour)s"), "%(outputtag)s", "read");'
+	>
+
+	<rect x="7" y="7" width="140" height="50" rx="15" fill="grey" 
+		stroke="none" stroke-width="0px" filter="url(#MB_DropShadowFilter)"/>
+	<rect x="0" y="0" width="140" height="50" rx="15"/>
+	<text x="70" y="30" font-size="24" stroke-width="2px" stroke="aqua" fill="aqua" text-anchor="middle">PB</text>
+
+</g>
+
+</svg>
+

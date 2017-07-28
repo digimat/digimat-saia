@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - HMIBuilder</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Edit SVG</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Inkscape</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">Templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assemble Page</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Editing SVG with Inkscape</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Using the SVG Library with Inkscape</a></li>
+			<li><a href="/customwidgets/customwidgets.html">Custom Widgets</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">HMI web templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assembling web pages</a></li>
+			<li><a href="/hmilib/hmilib.html">HMI Javascript Client Libraries</a></li>
+			<li><a href="/basicconcepts/basicconcepts.html">Basic Concepts</a></li>
+			<li><a href="/manualpage/manualpage.html">Manual HMI Web Page Construction</a></li>
+		</ul>
+
+		<h3>Using HMIBuilder</h3>
+		<ul>
+			<li><a href="/hmibuilder/selectfiles.html">Select input files</a></li>
+			<li><a href="/hmibuilder/selectoptions.html">Select options</a></li>
+			<li><a href="/hmibuilder/editwidgets.html">Edit widgets</a></li>
+			<li><a href="/hmibuilder/assemblepage.html">Assemble page</a></li>
+			<li><a href="/hmibuilder/help.html">Help</a></li>
+		</ul>
+
+	</div>
+
+
+
+
+
+<div id="datadisplay">
+
+
+	<h1>Assemble Page</h1>
+
+	<hr>
+
+	<h2>Assembling Web Pages</h2>
+
+	<p>This step combines the SVG HMI drawing with a web page template to create
+	the finished HMI web page by doing the following:
+	</p>
+
+	<ul>
+		<li>It scans the SVG drawing for all the widgets.
+		</li>
+
+		<li>It then takes the parameters you have edited, and combines them with
+			additional information about each widget. This additional information is
+			part of the widget definition and so also present in the drawing. 
+		</li>
+
+		<li>This information is then used to generate Javascript code which is
+			used to activate buttons and to animate output widgets. This 
+			information is then inserted into a copy of the HMI web page template. 
+		</li>
+
+		<li>The layers, alarms, and events lists which were selected as part of 
+			a previous step are inserted into a copy of the HMI web page template.
+		</li>
+
+		<li>All the address tags which are referenced by any of the widgets are
+			collected into a list and used as the "read list", which tells the
+			HMI web page which address tags to request from the HMI server. This
+			"read list" is inserted into  a copy of the HMI web page template.
+		</li>
+
+		<li>The finished HMI web page template is saved to disk. This file can be 
+			moved to the HMI directory and used as the new HMI web page.
+		</li>
+
+
+	</ul>
+
+
+	<hr>
+
+	<h2>Steps</h2>
+
+<ol>
+	<li>Click on "select template file".
+		<p>
+		<img src="assemblepage1.png" width="400" alt="File select 1">
+		</p>
+	</li>
+
+	<li>Select the web page (x)html file you wish to use as an HMI web page 
+	template.
+		<p>
+		<img src="assemblepage2.png" width="400" alt="File select 2">
+		</p>
+	</li>
+
+
+	<li>Click on "select output file" and enter the name that you wish to use 
+		for the output HMI web page file that or select the name of an existing
+		file. If you select the name of an existing file, that file will be
+		overwritten by the finished web page.
+		<p>
+		<img src="assemblepage3.png" width="400" alt="File select 3">
+		</p>
+	</li>
+
+
+	<li>When you have selected both the template file and the output file
+	name, the "assemble page" button will be enabled. Click on the "assemble
+	page" button to create the finished HMI web page.
+		<p>
+		<img src="assemblepage4.png" width="400" alt="File select 2">
+		</p>
+	</li>
+
+
+</ol>
+
+
+	<hr>
+
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - HMI</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2011. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

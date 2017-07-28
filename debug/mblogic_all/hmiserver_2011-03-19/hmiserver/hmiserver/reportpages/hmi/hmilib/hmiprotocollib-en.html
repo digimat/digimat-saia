@@ -1,0 +1,743 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+	<title>Help - HMI Client Protocol Library</title>
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- Page navigation style sheet. -->
+<link rel="stylesheet" href="/pagenav.css" type="text/css">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo">
+			<span class="headtitle1">HMIServer </span>
+			<span class="headtitle2"> Help</span>
+		</p>
+	</div>
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statushmi.html">Config</a></li>
+			<li><a href="/statuscontrol.html">Control</a></li>
+			<li><a href="/datamsgsfield.html">Data Messages</a></li>
+			<li><a href="/hmiserverintro-en.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/hmiserverintro-en.html">Help</a></li>
+			<li><a href="/about-en.html">About</a></li>
+			<li><a href="/installation/install-en.html">Installation</a></li>
+			<li><a href="/installation/demos-en.html">Demo Applications</a></li>
+			<li><a href="/hmiserverstartparameters-en.html">Server Start Parameters</a></li>
+			<li><a href="/hmiservermonitor-en.html">HMI Server Monitoring</a></li>
+			<li><a href="/commsbasics-en.html">Communications Basics</a></li>
+			<li><a href="/hmiconfig-en.html">HMI Server Configuration</a></li>
+		</ul>
+
+		<h3>Topic Details for HMI Web Pages</h3>
+		<ul>
+			<li><a href="/hmi/hmibuilder/hmibuilder.html">MBLogic HMIBuilder</a></li>
+			<li><a href="/hmi/hmilib/hmilib.html">HMI Javascript Client Libraries</a></li>
+			<li><a href="/hmi/basicconcepts/basicconcepts.html">Basic Concepts</a></li>
+		</ul>
+
+		<h3>HMI Client Libraries</h3>
+		<ul>
+			<li><a href="/hmi/hmilib/hmiprotocollib-en.html">HMI Client Protocol Library</a></li>
+			<li><a href="/hmi/hmilib/hmidisplaylib-en.html">HMI Client Display Library</a></li>
+			<li><a href="/hmi/hmilib/hmieventlib-en.html">HMI Client Event and Alarm Library</a></li>
+		</ul>
+
+
+
+	</div>
+
+	<!-- Put main content here -->
+	<div id="datadisplay">
+
+<h1>Help - HMI Client Protocol Library</h1>
+
+<hr>
+
+<h2>Overview:<a name="Overview"></a></h2>
+
+<p>The HMI protocol client Javascript library comes in two parts. 
+These are the JSON encoding library and the HMI protocol library itself.
+</p>
+
+
+<hr>
+
+<h2>JSON and the HMI System:<a name="JSON and the HMI System"></a></h2>
+
+<p>JSON is a standard data encoding format used in web applications. The HMI 
+messages are encoded in JSON format. The HMI system can use standard JSON encoding 
+libraries such as "json2.js" from <a href="http://www.json.org/">JSON.ORG</a>. 
+With the increasing popularity of JSON, future versions of web browsers are 
+expected to support it natively without requiring a separate Javascript library. 
+</p>
+
+
+<hr>
+
+	<h2>HMI Communications Library:<a name="HMI Communications Library"></a></h2>
+
+<p>The HMI communications library is implemented as a single Javascript object.
+This library <strong><em>("libhmiclient2.js")</em></strong> does more than just 
+support the HMI protocol. It provides the following features:
+</p>
+
+<ul>
+	<li>Encoding and decoding of messages using the HMI protocol.</li>
+	<li>Buffered HMI reading and writing functions.</li>
+	<li>Event and alarm handling.</li>
+	<li>Automatic update of screen displays.</li>
+</ul>
+
+
+<hr>
+
+<h2>The Read List:<a name="The Read List"></a></h2>
+
+<p>The "read list" is an array of tag names that are to be polled (read) on a 
+regular basis. The "read list" is a critical part of an application, because it
+defines what data is available to the client for display.
+</p>
+
+
+<pre class="examples">
+
+	Example - 
+
+	// Make a list of all the address tags to be monitored. This is what we
+	// send to the server asking for values.
+	var ReadList = ["PL1", "PL2"];
+
+</pre>
+
+<hr>
+
+<h2>The Zone List:<a name="The Zone List"></a></h2>
+
+<p>The "zone list" is an array of zone names that defines the alarms and events
+that are to be monitored.
+</p>
+
+
+<pre class="examples">
+
+	Example - 
+
+	// Make a list of the alarm and event zones to be monitored. Zones are
+	// used to filter alarms and events to only those we are interested in. 
+	var AlarmZoneList = ["zone1", "zone2", "zone3"];
+	var EventZoneList = ["zone1", "zone2", "zone3"];
+
+</pre>
+
+<hr>
+
+<h2>The Display List:<a name="The Display List"></a></h2>
+
+<p>The display list is an array of code objects which control graphics, text, 
+tables, etc. "UpdateDisplay" calls each item in turn, passes it the latest 
+data, and asks	it to update itself. Each screen item must be a code object 
+which exports a method called "UpdateScreen", and which accepts one parameter.
+e.g. "objref.UpdateScreen(presentstate);"
+</p>
+
+<p>To add an item to the display list, create the object and pass it to 
+"AddToDisplayList".
+</p>
+
+<pre class="examples">
+
+	For example - 
+	
+		// This defines a pilot light control.
+		var PL1 = new MB_PilotLight("green", "red", "black", "PL1", document);
+		MBHMIProtocol.AddToDisplayList(PL1, "PL1", "read");
+
+</pre>
+	
+
+<p>This creates a pilot light using "MB_PilotLight" (part of another library), 
+assigns it to a reference called PL1, and passes it to "AddToDisplayList" 
+along with two other parameters. 
+</p>
+
+<p>The second parameter is the "address label". This is used by instructions 
+which need to read the input values. This should be a valid tag from the read 
+list whenever the address label is "read". Its value is not significant for 
+other address labels.
+</p>
+
+<p>The third parameter is the "tag type". This is a description of the type of 
+address used in the second parameter. This determines the source of the data 
+which is passed to the dislay item. Valid value are: "read" (input data from 
+the read list), "timestamp" (the server time stamp from the last message), 
+"stat" (the server stat value from the last message), "msgid" (the message id 
+returned by the server), "events" (an array of the latest event messages), 
+and "alarms" (an object containing alarms and alarm acknowledgements). 
+</p>
+	
+
+<p>Alarms and alarm acknowledgements are contained in a single object in order
+to fit both within the single parameter limit. This object has the following
+form : {"alarms" : this._AlarmBuffer, 	"alarmsupdated" : this._AlarmsUpdated,
+"alarmack" : this._AlarmAckBuffer, "alarmackupdated" : this._AlarmAckUpdated};
+</p>
+
+<p>In this example, "alarms" is the alarm input buffer. "alarmsupdated" is an
+integer that increments whenever new alarms have arrived. "alarmack" is the
+alarm acknowledgement input buffer. "alarmackupdated" is an integer that 
+increments whenever new acknowledgement messages have arrived.
+</p>
+
+
+
+<hr>
+
+<h2>Initialisation:<a name="Initialisation"></a></h2>
+
+<h3>HMIClient(url, port, cid, readlist, alarmzonelist, eventzonelist, ansyncoption);</h3>
+
+<p>This is the object name and the initialisation parameters.</p>
+
+<ul>
+	<li>url = The url (address) of the server, including address and path.</li>
+	<li>port = The IP port of the server.</li>
+	<li>cid = The client ID string.</li>
+	<li>readlist = The IO read list.</li>
+	<li>alarmzonelist (array) - List of alarm zone filters.</li>
+	<li>eventzonelist (array) - List of event zone filters.</li>
+	<li>ansyncoption = If true, uses asynchronous communication. If false,
+		uses synchronous communications.</li>
+</ul>
+
+<p>The web browser will enforce a security policy requiring that the 
+communications between the HMI web page and the server must be to the
+same host (address) and port as the web page was loaded from. This means
+the communications library needs to know the host name and port. This
+can be accomplished in several ways. One way is to hard code these values. 
+However, that means they must be known in advance. 
+</p>
+
+<p>The other way is to use a standard Javscript object to obtain 
+these values automatically. These are:
+</p>
+
+<ul>
+	<li><strong>window.location.hostname</strong> - This automatically obtains 
+		the host name (address).</li>
+	<li><strong>window.location.port</strong> - This automatically obtains the
+		port number.</li>
+</ul>
+
+
+<p>You must also decide whether to use synchrnous or asynchronous communications. 
+With synchronous communications, the web browser waits for the server
+to reply before continuing. With asynchronous communications, the web
+browser does not wait. Rather, it sends the request and continues running
+the browser script. When the response from the server is received, the
+software function which handles the response is automatically called and 
+the display list is updated. 
+</p>
+
+<p>When the web browser and the server are communicating on a reliable local 
+network (or on the same computer), there is normally no noticable difference
+between the two methods. However, if the network is slow or unreliable, using
+the synchronous method can cause the web browser to appear to "stall" or be
+unresponsive. Also, if the server is stopped and restarted for some reason, the
+web page will require a reload (press "F5" or click on the "reload" icon) before
+communications will resume.  
+</p>
+
+<p>When asynchronous communications is used, these problems will not occur. The
+communications library will automatically keep retrying communications. However,
+some versions of some web browsers when running on some operating systems may have 
+bugs or other problems which prevent asynchronous communications from working
+correctly. This rarely occurs. However, since applications using  asynchronous 
+communications are relatively new, this feature is not as well tested in all
+browsers as the synchronous method. If problems are encountered when using
+asynchronous communications, it is suggested to try setting the "ansyncoption" 
+parameter to "false" to see if the synchronous method will work instead.
+</p>
+
+<pre class="examples">
+
+	// Make a list of all the address tags to be monitored. This is what we
+	// send to the server asking for values.
+	var ReadList = ["PL1", "PL2"];
+
+	// Make a list of the alarm and event zones to be monitored. Zones are
+	// used to filter alarms and events to only those we are interested in. 
+	var AlarmZoneList = ["zone1", "zone2", "zone3"];
+	var EventZoneList = ["zone1", "zone2", "zone3"];
+
+	/* This handles communications with the server. 
+	The parameters are: 
+		1) The host name the web page was loaded from.
+		2) The port number the web page was loaded from. 
+		3) The client ID string.
+		4) The list of tags to poll for data.
+		5) The list of alarm zones to poll for new alarms.
+		6) The list of event zones to poll for new events.
+		7) true = Enable asynchronous communications.
+	The first two parameters use a standard Javascript feature.
+	Alternatively, these can be hard coded values if the host
+	and port are known in advance.
+	*/
+	var MBHMIProtocol = new HMIClient(window.location.hostname, 
+				window.location.port, "Any client name string.", 
+				ReadList, AlarmZoneList, EventZoneList, true);
+
+</pre>
+
+<p>There should only be <em>one</em> HMI communications object in an application 
+that takes care of <em>all</em> polling. 
+</p>
+
+<p>The "same origin" security policy in most web browsers requires that a web client
+application can only communicate with the same host that the web page was loaded
+from. This means that a single server must be used as the source of the web page
+and as the source (and destination) of all data. 
+</p>
+
+<hr>
+
+<h2>Updating the Read List Dynamically</h2>
+
+<h3>SetReadList(readlist)</h3>
+
+<ul>
+	<li>readlist: (array) = An array of strings containing the
+	list of address tags to read from the server.</li>
+</ul>
+
+<p>The read list can be updated while the system is running. 
+</p>
+
+<pre class="examples">
+
+	MBHMIProtocol.SetReadList(NewReadList);
+
+</pre>
+
+<p>This will change the read list that was set as part of the initialisation
+process. This is <strong><em>not</em></strong> normally necessary. It 
+<em>may</em> be useful in reducing the amount of data polle in some larger 
+applications. If you are not sure whether you need this feature, you probably 
+do not need it. 
+</p>
+
+<hr>
+
+<h2>Reading and Writing:<a name="Reading and Writing"></a></h2>
+
+<h3>AddWrite(writetag, writeval);</h3>
+
+<ul>
+	<li>writetag = The tag to write to.</li> 
+	<li>writeval = The value to write </li> 
+	<li>Adds a write request to the output queue.</li> 
+</ul>
+
+<pre class="examples">
+
+	MBHMIProtocol.AddWrite("PumpSpeedCmd", PumpSpeed);
+
+</pre>
+
+<h3>WriteImmediate(writetag, writeval);</h3>
+
+<ul>
+	<li>writetag = The tag to write to. </li>
+	<li>writeval = The value to write. </li>
+	<li>Similar to AddWrite, but instead of simply adding a request to the
+	write queue, it forces an immediate polling cycle and screen update. </li>
+</ul>
+
+<pre class="examples">
+
+		// Stop the pump.
+		if (ButName == "PBStop") {
+			PumpSpeed = 0;
+		}
+		// Update the new pump speed.
+		MBHMIProtocol.WriteImmediate("PumpSpeedCmd", PumpSpeed);
+
+</pre>
+
+<h3>WriteToggleImmediate(writetag, reftag);</h3>
+
+<ul>
+	<li>writetag = The tag to write to. </li>
+	<li>reftag = The reference tag.  </li>
+	<li>Similar to WriteImmediate, but instead of simply writing a value, it
+	sets the value of a tag to the boolean opposite of that found in a reference
+	tag.</li>
+</ul>
+
+<pre class="examples">
+
+	MBHMIProtocol.WriteToggleImmediate('PB2', 'PL2');
+
+</pre>
+
+
+<h3>WriteIncImmediate(writetag, reftag, incval, inclimit);</h3>
+
+<ul>
+	<li>writetag =  The tag to write to. </li>
+	<li>reftag = The reference tag.  </li>
+	<li>incval = The amount to increment by. This must be a numeric value. This 
+	may be negative. </li>
+	<li>inclimit = The absolute value of the increment limit. This must be a
+	numeric value. </li>
+	<li>Similar to WriteImmediate, but instead of simply writing a value, 
+	it reads the value stored in "reftag", increments it by the number "incval",
+	and stores the result in "writetag". "reftag" and "writetag" may be the same.
+	If the absolute value of the result exceeds the number "inclimit", the result
+	is set to zero. </li>
+</ul>
+
+<pre class="examples">
+
+	MBHMIProtocol.WriteIncImmediate('PB4', 'PL4', 1, 6);
+
+</pre>
+
+<h3>function GetServerID()</h3>
+
+<p>Read the value of the id string.</p>
+
+<pre class="examples">
+
+
+</pre>
+
+<h3>function GetMsgStat()</h3>
+
+<p>Read the value of the current message status.</p>
+
+<pre class="examples">
+
+
+</pre>
+
+<h3>GetRead(readlabel);</h3>
+
+<ul>
+	<li>readlabel = The tag to read.</li>
+	<li>Reads a value from tag address "readlabel". The value returned is the most
+	recent value in the input buffer. </li>
+</ul>
+
+<pre class="examples">
+
+		var PumpSpeed;
+		// First, get the current pump speed.
+		PumpSpeed = MBHMIProtocol.GetRead("PumpSpeedActual");
+
+</pre>
+
+<h3>GetTimeStamp();</h3>
+
+<ul>
+	<li>This returns the most recent server time stampe. The value returned is the one
+	from the most recent message. </li>
+</ul>
+
+<pre class="examples">
+
+		var TimeStamp = MBHMIProtocol.GetTimeStamp();
+
+</pre>
+
+
+<hr>
+
+<h2>Event and Alarm Handling:<a name="Event and Alarm Handling"></a></h2>
+
+<h3>AddAlarmAck();</h3>
+
+<ul>
+	<li>This adds the alarm at the head of the alarm queue (the oldest unacknowledged 
+	alarm) to the output queue. </li>
+</ul>
+
+<pre class="examples">
+
+	MBHMIProtocol.AddAlarmAck();
+
+</pre>
+
+
+<hr>
+
+<h2>Display Control:<a name="Display Control"></a></h2>
+
+<h3>AddToDisplayList(objref, addrlabel, tagtype);</h3>
+
+<ul>
+	<li>objref = A reference to the display object.</li>
+	<li>addrlabel = If the tagtype is "read", this is the address label the display 
+	object is attached to. If the tagtype is not "read", the value in this parameter
+	is ignored.</li>
+	<li>tagtype = The type of tag.</li>
+</ul>
+
+<p>This adds an HMI display Javascript object to the display list.
+	The "addrlabel" must be a valid tag which is part of the read list.
+	The "tagtype" is a string, and may be "read", "timestamp", etc. (see below). 
+	Each of these tag types refers to a valid HMI field from which it derives 
+	its data.
+</p>
+
+<p>The display list is automatically updated whenever new data is received
+from the server.
+</p>
+
+<pre class="examples">
+
+	// This defines a pilot light control.
+	var PL1 = new MB_PilotLight(document, "PL1", "black", "green", "red");
+	var PL2 = new MB_PilotLight(document, "PL2", "black", "green", "red");
+
+	// Now, add each of these screen objects to the list of things to update.
+	MBHMIProtocol.AddToDisplayList(PL1, "PL1", "read");
+	MBHMIProtocol.AddToDisplayList(PL2, "PL2", "read");
+
+	// This is for the alarm status display on the main screen.
+	var AlarmStat = new MB_PLMultiColour(document, "AlarmStat", 
+				"black", ["white", "green", "orange", "red"]);
+	MBHMIProtocol.AddToDisplayList(AlarmStat, "", "unackalarm");
+
+</pre>
+
+<h3>HMI Tag Types:</h3>
+
+<ul>
+	<li>read - Use the data from the tag given as the second parameter.</li>
+	<li>timestamp - The message time stamp.</li>
+	<li>serverid - The server id.</li>
+	<li>stat - The message "stat" parameter.</li>
+	<li>msgid - The message id number.</li>
+	<li>alarms - The alarms.</li>
+	<li>alarmhistory - The alarm history.</li>
+	<li>events - The events.</li>
+	<li>errors - The errors.</li>
+	<li>status - The message status.</li>
+	<li>chkalarm - Check if alarms present (see below).</li>
+</ul>
+
+<p>For "chkalarm" alarms, the HMI display object will be passed the 
+following values:  
+</p>
+
+
+<ul>
+	<li>0 - No current alarms present.</li>
+	<li>1 - At least one unacknowledged alarm in the "ok" state.</li>
+	<li>2 - At least one acknowledged alarm is still active ("ackalarm"). </li>
+	<li>3 - At least one unacknowledged alarm in the "alarm" state.</li>
+</ul>
+
+<p>Higher number codes take priority over lower numbered codes.
+</p>
+
+<hr>
+
+<h2>Polling Cycle Control:<a name="Polling Cycle Control"></a></h2>
+
+<h3>SendRequest();</h3>
+
+<p>This triggers a communications polling cycle. However, it does not 
+<em>schedule</em> the polling request. Scheduling the polling request must be
+done by other means. Typically, you would use "setTimeout", which is a standard
+web page Javascript event. In the example below, the function "RunScanCycle" is
+being scheduled again in 1000 milliseconds. 
+</p>
+
+<p>The polling time to use will be a compromise between several factors. If the
+time between polls is too long, there will be a noticable lag between a physical
+event happening and indication of it on the display. If the time between polls is
+too short, the load on the computer displaying the HMI client (and possibly the
+server as well) will be too high. 
+</p>
+
+<p>Also, if asynchronous polling is used, and if the time between polls is too 
+short, the server will not have had enough time to respond before the client
+begins to send the next poll. If this happens, the connection will be aborted
+and the client will not receive the reply. In these cases, it is better to 
+either use synchronous communcations (this is set via an initialisation parameter)
+ or to use a slower polling rate. 
+</p>
+
+<pre class="examples">
+
+	// Run all the operations required each scan cycle.
+	function RunScanCycle() {
+
+		// Query the server for updates.
+		MBHMIProtocol.SendRequest();
+
+		// Call the function back again at the set interval.
+		window.setTimeout("RunScanCycle()", 1000);
+	}
+
+</pre>
+
+<hr>
+
+<h2>Communications Watchdog:</h2>
+
+<h3>CommsWatchDogTimeOut(limit);</h3>
+
+<ul>
+	<li>limit = The amount of difference permitted between the number of 
+	messages sent and received before an error is reported.</li>
+</ul>
+
+<p>This function is useful only when using asynchronous communications.
+The "SendRequest" function keeps track of the number of requests sent
+and received. If too many consecutive requests are sent without a response
+from the server, "CommsWatchDogTimeOut" will return "true". This may be used 
+to annunciate a loss of communications on the screen. The count of requests
+is automatically reset every time a response is received, so an occasional
+loss of messages will automatically correct itself when the next response
+is received.
+</p>
+
+<p>If communications is lost, a valid response message will <strong>not</strong>
+be received, which in turn means the display list will not be called to update
+itself. If you wish to display a message to the operator, you should call
+the appropriate function directly yourself. If you are using one of the client 
+display library functions, you may do this by called the "UpdateScreen") 
+method directly.  
+</p>
+
+<p>This method is an alternative to using the watchdog list. The watchdog list
+method using "SetCommsWatchDogTimeOut" and "AddToWatchdogList" is recommended 
+for most normal applications. 
+</p>
+
+<pre class="examples">
+
+	// Run all the operations required each scan cycle.
+	function RunScanCycle() {
+
+		// Query the server for updates.
+		MBHMIProtocol.SendRequest();
+
+		// Check the comms watch dog counters.
+		ComsTimeOut = MBHMIProtocol.CommsWatchDogTimeOut(10);
+		if (ComsTimeOut) {
+			CommWD.UpdateScreen(1);
+		} else {
+			CommWD.UpdateScreen(0);
+		}
+
+		// Call the function back again at the set interval.
+		window.setTimeout("RunScanCycle()", 1000);
+		
+	}
+
+</pre>
+
+
+<h3>SetCommsWatchDogTimeOut(limit);</h3>
+
+<ul>
+	<li>limit = limit (integer) - The amount of difference permitted
+			between the number of messages sent and received before an 
+			error is reported. This is a count, not a time value.
+	</li>
+</ul>
+
+<p>Set the limit to be used when checking the communications
+watchdog limit via the watchdog list. The watchdog function 
+checks if responses are being received from the server by 
+comparing a communications counter to the limit.
+</p>
+
+<pre class="examples">
+
+	// Set the watchdog limit to 10 scans.
+	MBHMIProtocol.SetCommsWatchDogTimeOut(10);
+
+</pre>
+
+<h3>AddToWatchdogList(objref);</h3>
+
+<ul>
+	<li>objref = A reference to the display object.</li>
+</ul>
+
+<p>Add an item to the watchdog list. This is similar to the 
+	"display list" but is only for the communications watchdog counter. 
+	Objects on this list are scanned and automatically updated each time a
+	request is sent. The watchdog function passes a 1 to the display function 
+	if the communications watchdog counter has exceeded the limit, or 0 
+	otherwise. 
+</p>
+
+<pre class="examples">
+
+	// This is for the communications watch dog display. 	
+	var CommWD = new MB_PilotLight(document, "CommWatchDog", "black", "green", "red");
+	// This is the watchdog list, not the regular display list.
+	MBHMIProtocol.AddToWatchdogList(CommWD);
+
+
+</pre>
+
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - HMI Client Protocol Library</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

@@ -1,0 +1,339 @@
+import struct
+import time
+
+from threading import RLock
+from threading import Event
+
+
+class Singleton(object):
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance=super(Singleton, cls).__new__(cls)
+        return cls.instance
+
+
+class SAIAValueFormater(Singleton):
+    def __init__(self, logger, *args, **kwds):
+        self._logger=logger
+        self.logger.debug('creating value formater %s' % self.__class__.__name__)
+        self.onInit(*args, **kwds)
+
+    @property
+    def logger(self):
+        return self._logger
+
+    def onInit(self, *args, **kwds):
+        pass
+
+    def decode(self, deviceValue):
+        """
+        decode UINT32 device value (register) to user value
+        """
+        return deviceValue
+
+    def encode(self, userValue):
+        """
+        encode user value to UINT32 (SAIA rigister)
+        """
+        return userValue
+
+
+class SAIAValueFormaterFloat32(SAIAValueFormater):
+    def onInit(self, *args, **kwds):
+        self._format='>f'
+        try:
+            if kwds['swap']:
+                self._format='<f'
+        except:
+            pass
+
+    def decode(self, deviceValue):
+        return struct.unpack(self._format, struct.pack('>I', deviceValue))
+
+    def encode(self, userValue):
+        return struct.unpack('>I', struct.pack(self._format, userValue))
+
+
+class SAIAValueFormaterInteger10(SAIAValueFormater):
+    def decode(self, deviceValue):
+        return float(deviceValue/10.0)
+
+    def encode(self, userValue):
+        return int(userValue*10.0)
+
+
+class SAIAItem(object):
+    def __init__(self, parent, index, value=None, delayRefresh=None, readOnly=False):
+        self._parent=parent
+        self._index=index
+        self._value=self.validateValue(value)
+        self._pushValue=None
+        self._stamp=0
+        self._readOnly=readOnly
+        self._delayRefresh=delayRefresh
+        self.onInit()
+        self._eventPush=Event()
+        self._eventPull=Event()
+        self.logger.debug('creating %s' % (self))
+
+    @property
+    def parent(self):
+        return self._parent
+
+    @property
+    def logger(self):
+        return self.parent.logger
+
+    @property
+    def server(self):
+        return self.parent.server
+
+    @property
+    def index(self):
+        return self._index
+
+    def onInit(self):
+        pass
+
+    def setRefreshDelay(self, delay):
+        self._delayRefresh=delay
+
+    def getRefreshDelay(self):
+        try:
+            if self._delayRefresh is not None:
+                return self._delayRefresh
+            return self.parent.getRefreshDelay()
+        except:
+            return 60
+
+    def validateValue(self, value):
+        return value
+
+    def setReadOnly(self, state=True):
+        self._readOnly=state
+
+    def signalPush(self, value):
+        if not self._eventPush.isSet():
+            self._eventPush.set()
+            self._parent.signalPush(self)
+        with self._parent._lock:
+            self._pushValue=value
+
+    def clearPush(self):
+        self._eventPush.clear()
+
+    def signalPull(self):
+        if not self._eventPull.isSet():
+            self._eventPull.set()
+            self._parent.signalPull(self)
+
+    def clearPull(self):
+        self._eventPull.clear()
+
+    def setValue(self, value):
+        if not self._readOnly:
+            value=self.validateValue(value)
+            with self._parent._lock:
+                self._stamp=time.time()
+                self._value=value
+
+    def getValue(self):
+        return self._value
+
+    @property
+    def value(self):
+        with self._parent._lock:
+            return self.getValue()
+
+    @value.setter
+    def value(self, value):
+        with self._parent._lock:
+            if not self._readOnly:
+                if self._value!=value:
+                    self.signalPush(value)
+
+    @property
+    def pushValue(self):
+        with self._parent._lock:
+            return self._pushValue
+
+    def age(self):
+        with self._parent._lock:
+            return time.time()-self._stamp
+
+    def pull(self):
+        return False
+
+    def push(self):
+        return False
+
+    def manager(self):
+        if self.age()>self.getRefreshDelay():
+            self.signalPull()
+
+    def strValue(self):
+        return str(self.value)
+
+    def __repr__(self):
+        return '%s.%s[%d](value=%s, age=%ds)' % (self.server,
+            self.__class__.__name__,
+            self.index, self.strValue(), self.age())
+
+
+class SAIABooleanItem(SAIAItem):
+    def validateValue(self, value):
+        try:
+            return bool(value)
+        except:
+            return False
+
+    def on(self):
+        self.value=True
+
+    def off(self):
+        self.value=False
+
+    def toggle(self):
+        self.value=not self.value
+
+    def strValue(self):
+        if self.value:
+            return 'ON'
+        return 'OFF'
+
+
+class SAIAAnalogItem(SAIAItem):
+    @property
+    def float32(self):
+        formater=SAIAValueFormaterFloat32()
+        return formater.decode(self.getValue())
+
+    @float32.setter
+    def float32(self, value):
+        formater=SAIAValueFormaterFloat32()
+        self.setValue(formater.encode(value))
+
+    @property
+    def int10(self):
+        formater=SAIAValueFormaterInteger10()
+        return formater.decode(self.getValue())
+
+    @int10.setter
+    def int10(self, value):
+        formater=SAIAValueFormaterInteger10()
+        self.setValue(formater.encode(value))
+
+
+class SAIAItems(object):
+    def __init__(self, memory, itemType, maxsize, readOnly=False):
+        self._memory=memory
+        self._lock=RLock()
+        self._itemType=itemType
+        self._maxsize=maxsize
+        self._readOnly=readOnly
+        self._items=[]
+        self._indexItem={}
+        self._currentItem=0
+        self._delayRefresh=60
+
+    @property
+    def memory(self):
+        return self._memory
+
+    @property
+    def server(self):
+        return self.memory.server
+
+    @property
+    def logger(self):
+        return self.memory.logger
+
+    def setReadOnly(self, state=True):
+        self._readOnly=state
+
+    def setRefreshDelay(self, delay):
+        self._delayRefresh=delay
+
+    def getRefreshDelay(self):
+        return self._delayRefresh
+
+    def validateIndex(self, index):
+        try:
+            n=int(index)
+            if n>=0 and n<self._maxsize:
+                return n
+        except:
+            pass
+
+    def item(self, index):
+        try:
+            with self._lock:
+                return self._items[self.validateIndex(index)]
+        except:
+            pass
+
+    def __getitem__(self, index):
+        item=self.item(index)
+        if item:
+            return item
+        return self.declare(index)
+
+    def declare(self, index, value=None):
+        if self.validateIndex(index):
+            item=self.item(index)
+            if item:
+                return item
+
+            item=self._itemType(self, index, value)
+            item.setReadOnly(self._readOnly)
+            with self._lock:
+                self._items.append(item)
+                self._indexItem[index]=item
+                item.signalPull()
+                return item
+
+    def declareRange(self, index, count, value=None):
+        while count>0:
+            self.declare(index, value)
+            index+=1
+
+    def signalPush(self, item=None):
+        if item is None:
+            for item in self._items:
+                self.memory._queuePendingPush.put(item)
+        else:
+            self.memory._queuePendingPush.put(item)
+
+    def signalPull(self, item=None):
+        if item is None:
+            for item in self._items:
+                self.memory._queuePendingPull.put(item)
+        else:
+            self.memory._queuePendingPull.put(item)
+
+    def refresh(self):
+        self.signalPull()
+
+    def manager(self):
+        count=min(8, len(self._tems))
+        while count>0:
+            count-=1
+            try:
+                item=self._items[self._currentItem]
+                self._currentItem+=1
+
+                try:
+                    item.manager()
+                except:
+                    self.logger.exception('manager()')
+            except:
+                self._currentItem=0
+                break
+
+    def dump(self):
+        for item in self._items:
+            print(item)
+
+
+if __name__ == "__main__":
+    pass

@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+	<title>Help - HMI - Widget Basics</title>
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Edit SVG</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Inkscape</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">Templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assemble Page</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Editing SVG with Inkscape</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Using the SVG Library with Inkscape</a></li>
+			<li><a href="/customwidgets/customwidgets.html">Custom Widgets</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">HMI web templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assembling web pages</a></li>
+			<li><a href="/hmilib/hmilib.html">HMI Javascript Client Libraries</a></li>
+			<li><a href="/basicconcepts/basicconcepts.html">Basic Concepts</a></li>
+			<li><a href="/manualpage/manualpage.html">Manual HMI Web Page Construction</a></li>
+		</ul>
+
+		<h3>Creating Custom Widgets</h3>
+		<ul>
+			<li><a href="/customwidgets/widgetbasics.html">Widget Basics</a></li>
+			<li><a href="/customwidgets/passivewidget.html">Passive Widget</a></li>
+			<li><a href="/customwidgets/hmibuilderdata.html">HMIBuilder Data</a></li>
+			<li><a href="/customwidgets/activewidget.html">Active Widgets</a></li>
+		</ul>
+
+	</div>
+
+
+
+	<!-- Put main content here -->
+	<div id="datadisplay">
+
+
+<h1>Widget Basics</h1>
+
+
+<h2>Overview</h2>
+
+<p>An SVG HMI widget is an XML data file that contains an SVG graphic that
+depicts an HMI display element. The graphic is a "vector" drawing like a CAD
+drawing, not bit map image like a photograph. This means there is no fixed 
+resolution or size. The drawing can be scaled up or down infinitely without
+losing resolution. It also means that the drawing can be changed dynamically 
+by manipulating the data defining the lines, circles, elipses, etc. 
+</p>
+
+<hr>
+
+<h2>Passive Widgets</h2>
+
+<p>Passive widgets will contain just the SVG XML drawing data. Passive
+widgets are typically background decorative art and do not change state.
+</p>
+
+<hr>
+
+<h2>Active Widgets</h2>
+
+<p>In addition to passive widgets there are active widgets such as push 
+buttons, pilot lights, text displays, gauges, etc. These either act as 
+<strong><em>input devices</em></strong> (e.g. push buttons), or as 
+<strong><em>output devices</em></strong> (e.g. pilot lights). In the
+rest of this section, "widgets" will be taken to mean active widgets unless
+otherwise specified.  
+</p>
+
+<p>Active widgets require some sort of scripting (using Javascript) to 
+perform their actions. This scripting will take one of two forms. Input
+devices use the web browser <em>event</em> system. The event system responds
+to user input (usually mouse clicks or touch screen touches) via 
+<em>handlers</em>, which are a small piece of Javascript code attached to
+an <strong><em>attribute</em></strong> (a piece of data embedded directly in 
+the SVG element). The attribute names will be "onclick", "onmousedown", 
+"onmouseup", etc. The handler will be executed when the associated event
+(e.g. a mouse click) occurs on the SVG element which the hander is attached to.
+</p>
+
+<p>Output devices require a different approach. They also require a piece of 
+Javascript code, but this function must be called cyclically (like a PLC scan)
+and updated with new data from the HMI server (the HMI system libraries poll 
+for data in the background). Each output widget must be associated with a copy
+of the correct type of HMI display code via a unique "id" (a name or label).
+The Javascript code will then search out the SVG widget in the web page and
+update it by changing its colour, shape, data, or some other characteristic. 
+</p>
+
+<hr>
+
+<h2>HMIBuilder and Widgets</h2>
+
+<p>You can create the required scripting to control the widgets manually if
+you wish (there is another section in this documentation which will show you
+how to do this. It is more convenient however to use the HMIBuilder program
+to let you just select the parameters you want from menus and have it 
+automatically generate the scripting for you.  
+</p>
+
+<p>To be able to do this, active widgets must have some additional data within 
+themselves which define the parameters and scripting code required, and also 
+how to assemble them and insert them into the web page. 
+</p>
+
+<p>If you follow these instructions you can create your own widgets which will
+work with HMIBuilder. Since the parameter menus for each widget are defined
+within the widgets themselves, HMIBuilder will automatically adapt itself to 
+your menus, including widget names and menu titles.
+</p>
+
+<hr>
+
+
+	</div>
+
+	<!-- Standard footer -->
+	<div id="footer">
+		<p>MB-HMI</p>
+	</div>
+
+</div>
+
+
+</body>
+</html>
+
+
+<!-- Copyright 2008 - 2011. Michael Griffin 
+This file is part of MBLogic. 
+MBLogic is free software: you can redistribute it and/or modify 
+it under the terms of the GNU General Public License as published by 
+the Free Software Foundation, either version 3 of the License, or 
+(at your option) any later version. 
+MBLogic is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details. 
+You should have received a copy of the GNU General Public License 
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>. 
+-->

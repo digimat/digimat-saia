@@ -1,0 +1,958 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+	<title>Help - HMI - HMI Numeric and Text Display</title>
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Edit SVG</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Inkscape</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">Templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assemble Page</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Editing SVG with Inkscape</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Using the SVG Library with Inkscape</a></li>
+			<li><a href="/customwidgets/customwidgets.html">Custom Widgets</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">HMI web templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assembling web pages</a></li>
+			<li><a href="/hmilib/hmilib.html">HMI Javascript Client Libraries</a></li>
+			<li><a href="/basicconcepts/basicconcepts.html">Basic Concepts</a></li>
+			<li><a href="/manualpage/manualpage.html">Manual HMI Web Page Construction</a></li>
+		</ul>
+
+		<h3>Manual HMI Web Page Construction</h3>
+		<ul>
+			<li><a href="/manualpage/hmisampleslayout-en.html">Page Layout</a></li>
+			<li><a href="/manualpage/hmisamplespositioning-en.html">
+				Positioning Components on the Screen</a></li>
+			<li><a href="/manualpage/hmisamplescomms-en.html">
+				Communications, the Display List and Data Sources</a></li>
+			<li><a href="/manualpage/hmisamplesmenus-en.html">Menu Control</a></li>
+			<li><a href="/manualpage/hmisamplesalarms-en.html">
+				Events, Alarms, and System Status</a></li>
+			<li><a href="/manualpage/hmisamplesxul-en.html">
+				Mixing HTML and XUL with SVG</a></li>
+			<li><a href="/manualpage/hmisamplespushbuttons-en.html">Push Buttons</a></li>
+			<li><a href="/manualpage/hmisamplespilotlights-en.html">Pilot Lights</a></li>
+			<li><a href="/manualpage/hmisamplesnumerictext-en.html">
+				Numeric and Text Displays</a></li>
+			<li><a href="/manualpage/hmisamplesgauges-en.html">Tanks and Gauges</a></li>
+			<li><a href="/manualpage/hmisamplespipes-en.html">Piping and Pumps</a></li>
+			<li><a href="/manualpage/hmisamplesnumbinput-en.html">Numeric Inputs</a></li>
+			<li><a href="/manualpage/hmisamplesstripchart-en.html">Strip Charts</a></li>
+			<li><a href="/manualpage/hmisamplesbackground-en.html">Background Images</a></li>
+		 	<li><a href="/manualpage/hmisamplesvisualeffects-en.html">Visual Effects</a></li>
+		</ul>
+
+	</div>
+
+
+
+	<!-- Put main content here -->
+	<div id="datadisplay">
+
+<h1>Help - HMI Numeric and Text Display</h1>
+
+<hr>
+
+<h2>Overview:</h2>
+
+
+<p>Numeric and text displays are used to display numeric and text values. 
+The text displayed may be text data from the server data table, or it may
+be text representations of numeric indexes.  
+</p>
+
+
+<p>
+<img src="numericdisplay2.png" width="85" height="44" alt="Integer Display">
+<img src="numericdisplay3.png" width="105" height="40" alt="Float Display">
+<img src="textdisp2.png" width="308" height="46" alt="Text Display">
+<img src="numericdisplay.png" width="85" height="46" alt="7 seg display">
+</p>
+
+<hr>
+
+<h2>Display of Numbers and Text</h2>
+
+<p>Numbers and text are displayed using the SVG "text" element. For example:
+</p>
+
+<pre class="examples">
+
+	&lt;text x="100" y="50" font-size="20"&gt;some text&lt;/text&gt;
+
+</pre>
+
+<p>This example displays the text message "some text" at the X and Y 
+coordinates of 100 and 50 respectively, and in a font size of 20.
+</p>
+
+<p>The following example adds a few more parameters.
+</p>
+
+<pre class="examples">
+
+		&lt;text id="MsgIDText" x="30" y="8" 
+			stroke="red" fill="red" font-size="20" 
+			text-anchor="end"&gt;msgid:&lt;/text&gt;
+
+</pre>
+
+<p>The "id" allows it to be addressed by a Javascript function to allow the
+actual text to be changed dynamically. The "stroke" and "fill" specify the 
+colour. The "text-anchor" controls the justification (this example is right
+justified). The most usefull text attributes are:
+</p>
+
+<ul>
+	<li><strong>x</strong> - This controls the "x" coordinate of the screen 
+		location. </li>
+	<li><strong>y</strong> - This controls the "y" coordinate of the screen 
+		location. </li>
+	<li><strong>id</strong> - This provides a means for Javascript to control 
+		the value or text displayed. This is not needed for static text such as
+		labels, only for text which needs to be updated by the program. </li>
+	<li><strong>font-size</strong> - This controls the size of the font. Larger
+		numbers will produce larger characters. </li>
+	<li><strong>stroke</strong> - This controls the colour of the outline of
+		each character. </li>
+	<li><strong>fill</strong> - This controls the colour of the interior of each
+		character. For smaller character sizes, the "stroke" will be large enough
+		that the "fill" may not be visible. </li>
+	<li><strong>text-anchor</strong> - This controls text justification. The 
+		possible values are "start", "middle", and "end". The default is "start",
+		which results in left justification (which is used for normal text). 
+		"Middle" will centre justify, which may be useful for positioning lables.
+		"End" will right justify the text, which is useful for displaying numbers. 
+	</li>
+</ul>
+
+<p>Other text attributes are available and are explained in the official SVG 
+specification documents.
+</p>
+
+<hr>
+
+<h2>Backgrounds and Bezels:</h2>
+
+<p>
+<img src="numericdisplay1.png" width="76" height="66" alt="Integer Display">
+<img src="numericdisplay2.png" width="85" height="44" alt="Integer Display">
+<img src="numericdisplay3.png" width="105" height="40" alt="Float Display">
+</p>
+
+<p>
+<img src="textdisp1.png" width="126" height="48" alt="Text Display">
+<img src="textdisp2.png" width="308" height="46" alt="Text Display">
+<img src="textdisp3.png" width="108" height="43" alt="Text Display">
+</p>
+
+<p>Numbers and text strings are displayed using the basic SVG "text" element.
+However decorative graphics can be used backgrounds which the text element 
+writes on top of. These background graphics can be as elaborate or as simple
+as desired. SVG transforms can be used to scale the graphics to change the
+size and proportions as required for the application.
+</p>
+
+<h3>Basic Outline Box</h3>
+
+<p><img src="numericdisplay3.png" width="105" height="40" alt="Float Display">
+</p>
+
+<p>A basic outline box can be created with a simple rectangle. For example:
+</p>
+
+<pre class="examples">
+
+	&lt;rect x="100" y="50" width="100" height="35" fill="white" stroke="blue" 
+				stroke-width="5" rx="10" ry="10" opacity="1.0" /&gt;
+
+</pre>
+
+<p>This creates a blue rectangle with a white background. The corners are
+rounded by using the "rx" and "ry" attributes. The "opacity" attribute is
+used to control whether the background is allowed to show through (1.0 is
+completely opaque).
+</p>
+
+<h3>Decorative Graphical Bezels</h3>
+
+<p>
+<img src="numericdisplay2.png" width="170" height="88" alt="Integer Display">
+</p>
+
+
+<p>A decorative "bezel" is provided for the display of numbers and text. This
+is provided in three sizes. The standard size is "MB_DigitBezel" and is
+suitable for typical 5 digit displays. "MB_DigitBezel2" is twice the width of
+"MB_DigitBezel". "MB_DigitBezel0_5" is half the width of "MB_DigitBezel".
+Additional sizes may be obtained by scaling.
+</p>
+
+<p>The colour of the outer part of the standard bezels is fixed as being a 
+black gradient shading to white. The background of the area where the numbers
+or text would be displayed though can be set to any colour by using the
+"fill" attribute. In addition, the overall size and proportions may be
+adjusted by scaling. For example:
+</p>
+
+
+<p><img src="textdisp2.png" width="308" height="46" alt="Text Display">
+</p>
+
+<pre class="examples">
+
+	&lt;!-- This displays the server ID. --&gt;
+	&lt;g transform="translate(250,145)"&gt;
+		&lt;g transform="scale(2,1)" fill="indigo"&gt;
+			&lt;use xlink:href="#MB_DigitBezel2"/&gt;
+		&lt;/g&gt;
+		&lt;text id="ServerIDText" x="-120" y="8" 
+			stroke="orange" fill="orange" font-size="20"&gt;serverid:&lt;/text&gt;
+	&lt;/g&gt;
+
+</pre>
+
+
+<h3>Decorative Bezel Definitions</h3>
+
+<p>The following shows the provided decorative bezel definitions. 
+</p>
+
+<pre class="examples">
+
+	&lt;defs&gt;
+	
+		&lt;!-- This is a decorative gradient for the display. --&gt;
+		&lt;linearGradient id="MB_DigitBezelGradient" 
+				x1="1" y1="1" x2="0" y2="0"&gt;
+			&lt;stop offset="0%" stop-color="black" /&gt;
+			&lt;stop offset="100%" stop-color="whitesmoke" /&gt;
+		&lt;/linearGradient&gt;
+	
+		&lt;!-- This is a decorative box for display numbers and text. 
+			This is sized appropriately to hold 4 numeric digits of 24 point font. --&gt;
+		&lt;g id="MB_DigitBezel"&gt;
+	
+			&lt;!-- This provides the drop shadow. --&gt;
+			&lt;rect x="-38" y="-18" width="80" height="40" rx="2" 
+				fill="grey" filter="url(#MB_DropShadowFilter)" stroke="none"/&gt;
+	
+			&lt;!-- This provides the outer ring. --&gt;
+			&lt;rect x="-40" y="-20" width="80" height="40" rx="2" 
+					fill="url(#MB_DigitBezelGradient)" stroke="none"/&gt;
+	
+			&lt;!-- This provides the middle ring. --&gt;
+			&lt;rect x="-38" y="-18" width="76" height="36" rx="2"
+					fill="url(#MB_DigitBezelGradient)" stroke="black"/&gt;
+	
+			&lt;!-- This provides the inner background. --&gt;
+			&lt;rect x="-35" y="-15" width="70" height="30" rx="2" /&gt;
+		&lt;/g&gt;
+	
+		&lt;!-- This is a decorative box for display numbers and text. 
+			This is twice the width of MB_DigitBezel. --&gt;
+		&lt;g id="MB_DigitBezel2"&gt;
+	
+			&lt;!-- This provides the drop shadow. --&gt;
+			&lt;rect x="-73" y="-18" width="150" height="40" rx="2" 
+				fill="grey" filter="url(#MB_DropShadowFilter)" stroke="none"/&gt;
+	
+			&lt;!-- This provides the outer ring. --&gt;
+			&lt;rect x="-75" y="-20" width="150" height="40" rx="2" 
+					fill="url(#MB_DigitBezelGradient)" stroke="none"/&gt;
+	
+			&lt;!-- This provides the middle ring. --&gt;
+			&lt;rect x="-73" y="-18" width="146" height="36" rx="2"
+					fill="url(#MB_DigitBezelGradient)" stroke="black"/&gt;
+	
+			&lt;!-- This provides the inner background. --&gt;
+			&lt;rect x="-70" y="-15" width="140" height="30" rx="2" /&gt;
+		&lt;/g&gt;
+	
+		&lt;!-- This is a decorative box for display numbers and text. 
+			This is half the width of MB_DigitBezel.--&gt;
+		&lt;g id="MB_DigitBezel0_5"&gt;
+	
+			&lt;!-- This provides the drop shadow. --&gt;
+			&lt;rect x="-21" y="-18" width="46" height="40" rx="2" 
+				fill="grey" filter="url(#MB_DropShadowFilter)" stroke="none"/&gt;
+	
+			&lt;!-- This provides the outer ring. --&gt;
+			&lt;rect x="-23" y="-20" width="46" height="40" rx="2" 
+					fill="url(#MB_DigitBezelGradient)" stroke="none"/&gt;
+	
+			&lt;!-- This provides the middle ring. --&gt;
+			&lt;rect x="-21" y="-18" width="42" height="36" rx="2"
+					fill="url(#MB_DigitBezelGradient)" stroke="black"/&gt;
+	
+			&lt;!-- This provides the inner background. --&gt;
+			&lt;rect x="-18" y="-15" width="36" height="30" rx="2" /&gt;
+		&lt;/g&gt;
+	
+	
+		&lt;!-- This is a decorative box for the increment/decrement display. --&gt;
+		&lt;g id="MB_IncDecBezel"&gt;
+	
+			&lt;!-- This provides the drop shadow. --&gt;
+			&lt;rect x="-38" y="-25" width="80" height="54" rx="2" 
+				fill="grey" filter="url(#MB_DropShadowFilter)" stroke="none"/&gt;
+	
+			&lt;!-- This provides the outer ring. --&gt;
+			&lt;rect x="-40" y="-27" width="80" height="54" rx="2" 
+					fill="url(#MB_DigitBezelGradient)" stroke="none"/&gt;
+	
+			&lt;!-- This provides the middle ring. --&gt;
+			&lt;rect x="-38" y="-25" width="76" height="50" rx="2"
+					fill="url(#MB_DigitBezelGradient)" stroke="black"/&gt;
+	
+			&lt;!-- This provides the inner background. --&gt;
+			&lt;rect x="-35" y="-15" width="70" height="30" rx="2" /&gt;
+		&lt;/g&gt;
+	
+		&lt;!-- This is a decorative box for the increment/decrement display. 
+			This is half the width of MB_IncDecBezel --&gt;
+		&lt;g id="MB_IncDecBezel0_5"&gt;
+	
+			&lt;!-- This provides the drop shadow. --&gt;
+			&lt;rect x="-21" y="-25" width="46" height="54" rx="2" 
+				fill="grey" filter="url(#MB_DropShadowFilter)" stroke="none"/&gt;
+	
+			&lt;!-- This provides the outer ring. --&gt;
+			&lt;rect x="-23" y="-27" width="46" height="54" rx="2" 
+					fill="url(#MB_DigitBezelGradient)" stroke="none"/&gt;
+	
+			&lt;!-- This provides the middle ring. --&gt;
+			&lt;rect x="-21" y="-25" width="42" height="50" rx="2"
+					fill="url(#MB_DigitBezelGradient)" stroke="black"/&gt;
+	
+			&lt;!-- This provides the inner background. --&gt;
+			&lt;rect x="-18" y="-15" width="36" height="30" rx="2" /&gt;
+		&lt;/g&gt;
+	
+	&lt;/defs&gt;
+
+</pre>
+
+<hr>
+
+<h2>Integer Display:</h2>
+
+<p><img src="numericdisplay2.png" width="170" height="88" alt="Integer Display">
+</p>
+
+<p>An integer display is used to display the value from an integer protocol
+tag.
+</p>
+
+<h3>SVG</h3>
+
+<pre class="examples">
+
+	&lt;!-- This displays the server message ID. --&gt;
+	&lt;g transform="translate(550, 100)"&gt;
+		&lt;g fill="black"&gt;
+			&lt;use xlink:href="#MB_DigitBezel"/&gt;
+		&lt;/g&gt;
+		&lt;text id="MsgIDText" x="30" y="8" 
+			stroke="red" fill="red" font-size="20" 
+			text-anchor="end"&gt;msgid:&lt;/text&gt;
+	&lt;/g&gt;
+
+</pre>
+
+
+<h3>Javascript</h3>
+
+<pre class="examples">
+
+	// This is for the message ID display.
+	var MessageID = new MB_NumericDisplay(document, "MsgIDText");
+	MBHMIProtocol.AddToDisplayList(MessageID, "msgid", "msgid");
+
+</pre>
+
+
+<h3>Javascript Library Functions:</h3>
+
+<p>The following Javascript library functions are useful for this feature: 
+</p>
+
+<ul>
+	<li>MB_NumericDisplay</li>
+</ul>
+
+
+<h3>How it works:</h3>
+
+<p>An SVG text element is used to display integers by setting its data property
+to the value read from a tag. The value may be enclosed by a rectangle or other
+shape for emphasis, but this is not necessary for the actual display of data.
+</p>
+
+<p>MB_NumericDisplay requires the "id" of an SVG text element. The data is
+then derived from the display list. Any type of data can be displayed, but
+if floating point data is used there is no control over the number of
+decimal places.
+</p>
+
+<hr>
+
+
+<h2>Float Display:</h2>
+<p>
+<img src="numericdisplay3.png" width="105" height="40" alt="Float Display">
+</p>
+
+<p>This is identical to the integer display, except it allows the number of
+decimal places to be specified.
+</p>
+
+<h3>SVG</h3>
+
+<pre class="examples">
+
+	&lt;!-- This displays the tank 1 level. --&gt;
+	&lt;g transform="translate(185,25)"&gt;
+		&lt;rect x="0" y="10" width="100" height="35" fill="white" stroke="blue" 
+			stroke-width="5" rx="10" ry="10" opacity="1.0" /&gt;
+		&lt;text x="5" y="35" font-size="24" id="Tank1Text"&gt;Tank1&lt;/text&gt;
+	&lt;/g&gt;
+
+</pre>
+
+
+<h3>Javascript</h3>
+
+<pre class="examples">
+
+	// Tank 1 fill level numeric display.
+	var Tank1Number = new MB_NumericFloatDisplay(document, "Tank1Text", 2);
+	MBHMIProtocol.AddToDisplayList(Tank1Number, "Tank1Number", "read");
+
+</pre>
+
+
+<h3>Javascript Library Functions:</h3>
+
+<p>The following Javascript library functions are useful for this feature: 
+</p>
+
+<ul>
+	<li>MB_NumericFloatDisplay</li>
+</ul>
+
+
+<h3>How it works:</h3>
+
+<p>MB_NumericFloatDisplay accepts an additional parameter specifying the
+number of decimal places to be displayed.
+</p>
+
+
+<hr>
+
+<h2>String Display:</h2>
+
+<p>
+<img src="textdisp4.png" width="455" height="50" alt="String Display">
+</p>
+
+<p>This is identical to the integer display, except it is intended for string data.
+</p>
+
+<h3>SVG</h3>
+
+<pre class="examples">
+
+	&lt;!-- This displays the server ID. --&gt;
+	&lt;g transform="translate(500, 30)"&gt;
+		&lt;rect x="150" y="-25" width="300" height="35" fill="none" stroke="blue" 
+			stroke-width="5" rx="10" ry="10" opacity="0.5" /&gt;
+		&lt;text x="0" y="0" font-size="24"&gt;Server ID:&lt;/text&gt; 
+		&lt;text x="155" y="0" font-size="24" id="ServerIDText"&gt;serverid:&lt;/text&gt;
+	&lt;/g&gt;
+
+</pre>
+
+
+<h3>Javascript</h3>
+
+<pre class="examples">
+
+	// This is for the server ID display (name of the server).
+	var ServerID = new MB_StringDisplay(document, "ServerIDText");
+	MBHMIProtocol.AddToDisplayList(ServerID, "serverid", "serverid");
+
+</pre>
+
+
+<h3>Javascript Library Functions:</h3>
+
+<p>The following Javascript library functions are useful for this feature: 
+</p>
+
+<ul>
+	<li>MB_StringDisplay</li>
+</ul>
+
+
+<h3>How it works:</h3>
+
+<p>This is similar to the integer display. 
+</p>
+
+
+<hr>
+
+<h2>Text Index Display:</h2>
+<p>
+<img src="textdisp3.png" width="108" height="43" alt="Text Display">
+</p>
+
+<p>This uses a numeric index as an index to an array of text strings, and displays
+the resulting text string.
+</p>
+
+<h3>SVG</h3>
+
+<pre class="examples">
+
+	&lt;!-- Display a text message indexed by a tag value. --&gt;
+	&lt;g transform="translate(250,265)"&gt;
+		&lt;rect x="0" y="0" width="100" height="35" fill="none" stroke="blue" 
+			stroke-width="5" rx="10" ry="10" opacity="0.5" /&gt;
+		&lt;text x="10" y="25" font-size="24" id="PL4-Colour"&gt;PL4 Colour&lt;/text&gt;
+	&lt;/g&gt;
+
+</pre>
+
+
+<h3>Javascript</h3>
+
+<pre class="examples">
+
+	// This is for text indicators. This can be stored in an external file. 
+	Msg_HMIDemoColours = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
+
+
+	// This is for the text display of pilot light colours.
+	// The list of colours comes from an external file.
+	var PLColourText = new MB_TextDisplay(document, "PL4-Colour", Msg_HMIDemoColours);
+	MBHMIProtocol.AddToDisplayList(PLColourText, "PL4", "read");
+
+</pre>
+
+
+<h3>Javascript Library Functions:</h3>
+
+<p>The following Javascript library functions are useful for this feature: 
+</p>
+
+<ul>
+	<li>MB_TextDisplay</li>
+</ul>
+
+
+<h3>How it works:</h3>
+
+<p>MB_TextDisplay uses an integer value as an index to an array of strings. The 
+resulting string is then displayed in the associated SVG text element. This is
+similar to how the multi-colour pilot light works, except MB_TextDisplay displays
+the actual text values. This example used the names of colours as data, but any
+array of strings may be used. 
+</p>
+
+
+<hr>
+
+<h2>7 Segment LED Style Digits</h2>
+
+<p>
+<img src="numericdisplay.png" width="324" height="183" alt="7 segment display">
+</p>
+
+<p>7 segment LED style digits can be used as decorative numeric displays. 
+Unlike normal numeric or text displays however, these digits are not actual
+fonts. Rather, they are just a series of graphics which are displayed one at a
+time.  
+</p>
+
+<p>The following shows the definitions for the individual digits. There are a
+total of 10, for the digits 0 to 9. 
+</p>
+
+<pre class="examples">
+
+&lt;!-- This defines the digits for a 7 segment display. --&gt;
+&lt;defs&gt;
+	&lt;!-- Digit for 0 --&gt;
+	&lt;g id="MB_LED7SEG0"&gt;
+		&lt;!-- Top segment. --&gt;
+		&lt;polygon points="1,1 2,0 10,0 11,1 10,2 2,2 1,1"/&gt;
+		&lt;!-- Upper right. --&gt;
+		&lt;polygon points="11,1 12,2 12,10 11,11 10,10 10,2 11,1"/&gt;
+		&lt;!-- Lower right. --&gt;
+		&lt;polygon points="11,11 12,12 12,20 11,21 10,20 10,12 11,11"/&gt;
+		&lt;!-- Bottom segment. --&gt;
+		&lt;polygon points="1,21 2,20 10,20 11,21 10,22 2,22 1,21"/&gt;
+		&lt;!-- Lower left. --&gt;
+		&lt;polygon points="1,11 2,12 2,20 1,21 0,20 0,12 1,11"/&gt;
+		&lt;!-- Upper left. --&gt;
+		&lt;polygon points="1,1 2,2 2,10 1,11 0,10 0,2 1,1"/&gt;
+	&lt;/g&gt;
+
+	&lt;!-- Digit for 1 --&gt;
+	&lt;g id="MB_LED7SEG1"&gt;
+		&lt;!-- Upper right. --&gt;
+		&lt;polygon points="11,1 12,2 12,10 11,11 10,10 10,2 11,1"/&gt;
+		&lt;!-- Lower right. --&gt;
+		&lt;polygon points="11,11 12,12 12,20 11,21 10,20 10,12 11,11"/&gt;
+	&lt;/g&gt;
+
+	&lt;!-- Digit for 2 --&gt;
+	&lt;g id="MB_LED7SEG2"&gt;
+		&lt;!-- Top segment. --&gt;
+		&lt;polygon points="1,1 2,0 10,0 11,1 10,2 2,2 1,1"/&gt;
+		&lt;!-- Upper right. --&gt;
+		&lt;polygon points="11,1 12,2 12,10 11,11 10,10 10,2 11,1"/&gt;
+		&lt;!-- Bottom segment. --&gt;
+		&lt;polygon points="1,21 2,20 10,20 11,21 10,22 2,22 1,21"/&gt;
+		&lt;!-- Lower left. --&gt;
+		&lt;polygon points="1,11 2,12 2,20 1,21 0,20 0,12 1,11"/&gt;
+		&lt;!-- Middle segment. --&gt;
+		&lt;polygon points="1,11 2,10 10,10 11,11 10,12 2,12 1,11"/&gt;
+	&lt;/g&gt;
+
+	&lt;!-- Digit for 3 --&gt;
+	&lt;g id="MB_LED7SEG3"&gt;
+		&lt;!-- Top segment. --&gt;
+		&lt;polygon points="1,1 2,0 10,0 11,1 10,2 2,2 1,1"/&gt;
+		&lt;!-- Upper right. --&gt;
+		&lt;polygon points="11,1 12,2 12,10 11,11 10,10 10,2 11,1"/&gt;
+		&lt;!-- Lower right. --&gt;
+		&lt;polygon points="11,11 12,12 12,20 11,21 10,20 10,12 11,11"/&gt;
+		&lt;!-- Bottom segment. --&gt;
+		&lt;polygon points="1,21 2,20 10,20 11,21 10,22 2,22 1,21"/&gt;
+		&lt;!-- Middle segment. --&gt;
+		&lt;polygon points="1,11 2,10 10,10 11,11 10,12 2,12 1,11"/&gt;
+	&lt;/g&gt;
+
+	&lt;!-- Digit for 4 --&gt;
+	&lt;g id="MB_LED7SEG4"&gt;
+		&lt;!-- Upper right. --&gt;
+		&lt;polygon points="11,1 12,2 12,10 11,11 10,10 10,2 11,1"/&gt;
+		&lt;!-- Lower right. --&gt;
+		&lt;polygon points="11,11 12,12 12,20 11,21 10,20 10,12 11,11"/&gt;
+		&lt;!-- Upper left. --&gt;
+		&lt;polygon points="1,1 2,2 2,10 1,11 0,10 0,2 1,1"/&gt;
+		&lt;!-- Middle segment. --&gt;
+		&lt;polygon points="1,11 2,10 10,10 11,11 10,12 2,12 1,11"/&gt;
+	&lt;/g&gt;
+
+	&lt;!-- Digit for 5 --&gt;
+	&lt;g id="MB_LED7SEG5"&gt;
+		&lt;!-- Top segment. --&gt;
+		&lt;polygon points="1,1 2,0 10,0 11,1 10,2 2,2 1,1"/&gt;
+		&lt;!-- Lower right. --&gt;
+		&lt;polygon points="11,11 12,12 12,20 11,21 10,20 10,12 11,11"/&gt;
+		&lt;!-- Bottom segment. --&gt;
+		&lt;polygon points="1,21 2,20 10,20 11,21 10,22 2,22 1,21"/&gt;
+		&lt;!-- Upper left. --&gt;
+		&lt;polygon points="1,1 2,2 2,10 1,11 0,10 0,2 1,1"/&gt;
+		&lt;!-- Middle segment. --&gt;
+		&lt;polygon points="1,11 2,10 10,10 11,11 10,12 2,12 1,11"/&gt;
+	&lt;/g&gt;
+
+	&lt;!-- Digit for 6 --&gt;
+	&lt;g id="MB_LED7SEG6"&gt;
+		&lt;!-- Top segment. --&gt;
+		&lt;polygon points="1,1 2,0 10,0 11,1 10,2 2,2 1,1"/&gt;
+		&lt;!-- Lower right. --&gt;
+		&lt;polygon points="11,11 12,12 12,20 11,21 10,20 10,12 11,11"/&gt;
+		&lt;!-- Bottom segment. --&gt;
+		&lt;polygon points="1,21 2,20 10,20 11,21 10,22 2,22 1,21"/&gt;
+		&lt;!-- Lower left. --&gt;
+		&lt;polygon points="1,11 2,12 2,20 1,21 0,20 0,12 1,11"/&gt;
+		&lt;!-- Upper left. --&gt;
+		&lt;polygon points="1,1 2,2 2,10 1,11 0,10 0,2 1,1"/&gt;
+		&lt;!-- Middle segment. --&gt;
+		&lt;polygon points="1,11 2,10 10,10 11,11 10,12 2,12 1,11"/&gt;
+	&lt;/g&gt;
+
+	&lt;!-- Digit for 7 --&gt;
+	&lt;g id="MB_LED7SEG7"&gt;
+		&lt;!-- Top segment. --&gt;
+		&lt;polygon points="1,1 2,0 10,0 11,1 10,2 2,2 1,1"/&gt;
+		&lt;!-- Upper right. --&gt;
+		&lt;polygon points="11,1 12,2 12,10 11,11 10,10 10,2 11,1"/&gt;
+		&lt;!-- Lower right. --&gt;
+		&lt;polygon points="11,11 12,12 12,20 11,21 10,20 10,12 11,11"/&gt;
+	&lt;/g&gt;
+
+	&lt;!-- Digit for 8 --&gt;
+	&lt;g id="MB_LED7SEG8"&gt;
+		&lt;!-- Top segment. --&gt;
+		&lt;polygon points="1,1 2,0 10,0 11,1 10,2 2,2 1,1"/&gt;
+		&lt;!-- Upper right. --&gt;
+		&lt;polygon points="11,1 12,2 12,10 11,11 10,10 10,2 11,1"/&gt;
+		&lt;!-- Lower right. --&gt;
+		&lt;polygon points="11,11 12,12 12,20 11,21 10,20 10,12 11,11"/&gt;
+		&lt;!-- Bottom segment. --&gt;
+		&lt;polygon points="1,21 2,20 10,20 11,21 10,22 2,22 1,21"/&gt;
+		&lt;!-- Lower left. --&gt;
+		&lt;polygon points="1,11 2,12 2,20 1,21 0,20 0,12 1,11"/&gt;
+		&lt;!-- Upper left. --&gt;
+		&lt;polygon points="1,1 2,2 2,10 1,11 0,10 0,2 1,1"/&gt;
+		&lt;!-- Middle segment. --&gt;
+		&lt;polygon points="1,11 2,10 10,10 11,11 10,12 2,12 1,11"/&gt;
+	&lt;/g&gt;
+
+	&lt;!-- Digit for 9 --&gt;
+	&lt;g id="MB_LED7SEG9"&gt;
+		&lt;!-- Top segment. --&gt;
+		&lt;polygon points="1,1 2,0 10,0 11,1 10,2 2,2 1,1"/&gt;
+		&lt;!-- Upper right. --&gt;
+		&lt;polygon points="11,1 12,2 12,10 11,11 10,10 10,2 11,1"/&gt;
+		&lt;!-- Lower right. --&gt;
+		&lt;polygon points="11,11 12,12 12,20 11,21 10,20 10,12 11,11"/&gt;
+		&lt;!-- Upper left. --&gt;
+		&lt;polygon points="1,1 2,2 2,10 1,11 0,10 0,2 1,1"/&gt;
+		&lt;!-- Middle segment. --&gt;
+		&lt;polygon points="1,11 2,10 10,10 11,11 10,12 2,12 1,11"/&gt;
+	&lt;/g&gt;
+
+
+&lt;/defs&gt;
+
+</pre>
+
+<p>The following shows how to display the 7 segment LED digits. This creates
+a 4 digit display. Fixed position decimal places are created by using simple
+circles (3 of the 4 decimal point circles are commented out in this example).
+Note that SVG "id" labels must be used for each digit. This means that a total
+of 40 ids are required for a 4 digit display (4 digits times 10 graphics).
+</p>
+
+<p>The the digits may be any colour. 
+</p>
+
+<pre class="examples">
+
+	&lt;!-- This is an LED display. --&gt;
+	&lt;g transform="translate(200, 150)"&gt;
+
+
+		&lt;!-- This is used to scale the size of the entire LED display. --&gt;
+		&lt;g transform="scale(4)"&gt;
+
+
+			&lt;!-- This is a decorative box for the display. --&gt;
+			&lt;g transform="translate(0, 0)" fill="black"&gt;
+				&lt;use xlink:href="#MB_DigitBezel"/&gt;
+
+			&lt;/g&gt;
+
+			&lt;!-- Set the appearance of the numbers. --&gt;
+			&lt;g transform="translate(-28, -12)" 
+						fill="red" stroke="black" stroke-width="0.25px"&gt;
+
+				&lt;!-- Digit 4 - Left most. --&gt;
+				&lt;g transform="translate(0, 0)"&gt;
+					&lt;use id="LEDA40" xlink:href="#MB_LED7SEG0"/&gt;
+					&lt;use id="LEDA41" xlink:href="#MB_LED7SEG1"/&gt;
+					&lt;use id="LEDA42" xlink:href="#MB_LED7SEG2"/&gt;
+					&lt;use id="LEDA43" xlink:href="#MB_LED7SEG3"/&gt;
+					&lt;use id="LEDA44" xlink:href="#MB_LED7SEG4"/&gt;
+					&lt;use id="LEDA45" xlink:href="#MB_LED7SEG5"/&gt;
+					&lt;use id="LEDA46" xlink:href="#MB_LED7SEG6"/&gt;
+					&lt;use id="LEDA47" xlink:href="#MB_LED7SEG7"/&gt;
+					&lt;use id="LEDA48" xlink:href="#MB_LED7SEG8"/&gt;
+					&lt;use id="LEDA49" xlink:href="#MB_LED7SEG9"/&gt;
+					&lt;!-- Decimal point. --&gt;
+				&lt;!-- 	&lt;circle cx="13px" cy="21px" r="1px" fill="red" /&gt; --&gt;
+				&lt;/g&gt;
+
+				&lt;!-- Digit 3. --&gt;
+				&lt;g transform="translate(15, 0)"&gt;
+					&lt;use id="LEDA30" xlink:href="#MB_LED7SEG0"/&gt;
+					&lt;use id="LEDA31" xlink:href="#MB_LED7SEG1"/&gt;
+					&lt;use id="LEDA32" xlink:href="#MB_LED7SEG2"/&gt;
+					&lt;use id="LEDA33" xlink:href="#MB_LED7SEG3"/&gt;
+					&lt;use id="LEDA34" xlink:href="#MB_LED7SEG4"/&gt;
+					&lt;use id="LEDA35" xlink:href="#MB_LED7SEG5"/&gt;
+					&lt;use id="LEDA36" xlink:href="#MB_LED7SEG6"/&gt;
+					&lt;use id="LEDA37" xlink:href="#MB_LED7SEG7"/&gt;
+					&lt;use id="LEDA38" xlink:href="#MB_LED7SEG8"/&gt;
+					&lt;use id="LEDA39" xlink:href="#MB_LED7SEG9"/&gt;
+					&lt;!-- Decimal point. --&gt;
+				&lt;!-- 	&lt;circle cx="13px" cy="21px" r="1px" fill="red" /&gt; --&gt;
+				&lt;/g&gt;
+
+				&lt;!-- Digit 2. --&gt;
+				&lt;g transform="translate(30, 0)"&gt;
+					&lt;use id="LEDA20" xlink:href="#MB_LED7SEG0"/&gt;
+					&lt;use id="LEDA21" xlink:href="#MB_LED7SEG1"/&gt;
+					&lt;use id="LEDA22" xlink:href="#MB_LED7SEG2"/&gt;
+					&lt;use id="LEDA23" xlink:href="#MB_LED7SEG3"/&gt;
+					&lt;use id="LEDA24" xlink:href="#MB_LED7SEG4"/&gt;
+					&lt;use id="LEDA25" xlink:href="#MB_LED7SEG5"/&gt;
+					&lt;use id="LEDA26" xlink:href="#MB_LED7SEG6"/&gt;
+					&lt;use id="LEDA27" xlink:href="#MB_LED7SEG7"/&gt;
+					&lt;use id="LEDA28" xlink:href="#MB_LED7SEG8"/&gt;
+					&lt;use id="LEDA29" xlink:href="#MB_LED7SEG9"/&gt;
+					&lt;!-- Decimal point. --&gt;
+					&lt;circle cx="13px" cy="21px" r="1px" fill="red" /&gt;
+				&lt;/g&gt;
+
+				&lt;!-- Digit 1 - right most. --&gt;
+				&lt;g transform="translate(45, 0)"&gt;
+					&lt;use id="LEDA10" xlink:href="#MB_LED7SEG0"/&gt;
+					&lt;use id="LEDA11" xlink:href="#MB_LED7SEG1"/&gt;
+					&lt;use id="LEDA12" xlink:href="#MB_LED7SEG2"/&gt;
+					&lt;use id="LEDA13" xlink:href="#MB_LED7SEG3"/&gt;
+					&lt;use id="LEDA14" xlink:href="#MB_LED7SEG4"/&gt;
+					&lt;use id="LEDA15" xlink:href="#MB_LED7SEG5"/&gt;
+					&lt;use id="LEDA16" xlink:href="#MB_LED7SEG6"/&gt;
+					&lt;use id="LEDA17" xlink:href="#MB_LED7SEG7"/&gt;
+					&lt;use id="LEDA18" xlink:href="#MB_LED7SEG8"/&gt;
+					&lt;use id="LEDA19" xlink:href="#MB_LED7SEG9"/&gt;
+					&lt;!-- Decimal point. --&gt;
+				&lt;!-- 	 	&lt;circle cx="13px" cy="21px" r="1px" fill="red" /&gt; --&gt;
+				&lt;/g&gt;
+
+			&lt;/g&gt;
+
+
+		&lt;/g&gt;	&lt;!-- Scale. --&gt;
+
+	&lt;/g&gt;
+
+</pre>
+
+<h3>Javascript</h3>
+
+<pre class="examples">
+
+	// Seven segment display demo.
+	var SevenSegA1 = new MB_LEDDigit(document, 
+			["LEDA10", "LEDA11", "LEDA12", "LEDA13", "LEDA14", "LEDA15", 
+			"LEDA16", "LEDA17", "LEDA18", "LEDA19"], 1);
+	MBHMIProtocol.AddToDisplayList(SevenSegA1, "LED7Segment", "read");
+
+	var SevenSegA2 = new MB_LEDDigit(document, 
+			["LEDA20", "LEDA21", "LEDA22", "LEDA23", "LEDA24", "LEDA25", 
+			"LEDA26", "LEDA27", "LEDA28", "LEDA29"], 2);
+	MBHMIProtocol.AddToDisplayList(SevenSegA2, "LED7Segment", "read");
+
+	var SevenSegA3 = new MB_LEDDigit(document, 
+			["LEDA30", "LEDA31", "LEDA32", "LEDA33", "LEDA34", "LEDA35", 
+			"LEDA36", "LEDA37", "LEDA38", "LEDA39"], 3);
+	MBHMIProtocol.AddToDisplayList(SevenSegA3, "LED7Segment", "read");
+
+	var SevenSegA4 = new MB_LEDDigit(document, 
+			["LEDA40", "LEDA41", "LEDA42", "LEDA43", "LEDA44", "LEDA45", 
+			"LEDA46", "LEDA47", "LEDA48", "LEDA49"], 4);
+	MBHMIProtocol.AddToDisplayList(SevenSegA4, "LED7Segment", "read");
+
+</pre>
+
+<h3>Javascript Library Functions:</h3>
+
+<p>The following Javascript library functions are useful for this feature:
+</p>
+
+<ul>
+	<li>MB_LEDDigit</li>
+</ul>
+
+<h3>How it works:</h3>
+
+<p>The 7 segment LED display shows a sequence of graphics which are shaped like
+the numeric digits in 7 segment LED displays. However, these are not actual
+fonts. They are simply graphic images created using SVG. Each digit position 
+uses a Javascript function to independently select one of 10 graphics which 
+form the digits. The Javascript functions simply show one graphic at a time
+while hiding the others for each position (using the same method as is used
+for hiding and display screens). This means that a 4 digit display requires 
+creating 4 Javacript objects (one for each digit).  
+</p>
+
+<p>The Javascript function for each digit must be given an ordered list of the 
+10 "id" labels for the SVG for the digit, and a digit position. The digit 
+position is used by the function to determine which decimal digit from the
+integer is to be displayed (e.g. '1' for the ones digit, '2' for the tens
+digit, '3' for the hundreds digit, etc.).     
+</p>
+
+<p>Updating 7 segment LED digits is quite graphically intensive, and excessive 
+use of them can cause a significant load on the computer used to display them. 
+It is not recommended to use a large number of them on rapidly changing data. 
+</p>
+
+<hr>
+
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - HMI Numeric and Text Display</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

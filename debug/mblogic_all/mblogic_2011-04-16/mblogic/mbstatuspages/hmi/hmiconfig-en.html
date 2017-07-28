@@ -1,0 +1,625 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - HMI Configuration</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for HMI</h3>
+		<ul>
+			<li><a href="/hmi/hmiconfig-en.html">HMI Server Configuration</a></li>
+			<li><a href="/hmi/alarmhistory-en.html">Alarm and Event History</a></li>
+			<li><a href="/hmi/hmibuilder/hmibuilder.html">MBLogic HMIBuilder</a></li>
+			<li><a href="/hmi/hmilib/hmilib.html">HMI Javascript Client Libraries</a></li>
+			<li><a href="/hmi/basicconcepts/basicconcepts.html">Basic Concepts</a></li>
+		</ul>
+
+	</div>
+
+
+
+
+<div id="datadisplay">
+
+<h1>Help - HMI Configuration</h1>
+
+<hr>
+
+<h2>Overview:<a name="Overview"></a></h2>
+
+<p>The HMI server is configured by means of a text file. The format and
+features of that configuration file are described here. 
+</p>
+
+<hr>
+
+<h2>Configuration:<a name="Configuration"></a></h2>
+
+<p>Server configuration is performed through a configuration file. This
+file holds all the tag names, addresses, and other definitions used
+by the server. Any tag names or addresses which are not contained in
+the configuration file are not recognised by the server. The configuration
+file is defined as follows:
+</p>
+
+<ul>
+	<li>One line per parameter. Each parameter must appear on a separate line.</li>
+	<li>Comments. Any line beginning with a "hash" ("#") character is a comment
+	and is ignored.</li>
+	<li>Sections. Sections begin a series of related configuration values. A section
+	name is an identifier which is enclosed by square brackets ("[ ]"). A section 
+	includes all items until the beginning of a new section, or until the end of 
+	the file. </li>
+	<li>Configuration items. Any line following the beginning of a section is considered
+	to be an item which belongs to that section (excluding comments). Configuration
+	items are key/value pairs in the format "key=value". </li>
+</ul> 
+
+
+<hr>
+
+	<h2>Configuring Reserved Tags:<a name="Configuring Reserved Tags"></a></h2>
+
+<p>Certain tags are defined as "reserved tags". These include tags for defining 
+the client version and the server id. The configuration system allows 
+"clientversion" and "serverid" to be defined by the server. For "clientversion" 
+there is one item "ver" which defines the version. For "serverid", there is also 
+one item "id" which allows the server id to be defined.
+</p>
+
+<pre class="examples">
+
+	# Client page(s) version.
+	[clientversion]
+	ver=Ver 0.1 Demo
+	
+	# Server ID.
+	[serverid]
+	id=demo test server
+
+</pre>
+
+
+<hr>
+
+<h2>Configuring Address Tags:<a name="Configuring Address Tags"></a></h2>
+
+<p>Any section name other than a reserved tag or events, alarms, or erplist is 
+considered to be an address tag. Each data table address which is to be 
+accessed via the HMI protocol must have an address tag.  
+</p>
+
+<p>Each address tag has a series of items defining the data table type, data
+table address, and various other characteristics. The number and type of items
+required will vary depending on the data type.
+</p>
+
+<h3>Data Types:</h3>
+<p>Data types determine the format for data which transmitted between the server
+and the client. The system will convert between integer and floating point if
+necessary. It does <em>not</em> determine server data table storage size
+or packing. The following data types are recognised for Modbus communications:
+</p>
+
+<ul>
+	<li>boolean - This is for bit (0/1 or true/false) values.</li>
+	<li>integer - Integer data types. </li>
+	<li>float - Floating point data types. </li>
+	<li>string - String data types. </li>
+</ul>
+
+<h3>Address Types:</h3>
+<p>Address types determine how data is stored in the server data table. This 
+includes the number of storage locations (e.g. registers) and the byte ordering.
+For numeric address types which occupy multiple registers, the least significant
+word is stored in the platform's native format. For Intel type CPUs (big endian), 
+the first (lower address) register. For string data types, characters are stored
+in consecutively increasing addresses.  
+The following data types are recognised for Modbus communications:
+</p>
+
+<table class="helptable"  border="1">
+	<tr>
+		<th><b>Address Type</b></th> 
+		<th><b>Data Type</b></th>
+		<th><b>Storage Location</b></th> 
+		<th><b># Storage Elements</b></th>
+		<th><b>Extended Data Type</b></th>
+	</tr>
+	
+	<tr>
+		<td>coil</td> 
+		<td>boolean</td> 
+		<td>coil</td> 
+		<td>1</td> 
+		<td>No</td> 
+	</tr>
+
+	<tr>
+		<td>discrete</td> 
+		<td>boolean</td> 
+		<td>discrete inputs</td> 
+		<td>1</td> 
+		<td>No</td> 
+	</tr>
+
+	<tr>
+		<td>holdingreg</td> 
+		<td>signed 16 bit integer</td> 
+		<td>holding register</td> 
+		<td>1</td> 
+		<td>No</td> 
+	</tr>
+
+	<tr>
+		<td>inputreg</td> 
+		<td>signed 16 bit integer</td> 
+		<td>input register</td> 
+		<td>1</td> 
+		<td>No</td> 
+	</tr>
+
+	<tr>
+		<td>holdingreg32</td> 
+		<td>signed 32 bit integer</td> 
+		<td>holding register</td> 
+		<td>2</td> 
+		<td>Yes</td> 
+	</tr>
+
+	<tr>
+		<td>inputreg32</td> 
+		<td>signed 32 bit integer</td> 
+		<td>input register</td> 
+		<td>2</td> 
+		<td>Yes</td> 
+	</tr>
+
+	<tr>
+		<td>holdingregfloat</td> 
+		<td>single precision (32 bit) floating point</td> 
+		<td>holding register</td> 
+		<td>2</td> 
+		<td>Yes</td> 
+	</tr>
+
+	<tr>
+		<td>inputregfloat</td> 
+		<td>single precision (32 bit) floating point</td> 
+		<td>input register</td> 
+		<td>2</td> 
+		<td>Yes</td> 
+	</tr>
+
+	<tr>
+		<td>holdingregdouble</td> 
+		<td>double precision (64 bit) floating point</td> 
+		<td>holding register</td> 
+		<td>4</td> 
+		<td>Yes</td> 
+	</tr>
+
+	<tr>
+		<td>inputregdouble</td> 
+		<td>double precision (64 bit) floating point</td> 
+		<td>input register</td> 
+		<td>4</td> 
+		<td>Yes</td> 
+	</tr>
+
+	<tr>
+		<td>holdingregstr8</td> 
+		<td>string</td> 
+		<td>holding register</td> 
+		<td>2 characters per register</td> 
+		<td>Yes</td> 
+	</tr>
+
+	<tr>
+		<td>inputregstr8</td> 
+		<td>string</td> 
+		<td>input register</td> 
+		<td>2 characters per register</td> 
+		<td>Yes</td> 
+	</tr>
+
+	<tr>
+		<td>holdingregstr16</td> 
+		<td>string</td> 
+		<td>holding register</td> 
+		<td>1 character per register</td> 
+		<td>Yes</td> 
+	</tr>
+
+	<tr>
+		<td>inputregstr16</td> 
+		<td>string</td> 
+		<td>input register</td> 
+		<td>1 character per register</td> 
+		<td>Yes</td> 
+	</tr>
+
+</table>
+
+
+
+<h3>Configuration Items:</h3>
+
+<p>Valid items are:
+</p>
+
+<ul>
+	<li>addrtype - This may be any valid address type.</li>
+	<li>memaddr - This must be a valid data table address.</li>
+	<li>datatype - This must be a valid supported HMI protocol address type.
+	See the section on supported data types for more information on which HMI 
+	protocol data types are supported. </li>
+	<li>range - This is the range limit applied to numeric values. Attempting to
+	write a value outside of this range will result in a "range" error. Range takes
+	two parameters separated by a comma. The first is the lower limit, and the
+	second is the upper limit. </li>
+	<li>scale - This is a scale factor which is applied to values written to or 
+	read from the data table. This takes two parameters, separated by a comma.
+	The first parameter is the offset (or "b") and the second parameter is the
+	gain (or "m"). When a value is read from the data table and sent to the client,
+	the forumla y=mx + b, where "x" is the register value and "y" is the value
+	sent to the client. When a value is written to a register, the formula
+	y=(x - b)/m is applied, where "x" is the value sent from the client, and
+	"y" is the value written to the data table. If the resulting address is
+	out of range, an error is returned. </li>
+	<li>strlen - This is the maximum length for strings. This is only valid for
+	string data types. </li>
+</ul>
+
+
+<h3>Defaults and Type Over-rides:</h3>
+<p>The data table address type is the primary configuration parameter. If the
+data type can be determined by the address type, then the data type will 
+automatically default to the correct type and any configured data type will
+be ignored. Any additional parameters which are not requird for that address
+type will also be ignored.  
+</p>
+
+<p>When "addrtype" is "discrete" or "coil":
+</p>
+
+<ul>
+	<li>The data type is assumed to be "boolean", and any configured 
+	"datatype" is ignored.</li>
+	<li>Any configured "range", "scale", or "strlen" are ignored.</li>
+</ul> 
+
+
+<p>When "addrtype" is a selection corresponding to an integer or floating
+point storage type:
+</p>
+
+<ul>
+	<li>If no datatype is configured, a default of "integer" is used.</li>
+	<li>If no range is configured, a default range of -32768 to 32767 is used.</li>
+	<li>if no scale is specified, a default offset of 0 and a default gain of 1
+	is used. </li>
+	<li>Any configured "strlen" is ignored.</li>
+</ul>
+
+
+<p>When "addrtype" is a selection corresponding to a string storage type:</p>
+<ul>
+	<li>The data type is assumed to be "string", and any other configured 
+	"datatype" is ignored.</li>
+	<li>Any configured "range" or "scale" are ignored.</li>
+</ul>
+
+
+<p><em><strong>Review the documentation on the system data table before 
+deciding which registers, coils, or discrete inputs to use. Remember that
+some registers are used to hold the coils and discrete inputs and should
+not be used as regular registers. Remember that some coils are reserved
+for resetting communications faults.
+</strong></em>
+</p>
+
+
+<hr>
+
+<h2>Configuring Events and Alarms Tags:
+	<a name="Configuring Events and Alarms Tags"></a></h2>
+
+<p>Events and alarms are defined in separate sections. The events section is
+indentified by the name "&amp;events". The alarms section is indentified by the 
+name "&amp;alarms". Since HMI protocol tags cannot start with an "&" character, 
+these will not conflict with any other permitted tag name.
+</p>
+
+<p>Each of the events and alarms sections has three types of items. The "base" 
+item is used to define an offset (or "base address") in the coils area of the 
+data table. The "base" address is added to the address configured for each 
+event or alarm. The events and alarms section must each define a base 
+address. This item takes the form "base=(integer)". For example, "base=1024".
+</p>
+
+<p>The second type of item is the associate of each event or alarm tag with
+a data table address. For any item other than "base" the key is assumed to be
+a data table address, and the value is assumed to be an event or alarm tag. The
+data table address is added to the "base" value to give the coil address which 
+is monitored for events or alarms. 
+</p>
+
+<p>The third type of data is the zone list. A "zone" is a tag which is used to
+identify a group of alarms or events. An event or alarm tag can be assigned to 
+any number of zones. The zone list is consists of any names following the alarm
+or even tag. Zone names must be separated by commas.  
+</p>
+
+<pre class="examples">
+
+	# Event definitions.
+	[&amp;events]
+	base=32300
+	0=PumpRunning, zone3
+	1=PumpStopped, zone3
+	2=Tank1Empty, zone1
+	3=Tank1Full, zone1, zone2
+	4=Tank2Empty, zone2
+	5=Tank2Full, zone2
+	
+	# Alarm definitions.
+	[&amp;alarms]
+	base=32400
+	0=PB1Alarm, zone1
+	1=PB2Alarm, zone2
+	2=PB3Alarm, zone3
+
+</pre>
+
+<hr>
+
+<h2>Configuring the ERP List</h2>
+
+<p>The ERP list defines which of the HMI address tags are visible to the ERP
+protocol. All of the tags listed in the ERP list must be existing address tags.
+</p>
+
+<p>The ERP list is identified by the section "&erplist". There are two items,
+"read" and "write". The tags referenced by "read" are available to the "read"
+ERP command. The tags referenced by "write" are available to the "write" ERP
+command.
+</p>
+
+<pre class="examples">
+
+	[&erplist]
+	read = PL1, PL4, PumpSpeedActual, PumpSpeedCmd, Tank1Level, Tank2Number
+	write = PB1, PumpSpeedCmd
+
+</pre>
+
+<hr>
+
+<h2>Examples:<a name="Examples"></a></h2>
+
+<pre class="examples">
+
+	# HMI config file.
+	# 08-Jan-2009.
+	
+	# Client page(s) version.
+	[clientversion]
+	ver=Ver 0.6 Demo
+	
+	# Server ID.
+	[serverid]
+	id=HMI demo server
+	
+	#########################################################
+
+	[PB1]
+	addrtype=coil
+	memaddr=0
+
+	[PL1]
+	addrtype=discrete
+	memaddr=0
+
+	[Tank1Level]
+	addrtype=holdingreg
+	memaddr=32000
+	datatype=integer
+	range=0, 100
+	scale=0, 1
+
+	[PumpSpeedCmd]
+	addrtype=holdingreg
+	memaddr=32002
+	datatype=integer
+	range = -1800, 1800
+	scale = 5, 0.10
+
+	[IntegerTagRO2]
+	addrtype=inputreg
+	memaddr=40002
+	datatype=integer
+	range = -32768, 32767
+	scale = 0, 1
+
+	[FloatTagRW1]
+	addrtype=holdingreg
+	memaddr=40001
+	datatype=float
+	range = -32768, 32767
+	scale = 0, 1
+
+	#########################################################
+
+	# 32 bit integer.
+	[Testholdingreg32]
+	addrtype=holdingreg32
+	memaddr=20000
+	datatype=integer
+	range = -2147483648, 2147483647
+	scale = 0, 1
+	
+	[Testinputreg32]
+	addrtype=inputreg32
+	memaddr=20000
+	datatype=integer
+	range = -2147483648, 2147483647
+	scale = 0, 1
+	
+	# Single precision floating point.
+	[Testholdingregfloat]
+	addrtype=holdingregfloat
+	memaddr=20010
+	datatype=float
+	range = -2147483648, 2147483647
+	scale = 0, 1
+	
+	[Testinputregfloat]
+	addrtype=inputregfloat
+	memaddr=20010
+	datatype=float
+	range = -2147483648, 2147483647
+	scale = 0, 1
+	
+	# Double precision floating point.
+	[Testholdingregdouble]
+	addrtype=holdingregdouble
+	memaddr=20020
+	datatype=float
+	range = -2147483648, 2147483647
+	scale = 0, 1
+	
+	[Testinputregdouble]
+	addrtype=inputregdouble
+	memaddr=20020
+	datatype=float
+	range = -2147483648, 2147483647
+	scale = 0, 1
+	
+	# String with 2 characters per register.
+	# The 'datatype' parameter can be omitted.
+	[Testholdingregstr8]
+	addrtype=holdingregstr8
+	memaddr=20030
+	datatype=string
+	strlen=8
+	
+	[Testinputregstr8]
+	addrtype=inputregstr8
+	memaddr=20030
+	datatype=string
+	strlen=8
+	
+	# String with one character per register.
+	# The 'datatype' parameter can be omitted.
+	[Testholdingregstr16]
+	addrtype=holdingregstr16
+	memaddr=20040
+	datatype=string
+	strlen=10
+	
+	[Testinputregstr16]
+	addrtype=inputregstr16
+	memaddr=20040
+	datatype=string
+	strlen=9
+
+	#########################################################
+
+	# Event definitions.
+	[&amp;events]
+	base=32300
+	0=PumpRunning, zone3
+	1=PumpStopped, zone3
+	2=Tank1Empty, zone1
+	3=Tank1Full, zone1, zone2
+	4=Tank2Empty, zone2
+	5=Tank2Full, zone2
+	
+	# Alarm definitions.
+	[&amp;alarms]
+	base=32400
+	0=PB1Alarm, zone1
+	1=PB2Alarm, zone2
+	2=PB3Alarm, zone3
+
+</pre>
+
+
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - HMI Configuration</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

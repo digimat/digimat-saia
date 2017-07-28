@@ -1,0 +1,304 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Boolean Input Instructions</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Soft Logic</h3>
+		<ul>
+			<li><a href="SLSpecs-en.html">Specifications</a></li>
+			<li><a href="SLAddressing-en.html">Addressing</a></li>
+			<li><a href="SLInstructions-en.html">Instructions</a></li>
+			<li><a href="SLPrograms-en.html">Programming</a></li>
+			<li><a href="SLConfig-en.html">Configuration</a></li>
+			<li><a href="SLStatus-en.html">Program Monitoring and Reloading</a></li>
+			<li><a href="SLMemSave-en.html">Data Table Save/Restore</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>Boolean Input Instructions</h1>
+
+<hr>
+
+<p>Boolean input instructions read a Boolean value from the data table or the logic 
+stack, and output the result to the logic stack.</p>
+
+<table class="helptable"  border="1">
+
+<tr>
+	<th>Instruction</th>
+	<th>Description</th>
+	<th># Params</th> 
+	<th>X</th>
+	<th>Y</th>
+	<th>C</th>
+	<th>T</th> 
+	<th>CT</th>
+	<th>SC</th>
+	<th>Symbol</th>
+</tr>
+
+<tr>
+	<td>AND</td>
+	<td>AND bit with top of logic stack</td>
+	<td>1</td>
+	<td>X</td> 
+	<td>X</td>
+	<td>X</td>
+	<td>X</td>
+	<td>X</td>
+	<td>X</td> 
+	<td><img src="BoolNO.png" width="50" height="50" alt="boolean NO"></td>
+</tr>
+
+<tr>
+	<td>ANDN</td>
+	<td>AND NOT bit with top of logic stack</td>
+	<td>1</td>
+	<td>X</td> 
+	<td>X</td>
+	<td>X</td>
+	<td>X</td>
+	<td>X</td>
+	<td>X</td>  
+	<td><img src="BoolNC.png" width="50" height="50" alt="boolean NC"></td>
+</tr>
+
+<tr>
+	<td>ANDSTR</td>
+	<td>AND top two values on logic stack</td>
+	<td>0</td>
+	<td></td> 
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td>	</td>
+</tr>
+
+<tr>
+	<td>OR</td>
+	<td>OR bit with top of logic stack</td>
+	<td>1</td>
+	<td>X</td> 
+	<td>X</td>
+	<td>X</td>
+	<td>X</td>
+	<td>X</td>
+	<td>X</td> 
+	<td><img src="BoolNO.png" width="50" height="50" alt="boolean NO"></td>
+</tr>
+
+<tr>
+	<td>ORN</td>
+	<td>OR NOT bit with top of logic stack</td>
+	<td>1</td>
+	<td>X</td> 
+	<td>X</td>
+	<td>X</td>
+	<td>X</td>
+	<td>X</td>
+	<td>X</td>   
+	<td><img src="BoolNC.png" width="50" height="50" alt="boolean NC"></td>
+</tr>
+
+<tr>
+	<td>ORSTR</td>
+	<td>OR top two values on logic stack</td>
+	<td>0</td>
+	<td></td> 
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td>	</td>
+</tr>
+
+<tr>
+	<td>STR</td>
+	<td>Store bit onto logic stack</td>
+	<td>1</td>
+	<td>X</td>
+	<td>X</td> 
+	<td>X</td>
+	<td>X</td>
+	<td>X</td>
+	<td>X</td> 
+	<td><img src="BoolNO.png" width="50" height="50" alt="boolean NO"></td>
+</tr>
+
+<tr>
+	<td>STRN</td>
+	<td>Store NOT bit onto logic stack</td>
+	<td>1</td>
+	<td>X</td> 
+	<td>X</td>
+	<td>X</td>
+	<td>X</td>
+	<td>X</td>
+	<td>X</td>   
+	<td><img src="BoolNC.png" width="50" height="50" alt="boolean NC"></td>
+</tr>
+
+</table>
+
+<p>Boolean input instructions have two types of input parameters, explicit
+and implicit. A Boolean input instruction will accept no more than one
+explicit parameter, and zero, one, or two implicit parameters. 
+</p>
+
+<ul>
+	<li>An explicit parameter is a Boolean (bit) address such as X, Y, C, etc.</li>
+	<li>An implicit parameter is the value on the top of the logic stack.</li>
+	<li>Some instructions use the top two logic stack values as implicit parameters.</li>
+</ul>
+
+<p>All Boolean input instructions output their result by modifying the logic stack.
+</p>
+
+<p>Boolean input instructions fall into three categories: AND, OR, and STORE. 
+</p>
+
+<ul>
+	<li>AND instructions perform a logical AND on two inputs and store the 
+	result by replacing the original value on the top of the logic stack with 
+	the new value. </li>
+	<li>OR instructions perform a logical OR on two inputs and store the result 
+	by replacing the original value on the top of the logic stack with the new value.</li>
+	<li>STORE instructions simply store a value on the top of the logic stack, 
+	pushing the original value further down on the stack without modifying it.</li>
+</ul>
+
+
+<p>All Boolean input instructions have both normal and "NOT" versions. 
+</p>
+
+<p>Example: </p>
+<pre class="examples">
+
+	NETWORK 1
+	STR X1
+	AND X2
+	OR X3
+	OUT Y1
+	
+	NETWORK 2
+	STRN C10
+	ANDN C11
+	ORN C12
+	OUT C21
+	
+	NETWORK 3
+	STR Y1
+	STR Y2
+	ANDSTR
+	STR Y3
+	ORSTR
+	OUT Y10
+
+</pre>
+
+
+</div>
+
+<div id="ladsampledisplay">
+
+<hr>
+
+<h2>Ladder Examples</h2>
+
+<p>The following shows examples in ladder format. Each example shows the IL
+code as comments, followed by the ladder equivalent.
+</p>
+
+<p>
+<img src="LadBool1.png" width="840" height="822" alt="boolean example 1">
+<img src="LadBool2.png" width="840" height="535" alt="boolean example 2">
+<img src="LadBool3.png" width="840" height="357" alt="boolean example 3">
+<img src="LadBool4.png" width="840" height="450" alt="boolean example 4">
+</p>
+
+</div>
+
+<hr>
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Soft Logic</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

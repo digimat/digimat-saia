@@ -1,0 +1,272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<link rel="icon" type="image/png" href="/systemicon.png" >
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/systempagelayout.css" type="text/css">
+<link rel="stylesheet" href="/pagenav.css" type="text/css">
+
+<!-- This controls the page display. -->
+<script type="text/javascript" src="/libdatapost.js"></script>
+<script type="text/javascript" src="/libstatutils.js"></script>
+
+
+<title>HMIServer System Control</title>
+
+</head>
+
+<body onload="pageinit();">
+
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo">
+			<span class="headtitle1">HMIServer </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statushmi.html">Config</a></li>
+			<li><a href="/statuscontrol.html">Control</a></li>
+			<li><a href="/datamsgsfield.html">Data Messages</a></li>
+			<li><a href="/hmiserverintro-en.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<div id="datadisplay">
+
+	<!-- This acts as a floating overlay mask which becomes visible as a
+		shutdown confirmation dialog.  -->
+	<div id="shutdownconfirm" class="datahide">
+		<div id="shutdownconfirmmask" class="shutdownmask" style="position:absolute;">
+		</div>
+		<div class="shutdownbuttonback" style="position:absolute;
+						width:375px;height:150px;left:300px;top:200px;">
+			<p>Are you sure you want to shut down the system?
+			</p>
+			<div class="shutdownbuttonpad">
+				<button class="shutdownbuttons" onclick="CancelShutdown();">Cancel</button>
+				<button class="shutdownbuttons" onclick="ShutdownSystem();">Shut Down</button>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Acknowledge shutdown.  -->
+	<div id="shutdownreply" class="datahide">
+		<div id="shutdownreplymask" class="shutdownmask" style="position:absolute;">
+		</div>
+		<div class="shutdownbuttonback" style="position:absolute;
+						width:375px;height:150px;left:300px;top:200px;">
+			<p>Shutting down ...
+			<img src="/spinner.gif" width="64" alt="spinner">
+			</p>
+		</div>
+	</div>
+
+	<!-- This acts as a floating overlay mask which becomes visible as a
+		restart confirmation dialog.  -->
+	<div id="restartconfirm" class="datahide">
+		<div id="restartconfirmmask" class="shutdownmask" style="position:absolute;">
+		</div>
+		<div class="shutdownbuttonback" style="position:absolute;
+						width:375px;height:150px;left:300px;top:200px;">
+			<p>Are you sure you want to reload the HMI configuration?
+			</p>
+			<div class="shutdownbuttonpad">
+				<button class="shutdownbuttons" onclick="CancelRestart();">Cancel</button>
+				<button class="shutdownbuttons" onclick="RestartSystem();">Reload</button>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Acknowledge restart.  -->
+	<div id="restartreply" class="datahide">
+		<div id="restartreplymask" class="shutdownmask" style="position:absolute;">
+		</div>
+		<div class="shutdownbuttonback" style="position:absolute;
+						width:375px;height:150px;left:300px;top:200px;">
+			<p>Reloading ...
+			<img src="/spinner.gif" width="64" alt="spinner">
+			</p>
+		</div>
+	</div>
+
+	<hr>
+
+	
+	<h1>HMIServer Control</h1>
+
+	<hr>
+	
+	<!-- ============================================================  -->
+
+
+	<p>Reload the configuration or shutdown the HMI server system.
+	</p>
+	<!-- This will request a configuration reload or system shutdown. -->
+	<p>
+		<button class="controlbuttons" onclick="SystemRestart();">Reload Config</button>
+		<button class="controlbuttons" onclick="SystemShutdown();">Shutdown System</button>
+	</p> 
+
+	<hr>
+
+
+	<!-- ============================================================  -->
+
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>System Control</p>
+</div>
+
+</div>
+
+<!-- This is the code for creating the data in the page. -->
+
+	<script type="text/javascript">
+
+	// ===============================================================
+
+	// These take care of updating the screen.
+	var libutils = new libstatutils();
+	// Handles communications with the server.
+	var host = window.location.hostname;
+	var port = window.location.port;
+
+
+	// Set a dialog screen mask to the actual window size.
+	function ResizeMask(maskid) {
+		var datadisplay = document.getElementById("datadisplay");
+		var screenmask = document.getElementById(maskid);
+		screenmask.style.width = datadisplay.clientWidth + "px";
+		screenmask.style.height = datadisplay.clientHeight + "px";
+	}
+
+
+	// ===============================================================
+
+	// Shut down the complete system.
+	function SystemShutdown() {
+		// Resize the dialog masks to the current window size.
+		ResizeMask("shutdownconfirmmask");
+		ResizeMask("shutdownreplymask");
+
+		// Display the shut down question.
+		libutils.ShowPageArea("shutdownconfirm");
+	}
+
+	// Cancel a shut down request.
+	function CancelShutdown() {
+		libutils.HidePageArea("shutdownconfirm");
+	}
+
+
+	// Shut down the complete system.
+	function ShutdownSystem() {
+		libutils.HidePageArea("shutdownconfirm");
+
+		libutils.ShowPageArea("shutdownreply");
+
+		var shutcmd = new StatusDataSend(host, port, ShutDownAccepted);
+		shutcmd.SendPostRequest("/statdata/syscontrol.js", {"mblogicsyscmd" : "shutdown"});
+
+		// Start, after a short delay. 
+		window.setTimeout("ShutdownAckDone();", 5000);
+	}
+
+	// Clear the shutdown acknowledge message after a time delay.
+	function ShutdownAckDone() {
+		libutils.HidePageArea("shutdownreply");
+	}
+
+	// This is the response from the server for the shutdown command.
+	function ShutDownAccepted(responseobj) {
+		// We aren't doing anything with the data at this time.
+	}
+
+	// ===============================================================
+
+
+	// Restart down the complete system.
+	function SystemRestart() {
+		// Resize the dialog masks to the current window size.
+		ResizeMask("restartconfirmmask");
+		ResizeMask("restartreplymask");
+
+		// Display the restart question.
+		libutils.ShowPageArea("restartconfirm");
+	}
+
+	// Cancel a restart request.
+	function CancelRestart() {
+		libutils.HidePageArea("restartconfirm");
+	}
+
+
+	// Restart the complete system.
+	function RestartSystem() {
+		libutils.HidePageArea("restartconfirm");
+
+		libutils.ShowPageArea("restartreply");
+
+		var restartcmd = new StatusDataSend(host, port, RestartAccepted);
+		restartcmd.SendPostRequest("/statdata/syscontrol.js", {"mblogicsyscmd" : "reloadhmiconfig"});
+
+		// Start, after a short delay. 
+		window.setTimeout("RestartAckDone();", 7000);
+	}
+
+	// Clear the restart acknowledge message after a time delay.
+	function RestartAckDone() {
+		libutils.HidePageArea("restartreply");
+	}
+
+	// This is the response from the server for the reestart command.
+	function RestartAccepted(responseobj) {
+		// We aren't doing anything with the data at this time.
+	}
+
+	// ===============================================================
+
+	// Start up and initialisation.
+	function pageinit() {
+	}
+
+	// ===============================================================
+
+	</script>
+
+
+</body>
+
+</html>
+
+<!-- Copyright 2008 - 2010. Michael Griffin 
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License 
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>. 
+-->
+

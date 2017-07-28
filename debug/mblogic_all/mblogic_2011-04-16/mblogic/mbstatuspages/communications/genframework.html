@@ -1,0 +1,405 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Generic Client Framework</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Communications</h3>
+		<ul>
+			<li><a href="serverconfig-en.html">Server Communications Configuration</a></li>
+			<li><a href="clienconfig-en.html">Client Communications Configuration</a></li>
+			<li><a href="genericclientsprotocols.html">Generic Client Protocols</a></li>
+			<li><a href="ComsFaults-en.html">Communications Faults</a></li>
+			<li><a href="ComsMonitor-en.html">Communications Monitoring and Trouble 
+				Shooting</a></li>
+			<li><a href="ComsExpRegs-en.html">Expanded Register Map</a></li>
+			<li><a href="ModbusSupport-en.html">Modbus/TCP Server and 
+				Client Protocol</a></li>
+			<li><a href="MBRest-en.html">MB-REST Web Service Protocol</a></li>
+			<li><a href="hmiprotocol-en.html">HMI Protocol</a></li>
+			<li><a href="genericclients.html">Generic Clients</a></li>
+			<li><a href="genframework.html">Generic Client Framework</a></li>
+			<li><a href="genuserprotocol.html">Generic Client User Protocols</a></li>
+			<li><a href="ModbusBasics-en.html">Modbus/TCP Basics</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>Help - Generic Client Framework</h1>
+
+<hr>
+
+<h2>Overview</h2> 
+
+<p>This section describes the "generic client framework". This is a library
+which is used to help create custom generic clients. The generic client 
+framework handles communications between the generic client and the main
+system. It also operates the "scan" cycle which calls the user protocol code
+on a regular schedule. 
+</p>
+
+<p><em><strong>Generic clients are experimental at this stage, and the 
+interface is subject to change. If you intend to make use of this feature
+at this stage in its development, be prepared to make minor modifications to 
+your custom generic clients in future versions. </strong></em>
+</p>
+
+<hr>
+
+<h2>Framwork API</h2>
+
+<p>The generic framework library is located in a file called 
+"<strong>GenClientLib.py</strong>". This file contains the following classes:
+</p>
+
+<ul>
+	<li>GenClientController - Handles server communications and scan 
+		scheduling.</li>
+	<li>GetOptions - Optional class for reading command line options.</li>
+</ul>
+
+<h3>GenClientController</h3>
+
+<p>GenClientController handles communications with the generic interface server,
+and scheduling of the user protocol code scan.
+</p>
+
+
+<pre class="examples">
+
+	# Initialise the generic client handler.
+	gencontrol = GenClientLib.GenClientController(port, clientname, UserClient)
+
+</pre>
+
+<p>The initialisation parameters are:
+</p>
+
+<ul>
+	<li>port - The port number of the server. This will have been passed to the
+		client as a command line parameter.</li>
+	<li>clientname - The name of the client instance. This will have been 
+		passed to the client as a command line parameter.</li>
+	<li>UserClient - This is a user written class which implements the actual
+		generic client logic.</li>
+</ul>
+
+<h3>StatCodes</h3>
+
+<p>StatCodes formats command status messages. It expects the following 
+parameters:
+</p>
+
+<ul>
+	<li>cmd (string) - A command name.</li>
+	<li>statcode (string) - A command status code.</li>
+</ul>
+
+<p>It returns a tuple containing a command status message in the format
+expected by the status reporting system on the server.
+</p>
+
+
+<h3>GetOptions</h3>
+
+<p>GetOptions reads and analyses the command line parameters which are set by
+the system when it starts a client. These parameters are:
+</p>
+
+<ul>
+	<li>p - The port number.</li>
+	<li>c - The client name.</li>
+	<li>d - The start delay time (in seconds).</li>
+</ul>
+
+<p>The class contains one method ("GetStartParams") which returns the 
+port, client name, and delay.
+</p>
+
+
+<pre class="examples">
+
+	# Get the command line parameter options.
+	CmdOpts = GenClientLib.GetOptions()
+	port, clientname, startdelay = CmdOpts.GetStartParams()
+
+</pre>
+
+<p>"GetStartParams" is a convenience class and is not an essential part of the
+generic client framework. Alternate implementations may be used if a generic
+client requires more command line parameters.
+</p>
+
+<hr>
+
+<h2>User Protocol Class</h2>
+
+
+<p>The generic client framework expects a class which implements the actual 
+client communications. This class must include the following methods:
+</p>
+
+<ul>
+	<li>GetClientMsgs - This returns the client messages.</li>
+	<li>GetStatus - This returns the status.</li>
+	<li>SetParams - This is used to set the configuration parameters.</li>
+	<li>NextCommand - This is called each scan to run the main client code 
+		loop.</li>
+</ul>
+
+<p>Writing user protocol classes is discussed in another section.
+</p>
+
+<hr>
+
+<h2>Signal Handlers</h2>
+
+<p>If you wish to be able to shut down the user client gracefully using a
+keyboard interrupt, you will need to include signal handlers.
+</p>
+
+
+<pre class="examples">
+
+# Signal handler.
+def SigHandler(signum, frame):
+	print('\nOperator terminated generic client %s at %s' % (clientname, time.ctime()))
+	gencontrol.StopClient()
+
+def SigTermHandler(signum, frame):
+	print('\Received terminate signal for generic client %s at %s' % (clientname, time.ctime()))
+	gencontrol.StopClient()
+
+
+
+# Initialise the signal handler.
+signal.signal(signal.SIGINT, SigHandler)
+signal.signal(signal.SIGTERM, SigTermHandler)
+
+</pre>
+
+<hr>
+
+<h2></h2>
+
+
+<hr>
+
+<h2>Example</h2>
+
+<p>The following shows a simple example with the actual protocol 
+implementation left out.
+</p>
+
+<pre class="examples">
+
+	#!/usr/bin/python
+	
+	"""
+	This file should contain the user routines used to help implement the protocol
+	specific generic client functions.
+	"""
+	
+	# These are some example imports, which may not be required in another implementation.
+	import time
+	import urllib2
+	import signal
+	import json
+	
+	# This import handles the generic client framework.
+	import GenClientLib
+	
+	############################################################
+	class UserClient:
+		"""
+		"""
+	
+		########################################################
+		def __init__(self):
+			"""The initialisation code goes here.
+			"""
+			# This formats the command status messages
+			self._StatusMsgs = GenClientLib.StatCodes()
+	
+	
+		########################################################
+		def GetClientMsgs(self):
+			"""Return the list of client messages.
+			"""
+			return self._ClientMsgs
+	
+	
+		########################################################
+		def GetStatus(self):
+			"""Return the current status. 
+			"""
+			return self._ConnectStatus, cmdstat
+	
+	
+		########################################################
+		def SetParams(self, hostconfig, clientconfig, cmdlist):
+			"""Accept the configuration parameters and validate them.
+			"""
+			# Do soemthing with these parameters ...
+			pass
+	
+	
+	
+		########################################################
+		def NextCommand(self, readtable, servercmd):
+			"""This should execute the next command, whatever it is. This
+			is called regularly by GenClient.
+			"""
+	
+			data = {}
+			# First check if we've got a good parameter set.
+			if self._ConfigOK:
+	
+				# Various details go here...
+	
+				# Set the connection status.
+				self._ConnectStatus = 'running'
+	
+				nextpoll = 0.3
+	
+			else:
+				# Set the connection status.
+				self._ConnectStatus = 'stopped'
+	
+				nextpoll = 1.0
+	
+			return data, nextpoll
+	
+	
+	############################################################
+	
+	
+	
+	############################################################
+	# Signal handler.
+	def SigHandler(signum, frame):
+		print('\nOperator terminated generic client %s at %s' % (clientname, time.ctime()))
+		gencontrol.StopClient()
+	
+	def SigTermHandler(signum, frame):
+		print('\Received terminate signal for generic client %s at %s' % (clientname, time.ctime()))
+		gencontrol.StopClient()
+	
+	
+	
+	# Initialise the signal handler.
+	signal.signal(signal.SIGINT, SigHandler)
+	signal.signal(signal.SIGTERM, SigTermHandler)
+	
+	
+	############################################################
+	
+	# Get the command line parameter options.
+	CmdOpts = GenClientLib.GetOptions()
+	port, clientname, startdelay = CmdOpts.GetStartParams()
+	
+	
+	# Initialise the generic client handler.
+	gencontrol = GenClientLib.GenClientController(port, clientname, UserClient)
+	
+	
+	print('\n\nStarting generic client %s at %s' % (clientname, time.ctime()))
+	
+	# Delay the specified number of seconds. This will allow the main
+	# program to start up before trying to contact it.
+	time.sleep(startdelay)
+	
+	
+	# Start the generic client.
+	gencontrol.StartClient()
+	
+	# This doesn't get executed until the client halts.
+	print('\n\nGeneric client %s halted at %s' % (clientname, time.ctime()))
+
+
+</pre>
+
+
+<hr>
+
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Generic Client Framework</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2010. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

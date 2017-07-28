@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<link rel="icon" type="image/png" href="/systemicon.png" >
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/statuspagelayout.css" type="text/css">
+
+<!-- This controls the page display. -->
+<script type="text/javascript" src="/statuspages/libmonitor.js"></script>
+<script type="text/javascript" src="/statuspages/libdatamulti.js"></script>
+<script type="text/javascript" src="/statuspages/libstatutils.js"></script>
+<script type="text/javascript" src="/statuspages/libtexts_en.js"></script>
+
+<!-- Native JSON doesn't seem to be working in Opera 10.10. -->
+<script type="text/javascript" src="/statuspages/json2.js"></script>
+
+
+<title>System Monitor</title>
+
+</head>
+
+<body onload="pageinit();">
+
+
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo">
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+
+<div id="datadisplay">
+
+	
+<h1>System Monitor</h1>
+
+<hr>
+	
+	<p>
+		<button id="monitorbutton" class="controlbuttons" 
+							onclick="EnableUpdate();">Monitor</button>
+		<button id="stopbutton"  class="controlbuttons" 
+							onclick="DisableUpdate();">Stop</button>
+		<button id="singlebutton"  class="controlbuttons" 
+							onclick="SingleScan();">Single Scan</button>
+	</p>
+
+<hr>
+
+<div class="monitorlcolumn">
+
+	<h2>Program Run Status</h2>
+
+	<table class="displaytable"  border="1">
+		<tr> <th>Program run mode:</th>		<td id="runmode"></td> </tr>
+		<tr> <th>Number of instructions</th><td class="t1" id="plcinstrcount"></td> </tr>
+	</table>
+</div>
+
+<div class="monitorrcolumn">
+	<h2>Platform Data</h2>
+	
+	<p>Additional server platform information can be found here: 
+	<a href="/statuspages/statusplatform.html">Platform Data</a>
+	</p>
+
+</div>
+
+<div class="monitorclear"></div>
+
+<div class="monitorlcolumn">
+	<h2>Scan Times</h2>
+	
+	<table class="displaytable"  border="1">
+		<tr> <th>Scan Count</th>								<td class="t2" id="scancount"></td> </tr>
+		<tr> <th>Current Scan Repeat Time (msec)</th>	<td class="t1" id="scantime"></td> </tr>
+		<tr> <th>Minimum Scan Repeat Time (msec)</th>	<td class="t2" id="minscan"></td> </tr>
+		<tr> <th>Maximum Scan Repeat Time (msec)</th>	<td class="t1" id="maxscan"></td> </tr>
+	</table>
+</div>
+
+<div class="monitorrcolumn">
+	<h2>Program Exit Codes</h2>
+	 
+	<table class="displaytable"  border="1">
+		<tr> <th>Exit Code</th>			<td class="t2" id="plcexitcode"></td> </tr>
+		<tr> <th>Exit Subroutine</th>	<td class="t1" id="plcexitsubr"></td> </tr>
+		<tr> <th>Exit Rung</th>			<td class="t2" id="plcexitrung"></td> </tr>
+	</table>
+</div>
+
+<div class="monitorclear"></div>
+
+<hr>
+
+<h2>Communications</h2>
+
+<div class="monitorlcolumn">
+
+	<h3>Server Status</h3>
+
+	<!-- Communications server status. -->
+
+	<table class="displaytable"  border="1" id="servertable">
+		<tr>
+		<th>Server Name</th>
+		<th>Connections</th>
+		<th>Rate</th>
+	 	</tr>
+		<!-- Data will be inserted here by the Javscript. -->
+	</table>
+
+	<p>(Rate is requests per minute)
+	</p>
+</div>
+
+
+<!-- The list of active clients goes here.  -->
+
+<div class="monitorrcolumn">
+
+	<h2>Client Status</h2>
+
+	<table class="displaytable"  border="1" id="clienttable">
+		<tr> 
+		<th>Connection Name</th> 
+		<th>Connection Status</th> 
+		<th>Command Status</th>
+		<th>View Log</th>
+		</tr>
+		<!-- Data will be inserted here by the Javscript. -->
+	</table>
+
+</div>
+
+
+<div class="monitorclear"></div>
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>System Monitor</p>
+</div>
+
+</div>
+
+<!-- This is the code for creating the data in the page. -->
+
+	<script type="text/javascript">
+
+
+	// Disable the other extra control buttons.
+	function DisableButtons() {
+		var monbut = document.getElementById("monitorbutton");
+		monbut.setAttribute("disabled", "disabled");
+		var singlebut = document.getElementById("singlebutton");
+		singlebut.setAttribute("disabled", "disabled");
+	}
+
+
+	// Make sure the control buttons are enabled after a page refresh.
+	function EnableButtons() {
+		// Enable the other buttons.
+		var monbut = document.getElementById("monitorbutton");
+		monbut.removeAttribute("disabled");
+		var singlebut = document.getElementById("singlebutton");
+		singlebut.removeAttribute("disabled");
+	}
+
+
+	// These take care of updating the screen.
+	var libutils = new libstatutils();
+	var CallBackList = [];
+	CallBackList[0] = new PLCRunStatus(libutils, TextDefsPLCStat);
+	var ComStatusHandler = new ComStatus(libutils, TextDefsComCmds, TextDefsConnections);
+	CallBackList[1] = ComStatusHandler;
+
+	var URLList = ["/statdata/plcrundata.js",
+						"/statdata/commsmonitor.js"];
+
+
+	// Handles communications with the server.
+	var host = window.location.hostname;
+	var port = window.location.port;
+	var ServerData = new StatusDataIFMulti(host, port, URLList, CallBackList); 
+
+
+
+	// Enable the input controls.
+	EnableButtons();
+	// Controls auto-scan.
+	var UpdateEnabled = false;
+
+	// Enables auto-scan.
+	function EnableUpdate() {
+		UpdateEnabled = true;
+
+		// Disable the extra control buttons.
+		DisableButtons();
+
+		// Start scanning.
+		Update();
+	}
+
+	// Disables auto-scan.
+	function DisableUpdate() {
+		UpdateEnabled = false;
+		EnableButtons();
+	}
+
+	// Triggers a single scan.
+	function SingleScan() {
+		Update();
+	}
+
+	// Run an update cycle.
+	function Update() {
+
+		// Get the soft logic data table values and display them.
+		ServerData.SendGetRequest();
+
+		// Schedule the next scan if auto-scanning is enabled. 
+		if (UpdateEnabled) {
+			window.setTimeout("Update()", 1000);
+		}
+	}
+
+
+
+	// Start up and initialisation.
+	function pageinit() {
+		// Scan once on start up after a delay to let things settle.
+		window.setTimeout("Update()", 1500);
+	}
+
+	</script>
+
+
+</body>
+
+</html>
+
+
+<!-- Copyright 2008 - 2010. Michael Griffin 
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License 
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>. 
+-->

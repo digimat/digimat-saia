@@ -1,0 +1,715 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Soft Logic Instructions</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Soft Logic</h3>
+		<ul>
+			<li><a href="SLSpecs-en.html">Specifications</a></li>
+			<li><a href="SLAddressing-en.html">Addressing</a></li>
+			<li><a href="SLInstructions-en.html">Instructions</a></li>
+			<li><a href="SLPrograms-en.html">Programming</a></li>
+			<li><a href="SLConfig-en.html">Configuration</a></li>
+			<li><a href="SLStatus-en.html">Program Monitoring and Reloading</a></li>
+			<li><a href="SLMemSave-en.html">Data Table Save/Restore</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>Help - Soft Logic Instructions</h1>
+
+<hr>
+<h2>Overview:<a name="Overview"></a></h2>
+
+<p>This page provides a description of each instruction list (IL) instruction
+used in the Ck soft logic library. "Ck" is a soft logic library which is modeled 
+closely on the Koyo "Click" PLC. The Ck library is not intended to provide an 
+exact emulation of the "Click". Rather it is intended to provide an instruction 
+set which is similar enough to the "Click" that someone who is already familiar 
+with the "Click" will understand the "Ck" library fairly easily.
+</p>
+
+<p>The most significant difference between the two systems is the Koyo "Click"
+does not have a documented IL instruction set. The IL instructions used below
+have been interpolated from a combination of the ladder instructions used
+by the "Click", and the IL instructions used in the Koyo DL-205. 
+</p>
+
+<p>This document is not intended as a primer in PLC programming in general or 
+in IL programming. The reader is assumed to be already familiar with PLC 
+programming concepts, conventions, and terminology.
+</p>
+
+<hr>
+
+<h2>Instructions:<a name="Instructions"></a></h2>
+
+<p>Select (click on) a heading for details on any of the following instructions.
+</p>
+
+<h3><a href="SLInstrLogicStack.html">The Logic Stack</a></h3>
+<p>An explanation of the logic stack, and how it is used when executing
+boolean instructions.
+</p>
+
+<p><a href="SLInstrLogicStack.html">more details ...</a>
+</p>
+
+<h3><a href="SLInstrFormat.html">Program Formatting Instructions</a></h3>
+
+<ul>
+	<li><strong>//</strong> - Comments.</li>
+	<li><strong>Network</strong> - Starting rungs.</li>
+</ul>
+
+<p><a href="SLInstrFormat.html">more details ...</a>
+</p>
+
+<h3><a href="SLInstrBoolean.html">Boolean Input Instructions</a></h3>
+
+<ul>
+	<li><strong>AND</strong> - AND bit with top of logic stack.</li>
+	<li><strong>ANDN</strong> - AND NOT bit with top of logic stack.</li>
+	<li><strong>ANDSTR</strong> - AND top two values on logic stack.</li>
+	<li><strong>OR</strong> -  bit with top of logic stack.</li>
+	<li><strong>ORN</strong> - OR NOT bit with top of logic stack.</li>
+	<li><strong>ORSTR</strong> - OR top two values on logic stack.</li>
+	<li><strong>STR</strong> - Store bit onto logic stack.</li>
+	<li><strong>STRN</strong> - Store NOT bit onto logic stack.</li>
+</ul>
+
+<p><a href="SLInstrBoolean.html">more details ...</a>
+</p>
+
+
+<h3><a href="SLInstrEdge.html">Edge Contact Instructions</a></h3>
+
+<ul>
+	<li><strong>ANDND</strong> - AND negative differential.</li>
+	<li><strong>ANDPD </strong> - AND positive differential.</li>
+	<li><strong>ORND </strong> - OR negative differential.</li>
+	<li><strong>ORPD</strong> - OR positive differential.</li>
+	<li><strong>STRND</strong> - STORE negative differential.</li>
+	<li><strong>STRPD </strong> - STORE positive differential.</li>
+</ul>
+
+<p><a href="SLInstrEdge.html">more details ...</a>
+</p>
+
+
+<h3><a href="SLInstrBoolOutput.html">Boolean Output Instructions</a></h3>
+
+<ul>
+	<li><strong>OUT</strong> - Output logic stack to bit.</li>
+	<li><strong>OUT</strong> - Output logic stack to multiple bits.</li>
+	<li><strong>PD</strong> - Output logic stack one shot.</li>
+	<li><strong>PD</strong> - Output logic stack one shot to multiple bits.</li>
+	<li><strong>RST</strong> - Reset bit if logic stack true.</li>
+	<li><strong>RST</strong> - Reset multiple bits if logic stack true.</li>
+	<li><strong>SET</strong> - Set bit if logic stack true.</li>
+	<li><strong>SET</strong> - Set multiple bits if logic stack true.</li>
+</ul>
+
+<p><a href="SLInstrBoolOutput.html">more details ...</a>
+</p>
+
+
+<h3><a href="SLInstrCompare.html">Comparison Instructions</a></h3>
+
+<ul>
+	<li><strong>ANDE</strong> - AND if parm1 equals param2.</li>
+	<li><strong>ANDGE</strong> - AND if parm1 >= parm2.</li>
+	<li><strong>ANDGT</strong> - AND if parm1 > parm2.</li>
+	<li><strong>ANDLE</strong> - AND if parm1 <= parm2.</li>
+	<li><strong>ANDLT</strong> - AND if parm1 < parm2.</li>
+	<li><strong>ANDNE</strong> - AND if parm1 is not equal to parm2.</li>
+	<li><strong>ORE</strong> - OR if parm1 equals parm2.</li>
+	<li><strong>ORGE</strong> - OR if parm1 >= parm2.</li>
+	<li><strong>ORGT</strong> - OR if parm1 > parm2.</li>
+	<li><strong>ORLE</strong> - OR if parm1 <= parm2.</li>
+	<li><strong>ORLT</strong> - OR if parm1 < parm2.</li>
+	<li><strong>ORNE</strong> - OR if parm1 is not equal to parm2.</li>
+	<li><strong>STRE</strong> - STR if parm1 equals parm2.</li>
+	<li><strong>STRGE</strong> - STR if parm1 >= parm2.</li>
+	<li><strong>STRGT</strong> - STR if parm1 > parm2.</li>
+	<li><strong>STRLE</strong> - STR if parm1 <= parm2.</li>
+	<li><strong>STRLT</strong> - STR if parm1 < parm2.</li>
+	<li><strong>STRNE</strong> - STR if parm1 is not equal to parm2.</li>
+</ul>
+
+<p><a href="SLInstrCompare.html">more details ...</a>
+</p>
+
+
+<h3><a href="SLInstrControl.html">Program Control Instructions</a></h3>
+
+<ul>
+	<li><strong>END</strong> - Program end .</li>
+	<li><strong>ENDC</strong> - Program end conditional.</li>
+	<li><strong>FOR</strong> - For/next loop.</li>
+	<li><strong>NEXT</strong> - Next in For/next loop.</li>
+	<li><strong>SBR</strong> - Define a subroutine.</li>
+	<li><strong>CALL</strong> - Call subroutine.</li>
+	<li><strong>RT</strong> - Return from subroutine.</li>
+	<li><strong>RTC</strong> - Return from subroutine conditional.</li>
+</ul>
+
+<p><a href="SLInstrControl.html">more details ...</a>
+</p>
+
+
+<h3><a href="SLInstrCounterTimer.html">Counter and Timer Instructions</a></h3>
+
+<ul>
+	<li><strong>CNTU</strong> - Count up.</li>
+	<li><strong>CNTD</strong> - Count down.</li>
+	<li><strong>UDC</strong> - Up/down counter.</li>
+	<li><strong>TMR</strong> - On delay timer.</li>
+	<li><strong>TMRA</strong> - On delay accumulating timer.</li>
+	<li><strong>TMROFF</strong> - Off delay timer.</li>
+</ul>
+
+<p><a href="SLInstrCounterTimer.html">more details ...</a>
+</p>
+
+
+<h3><a href="SLInstrCopy.html">Copy Instructions</a></h3>
+
+<ul>
+	<li><strong>COPY</strong> - Copy a single value to a register.</li>
+	<li><strong>CPYBLK</strong> - Copy a block of data.</li>
+	<li><strong>FILL</strong> - Fill a block of data.</li>
+	<li><strong>PACK</strong> - Pack bits into a register.</li>
+	<li><strong>UNPACK</strong> - Unpack bits from a register.</li>
+</ul>
+
+<p><a href="SLInstrCopy.html">more details ...</a>
+</p>
+
+
+<h3><a href="SLInstrSearch.html">Search Instructions</a></h3>
+
+<ul>
+	<li><strong>FINDEQ</strong> - Search table for equal to.</li>
+	<li><strong>FINDGE</strong> - Search table for >= .</li>
+	<li><strong>FINDGT</strong> - Search table for > .</li>
+	<li><strong>FINDLE</strong> - Search table for <= .</li>
+	<li><strong>FINDLT</strong> - Search table for < .</li>
+	<li><strong>FINDNE</strong> - Search table for not equal.</li>
+	<li><strong>FINDIEQ</strong> - Incremental search table for equal to.</li>
+	<li><strong>FINDIGE</strong> - Incremental search table for >= .</li>
+	<li><strong>FINDIGT</strong> - Incremental search table for > .</li>
+	<li><strong>FINDILE</strong> - Incremental search table for <= .</li>
+	<li><strong>FINDILT</strong> - Incremental search table for < .</li>
+	<li><strong>FINDINE</strong> - Incremental search table for not equal.</li>
+</ul>
+
+<p><a href="SLInstrSearch.html">more details ...</a>
+</p>
+
+
+<h3><a href="SLInstrShiftReg.html">Shift Register Instructions</a></h3>
+
+<ul>
+	<li><strong>SHFRG</strong> - Shift register.</li>
+</ul>
+
+<p><a href="SLInstrShiftReg.html">more details ...</a>
+</p>
+
+
+<h3><a href="SLInstrMath.html">Math Instructions</a></h3>
+
+<ul>
+	<li><strong>MATHDEC</strong> - Decimal math.</li>
+	<li><strong>MATHHEX</strong> - Hexadecimal math.</li>
+	<li><strong>SUM</strong> - Sum a range of registers.</li>
+</ul>
+
+
+<p><a href="SLInstrMath.html">more details ...</a>
+</p>
+
+
+<hr>
+
+<h2>Alphabetic Instruction Summary:<a name="Alphabetic Instruction Summary">
+	</a></h2>
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Instruction</th>
+	<th>Instr Type</th>
+	<th>Description</th>
+</tr>
+<tr>
+	<td>//</td>
+	<td>Program Formatting</td>
+	<td>Comment line</td>
+</tr>
+<tr>
+	<td>AND</td>
+	<td>Boolean input</td>
+	<td>AND bit with top of logic stack</td>
+</tr>
+<tr>
+	<td>ANDE</td>
+	<td>Compare</td>
+	<td>AND if parm1 equals param2</td>
+</tr>
+<tr>
+	<td>ANDGE</td>
+	<td>Compare</td>
+	<td>AND if parm1 >= parm2</td>
+</tr>
+<tr>
+	<td>ANDGT</td>
+	<td>Compare</td>
+	<td>AND if parm1 > parm2</td>
+</tr>
+<tr>
+	<td>ANDLE</td>
+	<td>Compare</td>
+	<td>AND if parm1 <= parm2</td>
+</tr>
+<tr>
+	<td>ANDLT</td>
+	<td>Compare</td>
+	<td>AND if parm1 < parm2</td>
+</tr>
+<tr>
+	<td>ANDN</td>
+	<td>Boolean input</td>
+	<td>AND NOT bit with top of logic stack</td>
+</tr>
+<tr>
+	<td>ANDND</td>
+	<td>Edge contact</td>
+	<td>AND negative differential</td>
+</tr>
+<tr>
+	<td>ANDNE</td>
+	<td>Compare</td>
+	<td>AND if parm1 is not equal to parm2</td>
+</tr>
+<tr>
+	<td>ANDPD</td>
+	<td>Edge contact</td>
+	<td>AND positive differential</td>
+</tr>
+<tr>
+	<td>ANDSTR</td>
+	<td>Boolean input</td>
+	<td>AND top two values on logic stack</td>
+</tr>
+<tr>
+	<td>CALL</td>
+	<td>Program control</td>
+	<td>Call subroutine</td>
+</tr>
+<tr>
+	<td>CNTD</td>
+	<td>Counter/Timer</td>
+	<td>Count down</td>
+</tr>
+<tr>
+	<td>CNTU</td>
+	<td>Counter/Timer</td>
+	<td>Count up</td>
+</tr>
+<tr>
+	<td>COPY</td>
+	<td>Copy</td>
+	<td>Copy a single value to a register</td>
+</tr>
+<tr>
+	<td>CPYBLK</td>
+	<td>Copy</td>
+	<td>Copy a block of data</td>
+</tr>
+<tr>
+	<td>END</td>
+	<td>Program control</td>
+	<td>Program end</td>
+</tr>
+<tr>
+	<td>ENDC</td>
+	<td>Program control</td>
+	<td>Program end conditional</td>
+</tr>
+<tr>
+	<td>FILL</td>
+	<td>Copy</td>
+	<td>Fill a block of data</td>
+</tr>
+<tr>
+	<td>FINDEQ</td>
+	<td>Search</td>
+	<td>Search table for equal to</td>
+</tr>
+<tr>
+	<td>FINDGE</td>
+	<td>Search</td>
+	<td>Search table for >=</td>
+</tr>
+<tr>
+	<td>FINDGT</td>
+	<td>Search</td>
+	<td>Search table for ></td>
+</tr>
+<tr>
+	<td>FINDIEQ</td>
+	<td>Search</td>
+	<td>Incremental search table for equal to</td>
+</tr>
+<tr>
+	<td>FINDIGE</td>
+	<td>Search</td>
+	<td>Incremental search table for >=</td>
+</tr>
+<tr>
+	<td>FINDIGT</td>
+	<td>Search</td>
+	<td>Incremental search table for ></td>
+</tr>
+<tr>
+	<td>FINDILE</td>
+	<td>Search</td>
+	<td>Incremental search table for <=</td>
+</tr>
+<tr>
+	<td>FINDILT</td>
+	<td>Search</td>
+	<td>Incremental search table for <</td>
+</tr>
+<tr>
+	<td>FINDINE</td>
+	<td>Search</td>
+	<td>Incremental search table for not equal</td>
+</tr>
+<tr>
+	<td>FINDLE</td>
+	<td>Search</td>
+	<td>Search table for <=</td>
+</tr>
+<tr>
+	<td>FINDLT</td>
+	<td>Search</td>
+	<td>Search table for <</td>
+</tr>
+<tr>
+	<td>FINDNE</td>
+	<td>Search</td>
+	<td>Search table for not equal</td>
+</tr>
+<tr>
+	<td>FOR</td>
+	<td>Program control</td>
+	<td>For/next loop</td>
+</tr>
+<tr>
+	<td>MATHDEC</td>
+	<td>Math</td>
+	<td>Decimal math</td>
+</tr>
+<tr>
+	<td>MATHHEX</td>
+	<td>Math</td>
+	<td>Hexadecimal math</td>
+</tr>
+<tr>
+	<td>NETWORK</td>
+	<td>Program Formatting</td>
+	<td>Network</td>
+</tr>
+<tr>
+	<td>NEXT</td>
+	<td>Program control</td>
+	<td>Next in For/next loop</td>
+</tr>
+<tr>
+	<td>OR</td>
+	<td>Boolean input</td>
+	<td>OR bit with top of logic stack</td>
+</tr>
+<tr>
+	<td>ORE</td>
+	<td>Compare</td>
+	<td>OR if parm1 equals parm2</td>
+</tr>
+<tr>
+	<td>ORGE</td>
+	<td>Compare</td>
+	<td>OR if parm1 >= parm2</td>
+</tr>
+<tr>
+	<td>ORGT</td>
+	<td>Compare</td>
+	<td>OR if parm1 > parm2</td>
+</tr>
+<tr>
+	<td>ORLE</td>
+	<td>Compare</td>
+	<td>OR if parm1 <= parm2</td>
+</tr>
+<tr>
+	<td>ORLT</td>
+	<td>Compare</td>
+	<td>OR if parm1 < parm2</td>
+</tr>
+<tr>
+	<td>ORN</td>
+	<td>Boolean input</td>
+	<td>OR NOT bit with top of logic stack</td>
+</tr>
+<tr>
+	<td>ORND</td>
+	<td>Edge contact</td>
+	<td>OR negative differential</td>
+</tr>
+<tr>
+	<td>ORNE</td>
+	<td>Compare</td>
+	<td>OR if parm1 is not equal to parm2</td>
+</tr>
+<tr>
+	<td>ORPD</td>
+	<td>Edge contact</td>
+	<td>OR positive differential</td>
+</tr>
+<tr>
+	<td>ORSTR</td>
+	<td>Boolean input</td>
+	<td>OR top two values on logic stack</td>
+</tr>
+<tr>
+	<td>OUT</td>
+	<td>Boolean output</td>
+	<td>Output logic stack to bit</td>
+</tr>
+<tr>
+	<td>OUT</td>
+	<td>Boolean output</td>
+	<td>Output logic stack to multiple bits</td>
+</tr>
+<tr>
+	<td>PACK</td>
+	<td>Copy</td>
+	<td>Pack bits into a register</td>
+</tr>
+<tr>
+	<td>PD</td>
+	<td>Boolean output</td>
+	<td>Output logic stack one shot to multiple bits</td>
+</tr>
+<tr>
+	<td>PD</td>
+	<td>Boolean output</td>
+	<td>Output logic stack one shot</td>
+</tr>
+<tr>
+	<td>RST</td>
+	<td>Boolean output</td>
+	<td>Reset multiple bits if logic stack true</td>
+</tr>
+<tr>
+	<td>RST</td>
+	<td>Boolean output</td>
+	<td>Reset bit if logic stack true</td>
+</tr>
+<tr>
+	<td>RT</td>
+	<td>Program control</td>
+	<td>Return from subroutine</td>
+</tr>
+<tr>
+	<td>RTC</td>
+	<td>Program control</td>
+	<td>Return from subroutine conditional</td>
+</tr>
+<tr>
+	<td>SBR</td>
+	<td>Program control</td>
+	<td>Define a subroutine</td>
+</tr>
+<tr>
+	<td>SET</td>
+	<td>Boolean output</td>
+	<td>Set multiple bits if logic stack true</td>
+</tr>
+<tr>
+	<td>SET</td>
+	<td>Boolean output</td>
+	<td>Set bit if logic stack true</td>
+</tr>
+<tr>
+	<td>SHFRG</td>
+	<td>Shift register</td>
+	<td>Shift register move bits to right</td>
+</tr>
+<tr>
+	<td>STR</td>
+	<td>Boolean input</td>
+	<td>Store bit onto logic stack</td>
+</tr>
+<tr>
+	<td>STRE</td>
+	<td>Compare</td>
+	<td>STR if parm1 equals parm2</td>
+</tr>
+<tr>
+	<td>STRGE</td>
+	<td>Compare</td>
+	<td>STR if parm1 >= parm2</td>
+</tr>
+<tr>
+	<td>STRGT</td>
+	<td>Compare</td>
+	<td>STR if parm1 > parm2</td>
+</tr>
+<tr>
+	<td>STRLE</td>
+	<td>Compare</td>
+	<td>STR if parm1 <= parm2</td>
+</tr>
+<tr>
+	<td>STRLT</td>
+	<td>Compare</td>
+	<td>STR if parm1 < parm2</td>
+</tr>
+<tr>
+	<td>STRN</td>
+	<td>Boolean input</td>
+	<td>Store NOT bit onto logic stack</td>
+</tr>
+<tr>
+	<td>STRND</td>
+	<td>Edge contact</td>
+	<td>STORE negative differential</td>
+</tr>
+<tr>
+	<td>STRNE</td>
+	<td>Compare</td>
+	<td>STR if parm1 is not equal to parm2</td>
+</tr>
+<tr>
+	<td>STRPD</td>
+	<td>Edge contact</td>
+	<td>STORE positive differential</td>
+</tr>
+<tr>
+	<td>SUM</td>
+	<td>Math</td>
+	<td>Sum a range of registers</td>
+</tr>
+<tr>
+	<td>TMR</td>
+	<td>Counter/Timer</td>
+	<td>On delay timer</td>
+</tr>
+<tr>
+	<td>TMRA</td>
+	<td>Counter/Timer</td>
+	<td>On delay accumulating timer</td>
+</tr>
+<tr>
+	<td>TMROFF</td>
+	<td>Counter/Timer</td>
+	<td>Off delay timer</td>
+</tr>
+<tr>
+	<td>UDC</td>
+	<td>Counter/Timer</td>
+	<td>Up/down counter</td>
+</tr>
+<tr>
+	<td>UNPACK</td>
+	<td>Copy</td>
+	<td>Unpack bits from a register</td>
+</tr>
+</table>
+
+<hr>
+
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Soft Logic</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

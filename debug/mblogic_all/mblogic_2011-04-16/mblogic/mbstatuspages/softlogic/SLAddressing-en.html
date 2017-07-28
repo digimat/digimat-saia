@@ -1,0 +1,629 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Soft Logic Addresses</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Soft Logic</h3>
+		<ul>
+			<li><a href="SLSpecs-en.html">Specifications</a></li>
+			<li><a href="SLAddressing-en.html">Addressing</a></li>
+			<li><a href="SLInstructions-en.html">Instructions</a></li>
+			<li><a href="SLPrograms-en.html">Programming</a></li>
+			<li><a href="SLConfig-en.html">Configuration</a></li>
+			<li><a href="SLStatus-en.html">Program Monitoring and Reloading</a></li>
+			<li><a href="SLMemSave-en.html">Data Table Save/Restore</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>Help - Soft Logic Addresses</h1>
+
+<hr>
+
+<h2>Overview:</h2>
+<p>Data for the "Ck" soft logic library is stored in a data table which is 
+divided into distinct types. The sizes and limits on the data table and 
+constants are defined below.  
+</p>
+
+<hr>
+
+<h2>Data Types:<a name="Data Types"></a></h2>
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Type</th>
+	<th>Size (bytes)</th> 
+	<th>Min Value</th>
+	<th>Max Value</th>
+</tr>
+
+<tr>
+	<td>Signed integer</td>
+	<td>2</td>
+	<td>-32768</td>
+	<td>32767</td>
+</tr>
+<tr>
+	<td>Signed double integer</td>
+	<td>4</td>
+	<td>-2147483648</td>
+	<td>2147483647</td>
+</tr>
+<tr>
+	<td>Floating point</td>
+	<td>Undefined</td>
+	<td>-1.5e+308<sup>1</sup></td> 
+	<td>1.5e+308<sup>1</sup></td>
+</tr>
+<tr>
+	<td>Unsigned integer (hex)</td>
+	<td>2</td>
+	<td>0</td>
+	<td>65535</td>
+</tr>
+<tr>
+	<td>Single character</td>
+	<td>1</td>
+	<td>N/A</td>
+	<td>N/A</td>
+</tr>
+<tr>
+	<td>Text string</td>
+	<td>Undefined</td>
+	<td>N/A</td>
+	<td>N/A</td>
+</tr>
+
+</table>
+
+<p><sup>1</sup>THe maximum constant that can be entered is +/- 1.9e307.
+</p>
+
+
+<hr>
+
+<h2>Data Table Addresses:<a name="Data Table Addresses"></a></h2>
+<p>All data is stored in data table addresses. These addresses are either
+"bit" (boolean) or "register" (word) addresses. Each data table begins
+at "1" (not "0"), and extends to the maximum address listed below. 
+</p>
+
+
+
+<table class="helptable"  border="1">
+
+<tr>
+	<th>Prefix</th>
+	<th>Description</th>
+	<th>Max</th> 
+	<th>Type</th>
+	<th>Example</th>
+</tr>
+
+<tr>
+	<td>X</td>
+	<td>Inputs</td>
+	<td>2000</td>
+	<td>Boolean</td>
+	<td>X9</td>
+</tr>
+<tr>
+	<td>Y</td>
+	<td>Outputs</td>
+	<td>2000</td>
+	<td>Boolean</td>
+	<td>Y1023</td>
+</tr>
+<tr>
+	<td>C</td>
+	<td>Control relays</td>
+	<td>2000</td>
+	<td>Boolean</td>
+	<td>C58</td>
+</tr>
+<tr>
+	<td>T</td>
+	<td>Timer status</td>
+	<td>500</td>
+	<td>Boolean</td>
+	<td>T421</td>
+</tr>
+<tr>
+	<td>CT</td>
+	<td>Counter status</td>
+	<td>250</td>
+	<td>Boolean</td>
+	<td>CT6</td>
+</tr>
+<tr>
+	<td>SC</td>
+	<td>System control</td>
+	<td>1000</td>
+	<td>Boolean</td>
+	<td>SC21</td>
+</tr>
+<tr>
+	<td>DS</td>
+	<td>Data register</td>
+	<td>10000</td>
+	<td>Integer</td>
+	<td>DS6432</td>
+</tr>
+<tr>
+	<td>DD</td>
+	<td>Data register</td>
+	<td>2000</td>
+	<td>Double integer</td>
+	<td>DD4</td>
+</tr>
+<tr>
+	<td>DH</td>
+	<td>Data register</td>
+	<td>2000</td>
+	<td>Unsigned integer</td>
+	<td>DH100</td>
+</tr>
+<tr>
+	<td>DF</td>
+	<td>Data register</td>
+	<td>2000</td>
+	<td>Floating point</td>
+	<td>DF57</td>
+</tr>
+<tr>
+	<td>XD</td>
+	<td>Input register</td>
+	<td>125</td>
+	<td>Unsigned integer</td>
+	<td>XD1</td>
+</tr>
+<tr>
+	<td>YD</td>
+	<td>Output register</td>
+	<td>125</td>
+	<td>Unsigned integer</td>
+	<td>YD99</td>
+</tr>
+<tr>
+	<td>XS</td>
+	<td>Input register</td>
+	<td>125</td>
+	<td>Signed integer</td>
+	<td>XS1</td>
+</tr>
+<tr>
+	<td>YS</td>
+	<td>Output register</td>
+	<td>125</td>
+	<td>Signed integer</td>
+	<td>YS99</td>
+</tr>
+<tr>
+	<td>TD</td>
+	<td>Timer current value</td>
+	<td>500</td>
+	<td>Integer <sup>1</sup></td>
+	<td>TD45</td>
+</tr>
+<tr>
+	<td>CTD</td>
+	<td>Counter current value</td>
+	<td>250</td>
+	<td>Double integer <sup>1</sup></td>
+	<td>CTD3</td>
+</tr>
+<tr>
+	<td>SD</td>
+	<td>System data</td>
+	<td>1000</td>
+	<td>Integer</td>
+	<td>SD9</td>
+</tr>
+<tr>
+	<td>TXT</td>
+	<td>Text data</td>
+	<td>10000</td>
+	<td>ASCII</td>
+	<td>TXT7420</td>
+</tr>
+
+</table>
+
+<p><sup>1</sup> Only positive numbers (0 to max) are allowed for these addresses.
+</p>
+
+<h3>Pointers or Indirect Addressing</h3>
+
+<p>Pointer (indirect) addressing is provided by the COPY instruction. See the
+documentation on that instruction for details.
+</p>
+
+
+<h3>Differences from the Koyo "Click"</h3>
+<p>The maximum address permitted by the Ck soft logic library is in some cases
+larger than that permitted by the Koyo "Click". 
+</p>
+<p>The Ck library implements the X, Y, XD, and YD addresses slightly 
+differently from the Koyo "Click". This is because the I/O hardware is
+different, which means that an exact correspondence would make little sense. </p>
+
+<p>The differences are as follows:</p>
+<ul>
+	<li>X &amp; Y - All addresses from 1 up to the maximum are permitted
+	as legal addresses. The mapping of physical I/O to "X" &amp; "Y" addresses
+	is configuration dependent. </li>
+	<li>XD &amp; YD - These registers are not related to the "X" or "Y" bit
+	addresses. That is, the states of "X" or "Y" addresses are not reflected
+	by the values in the "XD" or "YD" registers. Instead, these registers
+	are intended for analogue and other word I/O. The mapping of physical I/O 
+	to "XD" &amp; "YD" addreses is configuration dependent. </li>
+	<li>XD &amp; YD register addresses begin at "1" in order to be consistent
+	with the numbering system used for other registers.</li>
+	<li>XS &amp; YS register addresses are an additional register type. They differ
+	from the XD and YD addresses in that they are signed rather than unsigned
+	integers. These may be more convenient when dealing with signed integer 
+	data. </li>
+	<li>Any data type may be used for interfacing with external I/O. For example,
+	it is possible to transfer data directly between external I/O and C or DS
+	addresses. X, Y, XD, YD, XS, and YS addresses however are recommended for this
+	purpose. </li>
+</ul>
+
+
+<h3>Representation</h3>
+<p>Data table addresses must be represented exactly as defined. Case is 
+significant, so while X1 is a valid address, x1 is not. Leading zeros are
+not permitted. X1 is a valid address, X01 is not.
+</p>
+
+
+<hr>
+
+<h2>Constants:<a name="Constants"></a></h2>
+<p>Many instructions which accept registers addresses as inputs will also
+accept constants. The type of constant must be compatible with the parameter 
+expected by the instruction. </p>
+
+<p>
+<table class="helptable"  border="1">
+<tr>
+	<th> </th>
+	<th>Type</th>
+	<th>Example</th> 
+</tr>
+
+<tr>
+	<td>KInt</td>
+	<td>Signed integer</td>
+	<td>125</td>
+</tr>
+<tr>
+	<td>KDInt</td>
+	<td>Signed double integer</td>
+	<td>-50000</td>
+</tr>
+<tr>
+	<td>KF</td>
+	<td>Floating point</td>
+	<td>123.456 or 1.23456E+2</td>
+</tr>
+<tr>
+	<td>KHex</td>
+	<td>Unsigned integer (hex)</td>
+	<td>f73h</td>
+</tr>
+<tr>
+	<td>KTxtChar</td>
+	<td>Single character</td>
+	<td>"A"</td>
+</tr>
+<tr>
+	<td>KTxtStr</td>
+	<td>Text string</td>
+	<td>"abc123"</td>
+</tr>
+
+</table>
+
+<ul>
+	<li>Hexadecimal constants must have an "h" suffix to be valid. The "h" must
+	be lower case. </li>
+	<li>Text constants must be enclosed in double quotes (").</li>
+	<li>Integers and double integers are distinguished by the magnitude of the value. 
+	An integer constant is assumed to be a normal (single) integer unless it 
+	exceeds the maximum permitted value, in which case it is automatically 
+	promoted to a double integer. Any instruction which expects a double
+	integer will also accept a regular integer.</li>
+	<li>Floating point numbers may be represented in decimal or exponential notation.</li>
+	<li>Leading zeros are permitted, and are not significant.</li>
+</ul>
+
+
+<hr>
+
+<h2>System Control Relays:<a name="System Control Relays"></a></h2>
+
+<p>System control relays are used to provide convenience functions, or to
+signal error conditions. </p>
+<ul>
+	<li>Error relays are set immediately by the instruction
+	which encountered the error, and remain in effect until they are reset by 
+	another instruction which uses that relay, or until the system is restarted.</li>
+	<li>Free running clock relays are updated at the start of each scan.</li>
+	<li>The "always on" relay is set at the start of scan.</li>
+</ul>
+
+
+<table class="helptable"  border="1">
+
+<tr>
+	<th>Address</th>
+	<th>Description</th>
+</tr>
+<tr>
+	<td>SC1</td>
+	<td>Always ON</td>
+</tr>
+<tr>
+	<td>SC2</td>
+	<td>ON for the first program scan</td>
+</tr>
+<tr>
+	<td>SC3</td>
+	<td>Turns on and off on alternate scans</td>
+</tr>
+<tr>
+	<td>SC4</td>
+	<td>Free running clock with a 10ms period</td>
+</tr>
+<tr>
+	<td>SC5</td>
+	<td>Free running clock with a 100ms period</td>
+</tr>
+<tr>
+	<td>SC6</td>
+	<td>Free running clock with a 500ms period</td>
+</tr>
+<tr>
+	<td>SC7</td>
+	<td>Free running clock with a 1sec period</td>
+</tr>
+<tr>
+	<td>SC8</td>
+	<td>Free running clock with a 1m period</td>
+</tr>
+<tr>
+	<td>SC9</td>
+	<td>Free running clock with a 1 hour period</td>
+</tr>
+<tr>
+	<td>SC19</td>
+	<td>ON if an error occurs</td>
+</tr>
+<tr>
+	<td>SC24</td>
+	<td>There is no PLC program, or the program is invalid.</td>
+</tr>
+<tr>
+	<td>SC25</td>
+	<td>The run time system is not compatible with the program version.</td>
+</tr>
+<tr>
+	<td>SC26</td>
+	<td>The watch dog timer timed out.<sup>1</sup></td>
+</tr>
+<tr>
+	<td>SC27</td>
+	<td>The data table contents were lost.</td>
+</tr>
+<tr>
+	<td>SC40</td>
+	<td>An attempt was made to divide by zero.</td>
+</tr>
+<tr>
+	<td>SC43</td>
+	<td>Data overflow, underflow, or data conversion error.</td>
+</tr>
+<tr>
+	<td>SC44</td>
+	<td>An invalid address was used</td>
+</tr>
+<tr>
+	<td>SC46</td>
+	<td>A math error occurred</td>
+</tr>
+<tr>
+	<td>SC50</td>
+	<td>Set run mode to stop.<sup>1</sup></td>
+</tr>
+<tr>
+	<td>SC51</td>
+	<td>Resets watchdog timer to zero.<sup>1</sup></td>
+</tr>
+
+</table>
+
+<p>Notes: 1 = Not implemented at this time. The SC relays are 
+not writable by a user instruction.
+</p>
+
+
+<hr>
+
+<h2>System Control Registers:<a name="System Control Registers"></a></h2>
+
+<p>System control registers are used to provide convenience functions, or to
+signal error conditions. </p>
+
+<table class="helptable"  border="1">
+
+<tr>
+	<th>Address</th>
+	<th>Description</th>
+</tr>
+<tr>
+	<td>SD1</td>
+	<td>Current PLC error code<sup>1</sup></td>
+</tr>
+<tr>
+	<td>SD5</td>
+	<td>Low word of runtime version<sup>1</sup></td>
+</tr>
+<tr>
+	<td>SD6</td>
+	<td>High word of runtime version<sup>1</sup></td>
+</tr>
+<tr>
+	<td>SD9</td>
+	<td>Counts number of scans (rolls over at 32,767)</td>
+</tr>
+<tr>
+	<td>SD10</td>
+	<td>The current scan time</td>
+</tr>
+<tr>
+	<td>SD11</td>
+	<td>The minimum scan time since starting</td>
+</tr>
+<tr>
+	<td>SD12</td>
+	<td>The maximum scan time since starting</td>
+</tr>
+
+<tr>
+	<td>SD20</td>
+	<td>Real time clock year</td>
+</tr>
+<tr>
+	<td>SD21</td>
+	<td>Real time clock month</td>
+</tr>
+<tr>
+	<td>SD22</td>
+	<td>Real time clock day</td>
+</tr>
+<tr>
+	<td>SD23</td>
+	<td>Real time clock day of week (where Mon = 0) <sup>2</sup> </td>
+</tr>
+<tr>
+	<td>SD24</td>
+	<td>Real time clock hour</td>
+</tr>
+<tr>
+	<td>SD25</td>
+	<td>Real time clock minute</td>
+</tr>
+<tr>
+	<td>SD26</td>
+	<td>Real time clock second</td>
+</tr>
+
+</table>
+
+<p>1 = Not implemented at this time. 
+</p>
+
+<p>2 = This is different than the Click hardware. 
+</p>
+
+<hr>
+
+<h2>Subroutines:<a name="Subroutines"></a></h2>
+
+<p>Subroutines are referenced by names which may be from 1 to 24 characters
+long and which may contain the charcters a to z, A to Z and 1 to 9. No other
+characters are permitted, and no spaces are permitted within the name. Examples,
+"SubroutineName1", or "123ValidName". The following are invalid names 
+"ThisNameIsMuchTooLongToBeAccepted", and "Bad&amp;Characters*"
+</p>
+
+<p>There is no limit to the number of subroutines permitted, but each subroutine
+name must be unique.
+</p>
+
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Soft Logic Addresses</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009 - 2010. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

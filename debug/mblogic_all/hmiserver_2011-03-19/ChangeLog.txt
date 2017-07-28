@@ -1,0 +1,552 @@
+HMIServer Change Log:
+
+HMIServer Release History:
+==========================
+
+-------------------------------------------------------------------------------
+
+2011-03-19: Release 23.
+
+	This is a bug fix release only! There are no new features.
+
+	* This fixes a bug relating to displaying HMI tank columns with older 
+	versions of some browsers. The previous release was tested with newer
+	browsers, but the tests were neglected for older ones. This fix just 
+	replaces "libmbhmicontrols2.js" with a new version.
+
+-------------------------------------------------------------------------------
+
+2011-03-17: Release 22.
+
+	* The changes in this release are all related to supporting a new program
+	for creating HMI web pages called HMIBuilder. 
+
+	* The demo web page has been re-created using HMIBuilder.
+
+	* The HMI Javascript libraries have been updated to support HMIBuilder.
+
+	* The documentation has been revised to reflect the introduction of 
+	HMIBuilder. The documenation on creating web pages has been removed as this
+	is now part of the help system for HMIBuilder. A new section has been added
+	providing an overview of the features of HMIBuilder. The result of this 
+	change has been a reduction in the overall size of the package.
+
+	* The demo simulator clients (used only to drive the demo web page) have 
+	been revised to reflect minor changes in the demo web page. 
+
+
+-------------------------------------------------------------------------------
+
+2010-12-03: Release 21.
+
+	Combined Packages
+	-----------------
+
+	* All HMIServer versions are combined  into a single package. This still 
+	has separate executables, but it shares as many files as possible which 
+	reduces download size, saves disk space, and eases software development.
+	This single package still contains Modbus/TCP and SBus in client and
+	server versions.
+
+	New Monitoring and Control Interface
+	------------------------------------
+
+	* The monitoring and control interface has been upgraded to an all new 
+	version. This uses may features from the new MBLogic system, including: 
+
+	* Continuous background updates with fresh status information.
+
+	* The HMI configuration display can be sorted by columns.
+
+	* The system can be shut down and the configuration can be easily reloaded 
+	through the web interface. 
+
+	* A list of all available HMI web pages is displayed on the status 
+	monitoring system, allowing the user to easily see what HMI web pages are 
+	present.
+
+	* The style and appearance of the status monitoring system has been updated
+	to provide an improved appearance.
+
+	* The new status monitoring system requires that Javascript be enabled and 
+	a compatible browser be used. Most modern web browsers will work, including 
+	Firefox, Google Chrome, Apple Safari, Epiphany, and Midori.
+
+	* The old system monitoring web pages are still available. The new main 
+	status page may be accessed via a link on the old page.
+
+	Misc
+	----
+
+	* The system libraries used have been updated to newer versions to keep
+	them in step with the MBLogic soft logic automation platform.
+
+	* There are minor changes to the system start-up messages and run-time
+	error messages. 
+
+	* Revised some web response MIME types to application/json. 
+
+-------------------------------------------------------------------------------
+
+2010-07-24: Release 20.
+
+	* This is a minor release to patch the HMI demo web pages to get around
+	a bug in certain web browsers when updating tank columns on very 
+	complex web pages. The problem affects some versions of Apple Safari
+	and Google Chrome on some platforms. If this problem affects you on
+	your own HMI web pages, contact the MBLogic project for information
+	on how to change your web page until Apple and Google are able to
+	release a fix. Firefox and Opera are not affectd by this browser bug.
+
+	* A minor change was made in HMIServerMBC and HMIServerSBC to remove 
+	handling for HTTP "HEAD" requests. This function was not useful, and
+	was not present in the HMIServerMBS and HMIServerSBS versions. There
+	should be no evident change in behaviour.
+
+
+-------------------------------------------------------------------------------
+
+
+2010-07-05: Release 19.
+
+
+	This release is primarily concerns minor changes to support specific
+	user requests. There are no new major features and if you have an 
+	existing installation and are not experiencing any problems there is 
+	no reason to upgrade.
+
+
+	HMIServerMBS and HMIServerSBS
+	-----------------------------
+	* Modified data calculation routine to allow backwards compatibility 
+	for Python 2.4 to satisfy a user request. Thanks to Chris Kearns for 
+	this patch.
+
+	* Changed header parsing routine to get rid of errors on Mac OS/X.
+
+
+	HMIServerMBS Only
+	-----------------
+	* Improved Modbus message error handling.
+
+
+	All (HMIServerMBC, HMIServerMBS, HMIServerSBC, HMIServerSBS)
+	------------------------------------------------------------
+	* Improved handling of invalid JSON data in HMI libraries.
+
+	* Added another HMI demo web page (hmidemo2.xhtml).
+
+	* Updated the CSS and themes in the status pages and documentation.
+
+	* Improved the demo support simulation routines to make them more 
+	robust.
+
+	* Fixed source code documentation errors in ModbusTCPMsg and 
+	HMIModbusConfig libraries (thanks to Martin Odiard).
+
+	* Backported HMIConfig changes from latest release of MBLogic to 
+	HMIServer. This has better detection of corrupt configuration files.
+
+	* Simplified and improved the MS Windows batch files for starting the 
+	system and demos.
+
+
+
+-------------------------------------------------------------------------------
+
+
+2010-05-21: Release 18.
+
+	Prior to this release HMIServer was part of the MBTools package. Now it
+	is packaged separately. If you are looking for MBAsyncServer, MBPoll,
+	or MBProbe, they are still released in the MBTools package, along with
+	several new programs.
+
+
+	HMIServerMBC - HMIServer with Modbus/TCP Client
+	===============================================
+	* The documentation has been updated to make it the same as the new
+	SBus versions pf HMIServer.
+
+	HMIServerMBS - HMIServer with Modbus/TCP Server
+	===============================================
+	* The documentation has been updated to make it the same as the new
+	SBus versions pf HMIServer.
+
+	HMIServerSBC - HMIServer with SBus Client
+	=========================================
+	* NEW. This is the first release for this program.
+	* This provides the same features as HMIServerMBC, but supports SAIA 
+	Ether SBus instead of Modbus/TCP.
+
+	HMIServerSBS - HMIServer with SBus Server
+	=========================================
+	* NEW. This is the first release for this program.
+	* This provides the same features as HMIServerMBS, but supports SAIA 
+	Ether SBus instead of Modbus/TCP.
+
+
+-------------------------------------------------------------------------------
+
+The following provides the release history of HMIServer when it was part
+of the MBTools package.
+
+==========================================================================
+
+2010-02-10: Release 17.
+
+	HMIServer
+	=========
+
+	* The documentation for building HMI systems has now been integrated 
+	directly into the main on-line help system. The PDF versions are no 
+	longer distributed.
+	* Button masks have been added to the HMI system. These allow (in 
+	conjunction with a new function in the HMI Client Display Library) 
+	push buttons (and other inputs such as selector switches) to be 
+	enabled or disabled according to the value in the data table.
+	* All HMI SVG clip-art (widgets, SVG objects) have been updated to 
+	give each individual file its own gradient definition where this is 
+	required. This means that SVG templates no longer have to define any 
+	required colour gradients. These will be automatically imported with 
+	the geometry. Duplicate definitions will be automatically merged by 
+	Inkscape.
+	* The provided HMI SVG templates have been updated to remove the 
+	common colour gradient definitions (see the previous point).
+	* As a result of the colour gradient change, file managers in 
+	operating systems that know how to handle SVG files will now show the 
+	correct colour of each piece of SVG art as part of the file icon.
+	* The pump rotors have been rotated 90 degrees so that the rotor 
+	colour is visible in the file manager. This does not affect their use 
+	or operation.
+	* The initial data for strip chart lines has been modified to make 
+	positioning easier when designing a strip chart. This does not affect 
+	their use or operation.
+	* The HMI Client Protocol Library has been changed so that run time 
+	errors caused by incorrect parameters are ignored and the scan is not 
+	aborted.
+	* Minor corrections have been made to CSS files to remove warnings.
+	* The HMI demo has been updated to reflect the new features.
+	* The on-line help system has been modified to allow additional nested 
+	file directories. This should not have any effect on the operation of 
+	the system.
+
+
+-------------------------------------------------------------------------------
+
+2010-01-16: Release 16.
+
+	HMIServer
+	=========
+
+	Minor Bug Fix in HMIServer!
+	---------------------------
+
+	* IMPORT!: A problem was fixed in configuration file parsing which was 
+	affecting users attempting to implement support for protocols other 
+	than Modbus. The standard ConfigParser library was forcing all option 
+	names to lower case (e.g. "Example" to "example"). This has been fixed 
+	to preserve the orignal case.
+	* This affects the configuration file "mbhmi.config".
+	* Check your configuration file to ensure you are using the correct 
+	(lower) case for the standard options in your configuration. All 
+	standard options for HMIServer are already supposed to be in lower 
+	case. The option is the parameter on the left side of the equal sign. 
+	For example, with "addrtype=coil", "addrtype" is the option name and 
+	it must be in lower case. Parameters to the right of the equal sign 
+	are not affected.
+	* If your configurations followed the examples in the documentation 
+	and used lower case for all options on the left side of the equal 
+	signs, you should not be affected by this change.
+	* A future version of HMIServer will be adding form based editing for 
+	configurations and will likely depend on this change.
+
+	New Features in HMIServer:
+	--------------------------
+
+	* This is a major new release which has completely revised how HMI 
+	client web pages are developed to make it simpler and faster.
+	* It is now possible to develop the SVG portion of the HMI using the 
+	Inkscape drawing editor.
+	* The SVG control objects for the HMI have been repackaged into 
+	individual files allow drag and drop SVG web page development. More 
+	than 500 SVG clip art files are provided.
+	* Inkscape can also be used to draw completely custom graphic designs 
+	which can then be animated using the standard library.
+	* Standard template web pages are now provided which can be used as is 
+	with minimal change to act as containers for the SVG. This eliminates 
+	the need to develop your own customised web page.
+	* The standard web pages can still be customised for colour and other 
+	similar factors by changing just a few options in a style sheet.
+	* Application configuration (other than making the SVG drawing) has 
+	been moved to separate configuration files outside of the web page, 
+	making configuration much easier.
+	* New protocol library features make monitoring communications time 
+	outs and signaling the presence of alarms much easier.
+	* Extensive step by step documentation is provided detailing how to 
+	develop an HMI web page using Inkscape with the new templates.
+	* Documentation for HMI editing in this release is in PDF files 
+	accompanying the package. An upcoming release will provide a new 
+	program which will improve the process still further and all 
+	documentation related to creating HMI web pages will be moved to the 
+	on line help version of that program.
+
+
+
+-------------------------------------------------------------------------------
+
+2009-12-16:	Release 15.
+
+	HMIServerMBS - NEW!
+	===================
+	- This is a new version of HMIServer which supports Modbus/TCP server.
+	- Other than acting as a Modbus/TCP server rather than a client, the
+	other features are the same as the existing version of HMIServer.
+
+	HMIServerMBC
+	============
+	- This is simply the existing Modbus/TCP client version of HMIServer 
+	with a minor change to the name.
+	- The package and directory names have been changed to reflect that
+	there is now more than one version of HMIServer.
+	- The documentation has been updated to allow for common documentation 
+	to be shared with other versions of HMIServer.
+
+-------------------------------------------------------------------------------
+
+
+2009-10-27:	Release 14.
+
+	HMIServer
+	=========
+
+	- This release concentrates on HMI improvements. This includes the 
+	improvements which were previously released with HMIServer, as well 
+	as many new improvements. MBLogic and HMIServer are being released 
+	simultaneously with the same HMI features.
+
+	- The demo web pages have been upgraded with improved artwork and new 
+	features.
+
+	- The documentation has been updated to show new artwork and 
+	additional HMI library functions.
+
+	- The HMI demo web pages include a "help" section to explain the 
+	details of each demo.
+
+	- New HMI graphics samples have been added for things such as selector 
+	switches and 7 segment LED displays. This includes changes to the 
+	standard Javscript libraries.
+
+	- Push buttons, pilot lights, numeric displays, etc. have all been 
+	upgraded with improved artwork.
+
+	- The HMI SVG now uses "xlink" statements to allow references to SVG 
+	"libraries" (which are still part of the web page). This avoids the 
+	need to cut and paste SVG XML for each instance. Instead, a simple 
+	reference to the library is used. This makes creating HMI web pages 
+	easier.
+
+
+-------------------------------------------------------------------------------
+
+2009-09-25:	Release 13.
+	- There are no new features in this release. This is a bug fix
+	release only.
+	- This release fixes a bug in the Modbus/TCP server involving an
+	incorrect message length calculation which may have affected some 
+	users when used in combination with some functions on some clients.
+	- If you have not experiencing any problems, there is no need to
+	upgrade.
+	- Thanks to Brandon McLean for finding this problem and providing the
+	information necessary to solve it. 
+
+-------------------------------------------------------------------------------
+
+2009-09-23:	Release 12.
+	HMIServer
+	=========
+	- HMIServer now uses the standard Python JSON library if it is present.
+	(This was added to the standard Python library in version 2.6). It falls
+	back on the old bundled library if the standard one is not present. The
+	installation instructions no longer refer to installing SimpleJSON.
+	- The demo HMI web pages now automatically detect the address and port 
+	they were loaded from (by using a standard Javascript feature). This 
+	simplifies writing web clients and eliminates the need to hard code this
+	configuration. This is described in the documentation. Existing user 
+	created web pages should not be affected by this change. 
+	- The standard HMI Javascript libraries have been moved out of the
+	"hmipages" directory and into their own directory called "hmilib".
+	If you are upgrading an existing application, be sure to not copy the
+	old Javascript libraries with your web pages. These files are: 
+	"json2.js", "libhmiclient.js", "libmbevents.js", "libmbhmi.js". If the
+	old libraries are present in the "hmipages" directory, the new version
+	will continue use the old libraries. You HMI web pages will continue
+	to work, but you won't be able to take advantage of new features.
+	In addition, future versions may not be compatible with old libraries.
+	- The demo web pages have been upgraded with improved artwork and
+	new features. A new demo web page has been added to show different
+	page layouts. These may be used as user application templates.
+	- The documentation has been updated to show new artwork and additional
+	HMI library functions.
+	- A new documenation section has been added explaining the features
+	of the demo web pages.
+
+
+-------------------------------------------------------------------------------
+
+2009-06-26:	Release 11.
+	HMIServer
+	=========
+	- The changes from MBLogic have been backported into HMIServer for 
+	compatibility reasons. This involved breaking the extended data type
+	support out into a separate module. 
+	- Corrected comments.
+	- Improved on-line documentation. Added a web page on Modbus basics.
+	Improved the page on configuration.
+
+
+-------------------------------------------------------------------------------
+
+2009-05-28:	Release 10.
+	HMIServer
+	=========
+	- The alarm and event zone systems have been modified to separate the 
+	alarm zones and event zones. Existing web clients will need to be modified
+	to maintain compatibility. This should be a simple change. This is a change
+	in the Javascript libraries and not the server itself, so unmodified 
+	client web pages will still work with the new server provided the old
+	Javascript libraries are used. See the documentation, or the new clients 
+	demos for details. 
+	- The configuration and HMI protocol handling code has been changed to make
+	integration of new protocols easier. This should only affect developers
+	adding new protocols. 
+	- HMIServer now supports extended multi-register data types such as 32 bit
+	integers, single (4 byte) and double (8 byte) precision floating point, 
+	and strings. See the documentation for details.
+	- New HMI widgets have been added. These include simple strip charts, 
+	numeric data entry keypad, numeric increment/decrement device, and
+	text data display (for string data).
+	- The demo client has been updated to use the new HMI widgets.
+	- The configuration status display now shows a value of "None" for any
+	values which do not apply to that data type. Previous versions showed
+	numeric defaults. 
+	- The documentation has been greatly expanded (doubled in size). 
+	- The demo simulator has been updated to support the demostrations of
+	the new HMI widgets. This is used for the demo only.
+
+
+-------------------------------------------------------------------------------
+
+2009-05-18:	Release 9.
+
+	HMIServer
+	=========
+	- Fixed a bug in the date display for the HMI for the protocol time stamp. 
+	The conversion to UTC was incorrect. This would show in the demo web page
+	when displaying errors on the "System Status" web page.
+	- A new function has been added to the HMI Client Display Library. 
+	MB_NumericFloatDisplay provides the display of numeric values while 
+	allowing the number of decimal places to be specified. The demo web
+	page has been modified to use this function when displaying the
+	tank levels. Documentation has been added to the corresponding help 
+	web page.
+	- The demo HMI configuration has been modified to show the use of
+	scaling. The tank levels on the HMI demo web page have been used 
+	to display this feature. Scaling is an existing feature. This just
+	adds a demonstration.
+	- A sample has been added to the demo HMI web page showing how to 
+	create an illuminated push button using existing features. This
+	is PB5.
+	- A sample has been added to the demo HMI web page showing how to
+	create an increment and decrement graphical object. This controls the
+	pump speed. This is located next to the "Reverse" push button and
+	is controlled by clicking on the up and down triangles.
+
+
+-------------------------------------------------------------------------------
+
+2009-05-09:	Release 8.
+
+	HMIServer
+	=========
+	- HMIServer has a number of internal changes to make supporting new 
+	protocols easier. This should not affect users. The following details the
+	code changes.
+	- Removed redundant code for hexadecimal data type from HMIAddr. This type
+	was obsolete and not supported.
+	- Removed a redundant import from HMIAddr.
+	- HMIAddr was modified to move all Modbus related features from this module,
+	and to have all data table read and write functions operate on complete 
+	blocks of data (instead of each address one at a time). This allows other
+	protocols to be supported (at a later date), and will eventually allow for 
+	more efficient Modbus communications. 
+	- ModbusClient was modified to support the above changes. The block read/
+	write functions now take place inside ModbusClient.
+	- HMIConfig was modified to move all Modbus related features from this 
+	module. This will allow for the eventual support of other protocols. 
+	- A new module "HMIModbusConfig" was added. All Modbus related configuration
+	operations are now deligated to this module. 
+	- Most Modbus references and names have been changed or removed from various
+	modules to reflect that the system is no longer centred around Modbus.
+	- The web documentation has been updated to remove most Modbus references. 
+	This included changing a menu label from "Modbus Data" to "Field Device Data".
+
+
+-------------------------------------------------------------------------------
+
+2009-04-14:	Release 7.
+	HMIServer
+	=========
+	- HMIServer has been changed to support a new alarm format. "libmbevents.js" 
+	and "libhmiclient.js" have been changed to support the new alarm format. 
+	- The demo client web page and the documentation has been updated to
+	support the new alarm format.
+	- Active alarms are now a summary state rather than a continuous history. 
+	This results in a simpler and more understandable alarm display. Alarm 
+	history is still displayed for inactive alarms. 
+	- Alarms and events now have "zones". Zones allow a client to only 
+	request those alarms and events in which it is interested. The configuration
+	file format has been changed to support this. Alarms and events require
+	"zone" definitions.
+	- The new alarm system is not compatible with the old server, Javascript
+	libraries, or client web pages.
+	- Fixed DST/GMT time format display bug in client and server.
+	- The protocol identifier in the HTTP header was changed from 'cascadas'
+	to 'Cascadas' to fix a Safari 4 related problem. Safari was 'helpfully' 
+	capitalising this. This is now capitalised by default to be consistent 
+	with other header strings.
+	- Documentation was updated.
+
+
+-------------------------------------------------------------------------------
+
+2009-03-15:	Release 6.
+	- HMIServer has been modified to support asynchronous client 
+	communications. The main changes were to libhmiclient.js, along with
+	some minor changes to the demo web pages (hmidemo.xhtml, mindemo.xhtml).
+	- "HMIClient" in libhmiclient.js now requires an additional parameter to
+	select either synchronous or asynchronous communications.
+	- "UpdateDisplay" is now called automatically by "SendRequest" and should
+	not be called manually.
+	- "CommsWatchDogTimeOut" has been added to enable detecting loss of 
+	communications.
+	- There were no changes to the existing MBAsyncServer and MBPoll 
+	packages included in this release.
+
+-------------------------------------------------------------------------------
+
+2009-03-04:	Release 5.
+	- HMI Server has been added to MBTools. This is the first release for
+	this package. It provides a web based HMI to any device equipped with a
+	Modbus/TCP server. This package was developed from the old 
+	MB-HMIDevServer, which had no communications ability. HMIDevServer is
+	now obsolete and replaced by this new package.
+	- There were no changes to the existing MBAsyncServer and MBPoll 
+	packages included in this release.
+
+-------------------------------------------------------------------------------
+
+
+==========================================================================
+

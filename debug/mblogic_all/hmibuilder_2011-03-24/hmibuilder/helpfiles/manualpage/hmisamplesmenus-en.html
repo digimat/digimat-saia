@@ -1,0 +1,465 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+	<title>Help - HMI - HMI Menu Control</title>
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Edit SVG</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Inkscape</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">Templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assemble Page</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Editing SVG with Inkscape</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Using the SVG Library with Inkscape</a></li>
+			<li><a href="/customwidgets/customwidgets.html">Custom Widgets</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">HMI web templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assembling web pages</a></li>
+			<li><a href="/hmilib/hmilib.html">HMI Javascript Client Libraries</a></li>
+			<li><a href="/basicconcepts/basicconcepts.html">Basic Concepts</a></li>
+			<li><a href="/manualpage/manualpage.html">Manual HMI Web Page Construction</a></li>
+		</ul>
+
+		<h3>Manual HMI Web Page Construction</h3>
+		<ul>
+			<li><a href="/manualpage/hmisampleslayout-en.html">Page Layout</a></li>
+			<li><a href="/manualpage/hmisamplespositioning-en.html">
+				Positioning Components on the Screen</a></li>
+			<li><a href="/manualpage/hmisamplescomms-en.html">
+				Communications, the Display List and Data Sources</a></li>
+			<li><a href="/manualpage/hmisamplesmenus-en.html">Menu Control</a></li>
+			<li><a href="/manualpage/hmisamplesalarms-en.html">
+				Events, Alarms, and System Status</a></li>
+			<li><a href="/manualpage/hmisamplesxul-en.html">
+				Mixing HTML and XUL with SVG</a></li>
+			<li><a href="/manualpage/hmisamplespushbuttons-en.html">Push Buttons</a></li>
+			<li><a href="/manualpage/hmisamplespilotlights-en.html">Pilot Lights</a></li>
+			<li><a href="/manualpage/hmisamplesnumerictext-en.html">
+				Numeric and Text Displays</a></li>
+			<li><a href="/manualpage/hmisamplesgauges-en.html">Tanks and Gauges</a></li>
+			<li><a href="/manualpage/hmisamplespipes-en.html">Piping and Pumps</a></li>
+			<li><a href="/manualpage/hmisamplesnumbinput-en.html">Numeric Inputs</a></li>
+			<li><a href="/manualpage/hmisamplesstripchart-en.html">Strip Charts</a></li>
+			<li><a href="/manualpage/hmisamplesbackground-en.html">Background Images</a></li>
+		 	<li><a href="/manualpage/hmisamplesvisualeffects-en.html">Visual Effects</a></li>
+		</ul>
+
+	</div>
+
+
+
+	<!-- Put main content here -->
+	<div id="datadisplay">
+
+<h1>Help - HMI Menu Control</h1>
+
+<hr>
+
+<h2>Overview:</h2>
+
+<p>The HTML menu allows the user to select different HMI screens by clicking on
+different menu selections.
+</p>
+
+
+<hr>
+
+<h2>HTML Menus:</h2>
+<p>
+<img src="HMI-Menu.png" width="730" height="172" alt="menu sample">
+</p>
+
+<p>The HTML menu system allows multiple "virtual screens" to be contained in a 
+single web page. This allows the entire client to be created as a single file.
+A single web page is more convenient than multiple files, because there is no
+simple means for two different web pages to communicate with each other.    
+</p>
+
+<p>To give the appearance of multiple screens, different parts of the same
+web page are hidden and revealed when the user clicks on different menu 
+selections.
+</p>
+
+<p>
+<img src="HMI-All-Screens.png" width="450" height="583" alt="screen sample">
+</p>
+
+
+<h3>Menu HTML</h3>
+
+<pre class="examples">
+
+	&lt;!-- This is the standard nav bar. --&gt;
+	&lt;div id="nav"&gt;
+	&lt;ul&gt;
+	&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('mainscreen')"&gt;Main&lt;/a&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('morescreen')"&gt;More&lt;/a&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('chartscreen')"&gt;Chart&lt;/a&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('eventscreen')"&gt;Events&lt;/a&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('alarmscreen')"&gt;Alarms&lt;/a&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('systemstatus')"&gt;System Status&lt;/a&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('testbuttons')"&gt;Test Errors&lt;/a&gt;&lt;/li&gt;
+	&lt;/ul&gt;
+	&lt;/div&gt;
+
+</pre>
+
+<pre class="examples">
+
+	// Make a list of all the screens that can be selected.
+	var ScreenTable = ["mainscreen", "morescreen", "chartscreen", "eventscreen", 
+			"alarmscreen",	"systemstatus", "testbuttons"];
+	// This creates an object that controls display of the screens.
+	var ScreenSelect = new MB_ScreenSelect(document, ScreenTable);
+
+</pre>
+
+
+<h3>Menu CSS</h3>
+
+<pre class="examples">
+
+	/* This handles the navigation (menu) bar. */
+	#nav {
+		background:tomato;
+		font-size: 150%;
+		margin-top:0px;
+		margin-bottom:0px;
+		padding-bottom:2px;
+		}
+	#nav ul{
+		padding-top:5px;
+		padding-bottom:5px;
+		list-style:none;
+		}
+	#nav li{
+		display:inline;
+		}
+	
+	#nav a {
+		float:left;
+		text-decoration:underline;
+		color:white;
+		background-color:grey;
+		border-right:2px solid white;
+		padding-top:2px;
+		padding-bottom:2px;
+		padding-left:5px;
+		padding-right:5px;
+		}
+	#nav a:hover {
+		background-color:green
+		}
+
+</pre>
+
+
+<h3>Javascript Library Functions:</h3>
+
+<p>The following Javascript library functions are useful for this feature:
+</p>
+
+<ul>
+	<li>MB_ScreenSelect</li>
+</ul>
+
+
+<h3>Screen HTML</h3>
+
+<pre class="examples">
+
+	&lt;!-- ################################################################## --&gt;
+
+	&lt;div id="mainscreen"&gt;
+	&lt;p&gt;&lt;h2&gt;MB-HMI Demo Main Screen:&lt;/h2&gt;&lt;/p&gt; 
+	
+	&lt;!-- Screen content goes here --&gt;
+
+	&lt;/div&gt;
+
+	&lt;!-- ################################################################## --&gt;
+
+	&lt;div id="eventscreen"&gt;
+	&lt;p&gt;&lt;h2&gt;Events:&lt;/h2&gt; &lt;/p&gt; 
+
+	&lt;!-- Screen content goes here --&gt;
+
+	&lt;/div&gt;
+
+
+</pre>
+
+
+<h3>Screen CSS</h3>
+
+<pre class="examples">
+
+/* This controls display of the main screen. */
+#mainscreen {
+	background:whitesmoke;
+	width:1000px;
+	display: block;
+	}
+
+#mainscreen h2, #mainscreen h3, #mainscreen p {
+	padding:0px 10px;
+	}
+
+/* This controls display of the events screen. */
+#eventscreen {
+	background:whitesmoke;
+	width:1000px;
+	display: none;
+	}
+#eventscreen h2, #eventscreen h3, #eventscreen p {
+	padding:0px 10px;
+	}
+
+
+</pre>
+
+
+<h3>How it works:</h3>
+
+<p>The menu is implemented as a simple unordered list. A simple CSS style is 
+then applied to it to cause the list to extend sideways instead of vertically.
+The CSS style also applies a background, padding, and separators to give the 
+appearence of a menu. A "hover" property is then applied to it to cause the 
+menu item to change colour when the mouse cursor passes over it.
+</p>
+
+<p>Each "virtual screen" is enclosed in a pair of "div" tags. The "id" for each
+div is then given a CSS style. The MB_ScreenSelect library class is 
+initialised with a list of all the screen div "id" strings. To select a screen, 
+the SelectScreen method for the menu object is then called with the desired 
+id string. The new screen is then revealed and the old screen is hidden.  
+</p>
+
+<p>Visibility of the "virtual screens" is controlled by manipulating the 
+"display" in the CSS. When display is set to "block" (display: block;), the
+screen is visible. When it is set to "none" (display: none;), the screen
+is hidden. In the CSS file, the default screen should be set to "block" and
+all others to "none" so that only one screen is visible at start up.
+</p>
+
+<p>Any number of screens may be handled in this way. 
+</p>
+
+
+<hr>
+
+<h2>Menu Styling:</h2>
+
+<p>Different menu visual styles can be achieved by applying CSS styles. This
+is not an in depth tutorial on HTML and CSS, but another example is given here
+to show what can be done. 
+</p>
+
+<h3>Horizontal List:</h3>
+
+<p>This shows a simple list turned into a horizontal menu. Below are
+also shown the HTML and CSS styles used to achieve it.
+</p>
+
+<p>
+<img src="hmimenuh.png" width="708" height="69" alt="menu sample">
+</p>
+
+
+<h3>HTML for Horizontal List:</h3>
+
+<pre class="examples">
+
+	&lt;div id="nav"&gt;
+		&lt;ul&gt;
+		&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('mainscreen')"&gt;Main&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('morescreen')"&gt;More&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('chartscreen')"&gt;Chart&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('eventscreen')"&gt;Events&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('alarmscreen')"&gt;Alarms&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('systemstatus')"&gt;Status&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('testbuttons')"&gt;Test&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="/hmidemo2.xhtml"&gt;Demo 2&lt;/a&gt;&lt;/li&gt;
+		&lt;/ul&gt;
+	&lt;/div&gt;
+
+</pre>
+
+
+<h3>CSS for Horizontal List:</h3>
+
+<pre class="examples">
+
+	/* This handles the navigation (menu) bar. */
+	#nav {
+		background:tomato;
+		font-size: 150%;
+		margin-top:0px;
+		margin-bottom:0px;
+		padding-bottom:2px;
+		}
+	#nav ul{
+		padding-top:5px;
+		padding-bottom:5px;
+		list-style:none;
+		}
+	#nav li{
+		display:inline;
+		}
+	
+	#nav a {
+		float:left;
+		text-decoration:underline;
+		color:white;
+		background-color:grey;
+		border-right:2px solid white;
+		padding-top:2px;
+		padding-bottom:2px;
+		padding-left:5px;
+		padding-right:5px;
+		}
+	#nav a:hover {
+		background-color:green
+		}
+
+</pre>
+
+
+<h3>Vertical List:</h3>
+
+<p>This shows a simple list turned into a vertical menu. Below are
+also shown the HTML and CSS styles used to achieve it. Notice that the
+actual HTML is identical, while the effect is achieved through some
+minor changes in the applied styling.
+</p>
+
+<p>
+<img src="hmimenuv.png" width="138" height="341" alt="menu sample">
+</p>
+
+
+<h3>HTML for Vertical List:</h3>
+
+<pre class="examples">
+
+	&lt;div id="nav"&gt;
+		&lt;ul&gt;
+		&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('mainscreen')"&gt;Main&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('morescreen')"&gt;More&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('chartscreen')"&gt;Chart&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('eventscreen')"&gt;Events&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('alarmscreen')"&gt;Alarms&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('systemstatus')"&gt;Status&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('testbuttons')"&gt;Test&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="/hmidemo.xhtml"&gt;Demo1&lt;/a&gt;&lt;/li&gt;
+		&lt;/ul&gt;
+	&lt;/div&gt;
+
+</pre>
+
+
+<h3>CSS for Vertical List:</h3>
+
+<pre class="examples">
+
+	/* This handles the navigation (menu) bar. */
+	#nav {
+		background:tomato;
+		font-size: 150%; 
+		float:left;
+		width:100px;
+		margin:5px;
+		}
+	
+	#nav ul	{
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+		}
+	
+	#nav a	{
+		display: block;
+	 	text-decoration:underline;
+		color: white;
+		background-color: grey;
+		width: 100px;
+		padding-top:2px;
+		padding-bottom:2px;
+		padding-left:7px;
+		padding-right:5px; 
+		border-left:2px solid white;
+		border-right:2px solid white;
+		border-top:2px solid white;
+		border-bottom:2px solid white;
+	
+		}
+	#nav a:hover {
+		background-color:green
+		}
+
+</pre>
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - HMI Menu Control</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

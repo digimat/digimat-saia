@@ -1,0 +1,50 @@
+/* Styles for ladder display.
+*/
+
+
+/* Buttons for controlling scanning. */
+.laddermonitorbuttons {
+	font-size: 125%;
+	padding-top:2px;
+	padding-bottom:2px;
+	padding-left:10px;
+	padding-right:10px;
+	}
+
+/* This controls the appearance of ladder elements. */
+.ladderstyles {
+	stroke: blue;
+	stroke-width: 0.5px;
+}
+
+/* Style for subroutine definitions. */
+.sbrstyle {
+	stroke: black;
+	fill: lightgrey;
+	stroke-width: 1.0px;
+}
+
+/* Style for comments. */
+.commentstyle {
+	stroke: black;
+	fill: wheat;
+}
+
+.rungstyle {
+	stroke: black;
+	fill: olivedrab;
+}
+
+/* This specifies the colours used for ladder monitoring. */
+
+.MB_ladderoff {
+	stroke: blue;
+	stroke-width: 0.5px;
+}
+
+.MB_ladderon {
+	stroke: red;
+	stroke-width: 2.0px;
+}
+
+

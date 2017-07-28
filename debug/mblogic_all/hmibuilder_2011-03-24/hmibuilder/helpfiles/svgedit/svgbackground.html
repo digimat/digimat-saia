@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+	<title>Help - HMI - Setting the SVG Background Colour</title>
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Edit SVG</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Inkscape</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">Templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assemble Page</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Editing SVG with Inkscape</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Using the SVG Library with Inkscape</a></li>
+			<li><a href="/customwidgets/customwidgets.html">Custom Widgets</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">HMI web templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assembling web pages</a></li>
+			<li><a href="/hmilib/hmilib.html">HMI Javascript Client Libraries</a></li>
+			<li><a href="/basicconcepts/basicconcepts.html">Basic Concepts</a></li>
+			<li><a href="/manualpage/manualpage.html">Manual HMI Web Page Construction</a></li>
+		</ul>
+
+		<h3>Editing SVG with Inkscape</h3>
+		<ul>
+			<li><a href="/svgedit/svgbackground.html">Setting the Background Colour</a></li>
+			<li><a href="/svgedit/svglayers.html">Working with Layers</a></li>
+			<li><a href="/svgedit/svgobjectstack.html">Object Stacking</a></li>
+			<li><a href="/svgedit/svgidproperty.html">The SVG "id" Property</a></li>
+			<li><a href="/svgedit/svgtextlabels.html">Setting Text Labels</a></li>
+			<li><a href="/svgedit/svgotheredit.html">Other Editing Features</a></li>
+			<li><a href="/svgedit/svgpixelbackground.html">Background Pixel Graphics</a></li>
+			<li><a href="/svgedit/svgusergraphics.html">User Created Graphics</a></li>
+		</ul>
+
+	</div>
+
+
+
+	<!-- Put main content here -->
+	<div id="datadisplay">
+
+
+<h1>Setting the SVG Background Colour</h1>
+
+
+<p>Open a copy of the selected SVG template with Inkscape. Next, decide what
+colour you wish to use as a background. The templates provided come with a
+white background by default. 
+</p>
+<p>The background is implemented as a rectangle which has been given the same size
+as the drawing itself. While Inkscape has a "background" setting in its page 
+properties, this does not provide a visible background to the finished drawing.
+To set the background colour:
+</p>
+
+<p>1) Select the background rectangle, and then select the fill and stroke properties.
+</p>
+
+<p><img src="BackgroundFillstroke.png" width="300" alt="background fill and stroke.">
+</p>
+
+<p>2) Change the rectangle colour using the RGB values. You can also make this a
+linear or radial gradient, or apply other properties to it.
+</p>
+
+<p><img src="BackgroundSetColour.png" width="300" alt="background set colour.">
+</p>
+
+<p>The background rectangle is on its own layer. As you add other layers to the 
+drawing, make sure the background layer is the <em>lowest</em> layer in the drawing.
+If you are not careful to ensure this, you will end up adding objects which
+fall <em>behind</em> the background rectangle and appear to "disappear". If the 
+background layer is not visible, check to see if you have turned it off.
+See the section on layers for more information about layers.
+</p>
+
+
+
+	<hr>
+
+	</div>
+
+	<!-- Standard footer -->
+	<div id="footer">
+		<p>MB-HMI</p>
+	</div>
+
+</div>
+
+
+</body>
+</html>
+
+
+<!-- Copyright 2008 - 2010. Michael Griffin -->
+<!-- This file is part of MBLogic. -->
+<!-- MBLogic is free software: you can redistribute it and/or modify -->
+<!-- it under the terms of the GNU General Public License as published by -->
+<!-- the Free Software Foundation, either version 3 of the License, or -->
+<!-- (at your option) any later version. -->
+<!-- MBLogic is distributed in the hope that it will be useful, -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the -->
+<!-- GNU General Public License for more details. -->
+<!-- You should have received a copy of the GNU General Public License -->
+<!-- along with MBLogic. If not, see <http://www.gnu.org/licenses/>. -->
+

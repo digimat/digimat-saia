@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.0"
+   width="95"
+   height="95">
+
+<defs>
+	<linearGradient id="MB_SilverGradient" x1="1" y1="1" x2="0" y2="0">
+		<stop offset="50%" stop-color="silver" />
+		<stop offset="100%" stop-color="white" />
+	</linearGradient>
+
+	<!-- The following filter is used to add a drop shadown. -->
+	<filter id="MB_DropShadowFilter">
+		<feGaussianBlur stdDeviation="2">
+		</feGaussianBlur>
+	</filter>
+</defs>
+
+<!-- This is a decorative nut. -->
+<polygon transform="translate(5,5)" fill="grey" stroke="none" 
+	filter="url(#MB_DropShadowFilter)" 
+	points="63,0 27,0 0,27 0,63 27,90 63,90 90,63 90,27 63,0" />
+<polygon fill="url(#MB_SilverGradient)" stroke="none" 
+	points="63,0 27,0 0,27 0,63 27,90 63,90 90,63 90,27 63,0" />
+
+</svg>

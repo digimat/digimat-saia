@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<link rel="icon" type="image/png" href="/systemicon.png" >
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/statuspagelayout.css" type="text/css">
+
+<!-- This controls the page display. -->
+<script type="text/javascript" src="/statuspages/libsysstatus.js"></script>
+<script type="text/javascript" src="/statuspages/libstatutils.js"></script>
+<!-- Read the data in as static files. -->
+<script type="text/javascript" src="/statdata/sysstatusmsie.js"></script>
+<script type="text/javascript" src="/statdata/syssummarymsie.js"></script>
+
+
+<!-- Message text definitions. -->
+<script type="text/javascript" src="/statuspages/libtexts_en.js"></script>
+
+<!-- Native JSON doesn't seem to be working in Opera 10.10. -->
+<script type="text/javascript" src="/statuspages/json2.js"></script>
+
+
+<title>System Status</title>
+
+</head>
+
+<body onload="pageinit();">
+
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo">
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+<div id="datadisplay">
+	
+	<div class="systemlcolumn">	
+		<h2>General System Parameters</h2>
+	
+		<!-- The system name, software name, software version -->
+	
+		<table class="displaytable"  border="1" >
+		<tr> <th class="t1">System Name</th>	<td class="t1" id="servername"></td> </tr>
+		<tr> <th class="t2">Software</th>		<td class="t2" id="softname"></td> </tr>
+		<tr> <th class="t1">Version</th>			<td class="t1" id="softversion"></td> </tr>
+		<tr> <th class="t2">Started at</th>		<td class="t2" id="starttime"></td> </tr>
+		<tr> <th class="t1">Uptime (hrs)</th>	<td class="t1" id="uptime"></td> </tr>
+		</table>
+
+	</div>
+	
+
+	<div class="systemrcolumn">	
+
+		<h2>Subsystem Status</h2>
+	
+		<table class="displaytable"  border="1">
+		<tr> <th class="t1">Servers</th>  		<td id="servercount"></td> </tr>
+		<tr> <th class="t2">TCP Clients</th>	<td id="tcpclienterrors"></td> </tr>
+		<tr> <th class="t1">Generic Clients</th>	<td id="genclienterrors"></td> </tr>
+		<tr> <th class="t2">HMI</th>				<td id="hmiconfigerrors"></td> </tr>
+		<tr> <th class="t1">Soft Logic IO</th>	<td id="plcconfigerrors"></td> </tr>
+		<tr> <th class="t2">Soft Logic</th>		<td id="plcrunmode"></td> </tr>
+		</table>
+
+	</div>
+
+	<div class="systemclear"></div>
+
+	<hr>
+
+	<p>The status monitoring system has detected that you are using a web browser 
+	which is not capable of using all the features in the system. This web
+	page is a special static version with limited capabilities. This page does
+	not update automatically and you will need to reload the page manually to
+	see an updated status. Also, there are additional menu options which are 
+	not available. 
+	</p>
+
+	<p>If you wish to use all the features in the status monitoring system then 
+	you will need to upgrade to a web browser based on modern standards. See the
+	help documentation for "System Status" for more details.
+	</p>
+
+	<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>System Status</p>
+</div>
+
+</div>
+
+<!-- This is the code for creating the data in the page. -->
+
+	<script type="text/javascript">
+
+
+	var libutils = new libstatutils();
+	// These take care of updating the screen.
+	var Monitor0 = new SysStatSummary(libutils);
+	var Monitor1 = new SubSysStatSummary(libutils, TextDefsGeneralStat, TextDefsPLCStat);
+
+
+	// Run an update cycle.
+	function Update() {
+		Monitor0.UpdatePageResults(sysstatus);
+		Monitor1.UpdatePageResults(syssummary);
+
+	}
+
+	// Start up and initialisation.
+	function pageinit() {
+		Update();
+	}
+
+
+	</script>
+
+
+</body>
+
+
+</html>
+
+<!-- Copyright 2008 - 2010. Michael Griffin 
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License 
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>. 
+-->
+

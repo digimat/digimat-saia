@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+	<title>Help - HMI - HMI Javascript</title>
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- Page navigation style sheet. -->
+<link rel="stylesheet" href="/pagenav.css" type="text/css">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo">
+			<span class="headtitle1">HMIServer </span>
+			<span class="headtitle2"> Help</span>
+		</p>
+	</div>
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statushmi.html">Config</a></li>
+			<li><a href="/statuscontrol.html">Control</a></li>
+			<li><a href="/datamsgsfield.html">Data Messages</a></li>
+			<li><a href="/hmiserverintro-en.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/hmiserverintro-en.html">Help</a></li>
+			<li><a href="/about-en.html">About</a></li>
+			<li><a href="/installation/install-en.html">Installation</a></li>
+			<li><a href="/installation/demos-en.html">Demo Applications</a></li>
+			<li><a href="/hmiserverstartparameters-en.html">Server Start Parameters</a></li>
+			<li><a href="/hmiservermonitor-en.html">HMI Server Monitoring</a></li>
+			<li><a href="/commsbasics-en.html">Communications Basics</a></li>
+			<li><a href="/hmiconfig-en.html">HMI Server Configuration</a></li>
+		</ul>
+
+		<h3>Topic Details for HMI Web Pages</h3>
+		<ul>
+			<li><a href="/hmi/hmibuilder/hmibuilder.html">MBLogic HMIBuilder</a></li>
+			<li><a href="/hmi/hmilib/hmilib.html">HMI Javascript Client Libraries</a></li>
+			<li><a href="/hmi/basicconcepts/basicconcepts.html">Basic Concepts</a></li>
+		</ul>
+
+		<h3>Basic Concepts</h3>
+		<ul>
+			<li><a href="/hmi/basicconcepts/hmibasics-en.html">HMI Web Basics</a></li>
+			<li><a href="/hmi/basicconcepts/hmiserver-en.html">HMI Server Functions</a></li>
+			<li><a href="/hmi/basicconcepts/hmiclients-en.html">Building Web Clients</a></li>
+			<li><a href="/hmi/basicconcepts/hmijavascript-en.html">Javascript</a></li>
+			<li><a href="/hmi/basicconcepts/hmisvgelements-en.html">HMI SVG Graphic Elements</a></li>
+		</ul>
+
+
+
+	</div>
+
+	<!-- Put main content here -->
+	<div id="datadisplay">
+
+<h1>Help - HMI Javascript</h1>
+
+<hr>
+
+<h2>Overview<a name="Overview"></a></h2>
+
+<p>Javascript is a programming language which is supported by almost all 
+modern web browsers. Despite the name, Javascript has no relationship to
+the Java programming language. They are two different languages, which both
+happen to have a syntax that was largely inspired by 'C'.  
+</p>
+
+<p>Javascript belongs to what are sometimes referred to as "scripting" 
+languages. A scripting language is a language which is intended for writing
+applications, as opposed to "systems" languages, which are intended for writing
+things like operating systems or compilers. Like most scripting languages,
+Javascript has many powerful features based on object oriented programming
+concepts. The details of Javascript programming are not discussed here. There
+are many books and web sites devoted to Javascript programming which should 
+be consulted for that information.
+</p>
+
+<hr>
+
+<h2>Javascript and the HMI System<a name="Javascript and the HMI System"></a></h2>
+
+<p>The HMI system makes use of Javascript to create what is often called an 
+"AJAX" application. "AJAX" stands for "Asynchronous Javascript And XML". The 
+history and philopsophy of AJAX applications won't be discussed here, other 
+than to mention that there are many books and web sites devoted to the subject. 
+The web based HMI is not a closed system, in that AJAX components from popular 
+AJAX libraries may be used to provide additional features if desired.   
+</p>
+
+<p>Like other AJAX applications, the HMI system relies on Javascript to 
+provide two things. It provides a communications channel to the server 
+which operates outside of the normal page load mechanism, and it is used 
+to script page features to allow the HMI to be manipulated without having 
+to load a new page from the server. Both of these features provide a more 
+interactive a application which is more like a conventional local application, 
+and less like a traditional web page.
+</p>
+
+
+<hr>
+
+<h2>HMI Communications Library<a name="HMI Communications Library"></a></h2>
+
+<p>The communications protocol used by the HMI system is implemented in a 
+client version called "libhmiclient.js". This protocol library allows the 
+client (web browser) to communicate with the server without having to reload 
+the web page. This permits the HMI system to poll the server on a regular basis 
+(e.g. once per second) to receive updates about inputs, events, alarms, and 
+other HMI information. This makes the libhmiclient.js library an import part 
+of the HMI client. 
+</p>
+
+<p>The HMI communications library makes use of a third party library called 
+"json2.js" to provide the JSON encoding and decoding. "json2.js" is a standard 
+library from the official JSON website at "www.json.org", and is licensed as 
+public domain.
+</p>
+
+<p>Details of how to use the HMI communications library may be found
+in another section.
+</p>
+
+
+<hr>
+
+<h2>HMI Javascript Library<a name="HMI Javascript Library"></a></h2>
+
+<p>The HMI has a standard Javascript library called "libmbhmi.js" intended for 
+helping to build HMI applications. It includes functions for things such as 
+manipulating the SVG, controlling which "screen" is visible, and event and 
+alarm handling.
+</p>
+
+
+<hr>
+
+<h2>In-Page Javascript<a name="In-Page Javascript"></a></h2>
+
+<p>In addition to the external standard libraries, a typical application may
+use Javascript embedded directly in the web page. This could be used for code 
+which is uniquely part of the application, as opposed to reusable libraries. 
+This may include things such as initialision code, custom data manipulation, 
+and the main polling loop.
+</p>
+
+
+<hr>
+
+<h2>Other Uses for Javascript<a name="Other Uses for Javascript"></a></h2>
+
+<p>In addition to the above, external Javascript files may be used to hold 
+application data, as opposed to normal Javascript code. Some examples of where 
+this may be used are Javascript object literals to hold event and alarm messages,
+and the messages for text displays. An example of this is shown below.  
+</p>
+
+<pre class="examples">
+
+	/*
+		Event message texts for HMI demo.
+		24-Oct-2008
+	
+	*/
+	
+	event_text = {
+	"PumpRunning" : "Tank pump is running.",
+	"PumpStopped" : "Tank pump is stopped.",
+	"Tank1Empty" : "Tank 1 is empty.",
+	"Tank1Full" : "Tank 1 is full.",
+	"Tank2Empty" : "Tank 2 is empty.",
+	"Tank2Full" : "Tank 2 is full."
+	}
+	
+	alarm_text = {
+	"PB1Alarm" : "PB1 was pressed.",
+	"PB2Alarm" : "PB2 was pressed.",
+	"PB3Alarm" : "PB3 was pressed.",
+	"PB4Alarm" : "PB4 was pressed."
+	}
+
+	// This is for text indicators.
+	Msg_HMIDemoColours = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"]
+
+</pre>
+
+
+<p>These text messages can be accessed directly by the Javascript
+code in the application, and can be passed to the standard libraries
+for such things as event and alarm handling. Placing the text messages in a
+separate file is usually more convenient and easier to maintain than placing
+them directly in the web page itself. 
+</p>
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - HMI Javascript</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

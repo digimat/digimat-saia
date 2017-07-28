@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<!-- This is an HTML5 doc type. -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<link rel="icon" type="image/png" href="/systemicon.png" >
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/systempagelayout.css" type="text/css">
+<link rel="stylesheet" href="/pagenav.css" type="text/css">
+
+<!-- This controls the page display. -->
+<script type="text/javascript" src="/libhmistatushmi.js"></script>
+<script type="text/javascript" src="/libdata.js"></script>
+<script type="text/javascript" src="/libstatutils.js"></script>
+
+
+<title>HMI Configuration Details</title>
+
+</head>
+
+<body onload="pageinit();">
+
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo">
+			<span class="headtitle1">HMIServer </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statushmi.html">Config</a></li>
+			<li><a href="/statuscontrol.html">Control</a></li>
+			<li><a href="/datamsgsfield.html">Data Messages</a></li>
+			<li><a href="/hmiserverintro-en.html">Help</a></li>
+		</ul>
+	</div>
+
+
+
+<div id="datadisplay">
+	
+<h1>HMI Configuration Details</h1>
+
+
+<hr>
+<!-- This displays configuration errors. -->
+	<div id="hmierrordisplay" class="datahide">
+		<h2>HMI Configuration Errors</h2>
+		<table id="hmierrortable" class="errortable"  border="1">
+		</table>
+		<hr>
+	</div>
+
+<h2>HMI ID</h2>
+
+<!-- This displays the current HMI server information. -->
+<table class="displaytable" id="hmiidtable"  border="1" onclick="ServerInfoEdit();">
+	<tr> <th>Server ID</th>			<td class="t1" id="serverid"></td> </tr>
+	<tr> <th>Client Version</th>	<td class="t2" id="clientversion"></td>  </tr>
+</table>
+
+
+<hr>
+
+<!-- The address tag configuration goes below. -->
+
+<h2>Address Tag Configuration</h2>
+
+
+<table id="addresstagtable" class="displaytable"  border="1">
+<tr>
+	<th onclick="Monitor.SortTagTable('tagname');">Tag Name <img src="/sort.png"></th> 
+	<th onclick="Monitor.SortTagTable('addrtype');">Address Type <img src="/sort.png"></th> 
+	<th onclick="Monitor.SortTagTable('datatype');">Data Type <img src="/sort.png"></th> 
+	<th onclick="Monitor.SortTagTable('memaddr');">Memory Address <img src="/sort.png"></th> 
+	<th onclick="Monitor.SortTagTable('minrange');">Minimum Range <img src="/sort.png"></th> 
+	<th onclick="Monitor.SortTagTable('maxrange');">Maximum Range <img src="/sort.png"></th>   
+	<th onclick="Monitor.SortTagTable('scaleoffset');">Scale Offset <img src="/sort.png"></th> 
+	<th onclick="Monitor.SortTagTable('scalespan');">Scale Span <img src="/sort.png"></th> 
+</tr>
+</table>
+
+
+<hr>
+
+<div id="hmialarms">
+
+	<h2>Alarm Configuration</h2>
+
+	<table id="alarmtable" class="displaytable"  border="1">
+	<tr>
+		<th onclick="Monitor.SortAlarmTable('addr');">Address <img src="/sort.png"></th> 
+		<th onclick="Monitor.SortAlarmTable('tag');">Tag Name <img src="/sort.png"></th> 
+		<th onclick="Monitor.SortAlarmTable('zonelist');">Zone List <img src="/sort.png"></th> 
+	</tr>
+	</table>
+
+
+</div>
+
+<div id="hmievents">
+
+	<h2>Event Configuration</h2>
+
+	<table id="eventtable" class="displaytable"  border="1">
+	<tr>
+		<th onclick="Monitor.SortEventTable('addr');">Address <img src="/sort.png"></th> 
+		<th onclick="Monitor.SortEventTable('tag');">Tag Name <img src="/sort.png"></th> 
+		<th onclick="Monitor.SortEventTable('zonelist');">Zone List <img src="/sort.png"></th> 
+	</tr>
+	</table>
+
+</div>
+
+<div id="hmiclear"></div>
+
+<hr>
+
+
+</div>
+
+
+<!-- End of the system status page. -->
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>HMI Configuration Details</p>
+</div>
+
+</div>
+
+<!-- This is the code for creating the data in the page. -->
+
+	<script type="text/javascript">
+
+	
+	// Handles displaying page data.
+	var libutils = new libstatutils();
+
+	var Monitor = new HMIStatus(libutils);
+
+	// Handles communications with the server.
+	var host = window.location.hostname;
+	var port = window.location.port;
+	var ServerData = new StatusDataIF(host, port, Monitor);
+
+
+	// Start up and initialisation.
+	function pageinit() {
+		// Get the HMI data and display it.
+		ServerData.SendGetRequest("/statdata/hmicurrentconfig.js");
+	}
+
+
+
+	// ========================================================
+
+
+	</script>
+
+</body>
+
+</html>
+
+<!-- Copyright 2008 - 2010. Michael Griffin 
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License 
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>. 
+-->
+

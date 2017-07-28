@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html 
+      PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:svg="http://www.w3.org/2000/svg"
+    	xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
+      xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<head>
+<link rel="icon" type="image/png" href="pageicon.png" />
+
+<!-- For a top menu screen with no header. 
+	Version 09-Jan-2010. -->
+
+<!-- Change this title to something appropriate. -->
+<title id="MBT_ClientName_Title">Default</title>
+
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="pagelayout.css" type="text/css"></link>
+<!-- Pagfe layout style sheet. This file contains the size and layout specific 
+	settings. Change this to import the correct CSS file for the SVG template 
+	you are using. -->
+<link rel="stylesheet" href="pagelayout_template.css" type="text/css"></link>
+
+
+<!-- Style sheet to control graphic buttons. -->
+<link rel="stylesheet" href="hmibuttons.css" type="text/css"></link>
+
+<!-- JSON parser. -->
+<script type="text/javascript" src="json2.js"></script>
+<!-- HMI Protocol functions. -->
+<script type="text/javascript" src="libhmiclient2.js"></script>
+<!-- MBHMI Library. -->
+<script src="libmbhmicontrols2.js" type="text/javascript"/>
+<script src="libmbhmimisc.js" type="text/javascript"/>
+<!-- MBHMI Library for events, alarms, and error display. -->
+<script type="text/javascript" src="libmbevents.js"></script>
+
+
+<!-- Standard error and other message text definitions. -->
+<script type="text/javascript" src="standardtexts.js"></script>
+
+<!-- The following files must be created by the user. 
+	The file names can be changed if necessary. -->
+<!-- Application configuration data. -->
+<script type="text/javascript" src="clientconfigdata.js"></script>
+<!-- Message texts. -->
+<script type="text/javascript" src="messagetexts.js"></script>
+
+</head>
+
+
+<body onload="MBT_pageinit();">
+
+
+<!-- This provides a container for the HTML elements so we can centre the contents. -->
+<div id="MBT_HTMLContainer">
+
+	<div id="MBT_TopHeader">
+	<h1 class="pos_left">
+		<!-- Include a logo here. -->
+		<object data="pagelogo.png" width="170"/>
+	</h1>
+
+	<h1 class="pos_right" id="MBT_ClientName_Heading">
+		Default
+	</h1>
+
+	</div>
+	<!-- This is the standard nav bar. -->
+	<div id="MBT_HTMLNavTop">
+		<ul>
+		<li><a onclick = "MBT_HTMLSelect.SelectScreen('MBT_SVGScreen')">Main</a></li>
+		<li><a onclick = "MBT_HTMLSelect.SelectScreen('MBT_AlarmsScreen')">Alarms</a></li>
+		<li><a onclick = "MBT_HTMLSelect.SelectScreen('MBT_EventsScreen')">Events</a></li>
+		<li><a onclick = "MBT_HTMLSelect.SelectScreen('MBT_SystemStatusScreen')">Status</a></li>
+		<li><a onclick = "MBT_HTMLSelect.SelectScreen('MBT_HelpScreen')">Help</a></li>
+		</ul>
+	</div>
+
+
+
+<!-- This sets the display styles for the standard HTML screens for pages with
+	horizontal menus across the top. -->
+<div id="MBT_HTMLScreensTop">
+
+	<!-- ################################################################## -->
+	<!-- Controls display of the main SVG screen. -->
+	<div id="MBT_SVGScreen">
+	<!-- Put main SVG content here -->
+
+
+
+	</div>
+
+	<!-- End of the main page. -->
+
+	<!-- ################################################################## -->
+
+
+	<!-- This is for alarms. Do not modify this section. -->
+
+	<div id="MBT_AlarmsScreen">
+	
+		<h2>Active Alarms:</h2> 
+	
+		<p>  
+		<svg xmlns="http://www.w3.org/2000/svg" 
+	 	    xmlns:html="http://www.w3.org/1999/xhtml" width="250px" height="75">
+	
+	
+		<defs>
+			<!-- The following filter is used to add a drop shadown. -->
+			<filter id="MBT_AlarmDropShadowFilter">
+				<feGaussianBlur stdDeviation="2">
+				</feGaussianBlur>
+			</filter>
+	
+				<!-- For violet buttons. -->
+			<linearGradient id="MBT_AlarmGradient" x1="1" y1="1" x2="0" y2="0">
+				<stop offset="50%" stop-color="violet" />
+				<stop offset="100%" stop-color="white" />
+			</linearGradient>
+	
+		</defs>
+	
+	
+				<!-- Push button to acknowledge alarms. -->
+		<g transform="translate(100, 35)" fill="url(#MBT_AlarmGradient)"
+				class="buttonactivate" onclick="MBHMIProtocol.AddAlarmAck();">
+	
+ 			<!-- This is the actual button. -->
+			<!-- Rectangular push button. -->
+			<g id="MBT_AlarmPB">
+					<!-- This rectangle is used for the drop shadown. -->
+					<rect x="-73" y="-18" width="160" height="50" rx="15"
+						fill="grey" stroke="none" stroke-width="0px" 
+						filter="url(#MBT_AlarmDropShadowFilter)"/>
+			
+					<!-- This is the actual button. -->
+					<rect x="-80" y="-25" width="160" height="50" rx="15"/>
+			</g>
+	
+			<!-- This is the text label. -->
+			<text x="-65" y="8" font-size="20" stroke-width="2px">Acknowledge</text> 
+	
+		</g>
+			
+	
+		</svg>
+		</p> 
+	
+		<p>
+		 	<!-- This is the table used to display the alarms. -->
+			<table id="MBT_AlarmDisplay" border="5" cellpadding="5">
+			<tr> 
+				<td><b>Alarm:</b></td>
+				<td><b>Alarm State:</b></td>
+				<td><b>Time:</b></td> 
+				<td><b>Time OK:</b></td> 
+				<td><b>Count:</b></td>
+			</tr>
+			</table>
+		</p>
+	
+	
+		<h2>Alarm History:</h2>
+	
+		<!-- This is the table used to display the alarm history. -->
+		<p>
+			<table id="MBT_AlarmHistoryDisplay" border="5" cellpadding="5">
+			<tr>
+				<td><b>Alarm:</b></td>
+				<td><b>Alarm Time:</b></td> 
+				<td><b>Time OK:</b></td> 
+				<td><b>Ack By:</b></td> 
+			</tr>
+			</table>
+		</p>
+	
+	</div>
+	
+	<!-- End of the alarms page. -->
+
+	<!-- ################################################################## -->
+
+
+	<!-- This is for events. Do not modify this section. -->
+
+	<div id="MBT_EventsScreen">
+		<h2>Events:</h2>
+
+		<p>
+		<!-- This is the table used to display the events. -->
+		<table id="MBT_EventDisplay" border="5" cellpadding="5">
+		<tr>
+			<td><b>Event #:</b></td> 
+			<td><b>Date:</b></td> 
+			<td><b>Event:</b></td> 
+			<td><b>State:</b></td>
+		</tr>
+		</table>
+		</p>
+	</div>
+
+
+	<!-- End of the events page. -->
+
+	<!-- ################################################################## -->
+
+	<!-- This is for system errors. Do not modify this section. -->
+
+	<div id="MBT_SystemStatusScreen">
+
+		<h2>Communications Errors:</h2>
+		<!-- This is the table used to display the communcations errors. -->
+		<p><table id="MBT_ErrorDisplay" border="5" cellpadding="5">
+		<tr>
+			<td><b>Date:</b></td> 
+			<td><b>Tag:</b></td> 
+			<td><b>Error:</b></td>
+		</tr>
+		</table>
+		</p>
+
+
+		<h2>Communications Status:</h2>
+		<!-- This is the table used to display the coummunications status. -->
+		<p><table id="MBT_StatusDisplay" border="5" cellpadding="5">
+		<tr>
+			<td><b>Date:</b></td> 
+			<td><b>Status Code:</b></td> 
+			<td><b>Status:</b></td>
+		</tr>
+		</table>
+		</p>
+
+	</div>
+
+	<!-- End of the system status page. -->
+
+	<!-- ################################################################## -->
+
+
+	<!-- This is for application specific help. -->
+
+	<div id="MBT_HelpScreen">
+
+		<h1>Help:</h1>
+
+		<h2>Main</h2>
+		<p>Application specific help content goes here. 
+		</p>
+
+		<hr></hr>
+
+		<h2>Alarms</h2>
+		<p>Alarms are high priority operator messages which require 
+		acknowledgement (i.e. fault messages).
+		</p>
+
+		<p>The alarm screen consists of two tables. The active alarms table shows
+		alarms which are currently active. Repeated alarms are automatically 
+		summarised. Alarms are colour coded according to whether they have been
+		already acknowledged and as to whether the fault condition has already 
+		corrected itself. If multiple operator stations are in use and an 
+		operator acknowledges an alarm, the acknowledgement is automatically
+		reflected to all other operator stations.
+		</p>
+		
+		<p>Once alarms have been acknowledged and the alarm condition they
+		automatically move to a historical table. 
+		</p>
+
+		<p>The active alarms table contains the following columns:</p>
+
+		<ul>
+			<li><strong>Alarm</strong> - The alarm text. This is application
+				specific.</li>
+			<li><strong>Alarm State</strong> - The current state of the alarms.</li>
+			<li><strong>Time</strong> - The time at which the alarm condition 
+				(fault) occurred.</li>
+			<li><strong>Time OK</strong> - The time at which the alarm condition
+				cleared.</li>
+			<li><strong>Count</strong> - The number of times the alarm condition
+				occurred before clearing and being acknowledged. Each time the
+				alarm transitions from OK to not OK the count will increment.
+				Once the alarm message has moved to the alarm history table the
+				count will rest to zero.</li>
+		</ul>
+
+		<p>The alarm history table contains the following columns:
+		</p>
+
+		<ul>
+			<li><strong>Alarm</strong> - This is the same as in the active alarms
+				table.</li>
+			<li><strong>Alarm Time</strong> - This is the same as in the active alarms
+				table.</li>
+			<li><strong>Time OK</strong> - This is the same as in the active alarms
+				table.</li>
+			<li><strong>Ack By</strong> - This is the id of the HMI client that
+				acknowledged the alarm.</li>
+		</ul>
+
+		<hr></hr>
+
+		<h2>Events</h2>
+		<p>Events are low priority operator messages which do not require 
+		acknowledgement. Events are displayed in a historical table. 
+		</p>
+
+		<p>The events table contains the following columns:
+		</p>
+
+		<ul>
+			<li><strong>Event #</strong> - The event serial number. This is applied
+				by the server and is unique for each event occurrence. </li>
+			<li><strong>Date</strong> - The time at which the event occurred.</li>
+			<li><strong>Event</strong> - The event text. This is application
+				specific.</li>
+			<li><strong>State</strong> - The current data state of the event.</li>
+		</ul>
+
+		<hr></hr>
+
+		<h2>Status</h2>
+		<p>The error status screen displays communications errors and status.
+		The communications errors errors table displays error codes returned
+		from the server. These error codes are associated with individual 
+		commands for such things as data out of range, incompatible data types, 
+		etc. Status errors are usually caused by HMI programming or server 
+		configuration errors. The communications errors table contains the 
+		following columns:  
+		</p>
+
+		<ul>
+			<li><strong>Date</strong> - The time at which the error occurred.</li>
+			<li><strong>Tag</strong> - The protocol tag associated with the 
+					error.</li>
+			<li><strong>Error</strong> - The descriptive error text.</li>
+		</ul>
+
+		<p>A communications status code reflects the protocol status code.
+		A status message is added to the table whenever a status code other
+		than "ok" is returned. The communications status table contains the 
+		following columns:
+		</p>
+
+		<ul>
+			<li><strong>Date</strong> - The time at which the error occurred.</li>
+			<li><strong>Status Code</strong> - The protocol status code.</li>
+			<li><strong>Status</strong> - The descriptive text for the status
+				code.</li>
+		</ul>
+
+		<p>Communications error and status messages are only returned to the 
+		client which generated the original request. When the web page is
+		reloaded, the messages are cleared. 
+		</p>
+
+		<hr></hr>
+
+		<h2>Help</h2>
+		<p>This screen.
+		</p>
+
+
+	</div>
+
+	<!-- End of the help page. -->
+
+<!-- ################################################################## -->
+
+</div>	<!-- For MBT_HTMLScreens. -->
+
+<!-- Standard footer -->
+<div id="MBT_HTMLFooter">
+	<p id="MBT_ClientName_Footer">Default</p>
+</div>
+
+</div>	<!-- For MBT_HTMLContainer. -->
+
+
+</body>
+
+	<script id="MBT_ControlLists">
+	<![CDATA[
+
+	// DO THIS: Parameters required for the protocol definition must be
+	// inserted here.
+	// ######################################################################
+
+	// The list of tags to poll.
+	MBT_ReadList = %(readlist)s;
+	// The alarm zone list to poll.
+	MBT_AlarmZoneList = %(alarmzonelist)s;
+	// The event zone list to poll.
+	MBT_EventZoneList = %(eventzonelist)s;
+	
+	// We also add the SVG screen list here.
+	MBT_SVGScreenTable = %(svgscreentable)s;
+
+	// ######################################################################
+
+	//]]>
+	</script>
+
+	<script>
+	<![CDATA[
+
+	var xmlns="http://www.w3.org/2000/svg";
+
+
+	/* This handles communications with the server. 
+	The parameters are: 
+		1) The host name the web page was loaded from.
+		2) The url (this can be a blank string).
+		2) The port number the web page was loaded from. 
+		3) The client ID string.
+		4) The list of tags to poll for data.
+		5) The list of alarm zones to poll for new alarms.
+		6) The list of event zones to poll for new events.
+		7) true = Enable asynchronous communications.
+	The first two parameters use a standard Javascript feature.
+	Alternatively, these can be hard coded values if the host
+	and port are known in advance.
+	*/
+	/* DO THIS: Make sure you update the MBT_ReadList, MBT_AlarmZoneList, 
+		and MBT_EventZoneList lists and the MBT_ClientID string in the 
+		external data file.
+	*/
+	var MBHMIProtocol = new HMIClient(window.location.hostname, 
+			window.location.pathname, window.location.port, 
+			MBT_ClientID, MBT_ReadList, MBT_AlarmZoneList, 
+			MBT_EventZoneList, true);
+
+
+	//]]>
+	</script>
+
+	<script id="MBT_ControlScripts">
+	<![CDATA[
+
+	// DO THIS: Application specific code goes here.
+	// ######################################################################
+
+	%(controlscripts)s
+
+	// ######################################################################
+
+
+	//]]>
+	</script>
+
+	<script>
+	<![CDATA[
+
+	/* Make a list of all the screens that can be selected.
+		If you modify the HTML menu you may need to update this list.
+	*/
+	var MBT_HTMLScreenTable = ["MBT_SVGScreen", "MBT_EventsScreen",
+		"MBT_AlarmsScreen", "MBT_SystemStatusScreen", "MBT_HelpScreen"];
+	// This creates an object that controls display of the screens.
+	var MBT_HTMLSelect = new MB_ScreenSelect(document, MBT_HTMLScreenTable);
+
+	/* This handles the secondary SVG screens within the main screen.
+		The list of ids for the screens comes from an external data file.
+	*/ 
+	var MBT_SVGScreenSelect = new MB_ScreenSelect(document, MBT_SVGScreenTable);
+
+
+	/* Standard HTML screens. Message texts and other configuration data 
+		is read from external data files.
+	*/
+
+	// This is to display the alarms.
+	var MBT_AlarmDisplay = new MB_AlarmDisplay(document, "MBT_AlarmDisplay", 
+				MBT_AlarmText, MBT_AlarmStatesText, 
+				"red", "orange", "green");
+	// Add this to the display list.
+	MBHMIProtocol.AddToDisplayList(MBT_AlarmDisplay, "alarms", "alarms");
+
+
+	// This is to display the alarm history.
+	var MBT_AlarmHistoryDisplay = new MB_AlarmHistoryDisplay(document, 
+				"MBT_AlarmHistoryDisplay", 50, MBT_AlarmText);
+	// Add this to the display list.
+	MBHMIProtocol.AddToDisplayList(MBT_AlarmHistoryDisplay, 
+					"alarmhistory", "alarmhistory");
+
+	// This is to display the events.
+	var MBT_EventDisplay = new MB_EventDisplay(document, 
+			"MBT_EventDisplay", 50, MBT_EventText);
+	// Add this to the display list.
+ 	MBHMIProtocol.AddToDisplayList(MBT_EventDisplay, "events", "events");
+
+
+	// This is to display the communications errors.
+	var MBT_ErrorDisplay = new MB_TagErrorDisplay(document, 
+					"MBT_ErrorDisplay", 50, MBT_ErrorText);
+	// Add this to the display list.
+	MBHMIProtocol.AddToDisplayList(MBT_ErrorDisplay, "errors", "errors");
+
+
+	// This is to display the communications status log.
+	var MBT_StatusLogDisplay = new MB_StatusLogDisplay(document, 
+					"MBT_StatusDisplay", 50, MBT_StatusText);
+	// Add this to the display list.
+	MBHMIProtocol.AddToDisplayList(MBT_StatusLogDisplay, "status", "status");
+
+
+	// Set a page title. This uses data from a variable to set the page title
+	// plus any other page elements which need to be labeled at run time. This
+	// permits giving the HMI page a unique name based on the data in an 
+	// external Javascript file.  
+	function SetTitle(tname, msg) {
+		var tref = document.getElementById(tname);
+		// If there are any existing elements, remove them first.
+		if (tref.hasChildNodes()) {
+			while (tref.firstChild) {
+				tref.removeChild(tref.firstChild);
+			}
+		} 
+		// Add the text and insert it in the page. 
+		tref.appendChild(document.createTextNode(msg));
+	}
+
+	// Set the page title.
+	SetTitle("MBT_ClientName_Title", MBT_PageTitle);
+	// Page heading.
+	SetTitle("MBT_ClientName_Heading", MBT_PageTitle);
+	// Page footer. 
+	SetTitle("MBT_ClientName_Footer", MBT_PageTitle);
+
+	// Set whether the page heading is visible. Setting it to true will
+	// display the HTML "banner" heading, while setting it to false will
+	// hide the heading.
+	function SetHeadingVisbility(visible) {
+		if (visible) {
+			document.getElementById("MBT_TopHeader").style.display = "block";
+		} else {
+			document.getElementById("MBT_TopHeader").style.display = "none";
+		}
+	}
+	SetHeadingVisbility(MBT_HeaderVisible);
+
+
+
+	// Run all the operations required each scan cycle.
+	function MBT_RunScanCycle() {
+
+		// Query the server for updates.
+		MBHMIProtocol.SendRequest();
+
+
+		/* Call the function back again at the set interval. The time 
+		interval should be set to a larger value on very slow 
+		computers. The time interval between scans is set by 
+		the MBT_ScanRate, which is read from an external data file.
+		*/
+		window.setTimeout("MBT_RunScanCycle()", MBT_ScanRate);
+		
+	}
+
+	// Start up and initialisation.
+	function MBT_pageinit() {
+
+		// Call the function back again at the set interval.
+		window.setTimeout("MBT_RunScanCycle()",500);
+	}
+
+
+
+	//]]>
+	</script>
+
+<!-- Copyright 2008 - 2011. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify 
+it under the terms of the GNU General Public License as published by 
+the Free Software Foundation, either version 3 of the License, or 
+(at your option) any later version. 
+MBLogic is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details. 
+You should have received a copy of the GNU General Public License 
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>. 
+-->
+
+</html>
+

@@ -1,0 +1,555 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Configure Clients</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+
+</head>
+
+<body>
+
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Status</h3>
+		<ul>
+			<li><a href="helpstatussummary.html">System Status Summary</a></li>
+			<li><a href="helpstatusconfigure.html">Configure Summary</a></li>
+			<li><a href="helpstatusconfiguresedit.html">Editing Configurations</a></li>
+			<li><a href="helpstatusconfigureservers.html">Servers Configuration</a></li>
+			<li><a href="helpstatusconfigureclients.html">Clients Configuration</a></li>
+			<li><a href="helpstatusconfigurehmi.html">HMI Configuration</a></li>
+			<li><a href="helpstatusconfigureslio.html">Soft Logic IO Configuration</a></li>
+			<li><a href="helpstatusconfigureprogram.html">Soft Logic Program</a></li>
+			<li><a href="helpstatuscontrol.html">Control</a></li>
+			<li><a href="helpstatusmonitor.html">Monitor Data</a></li>
+			<li><a href="helpstatussystem.html">Monitor System</a></li>
+			<li><a href="helpstatusplatform.html">Platform Data</a></li>
+			<li><a href="helpstatusxref.html">Cross Reference</a></li>
+		</ul>
+
+	</div>
+
+
+
+	
+<div id="datadisplay">
+<h1>Help - Configure Client Communications</h1>
+
+<hr>
+
+<h2>Overview</h2>
+
+<p>The "Configure Clients" page provides an overview the current client 
+communications configuration subsystem. This is divided into the following 
+sections: 
+</p>
+
+<ul>
+	<li>TCP Clients</li>
+	<li>Generic Clients</li>
+</ul>
+
+
+<p>
+<img src="clients1.png" width="500" alt="config clients">
+</p>
+
+<hr>
+
+<h2>TCP Clients</h2>
+
+<p>The TCP clients table lists the active TCP clients. The items of data
+include:
+</p>
+
+<ul>
+	<li>The connection name as assigned in the configuration file.</li>
+	<li>The protocol</li>
+	<li>The IP address to connect to.</li>
+	<li>The IP port to connect to.</li>
+	<li>The command action.</li>
+	<li>A button which may be clicked to view more details.</li>
+</ul>
+
+<p>When more details are selected, a new area will open up just below the
+client table to show the details for one client at a time. Selecting another
+details button will show the details for a different server. Selecting "hide
+details" will hide the details section of the page. 
+</p>
+
+<p>
+<img src="clients2.png" width="500" alt="config client details">
+</p>
+
+<p>The correspondence between the configuration parameters and the web page
+labels is shown below.
+</p>
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Item</th> 
+	<th>Configuration Label</th> 
+	<th>Description</th> 
+</tr>
+<tr>
+	<td>Connection Name</td>
+	<td>[section heading]</td>
+	<td>The name of the client connection.</td>
+</tr>
+<tr>
+	<td>Protocol</td>
+	<td>protocol</td>
+	<td>The type of client protocol.</td>
+</tr>
+<tr>
+	<td>IP Address</td>
+	<td>host</td>
+	<td>The target IP address.</td>
+</tr>
+<tr>
+	<td>IP Port</td>
+	<td>port</td>
+	<td>The target IP port.</td>
+</tr>
+<tr>
+	<td>Cmd Action</td>
+	<td>action</td>
+	<td>The command action requested.</td>
+</tr>
+<tr>
+	<td>Cmd Time (msec)</td>
+	<td>cmdtime</td>
+	<td>The time delay (in milliseonds) between commands.</td>
+</tr>
+<tr>
+	<td>Repeat Time (msec)</td>
+	<td>repeattime</td>
+	<td>The time delay (in milliseonds) before all commands are repeated.</td>
+</tr>
+<tr>
+	<td>Retry Time (msec)</td>
+	<td>retrytime</td>
+	<td>The time delay (in milliseonds) before retrying after an error.</td>
+</tr>
+<tr>
+	<td>Discrete Input</td>
+	<td>fault_inp</td>
+	<td>The discrete input to use for reporting faults.</td>
+</tr>
+<tr>
+	<td>Coil</td>
+	<td>fault_coil</td>
+	<td>The coil to use for reporting faults.</td>
+</tr>
+<tr>
+	<td>Input Register</td>
+	<td>fault_inpreg</td>
+	<td>The input register to use for reporting faults.</td>
+</tr>
+<tr>
+	<td>Holding Register</td>
+	<td>fault_holdingreg</td>
+	<td>The holding register to use for reporting faults.</td>
+</tr>
+<tr>
+	<td>Reset Coil</td>
+	<td>fault_reset</td>
+	<td>The coil to use to reset the fault.</td>
+</tr>
+</table>
+
+
+<h3>Modbus Commands</h3>
+
+<p>Modbus commands have the following parameters:
+</p>
+
+<ul>
+	<li>Function code - The Modbus function code.</li>
+	<li>Remote Memory Address - The memory address on the field device.</li>
+	<li>Quantity - The number of elements to read or write.</li>
+	<li>Local Memory Address - The memory address in the system data table.</li>
+	<li>Unit ID - THe unit id sent to the field device.</li>
+</ul>
+
+<h3>Editing TCP Clients</h3>
+
+
+<p>To edit a TCP client, enable configuration editing and then click on a 
+client in the display table. Edit the parameters and then press "change". 
+To delete a client, press the "delete" button. To add a new client, press
+the "Add" button at the bottom of the table. 
+</p>
+
+<p>The client editing form is divided into the following sections:
+</p>
+
+<ul>
+	<li>Connection</li>
+	<li>Polling</li>
+	<li>Faults</li>
+	<li>Commands</li>
+</ul>
+
+<p>Click on the appropriate selection to edit those parameters. 
+</p>
+
+<h4>Connection</h4>
+
+<p>This defines the connection parameters including:
+</p>
+
+<ul>
+	<li>Connection name - This can be any valid name.</li>
+	<li>IP Address - The TCP/IP address to connect to.</li>
+	<li>IP Port - The TCP/IP port to connect to.</li>
+</ul>
+
+<p>
+<img src="clientstcp1.png" width="300" alt="config clients">
+</p>
+
+
+<h4>Polling</h4>
+
+<p>The polling parameters include the following:
+</p>
+
+<ul>
+	<li>Command time. </li>
+	<li>Repeat time.</li>
+	<li>Retry time.</li>
+</ul>
+
+<p>All times are in milliseconds.
+</p>
+
+<p>
+<img src="clientstcp2.png" width="300" alt="config clients">
+</p>
+
+<h4>Faults</h4>
+
+<p>The fault parameters are the data table addresses in which to report
+communications errors. These include the following:
+</p>
+
+<ul>
+	<li>Coil</li>
+	<li>Discrete Input</li>
+	<li>Holding Register</li>
+	<li>Input Register</li>
+	<li>Reset Coil</li>
+</ul>
+
+<p>All addresses must be valid data table addresses.
+</p>
+
+<p>
+<img src="clientstcp3.png" width="300" alt="config clients">
+</p>
+
+<h4>Commands</h4>
+
+<p>The command parameters are the client communications commands which
+are to be executed. These include the following:
+</p>
+
+<ul>
+	<li>Command - The command name. If you have not added any commands there 
+		will be nothing you can select here.</li>
+	<li>Function Code - The Modbus function code.</li>
+	<li>Remote Address - The data table address in the field device.</li>
+	<li>Local Address - The data table address in the local system.</li>
+	<li>Quantity - The number of data table addresses to read or write. The
+		valid range for this will vary depending on the function code selected.</li>
+	<li>Unit ID - The Modbus unit id to send with the client request. Whether or
+		not the value is significant depends on whether or not the field device 
+		being addressed uses it. </li>
+</ul>
+
+
+<p>
+<img src="clientstcp4.png" width="300" alt="config clients">
+</p>
+
+<p>To add a new command, press the "add" button. This will open a new 
+dialogue which allows a new command name to be entered. To delete a command
+select the command you wish to delete and then press the "delete" button
+(beside the "add" button).
+</p>
+
+<p>
+<img src="clientstcp5.png" width="300" alt="config clients">
+</p>
+
+<hr>
+
+<h2>Generic Clients</h2>
+
+<p>
+<img src="clients3.png" width="500" alt="config generic clients">
+</p>
+
+<p>The generic clients table lists the active generic clients. The items of 
+data include:
+</p>
+
+<ul>
+	<li>The connection name as assigned in the configuration file.</li>
+	<li>The protocol</li>
+	<li>The command action.</li>
+	<li>A button which may be clicked to view more details.</li>
+</ul>
+
+<p>When more details are selected, a new area will open up just below the
+client table to show the details for one client at a time. Selecting another
+details button will show the details for a different server. Selecting "hide
+details" will hide the details section of the page. 
+</p>
+
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Item</th> 
+	<th>Configuration Label</th> 
+	<th>Description</th> 
+</tr>
+<tr>
+	<td>Connection Name</td>
+	<td>[section heading]</td>
+	<td>The name of the client connection.</td>
+</tr>
+<tr>
+	<td>Protocol</td>
+	<td>protocol</td>
+	<td>The type of client protocol.</td>
+</tr>
+<tr>
+	<td>Cmd Action</td>
+	<td>action</td>
+	<td>The command action requested.</td>
+</tr>
+<tr>
+	<td>Client File</td>
+	<td>clientfile</td>
+	<td>The client file name.</td>
+</tr>
+<tr>
+	<td>Restart on Fail</td>
+	<td>restartonfail</td>
+	<td>The restart on fail characteristics.</td>
+</tr>
+<tr>
+	<td>Data Table Read Addresses</td>
+	<td>readtable</td>
+	<td>The addresses to read from the main system and copy to the generic client.
+		Unused addresses are displayed as blanks.</td>
+</tr>
+<tr>
+	<td>Data Table Write Addresses</td>
+	<td>writetable</td>
+	<td>The addresses to read from the generic client and copy to the main system.
+		Unused addresses are displayed as blanks.</td>
+</tr>
+<tr>
+	<td>(Fault) Discrete Input</td>
+	<td>fault_inp</td>
+	<td>The discrete input to use for reporting faults.</td>
+</tr>
+<tr>
+	<td>(Fault) Coil</td>
+	<td>fault_coil</td>
+	<td>The coil to use for reporting faults.</td>
+</tr>
+<tr>
+	<td>(Fault) Input Register</td>
+	<td>fault_inpreg</td>
+	<td>The input register to use for reporting faults.</td>
+</tr>
+<tr>
+	<td>(Fault) Holding Register</td>
+	<td>fault_holdingreg</td>
+	<td>The holding register to use for reporting faults.</td>
+</tr>
+<tr>
+	<td>(Fault) Reset Coil</td>
+	<td>fault_reset</td>
+	<td>The coil to use to reset the fault.</td>
+</tr>
+</table>
+
+<h3>Commands</h3>
+
+<p>Commands are parsed into the command name and the command parameters. The 
+command parameters are displayed as a single block. 
+</p>
+
+
+<h3>Editing Generic Clients</h3>
+
+
+<p>To edit a generic client, enable configuration editing and then click on a 
+client in the display table. Edit the parameters and then press "change". 
+To delete a client, press the "delete" button. To add a new client, press
+the "Add" button at the bottom of the table. 
+</p>
+
+<p>The client editing form is divided into the following sections:
+</p>
+
+<ul>
+	<li>Client Start</li>
+	<li>Data Table Read</li>
+	<li>Data Table Write</li>
+	<li>Faults</li>
+	<li>Client Parameters</li>
+	<li>Command List</li>
+</ul>
+
+
+
+<p>Click on the appropriate selection to edit those parameters. 
+</p>
+
+<h4>Client Start</h4>
+
+<p>The client start parameters include the following:
+</p>
+
+<ul>
+	<li>Connection Name</li>
+	<li>Protocol</li>
+	<li>Client File</li>
+	<li>Restart on Fail</li>
+</ul>
+
+<p>
+<img src="clientsgen1.png" width="500" alt="config generic clients">
+</p>
+
+<h4>Data Table Read</h4>
+
+<p>The addresses to read from the main system and copy to the generic client. 
+</p>
+
+<p>
+<img src="clientsgen2.png" width="500" alt="config generic clients">
+</p>
+
+<h4>Data Table Write</h4>
+
+<p>The addresses to read from the generic client and copy to the main system.
+</p>
+
+<p>
+<img src="clientsgen3.png" width="500" alt="config generic clients">
+</p>
+
+<h4>Faults</h4>
+
+<p>The addresses used to report errors.
+</p>
+
+<p>
+<img src="clientsgen4.png" width="500" alt="config generic clients">
+</p>
+
+<h4>Client Parameters</h4>
+
+<p>Client parameters are edited via a simple text box. Since each generic 
+client can define its own parameters they cannot be verified by the form.
+Verification must be done by the generic client itself at run time.
+Client parameters are added to the configuration file exactly as written.
+</p>
+
+<p>
+<img src="clientsgen5.png" width="500" alt="config generic clients">
+</p>
+
+<h4>Command List</h4>
+
+<p>Commands are edited via a simple text box. Since each generic 
+client can define its own commands they cannot be verified by the form.
+Verification must be done by the generic client itself at run time.
+Commands are added to the configuration file exactly as written.
+</p>
+
+<p>
+<img src="clientsgen6.png" width="500" alt="config generic clients">
+</p>
+
+<hr>
+
+</div>
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Configure clients</p>
+</div>
+
+</div>
+
+</body>
+
+</html>
+
+
+<!-- Copyright 2008 - 2010. Michael Griffin 
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License 
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>. 
+-->

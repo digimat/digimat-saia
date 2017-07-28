@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - HMI Monitoring</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- Page navigation style sheet. -->
+<link rel="stylesheet" href="/pagenav.css" type="text/css">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo">
+			<span class="headtitle1">HMIServer </span>
+			<span class="headtitle2"> Help</span>
+		</p>
+	</div>
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statushmi.html">Config</a></li>
+			<li><a href="/statuscontrol.html">Control</a></li>
+			<li><a href="/datamsgsfield.html">Data Messages</a></li>
+			<li><a href="/hmiserverintro-en.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/hmiserverintro-en.html">Help</a></li>
+			<li><a href="/about-en.html">About</a></li>
+			<li><a href="/installation/install-en.html">Installation</a></li>
+			<li><a href="/installation/demos-en.html">Demo Applications</a></li>
+			<li><a href="/hmiserverstartparameters-en.html">Server Start Parameters</a></li>
+			<li><a href="/hmiservermonitor-en.html">HMI Server Monitoring</a></li>
+			<li><a href="/commsbasics-en.html">Communications Basics</a></li>
+			<li><a href="/hmiconfig-en.html">HMI Server Configuration</a></li>
+		</ul>
+
+	</div>
+
+<div id="datadisplay">
+
+<h1>Help - HMI Monitoring</h1>
+
+<hr>
+
+
+<h2>Overview:</h2> 
+
+<p>The HMI server offers the ability to monitor the following features: 
+</p>
+
+<ul>
+	<li><strong>System Status</strong> - The current status of the system</li>
+	<li><strong>Config</strong> - The current HMI configuration parameters</li>
+	<li><strong>Control</strong> - Shut down and parameter reload.</li>
+	<li><strong>Data Messages</strong> - Communications data messages.</li>
+	<li><strong>Help</strong> - On line help and documentation.</li>
+</ul>
+
+<p>In addition to the above, an older "static" version of the status monitoring
+system is also available. 
+</p>
+
+<hr>
+
+<h2>System Status</h2>
+
+<p>The "System Status" page displays the present operating status of the 
+system. It polls the server via the web interface (using the same port as the
+HMI page) for data and updates the page whenever that data changes. The updates
+are performed directly in the page, not by reloading the page (this is commonly 
+known as "AJAX").
+</p>
+
+<p><img src="hmiserverstatus.png" width="400" alt="server status">
+</p>
+
+<p>The following information is displayed:
+</p>
+
+<h3>General System Parameters</h3>
+
+<ul>
+	<li><strong>System Name</strong> - The "serverid" parameter from the 
+			configuration file.</li>
+	<li><strong>Software</strong> - The software version. This indicates the
+			protocol and type (client or server).</li>
+	<li><strong>Version</strong> - The software version.</li>
+	<li><strong>Started at</strong> - The time the system was started.</li>
+	<li><strong>Uptime (hrs)</strong> - The number of hours since the system
+			was started.</li>
+	<li><strong>Config</strong> - This indicates if the hmi configuration was OK
+			or if errors were present.</li>
+	<li><strong>Server Comms</strong> - This indicates if communications to
+			the field device are OK.</li>
+	<li><strong>Status Monitor</strong> - This indicates if communications between
+			the <em>browser</em> and the system is OK. A watchdog timer monitors 
+			the polling updates and times out if the browser lost contact with
+			the web server.</li>
+</ul>
+
+<h3>Start Parameters (Server Protocols</h3>
+
+<ul>
+	<li><strong>Client Web Port</strong> - The port used for the web server
+			interface (the -p start parameter).</li>
+	<li><strong>Field Protocol Port</strong> - The port used for the field 
+			protocol (the -r start parameter).</li>
+</ul>
+
+<h3>Start Parameters (Client Protocols</h3>
+
+
+<ul>
+	<li><strong>Client Web Port</strong> - The port used for the web server
+			interface (the -p start parameter).</li>
+	<li><strong>Remote Host</strong> - Name or address of remote field server 
+			(the -h start parameter).</li>
+	<li><strong>Remote Port</strong> - Port number of remote field server 
+			(the -r start parameter).</li>
+	<li><strong>Timeout (sec)</strong> - Timeout for remote communications 
+			(the -t start parameter).</li>
+	<li><strong>Unit ID</strong> - Unit ID of remote Modbus server  
+			(the -u start parameter).</li>
+</ul>
+
+
+<h3>HMI Web Pages</h3>
+
+<p>This lists all the web pages (HTML or XHTML) found in the "hmipages" 
+directory.
+</p>
+
+<hr>
+
+
+<h2>Config</h2>
+
+<p>This displays the current HMI configuration data. 
+</p>
+
+<p><img src="config1.png" width="400" alt="hmi config display 1">
+</p>
+
+<p><img src="config2.png" width="400" alt="hmi config display 2">
+</p>
+
+<p>The data columns may be sorted by clicking on the column headings.
+</p>
+
+<p><img src="config3.png" width="400" alt="hmi config display 3">
+</p>
+
+
+
+<hr>
+
+<h2>Control</h2>
+
+<p>The control page provides the ability to reload the HMI configuration, 
+and to shutdown the system. 
+</p>
+
+<p><img src="control1.png" width="400" alt="hmi control page">
+</p>
+
+<h3>Reload Config</h3>
+
+<p>Reloading the configuration will read the hmi configuration file from disk, 
+and use the new configuration to replace the current one. This allows the 
+configuration to be updated without stopping and restarting the system.
+After reloading a configuration, check the "System Status" or "HMI 
+Configuration Details" pages for errors.
+</p>
+
+
+<h3>Shutdown System</h3>
+
+<p>This sends a shutdown command to the system requesting that it stop and exit  
+immediately. 
+</p>
+
+<hr>
+
+<h2>Data Messages</h2>
+
+<p>Either "HMI Protocol Messages" or "Field Data Messages" may be selected by
+selecting the "Data Messages" menu option. The default page is the "Field Device 
+Messages" page. "Field Data Messages" may be selected from the link at the top
+of the "Field Device Messages" page.
+</p>
+
+<h3>HMI Protocol Messages:</h3>
+
+<p>The system keeps a temporary record of the most recent HMI requests and
+responses in a buffer. Selecting the "HMI Messages" menu will display these
+messages in a list, with the newest messages at the top, and the oldest at the
+bottom. These messages are in "raw" format, showing you the actual data being
+transmitted. This page can be useful in diagnosing communications problems 
+between HMI clients (web pages) and the HMI server.  
+</p>
+
+
+<h3>Field Data Messages:</h3>
+
+<p>The system keeps a temporary record of the most recent field device requests and
+responses in a buffer. Selecting the "Field Data Messages" menu will display these
+messages in a list, with the newest messages at the top, and the oldest at the
+bottom. These messages are in a processed format, showing you the contents of
+each message in human readable format. This page can be useful in diagnosing 
+communications problems between the HMI server and the field device server acting as
+the source of the data.  
+</p>
+
+<hr>
+
+<h2>Static Status Version</h2>
+
+<p>An older version of the status system is available as an alternative for
+browsers which do not support the necessary Javascript features or for cases 
+where Javascript must be turned off. These are simple "static" web pages.
+This static version is considered to be obsolete and will eventually be 
+removed. 
+</p>
+
+<p><img src="oldstatusscreen.png" width="400" alt="old status screen">
+</p>
+
+<h3>Status and Configuration Page</h3>
+
+<p>This displays the current status and the HMI configuration. The fields are
+the same as those in the dynamic versions. The information displayed is not
+automatically updated. To update the information, reload the web page (e.g.
+press the "F5" key). This page is available as:
+</p>
+
+
+<pre class="examples">
+
+	http://localhost:8082/hmiserverstatus-en.html
+
+</pre>
+
+
+<h3>HMI Messages</h3>
+
+<p>This displays the HMI protocol messages.
+</p>
+
+<h3>Field Data Messages</h3>
+
+<p>This displays the field device protocol messages.
+</p>
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - HMI Monitoring</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

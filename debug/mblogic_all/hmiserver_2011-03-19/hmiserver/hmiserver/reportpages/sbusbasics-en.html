@@ -1,0 +1,257 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - SBus Basics</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- Page navigation style sheet. -->
+<link rel="stylesheet" href="/pagenav.css" type="text/css">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo">
+			<span class="headtitle1">HMIServer </span>
+			<span class="headtitle2"> Help</span>
+		</p>
+	</div>
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statushmi.html">Config</a></li>
+			<li><a href="/statuscontrol.html">Control</a></li>
+			<li><a href="/datamsgsfield.html">Data Messages</a></li>
+			<li><a href="/hmiserverintro-en.html">Help</a></li>
+		</ul>
+	</div>
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/hmiserverintro-en.html">Help</a></li>
+			<li><a href="/about-en.html">About</a></li>
+			<li><a href="/installation/install-en.html">Installation</a></li>
+			<li><a href="/installation/demos-en.html">Demo Applications</a></li>
+			<li><a href="/hmiserverstartparameters-en.html">Server Start Parameters</a></li>
+			<li><a href="/hmiservermonitor-en.html">HMI Server Monitoring</a></li>
+			<li><a href="/commsbasics-en.html">Communications Basics</a></li>
+			<li><a href="/hmiconfig-en.html">HMI Server Configuration</a></li>
+		</ul>
+
+		<h3>Topic Details for Communications Basics</h3>
+		<ul>
+			<li><a href="/modbusbasics-en.html">Modbus/TCP</a></li>
+			<li><a href="/sbusbasics-en.html">SAIA SBus</a></li>
+		</ul>
+
+	</div>
+
+
+<div id="datadisplay">
+
+<h1>Help - SBus Basics</h1>
+
+<hr>
+
+<h2>Overview:</h2> 
+
+<p>SAIA Ether SBus is an industrial control protocol used by SAIA Burgess. 
+This help page will discuss some of the basic concepts, but
+does not provide a detailed description of the protocol itself.
+</p>
+
+<hr>
+
+<h2>Types of SAIA SBus:</h2> 
+
+<p>SAIA SBus comes both serial and Ethernet versions. The two versions are
+very similar, but the Ethernet version (known as Ether SBus) has some 
+additional information included in the protocol header. All further references 
+to SBus here are intended to refer to the Ethnet version used by HMIServer. 
+</p>
+
+<hr>
+
+<h2>Communications</h2> 
+
+<h3>Client/Server or Master/Slave:</h3>
+
+<p>Like most communications protocols, SBus uses a <em>client/server</em> type 
+protocol. This is also sometimes referred to as <em>master/slave</em>. A 
+"master" is the same thing as a "client", while a "slave" is the same thing as 
+a "server". Typically, the client is the PLC or controller, while the server 
+is a field device such as a valve bank or sensor block.
+</p>
+
+
+<h3>Station address (or Destination):</h3>
+
+<p>The station address or destination is used by RS-232 or RS-485 networks
+to deliver an SBus message to the correct address on a serial network.
+Ether SBus also has the station address in its messages, but the Ethernet TCP/IP 
+address is used to decide where to actually delivery the message. If a station
+address is specified, the client version of HMIServer will include it in 
+its messages. HMIServer itself however will ignore any station address in
+messages it recieves.  
+</p>
+
+<h3>Sequence:</h3>
+
+<p>When an SBus message sends a request, it includes a <em>sequence</em>
+number. This is a number from 0 to 65,535. This number is normally incremented
+by the client for each request (and allowed to roll over to 0 again when it 
+overflows). This sequence is echoed back by the server. The client can use 
+this number to determine if any messages are being lost or delayed
+in transmission.
+</p>
+
+
+<h3>Ethernet Parameters:</h3>
+
+<p>SAIA Ether SBus uses UDP/IP communicate over Ethernet. The "standard" port 
+number for Ether SBus is port 5050. However, it is possible to run
+Ether SBus on alternate port numbers provided that all devices that are 
+participating in the communications can be configured to use the alternate
+port.   
+</p>
+
+
+<hr>
+
+<h2>SBus Data Representation:</h2> 
+
+<h3>Data Table</h3>
+
+<p>SBus uses the concept of a <em>data table</em> to refer to data. Data 
+tables should be familiar to anyone who has used a PLC. A data table is an 
+array or block of memory used to store data. Data is referenced using data 
+table addresses. SBus data table addresses come in several types. Not all
+SBus types are supported by HMIServer, but the following are:   
+</p>
+
+<ul>
+	<li>Inputs - These are read only boolean values. They represent sensor 
+		inputs. </li>
+	<li>Outputs - These are read-write boolean values. They represent outputs 
+		(e.g. valve solenoids. </li>
+	<li>Flags - These are read-write boolean values. They represent internal 
+		bits which are both read by and written to by the user. </li>
+	<li>Registers - These are read-write 32 bit integers. They are 
+		typically used to represent internal numbers which are
+		both read by and written to by the user. </li>
+</ul>
+
+
+<h3>Data Table Addresses</h3>
+
+<p>SBus data table addresses are simply integer numbers. Each address type 
+(inputs, outputs, flags, registers) has its own numbered set of addresses. 
+For example, input 42 and flag 42 are two separate addresses.
+</p>
+
+<p>HMIServer will recognise up to 65,536 addresses of each type. The number 
+of addresses actually implemented in a particular device (sensor block, valve 
+bank, PLC, etc.) may however be much less that this. Each device designer is
+responsible for deciding what makes sense for their application. They will
+then normally supply a "memory map" or list of addresses for their device
+listing what addresses were implemented, and what each one does.
+</p>
+
+
+<hr>
+
+<h2>SBus Commands:</h2> 
+
+<h3>Command Codes:</h3> 
+
+<p>SBus <em>commands</em> are numerical codes which act as commands to 
+read or write a data table address. The following commands are implemented
+in HMIServer:
+</p>
+
+<ul>
+	<li>2 - Read flags. </li> 
+	<li>3 - Read inputs. </li>
+	<li>5 - Read outputs. </li>
+	<li>6 - Read registers. </li>
+	<li>11 - Write flags. </li>
+	<li>13 - Write outputs. </li>
+	<li>14 - Write registers. </li>
+</ul>
+
+<h3>Count:</h3> 
+
+<p>SBus functions may read or write multiple addresses. The "count" 
+parameter specifies the number of consecutive addresses to read or write.
+</p>
+
+<h3>Maximum Number of Addresses Which Can be Read or Written at Once:</h3> 
+
+<p>The SBus protocol specifies the maximum number of addresses which can be 
+read or written at one time. This limits the amount of data which must be 
+transferred in a single command to no more than 255 bytes. For flags, inputs, 
+or outputs the limit is 128. For registers, the limit is or 32 registers. 
+</p>
+
+<hr>
+
+<h2>SBus Errors:</h2> 
+
+
+<p>When an Sbus message is received by a server it is analysed to see of all 
+the parameters are correct and also if the included checksum is correct. If 
+everything is OK, the server will send a response. This response may consist 
+of data, or it may just be an acknowledgement that the message was received. 
+</p>
+
+<p>If there are any error however, the server may do one of two things. If the
+message could not be decoded at all (e.g. there was a bad check sum), the message
+is simply discarded. If the message could be decoded but one or more parameters
+was incorrect (e.g. an attempt was made to read a non-existent address), then 
+the server will send a response containing a <em>NAK code</em>. Although there
+are several different NAK codes, only NAK code "1" is applicable when reading 
+or writing data. HMIServer will simply treat any non-zero NAK code as an
+unspecified error.    
+</p>
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - SBus Basics</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2010. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

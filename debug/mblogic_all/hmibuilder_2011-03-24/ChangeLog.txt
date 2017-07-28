@@ -1,0 +1,44 @@
+HMIBuilder
+Change Log:
+
+
+--------------------------------------------------------------------------
+
+2011-03-23: Release 06.
+
+	This is a bug fix release only. There are no new features.
+
+	* Fixed a bug relating to very long lists of address tags. Tkinter 
+	optionmenu widgets do not scroll. Replaced with a scrolling list box. 
+
+	* Updated documentation.
+
+
+--------------------------------------------------------------------------
+
+2011-03-21: Release 05.
+
+	This is a bug fix release only. There are no new features.
+
+	* Fixed bug in icon path. Due to a mistake in the build script the correct 
+	version of the icons were not included in the release package.
+
+	* Fixed MS Windows batch file. The batch file as released could cause icon
+	path errors.
+
+
+--------------------------------------------------------------------------
+
+2011-03-19: Release 04.
+
+    * Initial release (releases 1 to 3 were for SVG widget art only).
+
+This is the first full release of HMIBuilder. This is a new program which 
+allows HMI web pages to be created without programming. A package containing 
+just SVG widget art had been previously released under the HMIBuilder name, 
+but this is the first release of the actual program which assembled and 
+configures the web page for you.
+
+
+--------------------------------------------------------------------------
+

@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - On Line Help</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for General</h3>
+		<ul>
+			<li><a href="/general/OnLineHelp-en.html">On Line Help System</a></li>
+			<li><a href="/general/DataTable-en.html">System Data Table</a></li>
+			<li><a href="/general/Applications-en.html">Creating Applications</a></li>
+			<li><a href="/general/FileLocations-en.html">File Locations</a></li>
+			<li><a href="/general/Capacity-en.html">System Capacity</a></li>
+			<li><a href="/general/UserHelp-en.html">User Help</a></li>
+		</ul>
+
+	</div>
+
+
+<div id="datadisplay">
+
+<h1>Help - On Line Help</h1>
+
+<h2>Overview:</h2> 
+
+<p>The on-line help system includes a set of web help pages which can be accessed 
+through a built in web server. The on-line help includes information on installation, 
+configuration, programming, and trouble shooting. 
+</p>
+
+<hr>
+
+<h2>Accessing On Line Help:</h2>
+
+<p>To access the help system, you must know the IP address of the computer 
+where the system was installed. If your web browser is running on the same 
+computer, you can use the address "localhost" (which is the standard address 
+name a computer has for itself). The "home page" for the help system is called 
+"index.html" (this is also a standard convention).
+</p>
+
+<p>The following shows two different examples:
+</p>
+<pre class="examples">
+
+	http://192.168.50.10:8080/index.html
+
+	http://localhost:8080/index.html
+
+</pre>
+
+
+<p>The on-line help system is part of the web based status monitoring and 
+control system. The port number used is set in the configuration system. 
+The port used in the sample configuration shipped with the system is 8080. 
+</p>
+
+<hr>
+
+<h2>Help System Menus:</h2>
+
+<p>The help system is integrated into the status monitoring and control system.
+Each status monitoring and control web page has a link to the main help web 
+page via a menu option titled "Help". Click on that menu item to view the
+main help web page. Each help web page includes the status monitoring menu
+allowing you to return to the status monitoring system at any time.
+</p>
+
+<p>Each help web page contains a series of links to help topics on the left side
+of the page. Click on any of these links to see more details on that topic. Below
+the help topic links are further links to details on the particular help topic
+being viewed. These detailed help links will change as different topics are 
+viewed. 
+</p>
+
+<p>
+<img src="HelpPage.png" width="527" height="487" alt="Data Table">
+</p>
+
+<hr>
+
+<h2>What to do if the Help System is Disabled:</h2>
+
+<p>As shipped, the help system uses port 8080 for the help web server. However, 
+the user has the ability to assign a different port number, or to disable the 
+web server altogether. If the web server is disabled, the user will not be 
+able to access the on line help (or the status monitoring system). If you 
+wish to re-enable the web server, make sure the following lines are in the 
+configuration file.
+</p>
+
+<pre class="examples">
+
+	# Status web server.
+	[status]
+	type=tcpserver
+	protocol=status
+	port=8080
+
+</pre>
+
+
+<p>The configuration file is an ordinary text file and can be edited with any 
+text editor. You may use a different port number if you wish. Just remember that 
+your web browser will need to look for this alternate port number if you use it. 
+</p>
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - On Line Help</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

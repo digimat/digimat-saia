@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='digimat.saia',
     version='0.0.1',
-    description='Digimat Saia EtherSBus',
+    description='Digimat Saia EtherSBus implementation',
     namespace_packages=['digimat'],
     author='Frederic Hess',
     author_email='fhess@splust.ch',

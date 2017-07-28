@@ -1,0 +1,337 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Program Control Instructions</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Soft Logic</h3>
+		<ul>
+			<li><a href="SLSpecs-en.html">Specifications</a></li>
+			<li><a href="SLAddressing-en.html">Addressing</a></li>
+			<li><a href="SLInstructions-en.html">Instructions</a></li>
+			<li><a href="SLPrograms-en.html">Programming</a></li>
+			<li><a href="SLConfig-en.html">Configuration</a></li>
+			<li><a href="SLStatus-en.html">Program Monitoring and Reloading</a></li>
+			<li><a href="SLMemSave-en.html">Data Table Save/Restore</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>Program Control Instructions</h1>
+
+<hr>
+
+
+<p>Program control instructions control the flow of the PLC program. 
+</p>
+
+<table class="helptable"  border="1">
+
+<tr>
+	<th>Instr.</th>
+	<th>Descr.</th>
+	<th># Param</th> 
+	<th>Subr</th>
+	<th>DS</th>
+	<th>KInt</th>
+	<th>One Shot</th> 
+	<th>Symbol</th>
+</tr>
+
+<tr>
+	<td>END</td>
+	<td>Program end</td>
+	<td>0</td> 
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td><img src="LadEnd.png" width="150" height="50" alt="End"></td>
+</tr>
+
+<tr>
+	<td>ENDC</td>
+	<td>Program end conditional</td> 
+	<td>0</td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td><img src="LadEndC.png" width="150" height="50" alt="EndC"></td>
+</tr>
+
+<tr>
+	<td>FOR</td>
+	<td>For/next loop</td>
+	<td>1 or 2</td> 
+	<td></td>
+	<td>X</td>
+	<td>X</td>
+	<td>X</td>
+	<td><img src="LadFor.png" width="150" height="50" alt="For"></td>
+</tr>
+
+<tr>
+	<td>NEXT</td>
+	<td>Next in For/next loop</td>
+	<td>0</td> 
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td><img src="LadNext.png" width="150" height="50" alt="Next"></td>
+</tr>
+
+<tr>
+	<td>SBR</td>
+	<td>Define a subroutine</td>
+	<td>1</td> 
+	<td>X</td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td><img src="LadSBR.png" width="185" height="50" alt="Sbr"></td>
+</tr>
+
+<tr>
+	<td>CALL</td>
+	<td>Call subroutine</td>
+	<td>1</td> 
+	<td>X</td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td><img src="LadCall.png" width="225" height="50" alt="Call"></td>
+</tr>
+
+<tr>
+	<td>RT</td>
+	<td>Return from subroutine</td>
+	<td>0</td> 
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td><img src="LadReturn.png" width="150" height="50" alt="Return"></td>
+</tr>
+
+<tr>
+	<td>RTC</td>
+	<td>Return from subroutine conditional</td> 
+	<td>0</td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td><img src="LadReturnC.png" width="150" height="50" alt="ReturnC"></td>
+</tr>
+
+</table>
+
+<h3>Program END</h3>
+
+<p>END and ENDC will terminate a program scan. END terminates the scan unconditionally, 
+while ENDC will terminate the scan if the logic stack is true. 
+</p>
+
+<p>Example: </p>
+<pre class="examples">
+
+	// END.
+	NETWORK 100
+	STR SC1
+	AND X5
+	ENDC
+	STRN SC1
+	END
+
+</pre>
+
+
+<h3>Subroutines</h3>
+
+<p>SBR, CALL, RT, and RTC are subroutine instructions. SBR is used to define a 
+subroutine. CALL will call a subroutine. SBR and CALL expect a valid 
+subroutine name as a parameter. RT will return from a subroutine unconditionally.
+RTC will return from a subroutine if the logic stack is true.
+</p>
+
+<p>Example: </p>
+<pre class="examples">
+
+	// Subroutines.
+	NETWORK 1
+	STR SC1
+	OUT Y1
+	CALL SubTest
+	
+	NETWORK 2
+	STR C47
+	OUT Y19
+	
+	END
+	
+	// Define subroutine.
+	SBR SubTest
+	NETWORK 1
+	STR SC1
+	RST Y10
+	AND X21
+	RTC
+	SET C47
+	RT
+
+</pre>
+
+
+<h3>For/Next</h3>
+
+<p>FOR and NEXT are used to define a loop which executes a specified number of 
+times. FOR begins the loop, and NEXT defines the end of the loop. FOR expects 
+an integer parameter specifying the number of loops to perform. This may be
+a register or constant. FOR also accepts an optional parameter specifying whether 
+the instruction should execute as a one-shot. FOR/NEXT loops may be nested.
+</p>
+
+<p>Example: </p>
+<pre class="examples">
+
+	// FOR/NEXT with constant.
+	NETWORK 1
+	STR SC1
+	FOR 10
+	OUT Y1
+	NEXT
+	
+	// FOR/NEXT with register.
+	NETWORK 2
+	STR SC1
+	FOR DS1
+	OUT Y2
+	NEXT
+	
+	// FOR/NEXT with one-shot.
+	NETWORK 2
+	STR SC1
+	AND C1
+	FOR 100 1
+	OUT Y2
+	NEXT
+
+</pre>
+
+
+<h3>Errors</h3>
+
+<p>Using RT or RTC in the main program will cause a run-time error. Using NEXT
+without FOR may cause a run-time error. Using FOR without NEXT may cause 
+unpredictable run-time operation.
+</p>
+
+<p>Subroutines may call other subroutines, and they may even call themselves
+(recursion is permitted). However, if if the nesting level reaches an excessive
+level, a run time error will occur and the program will exit. The maximum nesting
+level is undefined, but is typically about 1000.  
+</p>
+
+</div>
+
+<div id="ladsampledisplay">
+
+<hr>
+
+<h2>Ladder Examples</h2>
+
+<p>The following shows examples in ladder format. Each example shows the IL
+code as comments, followed by the ladder equivalent.
+</p>
+
+<p>
+<img src="LadProg1.png" width="840" height="100" alt="program control example 1">
+<img src="LadProg2.png" width="840" height="370" alt="program control example 2">
+<img src="LadProg3.png" width="840" height="400" alt="program control example 3">
+<img src="LadProg4.png" width="840" height="615" alt="program control example 4">
+</p>
+
+</div>
+
+
+<hr>
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Soft Logic</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

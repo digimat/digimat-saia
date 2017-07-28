@@ -1,0 +1,815 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+	<title>Help - HMI - HMI Tanks, Gauges, and Miscellaneous</title>
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Edit SVG</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Inkscape</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">Templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assemble Page</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Editing SVG with Inkscape</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Using the SVG Library with Inkscape</a></li>
+			<li><a href="/customwidgets/customwidgets.html">Custom Widgets</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">HMI web templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assembling web pages</a></li>
+			<li><a href="/hmilib/hmilib.html">HMI Javascript Client Libraries</a></li>
+			<li><a href="/basicconcepts/basicconcepts.html">Basic Concepts</a></li>
+			<li><a href="/manualpage/manualpage.html">Manual HMI Web Page Construction</a></li>
+		</ul>
+
+		<h3>Manual HMI Web Page Construction</h3>
+		<ul>
+			<li><a href="/manualpage/hmisampleslayout-en.html">Page Layout</a></li>
+			<li><a href="/manualpage/hmisamplespositioning-en.html">
+				Positioning Components on the Screen</a></li>
+			<li><a href="/manualpage/hmisamplescomms-en.html">
+				Communications, the Display List and Data Sources</a></li>
+			<li><a href="/manualpage/hmisamplesmenus-en.html">Menu Control</a></li>
+			<li><a href="/manualpage/hmisamplesalarms-en.html">
+				Events, Alarms, and System Status</a></li>
+			<li><a href="/manualpage/hmisamplesxul-en.html">
+				Mixing HTML and XUL with SVG</a></li>
+			<li><a href="/manualpage/hmisamplespushbuttons-en.html">Push Buttons</a></li>
+			<li><a href="/manualpage/hmisamplespilotlights-en.html">Pilot Lights</a></li>
+			<li><a href="/manualpage/hmisamplesnumerictext-en.html">
+				Numeric and Text Displays</a></li>
+			<li><a href="/manualpage/hmisamplesgauges-en.html">Tanks and Gauges</a></li>
+			<li><a href="/manualpage/hmisamplespipes-en.html">Piping and Pumps</a></li>
+			<li><a href="/manualpage/hmisamplesnumbinput-en.html">Numeric Inputs</a></li>
+			<li><a href="/manualpage/hmisamplesstripchart-en.html">Strip Charts</a></li>
+			<li><a href="/manualpage/hmisamplesbackground-en.html">Background Images</a></li>
+		 	<li><a href="/manualpage/hmisamplesvisualeffects-en.html">Visual Effects</a></li>
+		</ul>
+
+	</div>
+
+
+
+	<!-- Put main content here -->
+	<div id="datadisplay">
+
+<h1>Help - HMI Tanks, Gauges, and Miscellaneous</h1>
+
+<hr>
+
+<h2>Overview:</h2>
+
+<p>Tanks and gauges are graphical elements that can be used to display analogue
+values in an "graphic" manner (as opposed to numbers). As well, arbitrary 
+graphics can be displayed in a "slide show" fashion which displays one image
+at a time, or they can be moved about or rotated using the functions described
+here.
+</p>
+
+
+<p>
+<img src="hmitanksimple.png" width="72" height="160" alt="Tank Display">
+<img src="hmitankfancy.png" width="128" height="142" alt="Tank Display">
+<img src="lguage.png" width="50" height="175" alt="Column gauge">
+<img src="dialred.png" width="125" height="125" alt="Dial Gauge">
+<img src="pandp.png" width="156" height="82" alt="pick and place">
+</p>
+
+
+<hr>
+
+<h2>Tank Display:</h2>
+
+<p>A tank display works by operating on a linear gradient which is associated 
+with the "fill" property of an SVG element. Any closed shape may be considered
+a tank. The example shown below uses a simple rectangle with rounded ends (the
+corner radius is very large). The level of the fill colour will move up and
+down in the tank corresponding to an integer value between 0% and 100%. 
+</p>
+
+<p>The tank display is compatible with the display list. 
+</p>
+
+<h3>SVG for Simple Tank</h3>
+
+<p>This tank is simply a rectangle with rounded ends. The ends were made 
+rounded by simply specifying a corner radius parameter that was half the
+width of the rectangle ('rx="62"').
+</p>
+
+<p>
+<img src="hmitanksimple.png" width="145" height="320" alt="Tank Display">
+</p>
+
+<pre class="examples">
+
+	&lt;defs&gt;
+	&lt;linearGradient id="TankFill1" x1="0" y1="1" x2="0" y2="0"&gt;
+		&lt;stop offset="0%" stop-color="blue" /&gt;
+		&lt;stop id="TFill1A" offset="60%" stop-color="blue" /&gt;
+		&lt;stop id="TFill1B" offset="60%" stop-color="white" /&gt;
+		&lt;stop offset="100%" stop-color="white" /&gt;
+	&lt;/linearGradient&gt;
+	&lt;/defs&gt;
+
+	&lt;!-- Display tank 1. --&gt;
+	&lt;g transform="translate(30,25)"&gt;
+		&lt;rect x="0" y="0" width="125" height="300" rx="62" fill="url(#TankFill1)" 
+			stroke="purple" stroke-width="20"/&gt;
+	&lt;/g&gt;
+
+</pre>
+
+
+<h3>SVG for Fancy Tank</h3>
+
+<p>This is a more elaborate tank. Most of this is simply a background image
+in SVG to draw the decorative part of the tank. The actual level indicator is
+simply an irregular closed shape created using a polygon. It otherwise works
+exactly the same as the simple tank. The colours of the decorative part of of 
+tank are set via the parameters in the "tankdecorate" linear gradient.
+</p>
+
+<p>
+<img src="hmitankfancy.png" width="255" height="283" alt="Tank Display">
+</p>
+
+<p>The following is the definition for the decorative parts of the tank 
+("MB_TankBackground") as well as the animated column ("MB_TankColumn"). 
+The colour of the tank is defined in the tank definition, and must be changed
+there if necessary. 
+</p>
+
+<pre class="examples">
+
+&lt;defs&gt;
+
+	&lt;!-- This is a decorative gradient. Change the colours here to
+		change the colour of the tank. Change the x and y parameters
+		to change the direction of the shadown effects. --&gt;
+	&lt;g id="MB_TankBackground"&gt;
+
+		&lt;linearGradient id="MB_TankDecorate" 
+				x1="1" y1="0" x2="0" y2="0"&gt;
+			&lt;stop offset="35%" stop-color="grey" /&gt;
+			&lt;stop offset="100%" stop-color="white" /&gt;
+		&lt;/linearGradient&gt;
+
+		&lt;!-- Display tank. This draws the tank itself. --&gt;
+		&lt;g stroke="black" stroke-width="2" fill="url(#MB_TankDecorate)"&gt;
+			&lt;!-- Roof of the tank. --&gt;
+			&lt;ellipse cx="250" cy="0" rx="250" ry="100"/&gt;
+			&lt;!-- Main body of the tank. --&gt;
+			&lt;rect x="0" y="0" width="500" height="300"/&gt;
+			&lt;!-- Bottom cone of the tank. --&gt;
+			&lt;polygon transform="translate(0,300)" 
+				points="0,0 500,0 275,150 225,150 0,0" /&gt;
+		&lt;/g&gt;
+
+	&lt;/g&gt;
+
+		&lt;!-- Decorative cut-away to show the contents of the tank. This
+			shows the level of the tank contents. --&gt;
+	&lt;g id="MB_TankColumn"&gt;
+		&lt;polygon transform="translate(200,0)"  
+			points="0,0 20,100 0,175 20,250 0,300 10,375 0,410 25,450
+				75,450 100,400 75,325 100,275 75,175 100,125 75,65
+				100,0 0,0" /&gt;
+
+	&lt;/g&gt;	&lt;!-- End of tank definition. --&gt;
+
+&lt;/defs&gt;
+
+</pre>
+
+<p>This shows how to use the "fancy" tank.
+</p>
+
+<pre class="examples">
+
+	&lt;g transform="translate(100,200) scale(0.5,0.5)"&gt;
+		&lt;!-- This is the main structure and background for the tank. --&gt;
+		&lt;use xlink:href="#MB_TankBackground"/&gt;
+
+		&lt;!-- This gradient controls the tank fill. Change the colours here to
+			change the colour of the fill indicator column. --&gt;
+		&lt;linearGradient id="TankFill1" x1="0" y1="1" x2="0" y2="0"&gt;
+			&lt;stop offset="0%" stop-color="blue" /&gt;
+			&lt;stop id="TFill1A" offset="10%" stop-color="blue" /&gt;
+			&lt;stop id="TFill1B" offset="90%" stop-color="white" /&gt;
+			&lt;stop offset="100%" stop-color="white" /&gt;
+		&lt;/linearGradient&gt;
+
+		&lt;!-- Decorative cut-away to show the contents of the tank. This
+			shows the level of the tank contents. --&gt;
+		&lt;g fill="url(#TankFill1)"&gt;
+			&lt;use xlink:href="#MB_TankColumn"/&gt;
+		&lt;/g&gt;
+
+		&lt;!-- Label for the name of the tank. Change the text here to change the
+			label on the tank. --&gt;
+		&lt;rect x="150" y="-70" width="200" height="60" fill="white" 
+			stroke="black" stroke-width="2"/&gt;
+		&lt;text x="175" y="-20" font-size="50"&gt;Tank 1&lt;/text&gt;
+
+	&lt;/g&gt;	&lt;!-- End of tank definition. --&gt;
+
+</pre>
+
+
+<h3>Javascript</h3>
+
+<pre class="examples">
+
+	// Tank 1 fill level graphic display.
+	var Tank1 = new MB_TankLevel(document, "TFill1A", "TFill1B");
+	MBHMIProtocol.AddToDisplayList(Tank1, "Tank1Level", "read");
+
+</pre>
+
+
+<h3>Javascript Library Functions:</h3>
+
+<p>The following Javascript library functions are useful for this feature:
+</p>
+
+<ul>
+	<li>MB_TankLevel</li>
+</ul>
+
+
+<h3>How it works:</h3>
+
+<p>The tank display works by manipulating the colour gradient stops for a 
+linear gradient used as the "fill" property for an SVG element. A linear 
+gradient stop defines the range over which two different colours blend into
+each other. 
+</p>
+
+<p>A linear gradient can have any number of stops. For a tank display,
+we define 4 stops. The first and last stops are 0% and 100% respectively. These
+stops are fixed and do not change. The middle two stops are manipulated via
+Javascript. These middle two stops are set to the same value. 
+</p>
+
+<p>Two colours are defined for the tank. The first and second stops are set 
+to the first colour. The third and last stop are set to the second colour. The
+colours are defined in the linear gradient.   
+</p>
+
+<p>The end result of this a shart colour transition between the second and third
+stops. This transition is then moved up and down (or back and forth) to give the
+appearance of a changing liquid level. The direction the gradient moves in is
+determined by the x1, y1, x2, y2 parameters in the linear gradient definition.
+The relative values of these can be altered to change the direction the gradient
+moves in.
+</p>
+
+<hr>
+
+
+<h2>Column Gauges:</h2>
+<p>
+<img src="lguage.png" width="100" height="350" alt="Column gauge">
+</p>
+
+<p>A column gauge is used to give a visual representation of an analogue value.
+A column of colour will move up and down in the gauge to give a representation
+of the magnitude of the monitored value. A column gauge is compatible with
+the display list. 
+</p>
+
+<h3>SVG</h3>
+
+<p>This shows the definition for the linear gauge. "MB_ColumnGaugeBackground" 
+provides the decorative background, while "MB_ColumnGaugeColumn" provides
+the rectangle which forms the actual gauge. 
+</p>
+
+<pre class="examples">
+
+&lt;!-- This is a linear column gauge. --&gt;
+&lt;defs&gt;
+		
+	&lt;!-- This is the background of the assembly. --&gt;
+	&lt;g id="MB_ColumnGaugeBackground"&gt;
+	
+		&lt;!-- This adds the outer ring. --&gt;
+		&lt;rect x="0" y="0" width="200" height="700" rx="25" fill="silver" stroke="black" 
+			stroke-width="5px"/&gt;
+		&lt;!-- This adds the inner background. --&gt;
+		&lt;rect x="25" y="25" width="150" height="650" rx="25" stroke="black" 
+			stroke-width="2px"/&gt;
+	
+		&lt;!-- These add the "tick" marks to the background. --&gt;
+		&lt;g transform="translate(25,100)" stroke="white" stroke-width="10px"&gt;
+			&lt;line x1="0" y1="0" x2="150" y2="0"/&gt;
+			&lt;line x1="0" y1="50" x2="150" y2="50"/&gt;
+			&lt;line x1="0" y1="100" x2="150" y2="100"/&gt;
+			&lt;line x1="0" y1="150" x2="150" y2="150"/&gt;
+			&lt;line x1="0" y1="200" x2="150" y2="200"/&gt;
+			&lt;line x1="0" y1="250" x2="150" y2="250"/&gt;
+			&lt;line x1="0" y1="300" x2="150" y2="300"/&gt;
+			&lt;line x1="0" y1="350" x2="150" y2="350"/&gt;
+			&lt;line x1="0" y1="400" x2="150" y2="400"/&gt;
+			&lt;line x1="0" y1="450" x2="150" y2="450"/&gt;
+			&lt;line x1="0" y1="500" x2="150" y2="500"/&gt;
+		&lt;/g&gt;
+		&lt;!-- This covers the inner part of the "tick" marks. --&gt;
+		&lt;rect x="62" y="25" width="75" height="650" rx="0" stroke="none" 
+			stroke-width="0px"/&gt;
+	&lt;/g&gt;
+
+	&lt;!-- This is the actual column which we manipulate. The reading is
+			manipulated by changin the associated linear gradient. --&gt;
+	&lt;g id="MB_ColumnGaugeColumn"&gt;	
+			&lt;rect x="75" y="100" width="50" height="500"  
+				stroke="none" stroke-width="0"/&gt;
+	&lt;/g&gt;
+&lt;/defs&gt;	
+
+</pre>
+
+<p>This shows how to use the linear gauge. This requires the background,
+the column, and a linear gradient.
+</p>
+
+<pre class="examples">
+
+	&lt;!-- This is a linear column gauge. --&gt;
+	&lt;!-- This is used to locate and scale the entire assembly. --&gt;
+	&lt;g transform="translate(325,25) scale(0.15)"&gt;
+		&lt;!-- This is the background for the gauge. --&gt;
+		&lt;g fill="blue"&gt;
+			&lt;use xlink:href="#MB_ColumnGaugeBackground"/&gt;
+		&lt;/g&gt;
+	
+		&lt;!-- This is the linear gradient for the column gauge. The X and
+			Y parameters control the direction the gradient moves in. --&gt;
+		&lt;defs&gt;
+		&lt;linearGradient id="ColumnGauge1" x1="0" y1="1" x2="0" y2="0"&gt;
+			&lt;stop offset="0%" stop-color="red" /&gt;
+			&lt;stop id="Gauge1A" offset="10%" stop-color="red" /&gt;
+			&lt;stop id="Gauge1B" offset="90%" stop-color="white" /&gt;
+			&lt;stop offset="100%" stop-color="white" /&gt;
+		&lt;/linearGradient&gt;
+		&lt;/defs&gt;
+
+		&lt;!-- This is the actual column which we manipulate. The reading is
+			manipulated by changin the associated linear gradient. --&gt;
+		&lt;g fill="url(#ColumnGauge1)"&gt;
+			&lt;use xlink:href="#MB_ColumnGaugeColumn"/&gt;
+		&lt;/g&gt;
+	
+	&lt;/g&gt;
+
+</pre>
+
+<h3>Javascript</h3>
+
+<pre class="examples">
+
+	// Column gauge graphic display. This is tied to Tank 2 level
+	// This can use the tank control, because it is basically the same thing.
+	var Column1 = new MB_TankLevel(document, "Gauge1A", "Gauge1B");
+	MBHMIProtocol.AddToDisplayList(Column1, "Tank2Level", "read");
+
+</pre>
+
+
+<h3>Javascript Library Functions:</h3>
+
+<p>The following Javascript library functions are useful for this feature:
+</p>
+
+<ul>
+	<li>MB_TankLevel</li>
+</ul>
+
+
+<h3>How it works:</h3>
+
+<p>The column gauge is just another form of tank display. The column forms
+the tank, and the rest of the gauge is just decoration. 
+</p>
+
+
+<hr>
+
+<h2>Dial Gauges:</h2>
+
+<p>
+<img src="dialblue.png" width="250" height="250" alt="Dial Gauge">
+<img src="dialred.png" width="250" height="250" alt="Dial Gauge">
+</p>
+
+<p>A dial gauge is used to give a visual representation of an analogue value.
+A pointer will rotate about the gauge to give a representation of the 
+magnitude of the monitored value. A dial gauge is compatible with
+the display list.
+</p>
+
+<h3>SVG</h3>
+
+<p>This shows the definition for the dial gauge. "MB_DialGaugeBackground" 
+provides the decorative background, while "MB_DialGaugePointer" provides the 
+rotating pointer. The dial background can be assigned any colour or gradient.
+The pointer can also be assigned any colour of background. 
+</p>
+
+<pre class="examples">
+
+&lt;!-- This is a rotary dial gauge. --&gt;
+&lt;defs&gt;
+	&lt;!-- This is a dial. the first tick mark is at 30 degrees, and the 
+		last at 330. --&gt;
+	&lt;!-- This is used to locate and scale the entire assembly. --&gt;
+	&lt;g id="MB_DialGaugeBackground"&gt;
+	
+		&lt;!-- This adds the outer ring. --&gt;
+		&lt;circle cx="0px" cy="0px" r="275px" fill="silver" stroke="black" 
+			stroke-width="5px"/&gt;
+		&lt;!-- This adds the outer part of the dial background. --&gt;
+		&lt;circle cx="0px" cy="0px" r="250px" stroke="black" 
+			stroke-width="5px"/&gt;
+		&lt;!-- These add the "tick" marks to the dial. --&gt;
+		&lt;g stroke="white" stroke-width="10px"&gt;
+			&lt;line x1="0" y1="-250" x2="0" y2="0"/&gt;
+			&lt;line x1="0" y1="-250" x2="0" y2="250" transform="rotate(30)"/&gt;
+			&lt;line x1="0" y1="-250" x2="0" y2="250" transform="rotate(60)"/&gt;
+			&lt;line x1="0" y1="-250" x2="0" y2="250" transform="rotate(90)"/&gt;
+			&lt;line x1="0" y1="-250" x2="0" y2="250" transform="rotate(120)"/&gt;
+			&lt;line x1="0" y1="-250" x2="0" y2="250" transform="rotate(150)"/&gt;
+		&lt;/g&gt;
+		&lt;!-- This covers the inner part of the "tick" marks and provides 
+			most of the dial background. --&gt;
+		&lt;circle  cx="0px" cy="0px" r="225px" stroke="none" 
+			stroke-width="0px"/&gt;
+	
+	&lt;/g&gt;
+	
+	
+		&lt;!-- This is the actual pointer which we rotate. --&gt;
+	&lt;g id="MB_DialGaugePointer"&gt;
+		&lt;!-- This is the centre part of the pointer. --&gt;
+		&lt;circle cx="0px" cy="0px" r="25px" stroke="black" 
+			stroke-width="2px"/&gt;
+		&lt;circle cx="0px" cy="0px" r="5px" fill="black" stroke="black" 
+			stroke-width="2px"/&gt;
+		&lt;!-- This is the pointer. --&gt;
+		&lt;polygon stroke="black" stroke-width="2px" 
+				points="-25,0 -3,200 3,200 25,0 0,25" /&gt;
+		&lt;line x1="0" y1="25" x2="0" y2="200" stroke="black" stroke-width="2px"/&gt;
+	&lt;/g&gt;
+
+&lt;/defs&gt;
+
+</pre>
+
+<p>This shows how to use the dial gauge. This requires the background and the pointer.
+</p>
+
+<pre class="examples">
+
+	&lt;!-- This is a dial.  --&gt;
+	&lt;!-- This is used to locate and scale the entire assembly. --&gt;
+	&lt;g transform="translate(50,75) scale(0.15)"&gt;
+		&lt;g fill="url(#MB_BlueGradient)"&gt;
+			&lt;use xlink:href="#MB_DialGaugeBackground"/&gt;
+		&lt;/g&gt;
+	
+		&lt;g id="Dial1" fill="yellow"&gt;
+			&lt;use xlink:href="#MB_DialGaugePointer"/&gt;
+		&lt;/g&gt;
+	
+	&lt;/g&gt;
+
+</pre>
+
+<h3>Javascript</h3>
+
+<pre class="examples">
+
+	// Dial gauge graphic display. This is tied to Tank 1 level
+	var Dial1 = new MB_DialGauge(document, "Dial1", 30, -5.0, 3.33);
+	MBHMIProtocol.AddToDisplayList(Dial1, "Tank1Level", "read");
+
+</pre>
+
+
+<h3>Javascript Library Functions:</h3>
+
+<p>The following Javascript library functions are useful for this feature:
+</p>
+
+<ul>
+	<li>MB_DialGauge</li>
+</ul>
+
+
+<h3>How it works:</h3>
+
+<p>The pointer is rotated on a fixed background. MB_DialGauge peformns a
+rotational transformation on the SVG elements whose id was passed as a
+parameter to it. 
+</p>
+
+<p>The rotation is calculated as: angle = (newvalue + min_angle) * gain + dial_offset.
+In the above example, this would be angle = (newvalue + 30) * 3.33 + -5.0.
+</p>
+
+<p>Any graphical element capable of being rotated may be used as a dial gauge.
+</p>
+
+<hr>
+
+<h2>Graphical Slide Shows</h2>
+
+<p>Graphical "slide shows" can be created using SVG to control the display of
+arbitrary graphics. A series of static graphics can be created where only one
+graphic at a time is displayed. This may for example, be used to display a 
+series of images showing a product at various stages of assembly.
+</p>
+
+<p>In the following example we show a circle, square, and octagon. Only one
+image is visible at a time. 
+</p>
+
+<h3>SVG</h3>
+
+<pre class="examples">
+
+	&lt;!-- Shape select demo. --&gt;
+	&lt;g transform="translate(700,150)"&gt;
+		&lt;circle id="ShapeDemoCir" cx="0px" cy="0px" r="35px" 
+				stroke="black" stroke-width="5px" fill="red"/&gt;
+		&lt;rect id="ShapeDemoRect" x="-30" y="-30" width="60" height="60" rx="15"
+			stroke="black" stroke-width="5px" fill="yellow"/&gt;
+		&lt;polygon id="ShapeDemoOct" stroke="black" stroke-width="5px" fill="violet"
+			points="13,-35 -13,-35 -35,-13 -35,13 -13,35 13,35 35,13 35,-13 13,-35" /&gt;
+	&lt;/g&gt;
+
+</pre>
+
+<h3>Javascript</h3>
+
+<p>This shows how the above series of graphics are displayed using Javascript.
+</p>
+
+<pre class="examples">
+
+	// Select a shape for display.
+	var ShapeDemoDisplay = new MB_GraphicSelect(document, 
+			["ShapeDemoCir", "ShapeDemoRect", "ShapeDemoOct"], 1);
+	MBHMIProtocol.AddToDisplayList(ShapeDemoDisplay, "ShapeDemo", "read");
+
+</pre>
+
+<h3>Javascript Library Functions</h3>
+
+<p>The following Javascript library functions are useful for this feature: 
+</p>
+
+<ul>
+	<li>MB_GraphicSelect</li>
+</ul>
+
+<h3>How it Works</h3>
+
+<p>"MB_GraphicSelect" operates in a manner very similar to that used by the 7
+segment LED digit display (see the section on numeric display for information
+on that topic). The various SVG graphics are created and positioned on top of 
+each other. "MB_GraphicSelect" is then used to select one of these for display
+(this is similar to how different "screens" are made visible one at a time).
+</p>
+
+<p>"MB_GraphicSelect" requires a list of the "id" names, and an "offset" 
+integer. The order of the "id" names in the list matters, as the monitored
+tag value is used as an index for the list. The first item is "0", the second
+is "1", the third is "2", etc.  
+</p>
+
+<p>The offset is added to the monitored value before selecting the image. This 
+allows data ranges which do not start at zero to be used directly as image 
+selectors. For example, if an offset of "1" is used, then a monitored value of
+"-1" becomes "0", and the first image is selected, a monitored value of "0"
+becomes "1" and the second image is selected, etc.
+</p>
+
+<hr>
+
+<h2>Two Position "Slides" or Translational Motions</h2>
+
+<p>It is possible to move SVG graphics using "translation" (sliding) motions.
+The following example uses a simple "pick and place" to illustrate this.
+</p>
+
+<p>
+<img src="pandp.png" width="470" height="245" alt="pick and place">
+</p>
+
+
+<h3>SVG</h3>
+
+<p>This shows the SVG for the example. Note that each collection of shapes
+is grouped together (using "&lt;g&gt; &lt;/g&gt;" SVG tags). This allows
+several elements to be moved as a group. This is a fixed section (this does
+not move), a vertical axis (with an "id" of "PPVert"), a horizontal axis (with 
+an "id" of "PPHorz"), a left gripper (with an "id" of "PPGripL"), and a right
+gripper (with an "id" of "PPGripR").
+</p>
+
+<pre class="examples">
+
+	&lt;!-- This displays a pick and place. --&gt;	
+	&lt;g transform="translate(50,75)"&gt;
+
+		&lt;!-- Fixed section. --&gt;
+		&lt;g transform="translate(320,0)"&gt;
+			&lt;!-- Vertical rods. --&gt;
+			&lt;rect x="20" y="10" width="10" height="200" rx="0" 
+				fill="url(#MB_SilverGradient)" stroke="black"/&gt;
+			&lt;rect x="60" y="10" width="10" height="200" rx="0" 
+				fill="url(#MB_SilverGradient)" stroke="black"/&gt;
+
+			&lt;!-- Base. --&gt;
+			&lt;rect x="0" y="210" width="90" height="20" rx="2" 
+				fill="url(#MB_BlackGradient)" stroke="black"/&gt;
+			&lt;!-- Top cap. --&gt;
+			&lt;rect x="0" y="0" width="90" height="10" rx="2" 
+				fill="url(#MB_SilverGradient)" stroke="black"/&gt;
+		&lt;/g&gt;
+
+		&lt;!-- Moving vertical axis. --&gt;
+		&lt;g id="PPVert"&gt;
+
+			&lt;!-- Horizontal axis. --&gt;
+			&lt;g id="PPHorz" transform="translate(0,0)"&gt;
+				&lt;!-- Horizontal rods. --&gt;
+				&lt;rect x="40" y="30" width="400" height="10" rx="0" 
+					fill="url(#MB_SilverGradient)" stroke="black"/&gt;
+				&lt;rect x="40" y="70" width="400" height="10" rx="0" 
+					fill="url(#MB_SilverGradient)" stroke="black"/&gt;
+
+				&lt;!-- End caps. --&gt;
+				&lt;rect x="440" y="20" width="10" height="70" rx="2" 
+					fill="url(#MB_SilverGradient)" stroke="black"/&gt;
+				&lt;rect x="40" y="20" width="10" height="70" rx="2" 
+					fill="url(#MB_SilverGradient)" stroke="black"/&gt;
+
+				&lt;rect x="10" y="25" width="30" height="75" rx="2" 
+					fill="url(#MB_BlackGradient)" stroke="black"/&gt;
+
+				&lt;!-- Left Gripper. --&gt;
+				&lt;polygon id="PPGripL" fill="url(#MB_SilverGradient)" stroke="black"
+						points="0,130 0,100 20,100 20,110 10,110 10,130 0,130" /&gt;
+
+				&lt;!-- Right Gripper. --&gt;
+				&lt;polygon id="PPGripR" fill="url(#MB_SilverGradient)" stroke="black"
+						points="50,130 50,100 30,100 30,110 40,110 40,130 50,130" /&gt;
+
+				
+			&lt;/g&gt;
+
+			&lt;!-- Block. --&gt;
+			&lt;rect x="320" y="20" width="90" height="70" rx="2" 
+				fill="url(#MB_BlackGradient)" stroke="black"/&gt;
+
+		&lt;/g&gt;
+
+	&lt;/g&gt;
+
+</pre>
+
+<h3>Javascript</h3>
+
+<p>This shows the Javascript used to animate the pick and place. Note that 
+there 4 Javascript objects had to be created - one for each moving group. 
+</p>
+
+<pre class="examples">
+
+	// Pick and place vertical axis.
+	var PPVertDisplay = new MB_SlideDisplay(document, "PPVert", 0, 0, 0, 100);
+ 	MBHMIProtocol.AddToDisplayList(PPVertDisplay, "PPVert", "read");
+
+	// Pick and place horzontal axis.
+	var PPHorzDisplay = new MB_SlideDisplay(document, "PPHorz", 0, 0, 200, 0);
+	MBHMIProtocol.AddToDisplayList(PPHorzDisplay, "PPHorz", "read");
+
+	// Pick and place left gripper jaw.
+	var PPGripLDisplay = new MB_SlideDisplay(document, "PPGripL", -5, 0, 5, 0);
+	MBHMIProtocol.AddToDisplayList(PPGripLDisplay, "PPGrip", "read");
+
+	// Pick and place right gripper jaw.
+	var PPGripRDisplay = new MB_SlideDisplay(document, "PPGripR", 5, 0, -5, 0);
+	MBHMIProtocol.AddToDisplayList(PPGripRDisplay, "PPGrip", "read");
+
+</pre>
+
+<h3>Javascript Library Functions</h3>
+
+<ul>
+	<li>MB_SlideDisplay</li>
+</ul>
+
+<h3>How it Works</h3>
+
+<p>"MB_SlideDisplay" translates (or "slides") an SVG element or group of 
+elements according to the state of a monitored boolean value. "MB_SlideDisplay"
+requires parameters which include the "id" of the element or group which is to
+be moved, and two sets of x/y coordinates.   
+</p>
+
+<p>The first pair of x/y coordinates is the position when the monitored boolean
+value is false, and the second pair of coordinates is the position when the
+monitored boolean value is true. The x/y coordinates are relative to the 
+current coordinate system. It is normal to apply a translation to the entire
+assembly in order to position it on the page correctly, so the x/y coordinates
+being applied to animate the axis will depend on whatever other transforms
+have been already applied. This in turn means that provided you use an overall
+fixed transform to position the object on the page, you can design your 
+graphics without being too concerned about its final location. 
+</p>
+
+<p>For example, the vertical axis (with an "id" of "PPVert") has a position of
+"0,0" when tag "PPVert" is false (we used the same name for the tag as we did
+for the "id", although this was not actually necessary). It has a position of
+"0,100" when the tag "PPVert" is true. This results in the entire vertical axis  
+assembly moving up (along the "y" axis) by 100 pixels when the tag "PPVert" 
+turns on. 
+</p>
+
+<p>Note that when the vertical axis moved, the horizontal axis and the grippers
+moved with it. This is because they were nested within the same "group" and so
+are affected by any transforms applied by the "outer" group.
+</p>
+
+<p>Graphics which require rotary motions instead of (or as well as) 
+translations can use "MB_DialGauge", which can be used for any graphic, not
+just dial gauges.
+</p>
+
+<hr>
+
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - HMI Tanks and Gauages</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

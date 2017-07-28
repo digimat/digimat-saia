@@ -1,0 +1,48 @@
+// Demo program for MBLogicEngineCk.
+// This is used to demonstrate some of the features in the MBLogicEngineCk 
+// soft logic system.
+// 03-Dec-2008. M. Griffin.
+// Updated 07-Nov-2009. M. Griffin.
+
+
+// This is a counter.
+NETWORK 1
+STR X1
+STR SC1
+AND SC3
+CNTU CT100 11
+
+// This is a timer
+NETWORK 2
+STR SC1
+TMR T5 329 ms
+
+STR T5
+OUT Y367
+
+// This calls a subroutine.
+NETWORK 3
+STR T5
+CALL Sub1
+
+// This just executes some ladder logic.
+NETWORK 4
+STR SC1
+ORN C2
+AND X17
+OUT Y1
+
+END
+
+// This is a subroutine.
+SBR Sub1
+NETWORK 1
+STR SC1
+MATHDEC DS100 0 SQRT(DD1 + 25)
+
+STRGE DS100 1
+OUT C50
+
+RT
+
+

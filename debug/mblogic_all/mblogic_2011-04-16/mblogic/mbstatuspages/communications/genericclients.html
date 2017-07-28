@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Generic Clients</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Communications</h3>
+		<ul>
+			<li><a href="serverconfig-en.html">Server Communications Configuration</a></li>
+			<li><a href="clienconfig-en.html">Client Communications Configuration</a></li>
+			<li><a href="genericclientsprotocols.html">Generic Client Protocols</a></li>
+			<li><a href="ComsFaults-en.html">Communications Faults</a></li>
+			<li><a href="ComsMonitor-en.html">Communications Monitoring and Trouble 
+				Shooting</a></li>
+			<li><a href="ComsExpRegs-en.html">Expanded Register Map</a></li>
+			<li><a href="ModbusSupport-en.html">Modbus/TCP Server and 
+				Client Protocol</a></li>
+			<li><a href="MBRest-en.html">MB-REST Web Service Protocol</a></li>
+			<li><a href="hmiprotocol-en.html">HMI Protocol</a></li>
+			<li><a href="genericclients.html">Generic Clients</a></li>
+			<li><a href="genframework.html">Generic Client Framework</a></li>
+			<li><a href="genuserprotocol.html">Generic Client User Protocols</a></li>
+			<li><a href="ModbusBasics-en.html">Modbus/TCP Basics</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>Help - Generic Clients</h1>
+
+<hr>
+
+<h2>Overview</h2> 
+
+<p>"Generic clients" are external add-on modules which can be used to implement
+additional functionality. The main purpose for having generic clients is to 
+make it easier to write serial (RS-232) client interfaces. However, generic
+clients can also be used for Ethernet communications, file or database access, 
+or any other application where it is desired to add custom functionality.  
+</p>
+
+<p><em><strong>Generic clients are experimental at this stage, and the 
+interface is subject to change. If you intend to make use of this feature
+at this stage in its development, be prepared to make minor modifications to 
+your custom generic clients in future versions. </strong></em>
+</p>
+
+<hr>
+
+<h2>Generic Client Server Interface</h2>
+
+<p>Generic clients associate with the main system by communicating with it
+via the "generic client" server interface. This uses a remote procedure call
+mechanism called "Perspective Broker" which is part of the Twisted 
+communications framework.
+</p>
+
+<p>A generic client runs as a seperate program that communicates with the main
+system through the generic server interface. The generic server interface must 
+be configured and running before any generic clients may work with the main 
+system.
+</p>
+
+<h3>Generic Client Names</h3>
+
+<p>Each <em>instance</em> of a generic client must be given a unique name. That 
+means that even when running two or more copies of the same type of client, each
+copy must have its own name. The <em>name</em> of the client does not necessarily
+mean the name of the file containing the client. Two or more clients may use the
+same code from the same file, but be given different names. The name is simply
+a parameter passed to the client which it uses to identify itself to the server
+when it starts up. 
+</p>
+
+<p>For example, the system may need to interface with two identical weigh scales.
+The same client program file can be used for both, but they must be given 
+different names when they are started so the correct parameters can be passed
+to them.
+</p>
+
+<h3>Generic Client Parameters</h3>
+
+<p>The parameters for each generic client instance are defined in the 
+client communications configuration file ("mbclient.config") just like all 
+other client configurations. These parameters follow a similar format
+to those used with TCP clients. In addition, each client can have custom 
+parameters which are not "understood" by the server, but are simply passed
+on to the client for its own use. This allows the standard configuration system
+to load and parse the parameters while allowing each type of client to have
+whatever parameters are appropriate to the application.
+</p>
+
+<p>Details of the configuration parameters can be found in the section on 
+communications configuration.
+</p>
+
+<hr>
+
+<h2>Generic Client Start and Stop Sequence</h2>
+
+
+<ol>
+	<li>When the system starts up, it reads and parses the communications 
+		configuration file</li>
+	<li>If any generic clients are found, it attempts to start them. </li>
+	<li>Each generic client contacts the generic client interface server and
+		requests its parameter set by name.</li>
+	<li>The generic server interface server sends the parameter set to the 
+		client.</li>
+	<li>The client validates its parameters, and sends any error messages back
+		to the server.</li>
+	<li>The generic client runs on a regular scan cycle, performing its own 
+		tasks and exchanging data and status information with the server.</li>
+	<li>When the main system wishes to shut down, it sends a "stop" command to
+		each generic client, requesting that they stop executing and exit.</li>
+	<li>The system then waits for a fixed time. When this time delay has passed,
+		the system will forcibly terminate any generic clients which may still
+		be running.</li>
+	<li>The system then completes its own shutdown and exits.</li>
+</ol>
+
+<hr>
+
+<h2>File Locations</h2>
+
+<p>Generic clients are located in a directory called "genclient". The system
+will automatically look in that directory for any specified files. 
+</p>
+
+<hr>
+
+<h2>Protocols and Message Transports</h2>
+
+<p>Generic clients are primarily intended to allow the addition of protocols
+and custom interfaces. These typically include serial protocols, but can also
+include protocols that use HTTP and low level socket access. Since the generic
+client runs independently from the main system, it will not block or interrupt
+the operation of the main system. However, the client should not block (stop)
+execution of the main client loop for long periods of time as the main system
+may interpret that behaviour as indicating the client has faulted ("locked-up").
+</p>
+
+<p>Some available libraries for implementing client protcols are:
+</p>
+
+<ul>
+	<li>socket - This is a standard Python library that offers direct TCP, UDP,
+		and unix socket access.</li>
+	<li>urllib2 - This is a standard Python library that offers simple HTTP
+		protocol access.</li>
+	<li>pyserial - This is a third party library that offers access to the
+		serial port.</li>
+</ul>
+
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Generic Clients</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2010. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

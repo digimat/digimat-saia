@@ -1,0 +1,977 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - HMI</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>HMI Client Libraries</h3>
+		<ul>
+			<li><a href="/hmi/hmilib/hmiprotocollib-en.html">HMI Client Protocol Library</a></li>
+			<li><a href="/hmi/hmilib/hmidisplaylib-en.html">HMI Client Display Library</a></li>
+			<li><a href="/hmi/hmilib/hmieventlib-en.html">HMI Client Event and Alarm Library</a></li>
+		</ul>
+
+
+
+	</div>
+
+	<!-- Put main content here -->
+	<div id="datadisplay">
+
+<h1>Help - HMI Client Display Library</h1>
+
+<hr>
+
+<h2>Overview:</h2>
+
+<p>The HMI system is based on open standards such as JSON, Javascript, SVG, 
+and HTML. The HMI client display library is not required to build a web based 
+HMI which can interact with the HMI server. However, the HMI client display 
+library provides a number of useful functions which make creating web based HMI 
+systems easier. These functions are documented below.
+</p>
+
+<p>The client display library is implemented as a series of independent 
+objects. Most of these objects are designed to be compatible with the HMI 
+communications library "display list".
+</p>
+
+<hr>
+
+<h2>Libraries</h2>
+
+<p>The client display library consists of the following:
+</p>
+
+<h3>Current HMI Libraries</h3>
+<ul>
+	<li><strong><em>libmbhmicontrols2.js</em></strong> - This provides control for
+		most of the basic HMI output widgets such as pilot lights, selector 
+		switches, text and numeric displays, etc.</li>
+	<li><strong><em>libmbhmimisc.js</em></strong> - This provides control for
+		additional HMI features such as selecting screens, numeric keypad input,
+		strip charts, etc.</li>
+	<li><strong><em>libmbhmiold.js</em></strong> - This provides control for
+		obsolete HMI features and should only be used to provide compatibility
+		for older HMI applications. This contains the features from the original
+		library which are now considered obsolete.
+	</li>
+</ul>
+
+
+<h3>Obsolete HMI Libraries</h3>
+<ul>
+	<li><strong><em>libmbhmi.js</em></strong> - This is the original library
+		and is now obsolete. It is only present to provide support for older 
+		HMI applications. New applications should not include this file.
+		Not all functions present in the newer libraries are present in this
+		old one. This library should not be used in the same web page as the 
+		newer versions as it duplicates many of the same functions.
+	</li>
+	<li><strong><em>libmbhmicontrols.js</em></strong> - This is an older version
+		of the <em></em>libmbhmicontrols2.js</em> library. It does not work with
+		web pages created using the HMIBuilder library, nor with the new widget 
+		sets. You can continue to use this with older HMI web pages. However, you
+		cannot use both <em></em>libmbhmicontrols.js</em> and 
+		<em>libmbhmicontrols2.js</em> in the same web page as they will conflict
+		with each other. Import one or the other into a web page, but not both
+		at the same time.
+	</li>
+</ul>
+
+
+<hr>
+
+<h2>Function Summary</h2>
+
+<p>The following is a short summary of SVG properties which can be controlled,
+and the functions provided to manipulate them. See the individual functions for 
+details on how each one operates.
+</p>
+
+<h3>libmbhmicontrols2.js</h3>
+
+<table class="helptable"  border="1">
+	<tr>
+		<th>Function</th> 
+		<th>SVG Property</th>
+		<th>Used For</th>
+	</tr>
+
+	<tr>
+		<td>MB_PilotLight</td> 
+		<td>fill</td> 
+		<td>Two colour pilot lights.</td> 
+	</tr>
+
+	<tr>
+		<td>MB_PLMultiColour</td> 
+		<td>fill</td> 
+		<td>Pilot lights with multiple colours.</td> 
+	</tr>
+
+	<tr>
+		<td>MB_PilotLightStat</td> 
+		<td>fill</td> 
+		<td>Two colour pilot lights which need to be compared to a status
+			variable.</td> 
+	</tr>
+
+	<tr>
+		<td>MB_PilotLightFlashTransform</td> 
+		<td>animateTransform</td> 
+		<td>Pilot lights using an animated flash.</td> 
+	</tr>
+
+	<tr>
+		<td>MB_2PosSSDisplay</td> 
+		<td>rotate</td> 
+		<td>Rotation angle display for 2 position selector switch.</td> 
+	</tr>
+
+	<tr>
+		<td>MB_3PosSSDisplay</td> 
+		<td>rotate</td> 
+		<td>Rotation angle display for 3 position selector switch.</td> 
+	</tr>
+
+	<tr>
+		<td>MB_NumericDisplay</td> 
+		<td>text value</td> 
+		<td>Display numeric values.</td> 
+	</tr>
+
+	<tr>
+		<td>MB_NumericFloatDisplay</td> 
+		<td>text value</td> 
+		<td>Display numeric values with a specified number of decimal places.</td> 
+	</tr>
+
+	<tr>
+		<td>MB_StringDisplay</td> 
+		<td>text value</td> 
+		<td>Display text strings.</td> 
+	</tr>
+
+	<tr>
+		<td>MB_TextDisplay</td> 
+		<td>text value</td> 
+		<td>Display a text message selected from a list of messages.</td> 
+	</tr>
+
+	<tr>
+		<td>MB_DialGauge</td> 
+		<td>rotate</td> 
+		<td>Rotate the pointer on a dial guage.</td> 
+	</tr>
+
+	<tr>
+		<td>MB_ColumnGauge</td> 
+		<td>colour gradient stops</td> 
+		<td>Display the level in a column using colour gradients.</td> 
+	</tr>
+
+	<tr>
+		<td>MB_Pipe2</td> 
+		<td>fill</td> 
+		<td>Change the colour of a pipe (similar to a pilot light).</td> 
+	</tr>
+
+	<tr>
+		<td>MB_PumpRotate</td> 
+		<td>rotate</td> 
+		<td>Rotate a pump.</td> 
+	</tr>
+
+	<tr>
+		<td>MB_PumpRotateAnimated</td> 
+		<td>animateTransform</td> 
+		<td>Rotate a pump using animations.</td> 
+	</tr>
+
+</table>
+
+
+<h3>libmbhmimisc.js</h3>
+
+<table class="helptable"  border="1">
+	<tr>
+		<th>Function</th> 
+		<th>SVG Property</th>
+		<th>Used For</th>
+	</tr>
+
+	<tr>
+		<td>MB_ScreenSelect</td> 
+		<td>Display style - block or none</td> 
+		<td>Select one HMI screen from several</td> 
+	</tr>
+
+	<tr>
+		<td>MB_NumericPad</td> 
+		<td>N/A</td> 
+		<td>Enter numeric data</td> 
+	</tr>
+
+	<tr>
+		<td>MB_SlideDisplay</td> 
+		<td>transform - translate</td> 
+		<td>Move an SVG graphic on the screen</td> 
+	</tr>
+
+	<tr>
+		<td>MB_StripChart</td> 
+		<td>polyline values</td> 
+		<td>Update a strip chart line</td> 
+	</tr>
+
+	<tr>
+		<td>MB_GraphicSelect</td> 
+		<td>Display style - block or none</td> 
+		<td>Select one SVG graphic from among several</td> 
+	</tr>
+
+	<tr>
+		<td>MB_GraphicShowHide</td> 
+		<td>Display style - block or none</td> 
+		<td>Hide or show an SVG graphic</td> 
+	</tr>
+
+</table>
+
+
+
+<h3>libmbhmiold.js</h3>
+
+<p>The following are briefly described to help understand existing HMI applications.
+They should not be used in new applications.
+</p>
+
+<table class="helptable"  border="1">
+	<tr>
+		<th>Function</th> 
+		<th>SVG Property</th>
+		<th>Used For</th>
+		<th>Replace With</th>
+	</tr>
+
+	<tr>
+		<td>MB_SVGPushButton</td> 
+		<td>colour gradient stops</td> 
+		<td>Provides a colour effect when a push button is pressed</td> 
+		<td>Push buttons using CSS styles to provide colour effects.</td>
+	</tr>
+
+	<tr>
+		<td>MB_Pipe</td> 
+		<td>stroke</td> 
+		<td>Changes the colours of the walls of a pipe</td> 
+		<td>MB_Pipe2</td>
+	</tr>
+
+	<tr>
+		<td>MB_PipeFlow</td> 
+		<td>colour gradient stops</td> 
+		<td>Provides the effect of "bubbles" moving along a pipe</td> 
+		<td>MB_Pipe2</td>
+	</tr>
+
+	<tr>
+		<td>MB_PipeFlow2</td> 
+		<td>colour gradient stops</td> 
+		<td>Like MB_PipeFlow but implemented using a different method</td> 
+		<td>MB_Pipe2</td>
+	</tr>
+
+	<tr>
+		<td>MB_LEDDigit</td> 
+		<td>Display style - block or none</td> 
+		<td>Used to select one seven segment style digit from among all
+			10 possible digits</td> 
+		<td>Use a regular numeric display.</td>
+	</tr>
+
+</table>
+
+
+
+<hr>
+
+<h2>Pilot Lights</h2>
+
+<p>Pilot lights operate by changing the "fill" attribute of a graphic. Any
+SVG graphic which has a "fill" attribute can act as a pilot light.
+</p>
+
+<h3>MB_PilotLight(svgdoc, PLID, initcolour, offcolour, oncolour)</h3>
+
+<p>Pilot light control. This changes the "fill" property to indicate one of
+two states.
+</p>
+
+<ul>
+	<li>svgdoc - Reference to SVG document.</li>	
+	<li>PLID (string) - ID of SVG item.</li>
+	<li>initcolour (string) - Colour to use when undefined.</li>
+	<li>offcolour (string) - Colour to use when off.</li>
+	<li>oncolour (string) - Colour to use when on.</li>
+</ul>
+
+
+<pre class="examples">
+
+	var PL1 = new MB_PilotLight(document, "PL1", "black", "green", "red");
+
+</pre>
+
+
+<h3>MB_PLMultiColour(svgdoc, PLID, initcolour, colourlist)</h3>
+
+<p>Pilot light control with multiple colours. This selects between a
+list of colours, depending on the value of the integer at the tag
+address. The colours must be defined in an array of strings. This array
+determines what colour is displayed for each integer value. Unlike 
+MB_TextDisplay, this function does not display the text string itself.
+</p>
+
+<ul>
+	<li>svgdoc - Reference to SVG document.</li>	
+	<li>PLID (string) - ID of SVG item.</li>	
+	<li>initcolour (string) - Colour to use when undefined.</li>	
+	<li>colourlist (array) - Array of strings containing colours.</li>	
+</ul>
+
+
+<pre class="examples">
+
+	var ColourList = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"]; 
+	var PL4 = new MB_PLMultiColour(document, "PL4", "black", ColourList);
+
+</pre>
+
+
+<h3>MB_PilotLightStat(svgdoc, PLID, initcolour, offcolour, oncolour, okstat)</h3>
+
+ 	<p>Pilot light control. If the present value is equal to the comparison 
+		value, the light will turn "off", otherwise, it will turn "on".
+		Any value not equal to the comparison value is considered to be
+		the result of a condition which must be indicated.
+</p>
+
+<ul>
+	<li>svgdoc - Reference to SVG document.</li>	
+	<li>PLID (string) - ID of SVG item.</li>	
+	<li>initcolour (string) - Colour to use when undefined.</li>	
+	<li>offcolour (string) - Colour to use when off.</li>	
+	<li>oncolour (string) - Colour to use when on.</li>	
+	<li>okstat (string) - Value to compare to for "ok". This should be a constant.</li>	
+</ul>
+
+
+<pre class="examples">
+
+	// This is for the server status display on the test error screen.
+	var ServerStat2 = new MB_PilotLightStat(document, "ServerStat2", "black",
+		"green", "red", "ok");
+	MBHMIProtocol.AddToDisplayList(ServerStat2, "stat", "stat");	
+
+</pre>
+
+<h3>MB_PilotLightFlashTransform(svgdoc, PLID)</h3>
+ 	<p>Flashing pilot light control. The flashing does not depend on
+	the scan rate. This uses the SVG animateTransform property. 
+	</p> 
+	
+<ul>
+	<li>svgdoc - Reference to SVG document.</li>
+	<li>PLID (string) - ID of SVG item.</li>	
+</ul>
+
+<pre class="examples">
+
+	var PLAN1 = new MB_PilotLightFlashTransform(document, "PLAN1");
+
+</pre>
+
+<hr>
+
+<h2>Selector Switches</h2>
+
+<p>Selector switches rotate according to the state or value of a tag.
+These functions provide an <strong>output</strong> indication. Data input
+is via the push button methods. Any object capable of being rotated can
+act as a selector switch (e.g. values, dampers, etc.).  
+</p>
+
+<h3>MB_2PosSSDisplay(svgdoc, SSID, offangle, onangle)</h3>
+
+<p>Two Position Selector Switch Control. This rotates an element to one
+of two angles, depending on whether the monitored value is off ("0")
+or on (non-zero).
+</p>
+
+<ul>
+	<li>svgdoc - Reference to SVG document.</li>
+	<li>SSID (string) - ID of SVG item.</li>
+	<li>offangle (integer) - Angle in degrees when value is off (0).</li>
+	<li>onangle (integer) - Angle in degrees when value is on (non-zero).</li>
+</ul>
+
+<pre class="examples">
+
+	// Pick and place selector switch control for vertical axis.
+	var PPSSVertDisplay = new MB_2PosSSDisplay(document, "SSPPVert", -60, 60);
+	MBHMIProtocol.AddToDisplayList(PPSSVertDisplay, "SSPPVert", "read");
+
+</pre>
+
+
+
+<h3> MB_3PosSSDisplay(svgdoc, SSID, negativeangle, zeroangle, positiveangle)</h3>
+
+<p>Three Position Selector Switch Display.  This rotates an element to one
+of three angles, depending on the sign (-ve, +ve, or 0) of the 
+monitored value.
+</p>
+
+<ul>
+	<li>svgdoc - Reference to SVG document.</li>
+	<li>SSID (string) - ID of SVG item.</li>
+	<li>negativeangle (integer) - Angle in degrees when value is negative.</li>
+	<li>zeroangle (integer) - Angle in degrees when value is zero.</li>
+	<li>positiveangle (integer) - Angle in degrees when value is positive.</li>
+</ul>
+
+<pre class="examples">
+
+	// Pump control selector switch position.
+	var PumpSSwitchDisplay = new MB_3PosSSDisplay(document, "PumpSSwitch", -60, 0, 60);
+	MBHMIProtocol.AddToDisplayList(PumpSSwitchDisplay, "PumpSpeedActual", "read");
+
+</pre>
+
+<hr>
+
+
+<h2>Numeric and Text Displays</h2>
+
+<p>Numeric and text displays display numbers and text. 
+</p>
+
+<h3>MB_NumericDisplay(svgdoc, NumberID)</h3>
+
+<p>Update a display of a number. This operates by changing the
+text property of an SVG string.
+</p>
+
+<ul>
+	<li>svgdoc - Reference to SVG document.</li>
+	<li>NumberID (string) - ID of SVG text item.</li>
+</ul>
+
+
+<pre class="examples">
+
+	// Pump speed numeric display.
+	var PumpSpeedDisplay = new MB_NumericDisplay(document, "PumpSpeedText");
+
+</pre>
+
+
+
+<h3>MB_NumericFloatDisplay(svgdoc, NumberID, Decimals)</h3>
+
+<p>Update a display of a floating point number with control of the number 
+of decimals displayed. This operates by changing the text property of 
+an SVG string.
+</p>
+
+<ul>
+	<li>svgdoc - Reference to SVG document.</li>
+	<li>NumberID (string) - ID of SVG text item.</li>
+	<li>Decimals (integer) - Number of decimal places.</li>
+</ul>
+
+<pre class="examples">
+
+	// Tank 1 fill level numeric display.
+	var Tank1Number = new MB_NumericFloatDisplay(document, "Tank1Text", 2);
+	MBHMIProtocol.AddToDisplayList(Tank1Number, "Tank1Number", "read");
+
+</pre>
+
+
+
+<h3>MB_StringDisplay(svgdoc, NumberID)</h3>
+
+<p>Update a display of a string. This operates by changing the
+text property of an SVG string.
+</p>
+
+<ul>
+	<li>svgdoc - Reference to SVG document.</li>
+	<li>NumberID (string) - ID of SVG text item.</li>
+</ul>
+
+
+<pre class="examples">
+
+	// Text string display.
+	var DemoStringDisplay = new MB_StringDisplay(document, "DemoString");
+
+</pre>
+
+
+
+<h3>MB_TextDisplay(svgdoc, TextMsgID, MsgList)</h3>
+
+<p>Update a display of a text message. This operates by changing the text 
+property of an SVG string. The text messages must be defined in an array of 
+strings. This array determines what text message is displayed for each integer value.
+</p>
+
+<ul>
+	<li>svgdoc - Reference to SVG document.</li>
+	<li>TextMsgID (string) - ID of SVG text item.</li>
+	<li>MsgList (array) - Array of strings containing messages.</li>
+</ul>
+
+
+<pre class="examples">
+
+	// This is for text indicators.
+	Msg_HMIDemoColours = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"]
+	// This is for the text display of pilot light colours.
+	var PLColourText = new MB_TextDisplay(document, "PL4-Colour", Msg_HMIDemoColours);
+
+</pre>
+
+<hr>
+
+<h2>Gauges, Columns, Pipes, and Pumps</h2>
+
+<p>Gauges, columns, pipes and pumps operate on various attributes, including
+fill and rotate. These functions can operate on any SVG graphic which has
+the appropriate attribute. This includes conveyors, ducts, etc.
+</p>
+
+<h3>MB_DialGauge(svgdoc, DialID, DialMin, DialMax, DataMin, DataMax)</h3>
+
+<p>Dial Gauge Indicator Control. This changes the rotate property of
+an SVG element. All angles are in degrees. The dial display	angle is 
+calculated as follows:
+(((newdata - DataMin) / DataMax) + DialMin) * (DialMax - DialMin)
+</p>
+
+<ul>
+	<li>svgdoc - Reference to SVG document.</li>
+	<li>DialID (string) - ID of SVG item.</li>
+	<li>DialMin (integer) - The minimum dial angle to use.</li>
+	<li>DialMax (integer) - The maximum dial angle to use.</li>
+	<li>DataMin (integer) - The minimum data range.</li>
+	<li>DataMax (integer) - The maximum data range.</li>
+</ul>
+
+<p>On start up, the function will search for a "g" SVG tag within the 
+SVG widget and apply the rotation to that. This means that any geometric
+shape can be rotated, but it must be enclosed within a group 
+(&lt;g&gt;&lt;/g&gt;).
+</p>
+
+<pre class="examples">
+
+	// Dial gauge graphic display. This is tied to Tank 1 level
+	var Dial1 = new MB_DialGauge(document, "Dial1", 30, 330, 0, 4095);
+
+</pre>
+
+
+<h3>MB_ColumnGauge(svgdoc, GaugeID, GradientID, MinData, MaxData)</h3>
+
+<p>Column level (including tank cut-outs) control. This operates by adjusting 
+the linear gradient that is used to fill a "column" (any closed SVG object). 
+A total of four "gradient stops" are used. The first and last are fixed at 0% 
+and 100% respectively. The second and third are set to the value in the update
+parameter (which must be between 0 and 100%). By setting two adjacent 
+gradient stops to the same value, a sharp colour transition is created, 
+instead of a gradual one. The data is automatically scaled to 0% to 100% based
+on the MinData and MaxData parameters.
+</p>
+
+<ul>
+	<li>svgdoc - Reference to SVG document.</li>
+	<li>GaugeID (string) - ID of the SVG item.</li>
+	<li>GradientID (string) - ID of the linear colour gradient prototype to be used.</li>
+	<li>MinData (integer) - The minimum data range.</li>
+	<li>MaxData (integer) - The maximum data range.</li>
+</ul>
+
+<p>On start up, the function will search for a geometric shape to apply the 
+fill to. The order of search is as follows:
+</p>
+<ol>
+	<li>polygon</li>
+	<li>rect</li>
+	<li>circle</li>
+	<li>ellipse</li>
+</ol>
+
+<p>It also looks for the specified colour gradient (from the 
+<em>GradientID</em> parameter) and makes a new copy of it. It then gives it an 
+new id consisting of the column id (from the <em>GaugeID</em> parameter),
+plus "_FillGradient". It also creates ids for the gradient stops also based 
+on the column id, plus "_StopA" and "_StopB". This results in a new gradient 
+used by this column only. 
+</p>
+
+
+<pre class="examples">
+
+	// Tank 2 fill level graphic display.
+	var Tank2 = new MB_ColumnGauge(document, "Tank2ID", "MB_Column_BlueGradient", 0, 500);
+
+</pre>
+
+
+<h3>MB_Pipe2(svgdoc, PipeID, initcolour, offcolour, oncolour)</h3>
+
+<p>Indicate conditions in pipes or ducts. This is similar to MB_Pipe, but 
+operates by adjusting the fill colour instead of the stroke.
+</p>
+
+<ul>
+	<li>svgdoc - Reference to SVG document.</li>
+	<li>PipeID (string) - ID of SVG item.</li>
+	<li>initcolour (string) - Colour to use when undefined.</li>
+	<li>offcolour (string) - Colour to use when zero.</li>
+	<li>oncolour (string) - Colour to use when not zero.</li>
+</ul>
+
+
+<pre class="examples">
+
+	// Pipe flow using pipes which change colour instead of animating.
+	// This is different from a pilot light in that any non-zero value
+	// is considered to be 'on'.
+	var Tank2Pipe = new MB_Pipe2(document, "Tank2Pipe", "black", "green", "red");
+
+</pre>
+
+
+
+<h3>MB_PumpRotate(svgdoc, PumpID, rotation)</h3>
+
+<p>Pump or fan control. This operates by adjusting the rotate property of the SVG
+element.	Each update, the rotation amount is incremented by the amount specified 
+in the "rotation" parameter. 
+</p>
+
+<ul>
+	<li>svgdoc - Reference to SVG document.</li>
+	<li>PumpID (string) - ID of pump SVG item.</li>
+	<li>rotation (integer) - Number of degrees to rotate each time. 
+		From -360 to 360. +ve = cw. -ve = ccw.</li>
+</ul>
+
+
+<pre class="examples">
+
+	// Pump rotation.
+	var PumpRotation = new MB_PumpRotate(document, "Pump1", 19);
+
+</pre>
+
+<h3>MB_PumpRotateAnimated(svgdoc, PumpID)</h3>
+
+ 	<p>Animated pump rotation control. This provides a smooth continuous
+	animation that does not depend on the scan rate. The rotation is
+	on or off, and in one direction only. This uses the SVG animateTransform 
+	property.
+	</p> 
+
+<ul>
+	<li>svgdoc - Reference to SVG document.</li>
+	<li>PLID (string) - ID of SVG item.</li>
+</ul>
+
+<pre class="examples">
+
+	// Animated pump.
+	var PumpAni1 = new MB_PumpRotateAnimated(document, "PumpAni1");
+	MBHMIProtocol.AddToDisplayList(PumpAni1, "PumpAni1", "read");
+
+</pre>
+
+<hr>
+
+<h2>Miscellaneous</h2>
+
+
+<h3>MB_SlideDisplay(svgdoc, SlideID, offposx, offposy, onposx, onposy)</h3>
+
+<p>Two Position Slide Control. This translates (slides) an element to one
+of two positions, depending on whether the monitored value is off ("0")
+or on (non-zero).
+</p>
+
+<ul>
+	<li>svgdoc - Reference to SVG document.</li>
+	<li>SSID (string) - ID of SVG item.</li>
+	<li>offposx, offposy (integer) - X & Y positions in pixels when value is 
+			off (0).</li>
+	<li>onposx, onposy (integer) - X & Y position in pixels when value is 
+			on (non-zero).</li>
+</ul>
+
+<pre class="examples">
+
+	// Pick and place vertical axis.
+	var PPVertDisplay = new MB_SlideDisplay(document, "PPVert", 0, 0, 0, 100);
+ 	MBHMIProtocol.AddToDisplayList(PPVertDisplay, "PPVert", "read");
+
+</pre>
+
+
+<h3>MB_GraphicSelect(pagedoc, graphictable, tableoffset)</h3>
+
+<p>Select an SVG image from a list (array) of images. Each image
+must have a unique "id" string. This function hides or displays
+different parts to display only one at a time.
+This is compatible with the display list.
+</p>
+
+<ul>
+	<li>pagedoc - A reference to the HTML document.</li>
+	<li>graphictable (array) - An array of strings containing the ids of
+		the SVG graphic images.</li>
+	<li>tableoffset (integer) - This value is added to the monitored value in
+		determining the index for the "graphictable". This allows
+		data ranges which do not start at zero to be used directly
+		as image selectors (e.g. such as 3 position selector switches).</li>
+</ul>
+
+<pre class="examples">
+
+	// Select a shape for display.
+	var ShapeDemoDisplay = new MB_GraphicSelect(document, 
+			["ShapeDemoCir", "ShapeDemoRect", "ShapeDemoOct"], 1);
+	MBHMIProtocol.AddToDisplayList(ShapeDemoDisplay, "ShapeDemo", "read");
+
+</pre>
+
+<h3>MB_GraphicShowHide(svgdoc, GraphicId)</h3>
+
+<p>Display or hide an SVG image. 0 = hide the image. 1 = Show the image.
+A typical application is to use it to control an enable/disable "mask"
+over a push button. Hiding the mask will "enable" the push button (uncover it,
+while showing the mask will "disable" the push button (cover it so it cannot
+be activated). This is compatible with the display list.
+</p>
+
+<ul>
+	<li>svgdoc - Reference to SVG document.</li>
+	<li>PLID (string) - ID of SVG item.</li>
+</ul>
+
+<pre class="examples">
+
+	var PB1Mask = new MB_GraphicShowHide(document, "PB1Mask");
+	MBHMIProtocol.AddToDisplayList(PB1Mask, "PB1Mask", "read");
+
+
+</pre>
+
+<hr>
+
+<h2>Strip Charts</h2>
+
+<h3>MB_StripChart(svgdoc, ChartID, MaxPoints, XInc, YScale, TimeInterval)</h3>
+
+<p>Update a strip chart. This operates by changing the points property of 
+	an SVG polyline.
+</p>
+
+<ul>
+	<li>svgdoc - Reference to SVG document. </li>
+	<li>ChartID (string) - ID of SVG polyline. </li>
+	<li>MaxPoints (integer) - Maximum number of chart points. </li>
+	<li>XInc (integer) - Increment for each X position. </li>
+	<li>YScale (integer) - Scale factor to apply to readings. </li>
+	<li>TimeInc (float) - Minimum time increment in seconds. </li>
+</ul>
+
+
+<pre class="examples">
+
+	// Strip charts.
+	var DemoChart1 = new MB_StripChart(document, "demochart1", 50, 10, 1, 1.0);
+	MBHMIProtocol.AddToDisplayList(DemoChart1, "StripChart1", "read");
+
+</pre>
+
+
+<hr>
+
+<h2>Data Entry:<a name="Data Entry"></a></h2>
+
+<p>Data entry is also possible using normal push button increment/decrement
+operations. See the section on push buttons for more information. 
+</p>
+
+<h3>MB_NumericPad(svgdoc, NumberID, MaxDigits)</h3>
+
+<p>Implement a numeric entry pad. This does not use the display list.
+</p>
+<ul>
+	<li>svgdoc - Reference to SVG document. </li>
+	<li>NumberID (string) - ID of SVG text item. </li>
+	<li>MaxDigits (integer) - Maximum number of digits permitted. </li>
+</ul>
+
+
+
+<pre class="examples">
+
+	// Numeric display. This does not get added to the display list.
+	var MBT_NumberPad = new MB_NumericPad(document, "MBT_NumberPaddisplay", 12);
+
+</pre>
+
+<p>The numeric pad expects the Javascript object to be named "MBT_NumberPad". 
+You use a separate numeric "STR" (store) button to write the accumulated value 
+of the numeric pad to the server. You do <strong><em>not</em></strong>
+add the "MBT_NumberPad" object to the display list. 
+</p>
+
+
+<hr>
+
+
+<h2>Screen Select Control:<a name="Screen Select Control"></a></h2>
+
+<h3>MB_ScreenSelect(pagedoc, screentable)</h3>
+
+<p>Select which HMI "screens" are visible. The "screens" are all parts of 
+the same xhtml document. This function hides or displays different
+parts to give the illusion of different screens being selected. This operates
+by changing the "display" property of the style between "none" and "block".
+When activated, all screens in the "screentable" list are set to "none", then
+the selected screen is set to "block". </p>
+
+<p>MB_ScreenSelect does not work with the display list. It is operated
+directly by calling the SelectScreen propery with a string parameter
+containing the id of the desired screen.
+</p>
+
+<ul>
+	<li>pagedoc - A reference to the HTML document.</li>
+	<li>screentable (array) - An array of strings containing the ids of
+		the screen divs.</li>
+</ul>
+
+<p>The following example shows how MB_ScreenSelect interacts with "onclick" to
+create HTML menus. If you use the provided page templates these menus are already
+created for you. See the documentation on adding menu buttons to select SVG 
+graphical screens to see how to use this with drag and drop editing using 
+Inkscape.
+</p>
+
+<pre class="examples">
+
+	// Make a list of all the screens that can be selected.
+	var ScreenTable = ["mainscreen", "eventscreen", "alarmscreen"];
+	// This creates an object that controls display of the screens.
+	var ScreenSelect = new MB_ScreenSelect(document, ScreenTable);
+
+	&lt;!-- This creates the HTML menu. --&gt
+	&lt;div id="nav"&gt;
+	&lt;ul&gt;
+	&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('mainscreen')"&gt; Main&lt;/a&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('eventscreen')"&gt; Events&lt;/a&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;a onclick = "ScreenSelect.SelectScreen('alarmscreen')"&gt; Alarms&lt;/a&gt;&lt;/li&gt;
+	&lt;/ul&gt;
+	&lt;/div&gt;
+
+</pre>
+
+
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - HMI Client Display Library</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009 - 2010. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

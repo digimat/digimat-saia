@@ -1,0 +1,309 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+	<title>Help - HMI - SVG Selector Switches</title>
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Edit SVG</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Inkscape</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">Templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assemble Page</a></li>
+		</ul>
+	</div>
+
+
+
+
+<hr>
+
+	<!-- Put main content here -->
+
+<div class="datadisplay">
+
+
+
+
+<h1>Selector Switches</h1>
+
+
+<p>Selector switch labels are essentially push buttons which write a value
+to the server when clicked. The provide the main input functionality of a
+selector switch.
+</p>
+
+<p>Selector switches also have input functions, but these differ between two and
+three position switches. The actuator position of the switch acts as an output
+and must be controlled via the SVG "id".
+</p>
+
+
+
+
+<table class="helptable" border="1">
+<tr>
+	<th></th>
+	<th>Type</th>
+	<th>Name</th>
+	<th>Description</th>
+	<th>HMIBuilder Name</th>
+</tr>
+
+<tr>
+
+	<td><img src="ss2_label_blue.png" width="40" alt="clip-art">
+	</td>
+	<td>Selector switch label.
+	</td>
+	<td>ss2_label_&lt;colour&gt;
+	</td>
+	<td>Selector switch label / push button for a two position 
+	selector switch. Two of these are normally combined with a two position
+	selector switch to form a selector switch assembly.
+	</td>
+	<td>Selector Switch Label
+	</td>	
+</tr>
+
+<tr>
+
+	<td><img src="ss2_short_orange.png" width="75" alt="clip-art">
+	</td>
+	<td>Two position selector switch.
+	</td>
+	<td>ss2_short_&lt;colour&gt;
+	</td>
+	<td>Two position selector switch actuator. When the switch is
+	clicked, the input state will toggle. The rotation angle of the
+	actuator is controlled via the SVG "id" and acts as an output.
+	</td>
+	<td>2 Pos SS
+	</td>	
+	
+</tr>
+
+<tr>
+
+	<td><img src="ss3_label_orange.png" width="32" alt="clip-art">
+	</td>
+	<td>Selector switch label.
+	</td>
+	<td>ss3_label_&lt;colour&gt;
+	</td>
+	<td>Selector switch label / push button for a three position 
+	selector switch. Three of these are normally combined with a three position
+	selector switch to form a selector switch assembly.
+	</td>
+	<td>Selector Switch Label
+	</td>	
+	
+</tr>
+
+<tr>
+
+	<td><img src="ss3_short_red.png" width="75" alt="clip-art">
+	</td>
+	<td>Three position selector switch.
+	</td>
+	<td>ss3_short_&lt;colour&gt;
+	</td>
+	<td>Three position selector switch actuator. When the switch is
+	clicked, the input state will be set to a user specified value. The rotation 
+	angle of the actuator is controlled via the SVG "id" and acts as an output. 
+	</td>
+	<td>3 Pos SS
+	</td>	
+
+</tr>
+</table>
+
+<hr>
+
+<h3>HMIBuilder Parameters for Labels</h3>
+
+<p>Selector switch labels are essentially push buttons which write a value 
+to the server when clicked. The provide the main input functionality of a 
+selector switch. 
+</p>
+
+<table class="helptable" border="1">
+<tr>
+	<th>Parameter</th>
+	<th>Type</th>
+	<th>Values</th>
+	<th>Description</th>
+</tr>
+
+<tr>
+	<td>Input Tag
+	</td>
+	<td>Option menu
+	</td>
+	<td>Address tags
+	</td>
+	<td>The HMI server tag to write to. 
+	</td>
+</tr>
+
+<tr>
+	<td>Write Value
+	</td>
+	<td>Data entry box
+	</td>
+	<td>Integer
+	</td>
+	<td>The data value to write.
+	</td>
+</tr>
+
+</table>
+
+<h3>HMIBuilder Parameters for Two Position Selector Switch</h3>
+
+<p>When the switch itself is clicked, it will write a new value to the HMI 
+server. If the value of the reference tag is 0, it will write a 1, if the
+reference value is not 0, it will write a 0. If the switch tag is 0, the
+switch will be rotated to the left. if the switch tag is not 0, the switch
+will be rotated to the right.  
+</p>
+
+<table class="helptable" border="1">
+<tr>
+	<th>Parameter</th>
+	<th>Type</th>
+	<th>Values</th>
+	<th>Description</th>
+</tr>
+
+<tr>
+	<td>Write Tag
+	</td>
+	<td>Option menu
+	</td>
+	<td>Address tags
+	</td>
+	<td>The HMI server tag to write to. 
+	</td>
+</tr>
+
+<tr>
+	<td>Reference Tag
+	</td>
+	<td>Option menu
+	</td>
+	<td>Address tags
+	</td>
+	<td>The reference tag. 
+	</td>
+</tr>
+
+<tr>
+	<td>Switch Tag
+	</td>
+	<td>Option menu
+	</td>
+	<td>Address tags
+	</td>
+	<td>The tag to use to indicate the switch state. 
+	</td>
+</tr>
+
+</table>
+
+
+<h3>HMIBuilder Parameters for Three Position Selector Switch</h3>
+
+<p>This is similar to a two position selector switch, with the following 
+exceptions. Clicking on the switch will always write a 0, rather than toggling
+the value. The switch position is determined as follows. If the value of the 
+switch tag is negative, the switch will be rotated to the left. If the value
+of the switch tag is zero, the switch will be rotated to the centre position.
+If the value of the switch tag is positive, the switch will be rotated to the
+right.  
+</p>
+
+<table class="helptable" border="1">
+<tr>
+	<th>Parameter</th>
+	<th>Type</th>
+	<th>Values</th>
+	<th>Description</th>
+</tr>
+
+<tr>
+	<td>Write Tag
+	</td>
+	<td>Option menu
+	</td>
+	<td>Address tags
+	</td>
+	<td>The HMI server tag to write to.  
+	</td>
+</tr>
+
+<tr>
+	<td>Switch Tag
+	</td>
+	<td>Option menu
+	</td>
+	<td>Address tags
+	</td>
+	<td> The tag to use to indicate the switch state. 
+	</td>
+</tr>
+
+</table>
+
+<hr>
+
+	</div>
+
+	<!-- Standard footer -->
+	<div id="footer">
+		<p>MB-HMI</p>
+	</div>
+
+</div>
+
+
+</body>
+</html>
+
+
+<!-- Copyright 2008 - 2010. Michael Griffin -->
+<!-- This file is part of MBLogic. -->
+<!-- MBLogic is free software: you can redistribute it and/or modify -->
+<!-- it under the terms of the GNU General Public License as published by -->
+<!-- the Free Software Foundation, either version 3 of the License, or -->
+<!-- (at your option) any later version. -->
+<!-- MBLogic is distributed in the hope that it will be useful, -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the -->
+<!-- GNU General Public License for more details. -->
+<!-- You should have received a copy of the GNU General Public License -->
+<!-- along with MBLogic. If not, see <http://www.gnu.org/licenses/>. -->
+

@@ -1,0 +1,333 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Search Instructions</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Soft Logic</h3>
+		<ul>
+			<li><a href="SLSpecs-en.html">Specifications</a></li>
+			<li><a href="SLAddressing-en.html">Addressing</a></li>
+			<li><a href="SLInstructions-en.html">Instructions</a></li>
+			<li><a href="SLPrograms-en.html">Programming</a></li>
+			<li><a href="SLConfig-en.html">Configuration</a></li>
+			<li><a href="SLStatus-en.html">Program Monitoring and Reloading</a></li>
+			<li><a href="SLMemSave-en.html">Data Table Save/Restore</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>Search Instructions</h1>
+
+<hr>
+
+
+<p>Search instructions are used to search a range of registers to
+find a value which matches the search criteria. The search value
+may be a register, constant, or string constant.
+</p>
+
+<h3>Continuous Search</h3>
+
+<table class="helptable"  border="1">
+
+<tr>
+	<th>Instruction</th>
+	<th>Description</th> 
+	<th># Params</th>
+	<th>One Shot</th>
+	<th>Symbol</th> 
+</tr>
+
+
+<tr>
+	<td>FINDEQ</td>
+	<td>Search table for equal to</td>  <td>5 or 6</td>
+	<td>X</td>
+	<td><img src="LadSearchEQC.png" width="210" alt="search"></td>
+</tr>
+
+<tr>
+	<td>FINDGE</td>
+	<td>Search table for >=</td>  <td>5 or 6</td>
+	<td>X</td>
+	<td><img src="LadSearchGEC.png" width="210" alt="search"></td>
+</tr>
+
+<tr>
+	<td>FINDGT</td>
+	<td>Search table for ></td>  <td>5 or 6</td>
+	<td>X</td>
+	<td><img src="LadSearchGTC.png" width="210" alt="search"></td>
+</tr>
+
+<tr>
+	<td>FINDLE</td>
+	<td>Search table for <=</td>  <td>5 or 6</td>
+	<td>X</td>
+	<td><img src="LadSearchLEI.png" width="210" alt="search"></td>
+</tr>
+
+<tr>
+	<td>FINDLT</td>
+	<td>Search table for <</td>  <td>5 or 6</td>
+	<td>X</td>
+	<td><img src="LadSearchLTC.png" width="210" alt="search"></td>
+</tr>
+
+<tr>
+	<td>FINDNE</td>
+	<td>Search table for not equal</td>  <td>5 or 6</td>
+	<td>X</td>
+	<td><img src="LadSearchNEC.png" width="210" alt="search"></td>
+</tr>
+
+</table>
+
+
+<h3>Incremental Search</h3>
+
+<table class="helptable"  border="1">
+
+<tr>
+	<th>Instruction</th>
+	<th>Description</th> 
+	<th># Params</th>
+	<th>One Shot</th>
+	<th>Symbol</th> 
+</tr>
+
+
+<tr>
+	<td>FINDIEQ</td>
+	<td>Incremental search table for equal to</td>  
+	<td>5 or 6</td>
+	<td>X</td>
+	<td><img src="LadSearchEQI.png" width="210" alt="search"></td>
+</tr>
+
+<tr>
+	<td>FINDIGE</td>
+	<td>Incremental search table for >=</td>  <td>5 or 6</td>
+	<td>X</td>
+	<td><img src="LadSearchGEI.png" width="210" alt="search"></td>
+</tr>
+
+<tr>
+	<td>FINDIGT</td>
+	<td>Incremental search table for ></td>  <td>5 or 6</td>
+	<td>X</td>
+	<td><img src="LadSearchGTI.png" width="210" alt="search"></td>
+</tr>
+
+<tr>
+	<td>FINDILE</td>
+	<td>Incremental search table for <=</td>  <td>5 or 6</td>
+	<td>X</td>
+	<td><img src="LadSearchLEI.png" width="210" alt="search"></td>
+</tr>
+
+<tr>
+	<td>FINDILT</td>
+	<td>Incremental search table for <</td>  <td>5 or 6</td>
+	<td>X</td>
+	<td><img src="LadSearchLTI.png" width="210" alt="search"></td>
+</tr>
+
+<tr>
+	<td>FINDINE</td>
+	<td>Incremental search table for not equal</td>  
+	<td>5 or 6</td>
+	<td>X</td>
+	<td><img src="LadSearchNEI.png" width="210" alt="search"></td>
+</tr>
+
+<tr>
+	<td>FINDNE</td>
+	<td>Search table for not equal</td>  <td>5 or 6</td>
+	<td>X</td>
+	<td><img src="LadSearchNEC.png" width="210" alt="search"></td>
+</tr>
+
+</table>
+
+
+<p>Search instructions each come in two forms - continuous and incremental.
+A continuous search will begin at the start of the search register range
+each time it is invoked. An incremental search will begin at the next position
+after the last match. If the last incremental search did not result in a match
+before it reached the end of the range, the next search will start at the
+beginning again.
+</p>
+
+<p>The search instructions expect the following parameters:
+</p>
+
+<ul>
+	<li>Search Value - The value to search for. This may be a register, 
+	constant, or string constant.</li>
+	<li>Start - The beginning of the range of registers to start the search 
+	at. This must be compatible with the value being searched for. This must 
+	be of type DS, DD, DH, DF, or TXT.</li>
+	<li>End - The end of the range of registers being searched. This must be 
+	of the same type and a higher address than "start".</li>
+	<li>Result - The register to place the search result in. This must be of 
+	type DS or DD.</li>
+	<li>Result flag - A Boolean address to place the status of the search in.
+	This will be true if the search was successful, or false if not. This
+	must be a "C" address.</li>
+	<li>An optional one shot parameter of 0 or 1. If the paramter is set to "1", 
+	the one-shot option is enabled and the instruction executes only when the 
+	logic stack transitions from false to true. If the paramter is set to "0", 
+	the one-shot option is disabled and the instruction executes whenever the 
+	logic stack is true. If the parameter is missing, it has the same effect as 
+	setting it to "0". </li>
+</ul>
+
+
+<p>FINDEQ <i>searchvalue start end result resultflag (one-shot)</i>
+</p>
+
+<p>The result of a search is placed in the specified register. If the search was
+successful (a match was found), the register is set to an integer value equal
+to the index (number of elements) from the beginning of the search range to where
+the match was found. If the search was not successful, the result register is set
+to -1.
+</p>
+
+<p>When a string constant is used as the search value, the search is conducted
+by comparing the entire string to a number of registers equal to the length of
+the string. If a match is not found, the search position increments by one register 
+position and repeats until a match is found or the end of the search range is reached. 
+</p>
+
+<p>Example: </p>
+<pre class="examples">
+
+	// Search for constant.
+	NETWORK 1
+	STR X1
+	FINDEQ 1 DS100 DS110 DS111 C111
+	
+	// Search for register.
+	NETWORK 2
+	STR X2
+	FINDGT DD112 DD100 DD110 DS112 C112
+	
+	// Search for character.
+	NETWORK 3
+	STR X3
+	FINDEQ "c" TXT100 TXT110 DS113 C113
+	
+	// Search for character string.
+	NETWORK 3
+	STR X3
+	FINDEQ "cde" TXT100 TXT110 DS114 C114
+	
+	// Search with one shot.
+	NETWORK 5
+	STR X5
+	FINDIEQ 15 DS100 DS110 DS115 C115 1
+
+</pre>
+
+
+
+</div>
+
+<div id="ladsampledisplay">
+
+<hr>
+
+<h2>Ladder Examples</h2>
+
+<p>The following shows examples in ladder format. 
+</p>
+
+<p>
+<img src="LadSearch1.png" width="840" alt="search example 1">
+<img src="LadSearch2.png" width="840" alt="search example 2">
+</p>
+
+</div>
+
+
+<hr>
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Soft Logic</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009 - 2010. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

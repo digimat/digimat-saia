@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<link rel="icon" type="image/png" href="/systemicon.png" >
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/statuspagelayout.css" type="text/css">
+
+<!-- This controls the page display. -->
+<script type="text/javascript" src="/statuspages/libprogcontrol.js"></script>
+<script type="text/javascript" src="/statuspages/libdata.js"></script>
+<script type="text/javascript" src="/statuspages/libstatutils.js"></script>
+
+<!-- Native JSON doesn't seem to be working in Opera 10.10. -->
+<script type="text/javascript" src="/statuspages/json2.js"></script>
+
+
+<title>IL Display</title>
+
+</head>
+
+<body onload="pageinit();">
+
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo">
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+
+	
+<div id="datadisplay">
+
+	<!-- This is used for the heading. -->
+
+	<p><span class="itemheading">View IL for: </span> 
+	<span id="subrheading" class="itemtitle"></span>
+	</p> 
+
+
+<hr>
+
+	<!-- ################################################################ -->
+
+<!-- The rung comment data gets inserted here. -->
+<pre id="sbrcomments" class="viewil">
+
+</pre>
+
+
+<!-- The IL rung data gets inserted here. -->
+<pre id="illistblock" class="viewil">
+
+</pre>
+
+	<!-- ################################################################ -->
+
+<hr>
+
+
+</div>
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Soft Logic Program IL Display</p>
+</div>
+
+</div>
+
+
+<!-- This is the code for creating the data in the page. -->
+
+	<script type="text/javascript">
+
+	
+	// Handles displaying page data.
+	var ProgSource = new ProgILDisplay();
+
+	// Handles communications with the server.
+	var host = window.location.hostname;
+	var port = window.location.port;
+	var ServerData = new StatusDataIF(host, port, ProgSource);
+
+
+	// Start up and initialisation.
+	function pageinit() {
+		// Get the subroutine name.
+		var subrname = GetSubrnameFromQueryString();
+
+		// Display the headings.
+		ProgSource.PopulateHeadings(subrname);
+
+		// Get the IL data and display it.
+		ServerData.SendGetRequest("/statdata/plccurrentsource.js?subrname=" + subrname);
+	}
+
+
+	</script>
+
+</body>
+
+
+</html>
+
+
+<!-- Copyright 2008 - 2010. Michael Griffin 
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License 
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>. 
+-->

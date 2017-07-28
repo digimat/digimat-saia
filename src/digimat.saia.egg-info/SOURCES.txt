@@ -10,6 +10,5 @@ src/digimat.saia.egg-info/top_level.txt
 src/digimat/saia/ModbusDataLib.py
 src/digimat/saia/ModbusExtData.py
 src/digimat/saia/ModbusRestLib.py
-src/digimat/saia/SBusMsg.py
 src/digimat/saia/__init__.py
 src/digimat/saia/saia.py

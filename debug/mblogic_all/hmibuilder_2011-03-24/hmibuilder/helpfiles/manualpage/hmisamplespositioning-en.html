@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+	<title>Help - HMI - HMI Positioning Components</title>
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Edit SVG</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Inkscape</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">Templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assemble Page</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Editing SVG with Inkscape</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Using the SVG Library with Inkscape</a></li>
+			<li><a href="/customwidgets/customwidgets.html">Custom Widgets</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">HMI web templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assembling web pages</a></li>
+			<li><a href="/hmilib/hmilib.html">HMI Javascript Client Libraries</a></li>
+			<li><a href="/basicconcepts/basicconcepts.html">Basic Concepts</a></li>
+			<li><a href="/manualpage/manualpage.html">Manual HMI Web Page Construction</a></li>
+		</ul>
+
+		<h3>Manual HMI Web Page Construction</h3>
+		<ul>
+			<li><a href="/manualpage/hmisampleslayout-en.html">Page Layout</a></li>
+			<li><a href="/manualpage/hmisamplespositioning-en.html">
+				Positioning Components on the Screen</a></li>
+			<li><a href="/manualpage/hmisamplescomms-en.html">
+				Communications, the Display List and Data Sources</a></li>
+			<li><a href="/manualpage/hmisamplesmenus-en.html">Menu Control</a></li>
+			<li><a href="/manualpage/hmisamplesalarms-en.html">
+				Events, Alarms, and System Status</a></li>
+			<li><a href="/manualpage/hmisamplesxul-en.html">
+				Mixing HTML and XUL with SVG</a></li>
+			<li><a href="/manualpage/hmisamplespushbuttons-en.html">Push Buttons</a></li>
+			<li><a href="/manualpage/hmisamplespilotlights-en.html">Pilot Lights</a></li>
+			<li><a href="/manualpage/hmisamplesnumerictext-en.html">
+				Numeric and Text Displays</a></li>
+			<li><a href="/manualpage/hmisamplesgauges-en.html">Tanks and Gauges</a></li>
+			<li><a href="/manualpage/hmisamplespipes-en.html">Piping and Pumps</a></li>
+			<li><a href="/manualpage/hmisamplesnumbinput-en.html">Numeric Inputs</a></li>
+			<li><a href="/manualpage/hmisamplesstripchart-en.html">Strip Charts</a></li>
+			<li><a href="/manualpage/hmisamplesbackground-en.html">Background Images</a></li>
+		 	<li><a href="/manualpage/hmisamplesvisualeffects-en.html">Visual Effects</a></li>
+		</ul>
+
+	</div>
+
+
+
+	<!-- Put main content here -->
+	<div id="datadisplay">
+
+<h1>Help - HMI Positioning Components</h1>
+
+<hr>
+
+<h2>Overview:</h2>
+
+<p>SVG uses an X, Y coordinate system. This allows graphics to be precisely 
+positioned on each screen. We can move, rotate, and scale graphics within
+this coordinate system.
+</p>
+
+<hr>
+
+<h2>Grouping SVG Elements Together:</h2>
+
+<p>SVG elements can be grouped together by using a &lt;g&gt; tag. 
+The &lt;g&gt; &lt;/g&gt; tags act to group actions together so that they 
+apply to all elements enclosed by them. Groups can be nested, so that you
+can have groups within groups.
+</p>
+
+<pre class="examples">
+
+	&lt;!-- This is the outer group. --&gt;
+	&lt;g&gt;
+
+		&lt;!-- The contents go here. --&gt;
+
+			&lt;!-- Groups can be nested. --&gt;
+			&lt;g&gt;
+		
+				&lt;!-- The contents go here. --&gt;
+		
+			&lt;/g&gt;
+
+	&lt;/g&gt;
+
+	&lt;!-- This is a separate group. --&gt;
+	&lt;g&gt;
+
+		&lt;!-- The contents go here. --&gt;
+
+	&lt;/g&gt;
+
+</pre>
+
+<p>Groups can be used to apply attributes to all elements enclosed by the
+group. However, defining an attribute at a deeper nesting level will override
+any which are applied at outer levels. 
+</p>
+
+<pre class="examples">
+
+	&lt;!-- This is the outer group. --&gt;
+	&lt;g fill="red"&gt;
+
+		&lt;!-- This circle will be red. --&gt;
+		&lt;circle cx="25px" cy="25px" r="25px"/&gt;
+
+		&lt;!-- However, this one will be orange. --&gt;
+		&lt;circle fill="orange" cx="75px" cy="25px" r="25px"/&gt;
+
+	&lt;/g&gt;
+
+
+</pre>
+
+<hr>
+
+<h2>Translating or "Shifting" SVG Elements</h2>
+
+<p>SVG elements can be "transformed" using a "translate" statement which is 
+used to translate (shift) it on the screen. The position is given in X & Y 
+coordinates where 0,0 is in the upper left corner of the SVG canvas. The 
+&lt;g&gt; &lt;/g&gt; tags act to group actions together so that they apply to 
+all elements enclosed by them. 
+</p>
+
+<p>Transforms can be nested. When this is done, the inner transform
+is position relative to the outer one. This can be convenient when 
+creating large complex graphics. 
+</p>
+
+<h3>SVG</h3>
+
+<pre class="examples">
+
+	&lt;!-- This shows a simple translational transform. --&gt;
+	&lt;g transform="translate(350,105)"&gt;
+
+		&lt;!-- The contents go here. --&gt;
+
+			&lt;!-- Transforms can be nested. --&gt;
+			&lt;g transform="translate(50,5)"&gt;
+		
+				&lt;!-- The contents go here. --&gt;
+		
+			&lt;/g&gt;
+
+	&lt;/g&gt;
+
+</pre>
+
+<hr>
+
+<h2>Rotating SVG Elements</h2>
+
+<p>SVG graphics can also be rotated.
+</p>
+
+<h3>SVG</h3>
+
+<pre class="examples">
+
+	&lt;!-- This shows a simple rotational transform. --&gt;
+	&lt;g transform="rotate(90)"&gt;
+
+		&lt;!-- The contents go here. --&gt;
+
+	&lt;/g&gt;
+
+</pre>
+
+
+<hr>
+
+<h2>Scaling SVG Elements</h2>
+
+<p>SVG graphics can also be scaled. When a single scale factor is applied,
+the same scale factor is applied in both X and Y. When two scale factors
+are applied (e.g. transform="scale(2, 0.5)"), then separate scale factors
+can be applied to the X and Y. This allows changing the proportions of a
+graphic as well as its size.
+</p>
+
+<h3>SVG</h3>
+
+<pre class="examples">
+
+	&lt;!-- This shows a simple scale in x and y. --&gt;
+	&lt;g transform="scale(2)"&gt;
+
+		&lt;!-- The contents go here. --&gt;
+
+	&lt;/g&gt;
+
+	&lt;!-- This shows a scaling using different in x and y. --&gt;
+	&lt;g transform="scale(2, 0.5)"&gt;
+
+		&lt;!-- The contents go here. --&gt;
+
+	&lt;/g&gt;
+
+</pre>
+
+<hr>
+
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - HMI Positioning Components</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

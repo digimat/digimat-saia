@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:mblogic="http://www.example.com/mblogic"
+   version="1.0"
+   width="50"
+   height="20">
+
+<!-- This provides a text object. -->
+<g mblogic:widgettype="text" 
+	mblogic:widgetname="Server ID - Centred"
+	mblogic:editcount="0"
+	mblogic:menu='[{"value": "", "type": "none", "name": "", "param": "none"}]'
+	mblogic:inputfunc="[]"
+	mblogic:outputfunc='MBHMIProtocol.AddToDisplayList(new MB_StringDisplay(document, "%(widgetid)s"), "", "serverid");'
+	>
+
+	<text x="25" y="20" stroke="violet" fill="violet" font-size="20" text-anchor="middle">S_ID</text>
+
+</g>
+</svg>

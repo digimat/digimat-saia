@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+
+<link rel="icon" type="image/png" href="systemicon.png">
+<!-- Page navigation style sheet. -->
+<link rel="stylesheet" href="/pagenav.css" type="text/css">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="systempagelayout.css" type="text/css">
+<!-- This controls the page display. -->
+<script type="text/javascript" src="/libhmimsgsmon.js"></script>
+<script type="text/javascript" src="/libstatutils.js"></script>
+<script type="text/javascript" src="/libdata.js"></script>
+
+<title>Field Data Messages</title>
+</head>
+
+<body onload="pageinit();">
+
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo">
+			<span class="headtitle1">HMIServer </span>
+			<span class="headtitle2"> Field Data Messages</span>
+		</p>
+	</div>
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statushmi.html">Config</a></li>
+			<li><a href="/statuscontrol.html">Control</a></li>
+			<li><a href="/datamsgsfield.html">Data Messages</a></li>
+			<li><a href="/hmiserverintro-en.html">Help</a></li>
+		</ul>
+	</div>
+
+	<!-- Put main content here -->
+
+<div id="datadisplay">
+<h1>Field Device Messages</h1>
+
+<p>For HMI protocol message, click here:
+<a href="/datamsgshmi.html">HMI Protocol Messages</a>
+</p>
+
+
+<hr>
+
+<h2>Overview:</h2>
+
+<p>Field data display shows the actual messages which are transmitted 
+between the HMI server and the field device server acting as the source of the 
+data. The field device may be a PLC or other similar controller. 
+</p>
+
+<p>HMIServer comes in two forms - client and server. With the client version
+HMIServer is the client (master) and the field device is the server (slave).
+With the server version, HMIServer is the server (slave) and the field device
+is the client (master).   
+</p>
+
+<p>The request column shows the messages from the protcol client (master) to 
+the server (slave). The response column shows the replies from the server 
+(slave) back to the client (master).
+</p>
+
+<h3>Modbus/TCP Protocol</h3>
+
+<p>"tid" = Transaction ID. "uid" = Unit ID. "func" = Modbus function. "addr" = 
+Modbus data table. "qty" = number of Modbus data table addresses. "data" = 
+data (in a response to a write request this may be the number of addresses
+written). All items correspond to the Modbus protocol definitions.    
+</p>
+
+<h3>Ether S-Bus Protocol</h3>
+
+<p>"telattr" = Telegram attribute. "msgseq" = Message sequence. "stnaddr" = 
+Station address. "cmd" = Command code. "addr" = data table address. "data" = 
+Data. "acknak" = Acknak code.
+</p>
+
+<hr>
+
+<table id="msgfieldtable" class="helptable"  border="1">
+	<tr>	<th>Request</th>	<th>Response</th>	</tr>
+</table>
+
+
+
+
+<hr>
+
+</div>
+
+	<div id="footer">
+		<p>Field Device Messages</p>
+	</div>
+
+</div>
+
+
+</body>
+
+<!-- This is the code for creating the data in the page. -->
+
+	<script type="text/javascript">
+
+	// Handles displaying page data.
+	var libutils = new libstatutils();
+	var Monitor = new FieldMsgDisplay(libutils);
+
+	// Handles communications with the server.
+	var host = window.location.hostname;
+	var port = window.location.port;
+	var ServerData = new StatusDataIF(host, port, Monitor);
+
+
+	// Run an update cycle.
+	function Update() {
+		// Get the data and display it.
+		ServerData.SendGetRequest("/statdata/fieldmsgmonitor.js");
+	}
+
+
+	// Start up and initialisation.
+	function pageinit() {
+		Update();
+	}
+
+
+	</script>
+
+
+</html>
+
+
+<!-- Copyright 2008 - 2010. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

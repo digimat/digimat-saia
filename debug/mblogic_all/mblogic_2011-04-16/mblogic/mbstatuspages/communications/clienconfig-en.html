@@ -1,0 +1,827 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Client Communications Configuration</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Communications</h3>
+		<ul>
+			<li><a href="serverconfig-en.html">Server Communications Configuration</a></li>
+			<li><a href="clienconfig-en.html">Client Communications Configuration</a></li>
+			<li><a href="genericclientsprotocols.html">Generic Client Protocols</a></li>
+			<li><a href="ComsFaults-en.html">Communications Faults</a></li>
+			<li><a href="ComsMonitor-en.html">Communications Monitoring and Trouble 
+				Shooting</a></li>
+			<li><a href="ComsExpRegs-en.html">Expanded Register Map</a></li>
+			<li><a href="ModbusSupport-en.html">Modbus/TCP Server and 
+				Client Protocol</a></li>
+			<li><a href="MBRest-en.html">MB-REST Web Service Protocol</a></li>
+			<li><a href="hmiprotocol-en.html">HMI Protocol</a></li>
+			<li><a href="genericclients.html">Generic Clients</a></li>
+			<li><a href="genframework.html">Generic Client Framework</a></li>
+			<li><a href="genuserprotocol.html">Generic Client User Protocols</a></li>
+			<li><a href="ModbusBasics-en.html">Modbus/TCP Basics</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>Help - Client Communications Configuration</h1>
+
+<hr>
+
+<h2>Overview</h2> 
+
+<p>Clients configurations are saved in a text file called 
+<strong><em>"mbclient.config"</em></strong>. This configuration 
+file is read on start up of the software and used to determine what protocols to 
+enable, what network addresses and ports to use, what data to read or write, etc. 
+This file must be edited in order to configure a system for every individual 
+application. 
+</p>
+
+<hr>
+
+<h2>Configuration Overview</h2>
+
+<h3>Editing a Configuration</h3>
+
+<p>There is one, and only one client communications configuration file for 
+each system. This file is in ASCII text format and may be edited with any 
+standard text editor. If you use a word processor, be sure to save in a plain 
+text mode which does not insert formatting characters into the text. 
+</p>
+
+
+<h3>Configuration Elements</h3>
+
+<p>A client communications configuration file contains the following elements:
+</p>
+
+<ul>
+	<li>Client connections - This configures the client names, protocol type, 
+	address, polling rate, and other information.</li>
+	<li>Client commands - This configures the client communications commands, 
+	including memory addresses, protocol functions, and other information.</li>
+	<li>Fault Configuration - This configures the client communications fault 
+	indication, including the memory addresses where the fault information is 
+	stored.</li>
+	<li>Comments - Comments may be included in the configuration file to assist 
+	in documenting the particular application configuration.</li>
+</ul>
+
+
+
+<h3>Configuration Syntax</h3>
+
+<p>The configuration syntax has the following general properties:
+</p>
+
+<ul>
+	<li>Sections. Sections begin a series of related configuration values. 
+	A section name is an identifier which is enclosed by square brackets 
+	("[ ]"). A section includes all items until the beginning of a new section, 
+	or until the end of the file. Section names must be unique and must not
+	be duplicated in any other section. Duplicate section names are ignored. </li>
+	<li>Configuration items. Any line following the beginning of a section is considered 
+	to be an item which belongs to that section (excluding comments). Configuration 
+	items are key/value pairs in the format "key=value". </li>
+	<li>Each item must be on a separate line.</li>
+	<li>Keys are separated from values by equal signs ("="). Because equal signs are 
+	used as key/value separators, they may not be used as part of any key or value.</li>
+	<li>Parameters are case sensitive. All keys and values must be in the correct 
+	case. For example, "Main1", "main1", and "mAin1" are three different identifiers.</li>
+	<li>All keys or values which are defined by the configuration syntax are 
+	always in lower case. </li>
+	<li>User defined values may be in upper, lower, or mixed case.</li>
+	<li>The ampersand ("&amp;") character has special meaning. Certain sections are
+	predefined by the configuration system. The names for these will start with 
+	an ampersand. User defined section names may not start with an ampersand.
+	Command item names must start with an ampersand. Any item starting with
+	an ampersand is assumed to be a command. </li>
+</ul>
+
+
+<h3>Comments</h3>
+
+<p>Any line beginning with a '#' character is considered to be a comment and is 
+ignored. Comments must begin at the start of a line, and may not be on the same 
+line as any other valid input. 
+</p>
+
+<h4>Example</h4>
+
+<pre class="examples">
+
+	# 16-Apr-2008. This is a comment.
+	# This is also a comment.
+
+</pre>
+
+
+<hr>
+
+
+<h2>TCP Client Connections</h2>
+
+<p>TCP Client connections define the connection parameters to an external server 
+(e.g. an I/O module, valve bank, or RTU). Each client connection executes 
+independently of (is not synchronised with) any other client connect. 
+</p>
+
+<h3>Configuration Items</h3>
+
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Item</th> 
+	<th>Description</th> 
+</tr>
+<tr>
+	<td>The section name.</td>
+	<td>This is used as the name of the client. This 
+	name is used to identify the client in the status monitoring system and 
+	will appear on the status web pages.</td>
+</tr>
+
+<tr>
+	<td>type</td>
+	<td>This is the protocol type and is used to determing the communications
+	method used. This must be one of the recognised protocol types (listed below).</td>
+</tr>
+
+<tr>
+	<td>protocol</td>
+	<td>This determines the protocol recognised by the client. This
+	must be one of the recognised protocols (listed below).</td>
+</tr>
+
+<tr>
+	<td>host</td>
+	<td>The IP address of the server the client is polling. If the server
+	is on the same PC, 'localhost' is also a valid address.</td>
+</tr>
+
+<tr>
+	<td>port</td>
+	<td>The IP port being polled.</td>
+</tr>
+
+<tr>
+	<td>action</td>
+	<td>Must always be "poll" at this time.</td>
+</tr>
+
+<tr>
+	<td>cmdtime</td>
+	<td>The time delay in milliseconds between execution of consecutive
+	commands.</td>
+</tr>
+
+<tr>
+	<td>repeattime</td>
+	<td>The time delay in milliseconds between executing the last
+	command and beginning the set of commands again.</td>
+</tr>
+
+<tr>
+	<td>retrytime</td>
+	<td>The maximum time in milliseconds to wait for a reply to a 
+	command. If no reply is received, the next command is attempted.</td>
+</tr>
+
+<tr>
+	<td>fault_inp, fault_coil, fault_inpreg, fault_holdingreg</td>
+	<td>The data table addresses to use for indicating faults. These 
+	must be valid data table addresses.
+	Faults are discussed in more detail below.</td>
+</tr>
+
+<tr>
+	<td>fault_reset</td>
+	<td>The data table address to use for resetting faults. This
+	must be a valid coil address. Faults are discussed in more detail below.</td>
+</tr>
+
+<tr>
+	<td>commands</td>
+	<td>These are instructions which the client uses to poll the 
+	remote server addresses. Commands are discussed in more detail below.
+	There may be any number of client commands.</td>
+</tr>
+
+
+</table>
+
+
+<h3>Example</h3>
+
+
+<pre class="examples">
+
+	[Module002]
+	type=tcpclient 
+	protocol=modbustcp 
+	host=localhost
+	port=8502 
+	action=poll 
+	cmdtime=050 
+	repeattime=050 
+	retrytime=5000 
+	fault_inp=10002 
+	fault_coil=10002 
+	fault_inpreg=10002 
+	fault_holdingreg=10002 
+	fault_reset=65281 
+	&amp;command1= function=2, remoteaddr=1, qty=1, memaddr=1002, uid=2
+	&amp;command2= function=3, remoteaddr=1, qty=4, memaddr=5000 
+
+</pre>
+
+
+<p>The items may appear in any order.</p>
+
+<h3>Types</h3>
+
+<p>The recognised types are:</p>
+<ul>
+	<li>tcpserver</li>
+</ul>
+
+<h3>Protocols</h3>
+
+<p>The recognised protocols are:</p>
+<ul>
+	<li>modbustcp - The Modbus/TCP protocol.</li>
+</ul>
+
+<h3>Commands</h3>
+
+<p>Client commands are the actions to be executed for each client connection. 
+Commands within a connection are executed consecutively. There is however no 
+guarranty as to the order in which they are executed, and they are not 
+synchronised with commands for other clients. 
+</p>
+
+<p>Client commands are part of the section they are associated with
+and must be defined as part of that section. The recognised commands 
+parameters are:
+</p>
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Command Element</th> 
+	<th>Description</th> 
+</tr>
+<tr>
+	<td>The command name.</td>
+	<td>This is used as the key to the item. This name is used 
+	to identify the command in the status monitoring system and will appear on 
+	the status web pages. The command name must start with an ampersand. No two
+	commands may have the same name in the same client connection (section). If
+	they do, all but one will be ignored. However, it is permitted to use the same
+	name in other client sections, provided that it appears no more than once in
+	the same section. The names may be any combination of upper and lower case
+	and may be descriptive (e.g. "Valves").</td>
+</tr>
+
+<tr>
+	<td>function</td>
+	<td>The client protocol code or name. For Modbus, this is the Modbus 
+	function code.</td>
+</tr>
+
+<tr>
+	<td>remoteaddr</td>
+	<td>The memory address at the server being polled.</td>
+</tr>
+
+<tr>
+	<td>qty</td>
+	<td>The number of consecutive addresses being polled. For protocol
+	functions which do not require a quantity, this parameter must be present
+	and a valid number, although the value will not necessarily be used.</td>
+</tr>
+
+<tr>
+	<td>memaddr</td>
+	<td>The memory address in the local data table which is being
+	read or written to.</td>
+</tr>
+
+
+<tr>
+	<td>uid</td>
+	<td>The unit ID to be sent with the message. This is optional, and if
+		this parameter is left out a default unit ID of 1 is used. Each
+		command may specify a differnt unit ID independently of any other
+		command. This parameter is optional, but good practice would be to
+		include it even if the value does not differ from the default.</td>
+</tr>
+
+
+</table>
+
+
+<h3>Example</h3>
+
+<pre class="examples">
+
+	&amp;command1= function=2, remoteaddr=1, qty=1, memaddr=1002
+
+	&amp;command1= function=2, remoteaddr=1, qty=1, memaddr=97345, uid=2
+
+</pre>
+
+
+<p>The command name must be the first element in the line. Other parameters 
+may appear in any order. All parameters associated with a single command must 
+appear on the same line. 
+</p>
+
+<hr>
+
+<h2>Generic Clients</h2>
+
+<p>Generic clients permit adding new clients to the system without making them
+a permanent part of the software. This is accomplished by running the generic
+client as a separate process (program) and having it commmunicate with the main
+system via a special protocol. Generic clients are primarily intended to make
+integrating serial protocols (including custom protocols) into the main system
+easier. but they are not restricted to serial communications, nor indeed are they
+restricted to communications at all.  
+</p>
+
+<p><em><strong>Generic client support is still experimental and subject to change in
+future.</strong></em>  
+</p>
+
+<h3>Configuration Items</h3>
+
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Item</th> 
+	<th>Description</th> 
+</tr>
+<tr>
+	<td>The section name</td>
+	<td>This is used as the name of the client. This name is used to identify 
+		the client in the status monitoring system and will appear on the 
+		status web pages. This also acts to identify the generic client to
+		the server when the client contacts it.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Must be "genericclient"</td>
+</tr>
+<tr>
+	<td>protocol</td>
+	<td>This determines the protocol information is displayed on the status
+	interface. This may be any value.</td>
+</tr>
+<tr>
+	<td>clientfile</td>
+	<td>This is the file name for the generic client. It may also include 
+		additional command line parameters which are to be passed to the client
+		on start.</td>
+</tr>
+<tr>
+	<td>restartonfail</td>
+	<td>This defines the restart characteristics to be used if the client fails
+		(dies or crashes) during operation.</td>
+</tr>
+<tr>
+	<td>action</td>
+	<td>Must always be "poll" at this time.</td>
+</tr>
+<tr>
+	<td>readtable</td>
+	<td>This is the list of addresses to be read from the server and passed
+		to the generic client. Details are described below.</td>
+</tr>
+<tr>
+	<td>writetable</td>
+	<td>This is the list of addresses to be read from the client and passed
+		to the server. Details are described below.</td>
+</tr>
+<tr>
+	<td>fault_inp, fault_coil, fault_inpreg, fault_holdingreg</td>
+	<td>The data table addresses to use for indicating faults. These 
+	must be valid data table addresses.
+	Faults are discussed in more detail below.</td>
+</tr>
+
+<tr>
+	<td>fault_reset</td>
+	<td>The data table address to use for resetting faults. This
+	must be a valid coil address. Faults are discussed in more detail below.</td>
+</tr>
+
+<tr>
+	<td>commands</td>
+	<td>These are instructions which the client uses to poll the 
+	remote server addresses. Commands are discussed in more detail below.
+	There may be any number of client commands.</td>
+</tr>
+
+</table>
+
+<h3>Client File Name</h3>
+
+<p>The file name of the generic client is specified by the "clientfile" 
+parameter. This <em><strong>must</strong></em> be a valid Python program file.
+The system will explicitly call the Python interpreter to execute the file.  
+</p>
+
+<p>The file name parameter can include additional command line parameters.
+These parameters will be passed to the client at start up. 
+</p>
+
+<p>However, the system has parameters of its own which it passes to the client,
+and any user defined parameters must not interfere with these. These system
+parameters are:
+</p>
+
+<ul>
+	<li>c - Client name. This is the name of the client (as defined in the 
+		section name).</li>
+	<li>p - The generic interface server port number.</li>
+</ul>
+
+
+<h3>Restart Characteristics</h3>
+
+<p>If a generic client unexpectedly exits ("dies") while running, it can be
+automatically restarted by setting the appropriate option for "restartonfail". 
+The restart options are as follows: 
+</p>
+
+<ul>
+	<li>yes - Restart the client if it terminates unexpectedly.</li>
+	<li>no - <em>Do not</em> restart the client if it terminates unexpectedly.</li>
+	<li>nostart - Do not start the client at all.</li>
+</ul>
+
+<p>The system monitors configured clients to see if they are running. This
+check takes place at approximately 1 second intervals. If "restartonfail" is 
+set to "yes", and if the client terminates unexpectedly, the system will 
+attempt to restart it immediately at the next check interval. The system
+will attempt to restart the client up to 5 times. If the maximum number of 
+restart attempts is exceeded, the system will cease trying to restart that
+client. If the client was successfully restarted, the restart counter is reset. 
+This means a client can be automatically restarted as many times as necessary,
+provided the number of <em>consecutive</em> unsuccessful attempts is not exceeded.
+</p>
+
+<h3>Data Table Read and Write Addresses</h3>
+
+<p>A generic client communicates with the main server by copying a selected 
+part of the data table to and from the server. The "readtable" item specifies 
+the addresses to be read from the server and copied to the generic client. The 
+"writetable" item specifies the addresses to be read from the generic client 
+and copied to the main server. They are specified in the format:  
+"&lt;type&gt;=&lt;address&gt;:&lt;length&gt;". 
+The address types may be the following:
+</p>
+
+<ul>
+	<li>coil - Coil addresses.</li>
+	<li>inp - Discrete input addresses.</li>
+	<li>holdingreg - Holding register addresses.</li>
+	<li>inpreg - Input register addresses.</li>
+</ul>
+
+<p>The addresses may be any valid address for each type. The lengths may be any
+length which does not result in attempting to read or write beyond the end of
+the data table. These parameters are not limited by Modbus protocol read or 
+write specifications. Any type may be read from or written to. Any quantity may
+be transferred at once. However, excessively large data transfers may cause
+problems with system performance.  
+</p>
+
+<p>In addition to the above types, the type of "none" is also valid. This may
+be used as a placeholder to specify that no data transfer is requested for 
+that item. Some examples are:
+</p> 
+
+<pre class="examples">
+
+	# Do not read any addresses
+	readtable= none
+	# Write 10 coils starting at 9100, and 4 holding registers starting at 9650
+	writetable= coil=9100:10, holdingreg=9650:4
+
+	# Read and write all types.
+	readtable= coil=9100:10, inp=9100:11, holdingreg=9650:4, inpreg=10000:1
+	writetable= coil=900:10, inp=900:1, holdingreg=62050:150, inpreg=2:99
+
+</pre>
+
+
+<h3>Client Configuration Items</h3>
+
+<p>Any parameters which are not recognised by the server as standard generic
+client items, and which are not commands are passed to the generic client as
+is. This allows a generic client to define their own parameters as required
+for the application. 
+</p>
+
+<h3>Commands</h3>
+
+<p>Client commands are the actions to be executed for each client connection. 
+Commands within a connection are executed consecutively. Commands for generic
+clients are defined by the application and need not be present. The server
+however will parse them from the parameter set for convenience. The generic
+client is responsible for validating the command parameters.   
+</p>
+
+
+<h3>Example</h3>
+
+
+<pre class="examples">
+
+	# This is used to help demonstrate the generic client.
+	[CasClient]
+	type=genericclient
+	protocol=cascadas
+	clientfile=casclient.py -d 1
+	restartonfail=yes
+	cmdtime=750
+	repeattime=1250
+	retrytime=5000
+	action=poll
+	readtable= none
+	writetable= coil=9100:10, holdingreg=9650:4
+	fault_inp=10020
+	fault_coil=10020
+	fault_inpreg=10020
+	fault_holdingreg=10020
+	fault_reset=65293
+	&cmd1= PL1, PL2, PL3, PL4, Tank1Level
+
+</pre>
+
+<hr>
+
+<h2>Fault Configuration</h2>
+
+<p>Fault configurations are the memory addresses where communications faults
+which are detected by each client are indicated. There must be only one
+fault configuration per client. 
+</p>
+
+<h3>Configuration Items</h3>
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Item</th> 
+	<th>Description</th> 
+</tr>
+<tr>
+	<td>fault_inp</td>
+	<td>When a fault is detected, this discrete input will be turned 
+		on.</td>
+</tr>
+<tr>
+	<td>fault_coil</td>
+	<td>When a fault is detected, this coil will be turned on.</td>
+</tr>
+<tr>
+	<td>fault_inpreg</td>
+	<td>When a fault is detected, this input register will be 
+	set to a non-zero value. The value will be protocol dependent and may indicate 
+	the type of fault.</td>
+</tr>
+<tr>
+	<td>fault_holdingreg</td>
+	<td>When a fault is detected, this input register will be 
+	set to a non-zero value. The value will be protocol dependent and may indicate 
+	the type of fault.</td>
+</tr>
+<tr>
+	<td>fault_reset</td>
+	<td>When this coil address is turned on, the fault indication 
+	bits and	registers are reset to "0", and this coil is turned off. Only the 
+	highest (last) 256 coils may be used as fault reset coils. If a lower address 
+	is selected no error will be indicated, but the coil will not be monitored to 
+	reset the fault indicating registers or bits.</td>
+</tr>
+</table>
+
+
+<h3>Example</h3>
+
+<pre class="examples">
+
+	fault_inp=256 
+	fault_coil=97 
+	fault_inpreg=10000 
+	fault_holdingreg=52000 
+	fault_reset=65281
+
+</pre>
+
+<h3>Additional Notes</h3>
+
+<p>The items may appear in any order. </p>
+
+<p>Fault configurations are part of the section they are associated with
+and must be defined as part of that section. All of the fault configuration 
+items must appear with each client. 
+</p>
+
+<p>The fault reset coils are scanned once every several seconds. It therefore may
+take several (e.g. 2 or 3) seconds for the faults to reset once the reset coil
+is activated. 
+</p>
+
+<p>All four indicating parameters (inp, coil, inpreg, holdingreg) are equivalent
+in that all are turned on together in the event of any fault. This means that
+any one of these may be read to determine the presence of a fault. It is 
+suggested that addresses be chosen to allow them to be read as part of the
+same read operation as other normal data. 
+</p>
+
+
+<hr>
+
+<h2>Complete Example</h2>
+
+<p>The following is an example showing a complete configuration file. 
+</p>
+
+<h3>Example</h3>
+
+<pre class="examples">
+
+	# Client connections.
+	# This "loops back" into the server. You don't really want to do this. 
+	[Module000] 
+	type=tcpclient 
+	protocol=modbustcp 
+	host=localhost 
+	port=8502 
+	action=poll 
+	cmdtime=050 
+	repeattime=75 
+	retrytime=5000
+	fault_inp=15 
+	fault_coil=15 
+	fault_inpreg=10096 
+	fault_holdingreg=10096 
+	fault_reset=65280
+	&amp;command1=function=1, remoteaddr=0, qty=15, memaddr=0
+	
+	# This is another client connection.
+	[Module001] 
+	type=tcpclient 
+	protocol=modbustcp 
+	host=192.168.5.100 
+	port=502 
+	action=poll 
+	cmdtime=040 
+	repeattime=59 
+	retrytime=5000
+	fault_inp=32 
+	fault_coil=32 
+	fault_inpreg=10097 
+	fault_holdingreg=10097 
+	fault_reset=65281
+	&amp;Sensor1=function=2, remoteaddr=0, qty=16, memaddr=16
+	&amp;PushButtons=function=1, remoteaddr=0, qty=16, memaddr=16
+	&amp;PressForce=function=3, remoteaddr=0, qty=2, memaddr=5000
+	&amp;PumpStatus=function=4, remoteaddr=0, qty=4, memaddr=200
+	&amp;ValueBank=function=4, remoteaddr=8192, qty=120, memaddr=32768
+	&amp;DoorSwitches=function=15, remoteaddr=8192, qty=48, memaddr=61000
+	&amp;Beacon=function=6, remoteaddr=39, qty=1, memaddr=62000
+
+	# This is an example of a generic client.
+	[HartClient]
+	protocol = hart
+	type = genericclient
+	serialport = /dev/ttyS1
+	clientfile = hartclient.py -d 1
+	restartonfail = yes
+	action = poll
+	cmdtime = 500
+	repeattime = 1000
+	retrytime = 1000
+	fault_coil = 12500
+	fault_inp = 12500
+	fault_holdingreg = 12500
+	fault_inpreg = 12500
+	fault_reset = 65297
+	readtable = coil=0:0, holdingreg=0:0, inp=0:0, inpreg=0:0
+	writetable = coil=11500:20, holdingreg=11500:25, inp=11500:125, inpreg=11500:100
+	retries = 0
+	statisticstable = 60
+	&amp;readprimaryvar = action=poll, uid=0, function=1, datatype=inpreg, dataoffset=0
+	&amp;readuniqueid = action=poll, uid=0, function=0, datatype=holdingreg, dataoffset=10
+	&amp;readallvar = action=oneshot, uid=0, function=3, datatype=inpreg, dataoffset=10
+	&amp;readcurrentrange = action=poll, uid=0, function=2, datatype=holdingreg, dataoffset=0
+
+</pre>
+
+
+<hr>
+
+<h2>Loop Back Sample</h2>
+
+<p>The sample configuration file supplied with the system uses what is referred to 
+as a "loop-back" configuration for the clients. That is, a set of Modbus/TCP 
+clients are configured to poll the system's own Modbus/TCP server. This is not in 
+itself a useful feature. It is provided mainly to demonstrate the communications 
+features. A different configuration should be created for a practical application. 
+The sample configuration demonstrates the following features. 
+</p>
+
+<ul>
+	<li>Several Modbus/TCP clients are started, each demonstrating a different
+	configuration. These clients read and write the data table through the 
+	Modbus/TCP server (noted above).</li>
+</ul>
+
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Client Communications Configuration</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009 - 2010. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

@@ -1,0 +1,1148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<link rel="icon" type="image/png" href="/systemicon.png" >
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/statuspagelayout.css" type="text/css">
+
+<!-- This controls the page display. -->
+<script type="text/javascript" src="/statuspages/libstatusclient.js"></script>
+<script type="text/javascript" src="/statuspages/libdata.js"></script>
+<script type="text/javascript" src="/statuspages/libdatapost.js"></script>
+<script type="text/javascript" src="/statuspages/libstatutils.js"></script>
+<script type="text/javascript" src="/statuspages/libparamedit.js"></script>
+<!-- Message text definitions. -->
+<script type="text/javascript" src="/statuspages/libtexts_en.js"></script>
+
+<!-- Headings for display generic client parameters. -->
+<script type="text/javascript" src="/statuspages/genericparamdata.js"></script>
+
+<!-- Native JSON doesn't seem to be working in Opera 10.10. -->
+<script type="text/javascript" src="/statuspages/json2.js"></script>
+
+ 
+<title>Communications Clients Configuration</title>
+
+</head>
+
+<body onload="pageinit();">
+
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo">
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+	
+<div id="datadisplay">
+
+<!-- Acknowledge save request. This is located in this position to cover
+	the normal page elements be leave the navigation menu exposed. -->
+<div id="saverequestshow" class="datahide">
+	<!-- The style should be resized to the actual width and height at run time. -->
+	<div id="screenmask" class="shutdownmask" style="position:absolute;">
+	</div>
+	<div class="shutdownbuttonback" style="position:absolute;
+					width:250px;height:100px;left:300px;top:350px;">
+		<p>Saving ...
+		<img src="/spinner.gif" width="64" alt="spinner">
+		</p>
+	</div>
+</div>
+
+<h1>Communications Clients Configuration</h1>
+
+<!-- This enables/disables editing. -->
+<form name="editmode" >
+	<p onclick="EditButtonMode();">
+		View Only: <input type="radio" name="mode" value="view" checked="checked" />
+		Edit: <input type="radio" name="mode" value="edit" />
+	</p>
+</form>
+
+<!-- This is used to save the configuration. -->
+<div id="savedata" class="datahide">
+	<div class="editconfigback" style="position:fixed;
+		width:150px;height:70px;left:850px;top:10px;">
+			<p><button id="saveallbutton" class="editconfigbuttons"
+						onclick="SaveData();">Save All</button>
+			</p>
+	</div>
+</div>
+
+
+
+<!-- This is used to display error messages from the server. -->
+<div id="serversaveerror" class="datahide">
+	<hr>
+	<p class="errortextparagraph">
+	A system error was reported by the server when
+	attempting to save the configuration.</p>
+</div>
+
+<div id="saveerrors" class="datahide">
+	<hr>
+		<h3>Errors Saving Configuration:</h3>
+		<table id="saveerrortable" class="errortable"  border="1">
+		</table>
+</div>
+
+
+<hr>
+
+<!-- The list of TCP clients goes here.  -->
+
+
+<h2>TCP Clients</h2>
+
+<table class="displaytable"  border="1" id="tcpclienttable">
+	<tr> 
+	<th>Connection Name</th> 
+	<th>Protocol</th> 
+	<th>IP Address</th> 
+	<th>IP Port</th> 
+	<th>Cmd Action</th>  
+	<th>View Details</th> 
+	</tr>
+
+	<!-- Data will be inserted here by the Javscript. -->
+
+</table>
+
+<div id="tcpclientrecordadd" class="datahide">
+	<p><button class="editconfigbuttons"
+							onclick="TCPClientEditAdd();">Add Record</button>
+	</p>
+</div>
+
+<hr>
+
+<!-- This is used to hold the client details for one client at a time. -->
+<div id="tcpclientdetails" class="datahide">
+
+	<button onclick="HideTCPClientDetails();">Hide Details</button>
+
+	<p><span class="itemheading">Client Details for:</span> 
+	<span id="tcpclientdetailname" class="itemtitle"></span>
+	</p> 
+
+
+	<div id="clientpolling">
+
+		<h3>Polling Times</h3>
+		
+		<table class="displaytable"  border="1" id="tcpclientpolltable">
+			<tr><th>Item</th>				<th>Time (msec)</th> </tr>
+	
+			<tr> <th>Cmd Time</th>		<td class="t1" id="tcpcmdtime"></td> </tr>
+			<tr> <th>Repeat Time</th>	<td class="t2" id="tcprepeattime"></td> </tr>
+			<tr> <th>Retry Time</th>	<td class="t1" id="tcpretrytime"></td> </tr>
+		</table>
+
+	</div>
+
+	<div id="clientfault">
+
+		<h3>Fault Addresses</h3>
+		
+		<table class="displaytable"  border="1" id="tcpclientfaulttable">
+		<tr> <th>Item</th>					<th>Address</th></tr>
+		<tr> <th>Coil</th>					<td class="t2" id="tcpfault_coil"></td></tr>
+		<tr> <th>Discrete Input</th>		<td class="t1" id="tcpfault_inp"></td></tr>
+		<tr> <th>Holding Register</th>	<td class="t2" id="tcpfault_holdingreg"></td></tr>
+		<tr> <th>Input Register</th>		<td class="t1" id="tcpfault_inpreg"></td></tr>
+		<tr> <th>Reset Coil</th>			<td class="t1" id="tcpfault_reset"></td></tr>
+		</table>
+
+	</div>
+
+	<div class="clientclear"></div>
+
+	<h3>Command List</h3>
+	
+	<table class="displaytable"  border="1" id="tcpclientcommandstable">
+		<tr>
+			<th>Command Name</th> 
+			<th>Function Code</th> 
+			<th>Remote Memory Address</th> 
+			<th>Quantity</th> 
+			<th>Local Memory Address</th>   
+			<th>Unit ID</th> 
+		</tr>
+	
+	</table>
+
+<hr>
+
+</div>
+	
+
+<!-- This is used to edit the TCP client parameters configuration. -->
+<div id="tcpclientparams" class="datahide">
+	<div class="editconfigback" style="position:fixed;
+		width:550px;height:425px;left:400px;top:125px;">
+
+		<h3>TPC Client Parameters</h3>
+
+			<form name="tcpclientparams" >
+				<p onclick="TCPEditMode();">
+					<span id="tcpconnectionsoption">Connections:</span> 
+						<input type="radio" name="editmode" value="connection" 
+																				checked="checked" />
+					<span id="tcppollingoption">Polling:</span> 
+						<input type="radio" name="editmode" value="polling" />
+					<span id="tcpfaultsoption">Faults:</span> 
+						<input type="radio" name="editmode" value="faults" />
+					<span id="tcpcommandsoption">Commands:</span> 
+						<input type="radio" name="editmode" value="commands" />
+				</p>
+				<hr>
+				<div id="tcpeditconnections" class="datahide">
+					<p>Connection Name: 
+					<input id="tcpconnectionnameedit" class="editconfigfields" type="text" 
+					 				name="tcpconnectionnameedit" size="24" 
+					 				onchange="Monitor.TCPConnectionNameChanged();" />
+					</p>
+
+					<p>IP Address: 
+					<input id="tcpipaddressedit" class="editconfigfields" type="text" 
+					 				name="tcpipaddressedit" size="24" 
+					 				onchange="Monitor.TCPIPAddressChanged();" />
+					IP Port: 
+					<input id="tcpportedit" class="editconfigfields" type="number" 
+									name="tcpportedit" size="6"  
+									min="0" max="65535"
+									onchange="Monitor.TCPPortChanged();"/>
+					</p>
+
+				</div>
+
+				<div id="tcpeditpolling" class="datahide">
+					<h4>Polling Times:</h4> 
+					<p>Command:
+					<input id="tcpcmdtimeedit" class="editconfigfields" type="number" 
+									name="tcpcmdtimeedit" size="6"  
+									min="10" max="65535"
+									onchange="Monitor.PollingTimeChanged('tcpcmdtimeedit');"/>
+					Repeat: 
+					<input id="tcprepeattimeedit" class="editconfigfields" type="number" 
+									name="tcprepeattimeedit" size="6"  
+									min="10" max="65535"
+									onchange="Monitor.PollingTimeChanged('tcprepeattimeedit');"/>
+					Retry: 
+					<input id="tcpretrytimeedit" class="editconfigfields" type="number" 
+									name="tcpretrytimeedit" size="6"  
+									min="10" max="65535"
+									onchange="Monitor.PollingTimeChanged('tcpretrytimeedit');"/>
+					</p>
+				</div>
+
+				<div id="tcpeditfaultaddr" class="datahide">
+					<h4>Fault Addresses:</h4> 
+					<p>Coil:
+					<input id="tcpfaultcoil" class="editconfigfields" type="number" 
+							name="tcpfaultcoil" size="6"  
+							min="0" max="65535"
+							onchange="Monitor.TCPDTAddrChanged('tcpfaultcoil', false);"/>
+					Discrete Input:
+					<input id="tcpfaultdi" class="editconfigfields" type="number" 
+							name="tcpfaultdi" size="6"  
+							min="0" max="65535"
+							onchange="Monitor.TCPDTAddrChanged('tcpfaultdi', false);"/>
+					</p>
+
+					<p>Holding Reg:
+					<input id="tcpfaulthreg" class="editconfigfields" type="number" 
+							name="tcpfaulthreg" size="6"  
+							min="0" max="65535"
+							onchange="Monitor.TCPDTAddrChanged('tcpfaulthreg', true);"/>
+					Input Reg:
+					<input id="tcpfaultireg" class="editconfigfields" type="number" 
+							name="tcpfaultireg" size="6"  
+							min="0" max="65535"
+							onchange="Monitor.TCPDTAddrChanged('tcpfaultireg', false);"/>
+					</p>
+					<p>Reset Coil:
+					<input id="tcpfaultrstcoil" class="editconfigfields" type="number" 
+							name="tcpfaultrstcoil" size="6"  
+							min="0" max="65535"
+							onchange="Monitor.TCPDTAddrChanged('tcpfaultrstcoil', false);"/>
+					</p>
+				</div>
+
+				<div id="tcpeditcommands" class="datahide">
+					<!-- This must be populated with the actual commands. -->
+					<p>Command:
+					<select id="tcpcommands" name="tcpcommands" 
+												onchange="Monitor.TCPCmdChanged();">
+					</select>
+					</p>
+
+					<p>Function Code:
+					<select id="tcpfunctioncodeedit" name="tcpfunctioncodeedit" 
+								onchange="Monitor.TCPEditFunctionChanged();">
+						<option value="0">0 - Dummy Value</option>
+						<option value="1">1 - Read Coils</option>
+						<option value="2">2 - Read Dis. Inputs</option>
+						<option value="3">3 - Read Holding Regs.</option>
+						<option value="4">4 - Read Input Regs.</option>
+						<option value="5">5 - Write Coil</option>
+						<option value="6">6 - Write Holding Reg.</option>
+						<option value="15">15 - Write Coils</option>
+						<option value="16">16 - Write Holding Regs</option>
+					</select>
+					</p>
+					<p>Remote Address:
+					<input id="tcpremoteaddredit" class="editconfigfields" type="number" 
+							name="tcpremoteaddredit" size="6"  
+							min="0" max="65535"
+							onchange="Monitor.TCPRemoteAddrChanged();"/>
+					Local Address:
+					<input id="tcplocaladdredit" class="editconfigfields" type="number" 
+							name="tcplocaladdredit" size="6"  
+							min="0" max="65535"
+							onchange="Monitor.TCPLocalAddrChanged();"/>
+					</p>
+					<p>Quantity:
+					<input id="tcpquantityedit" class="editconfigfields" type="number" 
+							name="tcpquantityedit" size="6"  
+							min="1" max="2000"
+							onchange="Monitor.TCPQuantityChanged();"/>
+					UnitID:
+					<input id="tcpunitidedit" class="editconfigfields" type="number" 
+							name="tcpunitidedit" size="6"  
+							min="0" max="255"
+							onchange="Monitor.TCPUIDChanged();"/>
+					</p>
+
+
+				</div>
+				<div id="tcpaddcommands" class="datahide">
+					<p>New Command Name: 
+					<input id="tcpaddcmdedit" class="editconfigfields" type="text" 
+					 				name="tcpaddcmdedit" size="24" 
+					 				onchange="Monitor.TCPCmdAddedChanged();" />
+					</p>
+				</div>
+			</form>
+
+				<!-- For showing the add or deleting commands dialogue. -->
+			<div id="tcpcmdeditbuttons">
+				<p>Add or delete command:
+				<button onclick="TCPClientCmdShow();">Add</button>
+				<button onclick="Monitor.TCPClientCmdDelete();">Delete</button>
+				</p>
+			</div>
+
+				<!-- For adding or deleting commands. -->
+			<div id="tcpcmdenterbuttons" class="datahide">
+				<p>
+				<button onclick="TCPClientCmdAdd();">Change</button>
+				<button onclick="TCPClientCmdCancel();">Cancel</button>
+				</p>
+			</div>
+
+			<hr>
+			<!-- Save, cancel, or delete a TCP client. -->
+			<p><button class="editconfigbuttons"
+						onclick="TCPClientEditEnter();">Change</button>
+			<button class="editconfigbuttons"
+						onclick="TCPClientEditCancel();">Cancel</button>
+			<button class="editconfigbuttons"
+						onclick="TCPClientEditDelete();">Delete</button>
+			</p>
+	</div>
+</div>
+
+
+<!-- ================================================================ -->
+
+<!-- The list of generic clients goes here.  -->
+
+<h2>Generic Clients</h2>
+
+<table class="displaytable"  border="1" id="gentable">
+	<tr> 
+	<th>Connection Name</th> 
+	<th>Protocol</th> 
+	<th>Cmd Action</th>  
+	<th>View Details</th> 
+	</tr>
+
+	<!-- Data will be inserted here by the Javscript. -->
+
+</table>
+
+<div id="genclientrecordadd" class="datahide">
+	<p><button class="editconfigbuttons"
+							onclick="GenClientEditAdd();">Add Record</button>
+	</p>
+</div>
+
+<hr>
+
+<!-- This is used to hold the client details for one client at a time. -->
+<div id="genclientdetails" class="datahide">
+
+	<button onclick="HideGenClientDetails();">Hide Details</button>
+
+	<p><span class="itemheading">Client Details for:</span> 
+	<span id="genclientdetailname" class="itemtitle"></span>
+	</p> 
+
+
+	<div id="genclientparams">
+
+
+		<h3>Client Start Parameters</h3>
+		
+		<table class="displaytable"  border="1">
+			<tr> <th>Item</th>			<th>Parameter</th></tr>
+			<tr> <th>Client File</th>	<td class="t1" id="genclientfile"></td> </tr>
+			<tr> <th>Restart on Fail</th>	<td class="t2" id="genclientrestart"></td> </tr>
+		</table>
+
+
+		<h3>Data Table Read Addresses</h3>
+		
+		<table class="displaytable"  border="1" id="genclientdatatablerd">
+			<tr> <th>Item</th>	<th>Address</th> <th>Length</th> </tr>
+	
+			<tr>
+				<th>Coil</th>
+				<td class="t1" id="gendtrd_coil"></td>
+				<td class="t1" id="gendtrdlen_coil"></td>
+			</tr>
+			<tr>
+				<th>Discrete Input</th>
+				<td class="t2" id="gendtrd_inp"></td>
+				<td class="t2" id="gendtrdlen_inp"></td>
+			</tr>
+			<tr>
+				<th>Holding Register</th>
+				<td class="t1" id="gendtrd_holdingreg"></td>
+				<td class="t1" id="gendtrdlen_holdingreg"></td>
+			</tr>
+			<tr>
+				<th>Input Register</th>
+				<td class="t2" id="gendtrd_inpreg"></td>
+				<td class="t2" id="gendtrdlen_inpreg"></td>
+			</tr>
+		</table>
+
+		<h3>Data Table Write Addresses</h3>
+
+		<table class="displaytable"  border="1" id="genclientdatatablewrt">
+			<tr> <th>Item</th>	<th>Address</th> <th>Length</th> </tr>
+
+			<tr>
+				<th>Coil</th>
+				<td class="t1" id="gendtwrt_coil"></td>
+				<td class="t1" id="gendtwrtlen_coil"></td>
+			</tr>
+			<tr>
+				<th>Discrete Input</th>
+				<td class="t2" id="gendtwrt_inp"></td>
+				<td class="t2" id="gendtwrtlen_inp"></td>
+			</tr>
+			<tr>
+				<th>Holding Register</th>
+				<td class="t1" id="gendtwrt_holdingreg"></td>
+				<td class="t1" id="gendtwrtlen_holdingreg"></td>
+			</tr>
+			<tr>
+				<th>Input Register</th>
+				<td class="t2" id="gendtwrt_inpreg"></td>
+				<td class="t2" id="gendtwrtlen_inpreg"></td>
+			</tr>
+		</table>
+
+
+	</div>
+
+	<div id="genclientfault">
+
+		<h3>Fault Addresses</h3>
+		
+		<table class="displaytable"  border="1" id="genclientfaulttable">
+		<tr> <th>Item</th>					<th>Address</th></tr>
+		<tr> <th>Coil</th>					<td class="t2" id="genfault_coil"></td> </tr>
+		<tr> <th>Discrete Input</th>		<td class="t1" id="genfault_inp"></td> </tr>
+		<tr> <th>Holding Register</th>	<td class="t2" id="genfault_holdingreg"></td></tr>
+		<tr> <th>Input Register</th>		<td class="t1" id="genfault_inpreg"></td> </tr>
+		<tr> <th>Reset Coil</th>			<td class="t1" id="genfault_reset"></td> </tr>
+		</table>
+
+
+		<h3>Client Parameters</h3>
+		
+		<table class="displaytable"  border="1" id="genclientparamstable">
+			<tr><th>Item</th>				<th>Parameter</th> </tr>
+		</table>
+
+
+	</div>
+
+	<div class="clientclear"></div>
+
+	<h3>Command List</h3>
+	
+	<table class="displaytable"  border="1" id="genclientcommandstable">
+		<tr>
+			<th>Command Name</th> 
+			<th>Command Parameters</th> 
+		</tr>
+	
+	</table>
+
+<hr>
+
+</div>
+	
+
+<!-- This is used to edit the generic client parameters configuration. -->
+<div id="genclientparamseditor" class="datahide">
+	<div class="editconfigback" style="position:fixed;
+		width:925px;height:375px;left:75px;top:100px;">
+
+		<h3>Generic Client Parameters</h3>
+
+			<form name="genclientparams" >
+				<p onclick="GenEditMode();">
+					<span id="genclientstartoption">Client Start: </span>
+						<input type="radio" name="editmode" value="clientstart" 
+																				checked="checked" />
+					<span id="gendtreadoption">Data Table Read: </span> 
+							<input type="radio" name="editmode" value="dtread" />
+					<span id="gendtwriteoption">Data Table Write: </span> 
+							<input type="radio" name="editmode" value="dtwrite" />
+					<span id="genfaultsoption">Faults:</span> 
+						<input type="radio" name="editmode" value="faults" />
+					Client Params: <input type="radio" name="editmode" value="clientparams" />
+					Command List: <input type="radio" name="editmode" value="commandlist" />
+				</p>
+
+				<hr>
+
+				<div id="geneditconnections" class="datahide">
+					<p>Connection Name: 
+					<input id="genconnectionnameedit" class="editconfigfields" type="text" 
+					 				name="genconnectionnameedit" size="24" 
+					 				onchange="Monitor.GenConnectionNameChanged();" />
+					Protocol: 
+					<input id="genprotocoledit" class="editconfigfields" type="text" 
+					 				name="genprotocoledit" size="24" 
+					 				onchange="Monitor.GenProtocolChanged();" />
+					</p>
+
+					<p>Client File: 
+					<input id="genclientfileedit" class="editconfigfields" type="text" 
+									name="genclientfileedit" size="24"  
+									onchange="Monitor.GenClientFileChanged();"/>
+
+					Restart on Fail: 
+						<input type="radio" name="restart" value="restart" 
+																				checked="checked" />
+						Do Not Restart:
+						<input type="radio" name="restart" value="norestart" />
+						Do Not Start:
+						<input type="radio" name="restart" value="donotstart" />
+					</p>
+
+				</div>
+
+				<div id="gendtreadedit" class="datahide">
+					<h4>Data Table Read Addresses:</h4> 
+					<p>Coil:
+					<input id="gendtreadcoiledit" class="editconfigfields" type="number" 
+							name="gendtreadcoiledit" size="8"  
+							min="0" max="65535"
+							onchange="Monitor.GenDTAddrChanged('gendtreadcoiledit', false);"/>
+					Length:
+					<input id="gendtreadcoillenedit" class="editconfigfields" type="number" 
+							name="gendtreadcoillenedit" size="5"  
+							min="0" max="65535"
+							onchange="Monitor.GenDTLenChanged('gendtreadcoillenedit');"/>
+
+					Discrete input:
+					<input id="gendtreaddiedit" class="editconfigfields" type="number" 
+							name="gendtreaddiedit" size="8"  
+							min="0" max="65535"
+							onchange="Monitor.GenDTAddrChanged('gendtreaddiedit', false);"/>
+					Length:
+					<input id="gendtreaddilenedit" class="editconfigfields" type="number" 
+							name="gendtreaddilenedit" size="5"  
+							min="0" max="65535"
+							onchange="Monitor.GenDTLenChanged('gendtreaddilenedit');"/>
+					<br>
+					Holding Register:
+					<input id="gendtreadhregedit" class="editconfigfields" type="number" 
+							name="gendtreadhregedit" size="11"  
+							min="0" max="1048575"
+							onchange="Monitor.GenDTAddrChanged('gendtreadhregedit', true);"/>
+					Length:
+					<input id="gendtreadhreglenedit" class="editconfigfields" type="number" 
+							name="gendtreadhreglenedit" size="5"  
+							min="0" max="65535"
+							onchange="Monitor.GenDTLenChanged('gendtreadhreglenedit');"/>
+
+					Input Register:
+					<input id="gendtreadiregedit" class="editconfigfields" type="number" 
+							name="gendtreadiregedit" size="8"  
+							min="0" max="65535"
+							onchange="Monitor.GenDTAddrChanged('gendtreadiregedit', false);"/>
+					Length:
+					<input id="gendtreadireglenedit" class="editconfigfields" type="number" 
+							name="gendtreadireglenedit" size="5"  
+							min="0" max="65535"
+							onchange="Monitor.GenDTLenChanged('gendtreadireglenedit');"/>
+					</p>
+
+				</div>
+
+				<div id="gendtwriteedit" class="datahide">
+					<h4>Data Table Write Addresses:</h4> 
+					<p>Coil:
+					<input id="gendtwritecoiledit" class="editconfigfields" type="number" 
+							name="gendtwritecoiledit" size="8"  
+							min="0" max="65535"
+							onchange="Monitor.GenDTAddrChanged('gendtwritecoiledit', false);"/>
+					Length:
+					<input id="gendtwritecoillenedit" class="editconfigfields" type="number" 
+							name="gendtwritecoillenedit" size="5"  
+							min="0" max="65535"
+							onchange="Monitor.GenDTLenChanged('gendtwritecoillenedit');"/>
+
+					Discrete input:
+					<input id="gendtwritediedit" class="editconfigfields" type="number" 
+							name="gendtwritediedit" size="8"  
+							min="0" max="65535"
+							onchange="Monitor.GenDTAddrChanged('gendtwritediedit', false);"/>
+					Length:
+					<input id="gendtwritedilenedit" class="editconfigfields" type="number" 
+							name="gendtwritedilenedit" size="5"  
+							min="0" max="65535"
+							onchange="Monitor.GenDTLenChanged('gendtwritedilenedit');"/>
+					<br>
+					Holding Register:
+					<input id="gendtwritehregedit" class="editconfigfields" type="number" 
+							name="gendtwritehregedit" size="11"  
+							min="0" max="1048575"
+							onchange="Monitor.GenDTAddrChanged('gendtwritehregedit', true);"/>
+					Length:
+					<input id="gendtwritehreglenedit" class="editconfigfields" type="number" 
+							name="gendtwritehreglenedit" size="5"  
+							min="0" max="65535"
+							onchange="Monitor.GenDTLenChanged('gendtwritehreglenedit');"/>
+
+					Input Register:
+					<input id="gendtwriteiregedit" class="editconfigfields" type="number" 
+							name="gendtwriteiregedit" size="8"  
+							min="0" max="65535"
+							onchange="Monitor.GenDTAddrChanged('gendtwriteiregedit', false);"/>
+					Length:
+					<input id="gendtwriteireglenedit" class="editconfigfields" type="number" 
+							name="gendtwriteireglenedit" size="5"  
+							min="0" max="65535"
+							onchange="Monitor.GenDTLenChanged('gendtwriteireglenedit');"/>
+					</p>
+
+
+				</div>
+
+				<div id="geneditfaultaddr" class="datahide">
+					<h4>Fault Addresses</h4>
+					<p>Coil:
+					<input id="genfaultcoil" class="editconfigfields" type="number" 
+							name="genfaultcoil" size="8"  
+							min="0" max="65535"
+							onchange="Monitor.GenFaultAddrChanged('genfaultcoil', false);"/>
+
+					Discrete Input:
+					<input id="genfaultdi" class="editconfigfields" type="number" 
+							name="genfaultdi" size="8"  
+							min="0" max="65535"
+							onchange="Monitor.GenFaultAddrChanged('genfaultdi', false);"/>
+
+					Holding Reg:
+					<input id="genfaulthreg" class="editconfigfields" type="number" 
+							name="genfaulthreg" size="11"  
+							min="0" max="65535"
+							onchange="Monitor.GenFaultAddrChanged('genfaulthreg', true);"/>
+					Input Reg:
+					<input id="genfaultireg" class="editconfigfields" type="number" 
+							name="genfaultireg" size="8"  
+							min="0" max="65535"
+							onchange="Monitor.GenFaultAddrChanged('genfaultireg', false);"/>
+					<br>
+					Reset Coil:
+					<input id="genfaultrstcoil" class="editconfigfields" type="number" 
+							name="genfaultrstcoil" size="8"  
+							min="0" max="65535"
+							onchange="Monitor.GenFaultAddrChanged('genfaultrstcoil', false);"/>
+					</p>
+				</div>
+
+				<div id="geneditclientparams" class="datahide">
+					<h4>Client Parameters</h4>
+					<p>
+					<textarea name="geneditclientparams" rows="6" cols="90"></textarea>
+					</p>
+				</div>
+
+				<div id="geneditcommandlist" class="datahide">
+					<h4>Commands</h4>
+					<p>
+					<textarea name="geneditcommandlist" rows="6" cols="90"></textarea>
+					</p>
+				</div>
+
+			</form>
+
+			<hr>
+			<!-- Save, cancel, or delete a generic client. -->
+			<p><button class="editconfigbuttons"
+						onclick="GenClientEditEnter();">Change</button>
+			<button class="editconfigbuttons"
+						onclick="GenClientEditCancel();">Cancel</button>
+			<button class="editconfigbuttons"
+						onclick="GenClientEditDelete();">Delete</button>
+			</p>
+	</div>
+</div>
+
+
+
+</div>
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Communications Configuration</p>
+</div>
+
+</div>
+
+
+<!-- This is the code for creating the data in the page. -->
+
+	<script type="text/javascript">
+
+	// Handles displaying page data.
+	var libutils = new libstatutils();
+	var libparams = new LibParamEdit();
+
+
+	// Enable or disable the save button.
+	function DisableSave(disable) {
+		var button = document.getElementById("saveallbutton");
+		if (disable) {
+			button.setAttribute("disabled", "disabled");
+		} else {
+			button.removeAttribute("disabled");
+		}
+	}
+
+	// Make sure the the save button is not disabled on page load.
+	DisableSave(false);
+
+
+	// Display the details for a selected TCP client.
+	function ShowTCPClient(connectionname) {
+		Monitor.ShowTCPClient(connectionname);
+	}
+
+	// Hide the client details.
+	function HideTCPClientDetails() {
+		Monitor.HideTCPClientDetails();
+	}
+
+	// Display the details for a selected generic client.
+	function ShowGenClient(connectionname) {
+		Monitor.ShowGenClient(connectionname);
+	}
+
+	// Hide the client details.
+	function HideGenClientDetails() {
+		Monitor.HideGenClientDetails();
+	}
+
+
+	var Monitor = new ComClientDisplay(libutils, libparams);
+
+	// Handles communications with the server.
+	var host = window.location.hostname;
+	var port = window.location.port;
+	var ServerData = new StatusDataIF(host, port, Monitor);
+
+
+	// Run a single update cycle.
+	function Update() {
+
+		// Get the soft xref data and display it.
+		ServerData.SendGetRequest("/statdata/commclientcurrentconfig.js");
+
+	}
+
+	// Start up and initialisation.
+	function pageinit() {
+		// Start, after a short delay. 
+		window.setTimeout("Update()", 500);
+	}
+
+
+	// ========================================================
+
+	// Set the default page mode to "view" (not edit).
+	document.forms.editmode.mode[0].checked = true;
+
+	// Display or hide the editing widgets.
+	function EditButtonMode() {
+
+		var editwidgetlist = ["savedata", "tcpclienttable", "gentable", 
+									"tcpclientrecordadd", "genclientrecordadd"]; 
+		var tablelist = ["tcpclienttable", "gentable"];
+
+		if (Monitor.EditMode()) {
+			for (var i in editwidgetlist) {
+				libutils.ShowPageArea(editwidgetlist[i]);
+			}
+
+			// Change the table style to show it can be edited.
+			libutils.SetTableListToEditEffects(tablelist);
+		} else {
+			for (var i in editwidgetlist) {
+				libutils.HidePageArea(editwidgetlist[i]);
+			}
+
+			// Change the table style back to normal view mode.
+			libutils.SetTableListToNormalEffects(tablelist);
+
+		}
+	}
+
+	// ========================================================
+
+	// Set the default TCP client edit mode to "connection".
+	// This controls what parts of the editing form are visible.
+	document.forms.tcpclientparams.editmode[0].checked = true;
+
+	// Display or hide the TCP client form sections.
+	function TCPEditMode() {
+
+		var showlist = [];
+		var hidelist = [];
+
+		// "connection"
+		if (document.forms.tcpclientparams.editmode[0].checked) {
+			var showlist = ["tcpeditconnections"];
+			var hidelist = ["tcpeditpolling", "tcpeditfaultaddr", "tcpeditcommands", 
+				"tcpcmdeditbuttons", "tcpaddcommands", "tcpcmdenterbuttons"];
+		}
+
+		// "polling"
+		if (document.forms.tcpclientparams.editmode[1].checked) {
+			var showlist = ["tcpeditpolling"];
+			var hidelist = ["tcpeditconnections", "tcpeditfaultaddr", "tcpeditcommands", 
+				"tcpcmdeditbuttons", "tcpaddcommands", "tcpcmdenterbuttons"];
+		}
+
+		// "faults"
+		if (document.forms.tcpclientparams.editmode[2].checked) {
+			var showlist = ["tcpeditfaultaddr"];
+			var hidelist = ["tcpeditconnections", "tcpeditpolling", "tcpeditcommands", 
+				"tcpcmdeditbuttons", "tcpaddcommands", "tcpcmdenterbuttons"];
+		}
+
+		// "tcpeditcommands"
+		if (document.forms.tcpclientparams.editmode[3].checked) {
+			var showlist = ["tcpeditcommands", "tcpcmdeditbuttons"];
+			var hidelist = ["tcpeditconnections", "tcpeditpolling", "tcpeditfaultaddr", 
+					"tcpaddcommands", "tcpcmdenterbuttons"];
+		}
+
+		// Show or hide the relevant items.
+		for (var i in showlist) {
+			libutils.ShowPageArea(showlist[i]);
+		}
+
+		for (var i in hidelist) {
+			libutils.HidePageArea(hidelist[i]);
+		}
+
+
+		// Check if the various page options are correct, and set the option title 
+		// colour accordingly. We don't need to do anything with the result of 
+		// this, we just need to trigger the form checks again. 
+		Monitor.TCPClientConnectionOptionsCheck();
+		Monitor.TCPClientPollingOptionsCheck();
+		Monitor.TCPClientFaultOptionsCheck();
+		Monitor.TCPClientCommandOptionsCheck();
+
+
+	}
+	// ========================================================
+
+	// Interlock editing to one at a time.
+	var CurrentEdit = "none";
+
+	// ========================================================
+
+	// Display the TCP client edit fields.
+	function TCPClientEdit(tagname) {
+		// If not in edit mode, do not edit.
+		if (!Monitor.EditMode() || CurrentEdit != "none") { return; }
+		CurrentEdit = "tcpclient"; 
+
+		libutils.ShowPageArea("tcpclientparams");
+
+		// Disable the save button.
+		DisableSave(true);
+
+		// Show the first edit section.
+		document.forms.tcpclientparams.editmode[0].checked = true;
+		TCPEditMode();
+		Monitor.InitTCPClientEdit(tagname);
+	}
+
+	// Cancel TCP client editing by hiding the edit fields.
+	function TCPClientEditCancel() {
+		CurrentEdit = "none"; 
+		libutils.HidePageArea("tcpclientparams");
+		// Enable the save button.
+		DisableSave(false);
+	}
+
+	// Enter the TCP client editing information.
+	function TCPClientEditEnter() {
+		if (Monitor.TCPClientEditEnter()) {
+			CurrentEdit = "none"; 
+			libutils.HidePageArea("tcpclientparams");
+			// Enable the save button.
+			DisableSave(false);
+		}
+	}
+
+	// Delete the selected TCP client information.
+	function TCPClientEditDelete() {
+		Monitor.TCPClientEditDelete();
+		CurrentEdit = "none"; 
+		libutils.HidePageArea("tcpclientparams");
+		// Enable the save button.
+		DisableSave(false);
+	}
+
+
+	// Add a new record.
+	function TCPClientEditAdd() {
+		TCPClientEdit("");
+	}
+
+	// ========================================================
+
+	// Display the add command dialogs.
+	function TCPClientCmdShow() {
+		libutils.HidePageArea("tcpeditcommands");
+		libutils.HidePageArea("tcpcmdeditbuttons");
+
+		libutils.ShowPageArea("tcpaddcommands");
+		libutils.ShowPageArea("tcpcmdenterbuttons");
+	}
+
+
+	// Add a new TCP client command. 
+	function TCPClientCmdAdd() {
+		// Add the new command.
+		Monitor.TCPClientCmdAdd();
+		// Show the appropriate widgets.
+		TCPEditMode();
+	}
+
+	// Cancel adding a command the add command dialogs.
+	function TCPClientCmdCancel() {
+		libutils.ShowPageArea("tcpeditcommands");
+		libutils.ShowPageArea("tcpcmdeditbuttons");
+
+		libutils.HidePageArea("tcpaddcommands");
+		libutils.HidePageArea("tcpcmdenterbuttons");
+	}
+
+
+	// ========================================================
+
+
+	// Set the default generic client edit mode to "connection".
+	// This controls what parts of the editing form are visible.
+	document.forms.genclientparams.editmode[0].checked = true;
+
+	// Display or hide the generic client form sections.
+	function GenEditMode() {
+
+		var formlist = ["geneditconnections", "gendtreadedit", "gendtwriteedit", 
+			"geneditfaultaddr", "geneditclientparams", "geneditcommandlist"];
+
+		for (var i in formlist) {
+			if (document.forms.genclientparams.editmode[i].checked) {
+				libutils.ShowPageArea(formlist[i]);
+			} else {
+				libutils.HidePageArea(formlist[i]);
+			}
+		}
+
+		// Check if the various page options are correct, and set the option title 
+		// colour accordingly. We don't need to do anything with the result of 
+		// this, we just need to trigger the form checks again. 
+		Monitor.GenClientStartOptionsCheck();
+		Monitor.GenClientDTReadOptionsCheck();
+		Monitor.GenClientDTWriteOptionsCheck();
+		Monitor.GenClientFaultOptionsCheck();
+
+	}
+
+
+
+	// Display the generic client edit fields.
+	function GenClientEdit(tagname) {
+		// If not in edit mode, do not edit.
+		if (!Monitor.EditMode() || CurrentEdit != "none") { return; }
+		CurrentEdit = "genclient"; 
+
+		libutils.ShowPageArea("genclientparamseditor");
+
+		// Disable the save button.
+		DisableSave(true);
+
+		// Show the first edit section.
+		document.forms.genclientparams.editmode[0].checked = true;
+		GenEditMode();
+		Monitor.InitGenClientEdit(tagname);
+	}
+
+	// Cancel generic client editing by hiding the edit fields.
+	function GenClientEditCancel() {
+		CurrentEdit = "none"; 
+		libutils.HidePageArea("genclientparamseditor");
+		// Enable the save button.
+		DisableSave(false);
+	}
+
+	// Enter the generic client editing information.
+	function GenClientEditEnter() {
+		if (Monitor.GenClientEditEnter()) {
+			CurrentEdit = "none"; 
+			libutils.HidePageArea("genclientparamseditor");
+			// Enable the save button.
+			DisableSave(false);
+		}
+	}
+
+	// Delete the selected generic client information.
+	function GenClientEditDelete() {
+		Monitor.GenClientEditDelete();
+		CurrentEdit = "none"; 
+		libutils.HidePageArea("genclientparamseditor");
+		// Enable the save button.
+		DisableSave(false);
+	}
+
+
+	// Add a new record.
+	function GenClientEditAdd() {
+		GenClientEdit("");
+	}
+
+
+	// ========================================================
+	// Close any open error message displays.
+	function CloseErrors() {
+		libutils.HidePageArea("serversaveerror");
+		libutils.HidePageArea("saveerrors");
+	}
+
+	// Set a dialog screen mask to the actual window size.
+	function ResizeMask(maskid) {
+		var datadisplay = document.getElementById("datadisplay");
+		var screenmask = document.getElementById(maskid);
+		screenmask.style.width = datadisplay.clientWidth + "px";
+		screenmask.style.height = datadisplay.clientHeight + "px";
+	}
+
+	// Save the configuration to the server.
+	function SaveData() {
+		// Close (hide) the error displays if they are visible.
+		CloseErrors();
+		// Resize the dialog mask to the current window size.
+		ResizeMask("screenmask");
+
+		// Show the progress message.
+		libutils.ShowPageArea("saverequestshow");
+		// Hide the save button.
+		libutils.HidePageArea("savedata");
+
+		var savedata = Monitor.FormatSaveRequest();
+		var savecmd = new StatusDataSend(host, port, EditSaveResult);
+		savecmd.SendPostRequest("/statdata/commclientcurrentconfig.js", savedata);
+	}
+
+	// This is the response from the server for the save command.
+	function EditSaveResult(responseobj) {
+		// Hide the progress message, after a short delay. 
+		window.setTimeout("HideSaveProgress();", 1500);
+
+		// Check to see if there were any errors.
+		Monitor.EditSaveResult(responseobj);
+	}
+
+	// Hide the progress message.
+	function HideSaveProgress() {
+		libutils.HidePageArea("saverequestshow");
+		// Redisplay the save button.
+		libutils.ShowPageArea("savedata");
+	}
+
+
+	// ========================================================
+
+	</script>
+
+
+</body>
+
+</html>
+
+
+<!-- Copyright 2008 - 2010. Michael Griffin 
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License 
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>. 
+-->

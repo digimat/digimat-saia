@@ -1,0 +1,392 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<link rel="icon" type="image/png" href="/systemicon.png" >
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/statuspagelayout.css" type="text/css">
+
+<!-- This controls the page display. -->
+<script type="text/javascript" src="/statuspages/libstatuscontrol.js"></script>
+<script type="text/javascript" src="/statuspages/libdatamulti.js"></script>
+<script type="text/javascript" src="/statuspages/libdatapost.js"></script>
+<script type="text/javascript" src="/statuspages/libstatutils.js"></script>
+<script type="text/javascript" src="/statuspages/libtexts_en.js"></script>
+
+<!-- Native JSON doesn't seem to be working in Opera 10.10. -->
+<script type="text/javascript" src="/statuspages/json2.js"></script>
+
+
+<title>System Control</title>
+
+</head>
+
+<body onload="pageinit();">
+
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo">
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<div id="datadisplay">
+
+	<!-- This acts as a floating overlay mask which becomes visible as a
+		shutdown confirmation dialog.  -->
+	<div id="shutdownconfirm" class="datahide">
+		<div id="shutdownconfirmmask" class="shutdownmask" style="position:absolute;">
+		</div>
+		<div class="shutdownbuttonback" style="position:absolute;
+						width:375px;height:150px;left:300px;top:350px;">
+			<p>Are you sure you want to shut down the complete control system?
+			</p>
+			<div class="shutdownbuttonpad">
+				<button class="shutdownbuttons" onclick="CancelShutdown();">Cancel</button>
+				<button class="shutdownbuttons" onclick="ShutdownSystem();">Shut Down</button>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Acknowledge shutdown.  -->
+	<div id="shutdownreply" class="datahide">
+		<div id="shutdownreplymask" class="shutdownmask" style="position:absolute;">
+		</div>
+		<div class="shutdownbuttonback" style="position:absolute;
+						width:375px;height:150px;left:300px;top:350px;">
+			<p>Shutting down ...
+			<img src="/spinner.gif" width="64" alt="spinner">
+			</p>
+		</div>
+	</div>
+
+	<!-- This acts as a floating overlay mask which becomes visible as a
+		restart confirmation dialog.  -->
+	<div id="restartconfirm" class="datahide">
+		<div id="restartconfirmmask" class="shutdownmask" style="position:absolute;">
+		</div>
+		<div class="shutdownbuttonback" style="position:absolute;
+						width:375px;height:150px;left:300px;top:350px;">
+			<p>Are you sure you want to restart the complete control system?
+			</p>
+			<div class="shutdownbuttonpad">
+				<button class="shutdownbuttons" onclick="CancelRestart();">Cancel</button>
+				<button class="shutdownbuttons" onclick="RestartSystem();">Restart</button>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Acknowledge restart.  -->
+	<div id="restartreply" class="datahide">
+		<div id="restartreplymask" class="shutdownmask" style="position:absolute;">
+		</div>
+		<div class="shutdownbuttonback" style="position:absolute;
+						width:375px;height:150px;left:300px;top:350px;">
+			<p>Restarting ...
+			<img src="/spinner.gif" width="64" alt="spinner">
+			</p>
+		</div>
+	</div>
+
+	<hr>
+
+	
+	<h1>Control</h1>
+
+	<hr>
+	
+
+	<p>Reload a configuration while the system is running. Any errors will be
+	automatically displayed below.
+	</p>
+	
+	<form name="softlogiccontrol" id="softlogiccontrol" 
+		action="statuscontrol.html" method="post"> 
+	
+		<table class="displaytable"  border="1">
+	 	<tr><th>System</th><th>Status</th><th>Select</th></tr>
+
+		<tr> 
+			<td class="t1"><b>Communications</b></td>  
+			<td id="commerrors"></td> 
+			<td class="t1"></td>
+		</tr>
+	
+		<tr> 
+			<td class="t2"><b>HMI</b></td>  
+			<td id="hmiconfigerrorstat"></td> 
+			<td class="t2"><input type="checkbox" name="reloadhmiconfig" 
+					value="reloadhmiconfig" ></td> 
+		</tr>
+
+		<tr> 
+			<td class="t1"><b>Soft Logic IO</b></td>  
+			<td id="ioconfigerrorstat"></td> 
+			<td class="t1"><input type="checkbox" name="reloadplcioconfig" 
+					value="reloadplcioconfig" ></td>
+		</tr>
+
+		<tr> 
+			<td class="t2"><b>Soft Logic</b></td>  
+			<td id="plcconfigerrorstat"></td>
+			<td class="t2">
+					<input type="checkbox" name="reloadplcprog" 
+						value="reloadplcprog" >
+			</td> 
+		</tr>
+	
+		</table>
+	
+		<p>
+			<input type="submit" name="submit" value="Reload File" > 
+		</p>
+	
+	</form>
+
+	<!-- This will force a manual page update. -->
+	<p>
+		<button class="controlbuttons" onclick="RefreshData();">Refresh Page</button>
+	</p> 
+
+	<hr>
+	<!-- ============================================================  -->
+
+
+	<p>Restart or shutdown the control system.
+	</p>
+	<!-- This will request a system restart or shutdown. -->
+	<p>
+		<button class="controlbuttons" onclick="SystemRestart();">Restart System</button>
+		<button class="controlbuttons" onclick="SystemShutdown();">Shutdown System</button>
+	</p> 
+
+	<!-- ============================================================  -->
+
+
+		<!-- These display the error messages (if any). -->
+
+		<div id="commerrordisplay" class="datahide">
+			<h3>Communications Errors:</h3>
+			<table id="commerrortable" class="errortable"  border="1">
+			</table>
+			<hr>
+		</div>
+
+		<div id="hmierrordisplay" class="datahide">
+			<h3>HMI Errors:</h3>
+			<table id="hmierrortable" class="errortable"  border="1">
+			</table>
+			<hr>
+		</div>
+
+		<div id="ioerrordisplay" class="datahide">
+			<h3>Soft Logic IO Errors:</h3>
+			<table id="ioerrortable" class="errortable"  border="1">
+			</table>
+			<hr>
+		</div>
+
+		<div id="plcerrordisplay" class="datahide">
+			<h3>Soft Logic Program Errors:</h3>
+			<table id="plcerrortable" class="errortable"  border="1">
+			</table>
+			<hr>
+		</div>
+
+	<!-- ============================================================  -->
+
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>System Control</p>
+</div>
+
+</div>
+
+<!-- This is the code for creating the data in the page. -->
+
+	<script type="text/javascript">
+
+
+	// These take care of updating the screen.
+	var libutils = new libstatutils();
+	var CallBackList = [];
+	CallBackList[0] = new SysCommControlStat(libutils, TextDefsGeneralStat);
+	CallBackList[1] = new SysControlStat(libutils, TextDefsGeneralStat, 
+			"configerrors", "hmiconfigerrorstat", "hmierrortable", "hmierrordisplay");
+	CallBackList[2] = new SysControlStat(libutils, TextDefsGeneralStat, 
+			"configerrors", "ioconfigerrorstat", "ioerrortable", "ioerrordisplay");
+	CallBackList[3] = new SysControlStat(libutils, TextDefsGeneralStat, 
+			"plccompilemsg", "plcconfigerrorstat", "plcerrortable", "plcerrordisplay");
+
+
+	var URLList = ["/statdata/commconfigerrors.js",
+						"/statdata/hminewconfig.js", 
+						"/statdata/ionewconfig.js", 
+						"/statdata/plcnewconfig.js"];
+
+
+	// Handles communications with the server.
+	var host = window.location.hostname;
+	var port = window.location.port;
+	var ServerData = new StatusDataIFMulti(host, port, URLList, CallBackList); 
+
+	// Run a single update cycle.
+	function Update() {
+
+		// Get the soft xref data and display it.
+		ServerData.SendGetRequest();
+
+	}
+
+	// Start up and initialisation.
+	function pageinit() {
+		// Start, after a short delay. 
+		window.setTimeout("Update();", 200);
+	}
+
+	// Refresh the page data.
+	function RefreshData() {
+		Update();
+	}
+
+
+	// Set a dialog screen mask to the actual window size.
+	function ResizeMask(maskid) {
+		var datadisplay = document.getElementById("datadisplay");
+		var screenmask = document.getElementById(maskid);
+		screenmask.style.width = datadisplay.clientWidth + "px";
+		screenmask.style.height = datadisplay.clientHeight + "px";
+	}
+
+
+	// ===============================================================
+
+	// Shut down the complete system.
+	function SystemShutdown() {
+		// Resize the dialog masks to the current window size.
+		ResizeMask("shutdownconfirmmask");
+		ResizeMask("shutdownreplymask");
+
+		// Display the shut down question.
+		libutils.ShowPageArea("shutdownconfirm");
+	}
+
+	// Cancel a shut down request.
+	function CancelShutdown() {
+		libutils.HidePageArea("shutdownconfirm");
+	}
+
+
+	// Shut down the complete system.
+	function ShutdownSystem() {
+		libutils.HidePageArea("shutdownconfirm");
+
+		libutils.ShowPageArea("shutdownreply");
+
+		var shutcmd = new StatusDataSend(host, port, ShutDownAccepted);
+		shutcmd.SendPostRequest("/statdata/syscontrol.js", {"mblogicsyscmd" : "shutdown"});
+
+		// Start, after a short delay. 
+		window.setTimeout("ShutdownAckDone();", 5000);
+	}
+
+	// Clear the shutdown acknowledge message after a time delay.
+	function ShutdownAckDone() {
+		libutils.HidePageArea("shutdownreply");
+	}
+
+	// This is the response from the server for the shutdown command.
+	function ShutDownAccepted(responseobj) {
+		// We aren't doing anything with the data at this time.
+	}
+
+	// ===============================================================
+
+
+	// Restart down the complete system.
+	function SystemRestart() {
+		// Resize the dialog masks to the current window size.
+		ResizeMask("restartconfirmmask");
+		ResizeMask("restartreplymask");
+
+		// Display the restart question.
+		libutils.ShowPageArea("restartconfirm");
+	}
+
+	// Cancel a restart request.
+	function CancelRestart() {
+		libutils.HidePageArea("restartconfirm");
+	}
+
+
+	// Restart the complete system.
+	function RestartSystem() {
+		libutils.HidePageArea("restartconfirm");
+
+		libutils.ShowPageArea("restartreply");
+
+		var restartcmd = new StatusDataSend(host, port, RestartAccepted);
+		restartcmd.SendPostRequest("/statdata/syscontrol.js", {"mblogicsyscmd" : "restart"});
+
+		// Start, after a short delay. 
+		window.setTimeout("RestartAckDone();", 7000);
+	}
+
+	// Clear the restart acknowledge message after a time delay.
+	function RestartAckDone() {
+		libutils.HidePageArea("restartreply");
+	}
+
+	// This is the response from the server for the reestart command.
+	function RestartAccepted(responseobj) {
+		// We aren't doing anything with the data at this time.
+	}
+
+	// ===============================================================
+
+	</script>
+
+
+</body>
+
+</html>
+
+<!-- Copyright 2008 - 2010. Michael Griffin 
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License 
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>. 
+-->
+

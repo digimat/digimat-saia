@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.0"
+   xmlns:mblogic="http://www.example.com/mblogic"
+   width="55"
+   height="55">
+
+<defs>
+	<!-- Silver Gradients. -->
+	<linearGradient id="MB_SilverGradient" x1="1" y1="1" x2="0" y2="0">
+		<stop offset="50%" stop-color="silver" />
+		<stop offset="100%" stop-color="white" />
+	</linearGradient>
+
+	<!-- The following filter is used to add a drop shadown. -->
+	<filter id="MB_DropShadowFilter">
+		<feGaussianBlur stdDeviation="2">
+		</feGaussianBlur>
+	</filter>
+</defs>
+
+<!-- This is a selector switch with a grey actuator. -->
+<g mblogic:widgettype="ss3short" 
+	mblogic:widgetname="3 Pos SS"
+	mblogic:editcount="0"
+	mblogic:menu='[{"type":"tag", "name":"Input Tag", "param":"inputtag", "value":""}, {"type":"tag", "name":"Switch Tag", "param":"switchtag", "value":""}]'
+	mblogic:inputfunc='[{"event": "onclick", "func": "MBHMIProtocol.WriteImmediate(\"%(inputtag)s\", 0);"}]'
+	mblogic:outputfunc='MBHMIProtocol.AddToDisplayList(new MB_3PosSSDisplay(document, "%(widgetid)s", -60, 0, 60), "%(switchtag)s", "read");'
+	>
+
+	<!-- This is a decorative nut. -->
+	<polygon transform="translate(5,5)" fill="grey" stroke="none" filter="url(#MB_DropShadowFilter)"
+		points="18,-45 -18,-45 -45,-18 -45,18 -18,45 18,45 45,18 45,-18 18,-45" />
+	<polygon  fill="url(#MB_SilverGradient)" stroke="none"
+		points="18,-45 -18,-45 -45,-18 -45,18 -18,45 18,45 45,18 45,-18 18,-45" />
+	
+	<g class="buttonactivate" >
+		<!-- This forms the circular rotating inner area of the switch. -->
+		<circle cx="0px" cy="0px" r="35px" fill="olive" stroke="olive" stroke-width="5px"/>
+	
+		<!-- This is the rotating actuator. -->
+		<rect x="-8" y="-33" width="16" height="66" rx="5" fill="grey" stroke-width="2px"/>
+		<polygon fill="white" points="0,-30 -5,-20 5,-20 0,-30" />
+
+	</g>
+	
+</g>
+
+</svg>

@@ -1,0 +1,246 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+	<title>Help - Push Button and Selector Switch Masks</title>
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Edit SVG</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Inkscape</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">Templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assemble Page</a></li>
+		</ul>
+	</div>
+
+
+
+
+<hr>
+
+	<!-- Put main content here -->
+
+<div class="datadisplay">
+
+
+<h1>Push Button and Selector Switch Masks</h1>
+
+<p>Push button and selector switch masks are used to enable or disable push
+buttons and selector switches. The masks are simply a semi-transparent 
+rectangle which covers the button (or selector switch assembly). To enable
+the push button, the mask is "hidden" (using a Javascript call). To disable
+the push button, the mask is "shown", where it covers the button and prevents
+it from being activated. 
+</p>
+
+<p>Because the mask is not completely opaque, the push button is still visible
+beneath it. The overall effect is the same as "greying out" a button.
+</p>
+
+
+<p>Mask is hidden (enabling the button).
+<img src="pbexposed.png" width="100" alt="clip-art">
+</p>
+
+<p>Mask is shown (disabling the button).
+<img src="pbmasked.png" width="110" alt="clip-art">
+</p>
+
+<hr>
+
+
+<h2>Push Button Masks</h2>
+
+
+<p>Push button masks cover the push button. 
+</p>
+
+
+<table class="helptable" border="1">
+<tr>
+	<th></th>
+	<th>Type</th>
+	<th>Name</th>
+	<th>Description</th>
+	<th>HMIBuilder Name</th>
+</tr>
+
+<tr>
+	<td><img src="pbmask_oblong.png" width="100" alt="clip-art">
+	</td>
+	<td>Push button mask.
+	</td>
+	<td>pbmask_oblong
+	</td>
+	<td>Button mask for oblong push buttons.
+	</td>
+	<td>Push Button Mask
+	</td>
+</tr>
+
+<tr>
+	<td><img src="pbmask_rectangular.png" width="100" alt="clip-art">
+	</td>
+	<td>Push button mask.
+	</td>
+	<td>pbmask_rectangular
+	</td>
+	<td>Button mask for rectangular push buttons.
+	</td>
+	<td>Push Button Mask
+	</td>
+</tr>
+
+<tr>
+	<td><img src="pbmask_square.png" width="100" alt="clip-art">
+	</td>
+	<td>Push button mask.
+	</td>
+	<td>pbmask_square
+	</td>
+	<td>Button mask for square push buttons.
+	</td>
+	<td>Push Button Mask
+	</td>
+</tr>
+
+<tr>
+	<td><img src="pbmask_tridown.png" width="100" alt="clip-art">
+	</td>
+	<td>Push button mask.
+	</td>
+	<td>pbmask_tridown
+	</td>
+	<td>Button mask for triangular (down) push buttons.
+	</td>
+	<td>Push Button Mask
+	</td>
+</tr>
+
+<tr>
+	<td><img src="pbmask_triup.png" width="100" alt="clip-art">
+	</td>
+	<td>Push button mask.
+	</td>
+	<td>pbmask_triup
+	</td>
+	<td>Button mask for triangular (up) push buttons.
+	</td>
+	<td>Push Button Mask
+	</td>
+</tr>
+
+</table>
+
+
+
+<hr>
+
+
+<h2>Selector Switch Masks</h2>
+
+<p>Selector switch masks cover the operator and the selector switch labels 
+(push buttons). 
+</p>
+
+
+<table class="helptable" border="1">
+<tr>
+	<th></th>
+	<th>Type</th>
+	<th>Name</th>
+	<th>Description</th>
+	<th>HMIBuilder Name</th>
+</tr>
+
+<tr>
+	<td><img src="ssmask.png" width="100" alt="clip-art">
+	</td>
+	<td>Selector switch mask.
+	</td>
+	<td>ssmask
+	</td>
+	<td>Button mask for selector switches.
+	</td>
+	<td>Push Button Mask
+	</td>
+</tr>
+
+</table>
+
+
+
+<hr>
+
+<h3>HMIBuilder Parameters</h3>
+
+<table class="helptable" border="1">
+<tr>
+	<th>Parameter</th>
+	<th>Type</th>
+	<th>Values</th>
+</tr>
+
+<tr>
+	<td>Output Tag
+	</td>
+	<td>List box
+	</td>
+	<td>Address tags.
+	</td>
+</tr>
+
+</table>
+
+<hr>
+
+	</div>
+
+	<!-- Standard footer -->
+	<div id="footer">
+		<p>MB-HMI</p>
+	</div>
+
+</div>
+
+
+</body>
+</html>
+
+
+<!-- Copyright 2008 - 2011. Michael Griffin -->
+<!-- This file is part of MBLogic. -->
+<!-- MBLogic is free software: you can redistribute it and/or modify -->
+<!-- it under the terms of the GNU General Public License as published by -->
+<!-- the Free Software Foundation, either version 3 of the License, or -->
+<!-- (at your option) any later version. -->
+<!-- MBLogic is distributed in the hope that it will be useful, -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the -->
+<!-- GNU General Public License for more details. -->
+<!-- You should have received a copy of the GNU General Public License -->
+<!-- along with MBLogic. If not, see <http://www.gnu.org/licenses/>. -->
+

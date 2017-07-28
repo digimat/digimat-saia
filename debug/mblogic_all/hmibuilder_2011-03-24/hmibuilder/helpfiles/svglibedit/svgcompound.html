@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+	<title>Help - HMI - Compound Objects</title>
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Edit SVG</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Inkscape</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">Templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assemble Page</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Editing SVG with Inkscape</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Using the SVG Library with Inkscape</a></li>
+			<li><a href="/customwidgets/customwidgets.html">Custom Widgets</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">HMI web templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assembling web pages</a></li>
+			<li><a href="/hmilib/hmilib.html">HMI Javascript Client Libraries</a></li>
+			<li><a href="/basicconcepts/basicconcepts.html">Basic Concepts</a></li>
+			<li><a href="/manualpage/manualpage.html">Manual HMI Web Page Construction</a></li>
+		</ul>
+
+		<h3>Using the SVG Library with Inkscape</h3>
+		<ul>
+			<li><a href="/svglibedit/svgboilerplate.html">Standard Boilerplate</a></li>
+			<li><a href="/svglibedit/svglayermenus.html">SVG Layer Menus</a></li>
+			<li><a href="/svglibedit/svgbackgroundart.html">Background Clip-Art</a></li>
+			<li><a href="/svglibedit/svginputsimple.html">Simple Input Devices</a></li>
+			<li><a href="/svglibedit/svgiocombined.html">Combined IO Devices</a></li>
+			<li><a href="/svglibedit/svgoutputsimple.html">Simple Output Objects</a></li>
+			<li><a href="/svglibedit/svgoutputrotate.html">Rotating Output Objects</a></li>
+			<li><a href="/svglibedit/svgoutputcolumn.html">Column Level Output Objects</a></li>
+			<li><a href="/svglibedit/svgpipes.html">Pipes, Ducts, and Conveyors</a></li>
+			<li><a href="/svglibedit/svgcharts.html">Charts</a></li>
+			<li><a href="/svglibedit/svgcompound.html">Compound Objects</a></li>
+		</ul>
+
+	</div>
+
+
+
+	<!-- Put main content here -->
+	<div id="datadisplay">
+
+
+
+<h1>Compound Objects</h1>
+
+
+<p>Compound Objects are constructed of multiple simple objects. 
+</p>
+
+<hr>
+
+<h2>Numeric Keypads</h2>
+
+
+<p>Numeric keypads can be used to enter numeric values. A numeric keypad is a 
+compound object that consists of a number of push buttons and a numeric
+display. 
+</p>
+
+<p>A numeric keypad operates like a calculator. The numeric keys append digits to
+the numeric display. When the decimal point '.' key is pressed, subsequent 
+digits are appended to the right of the decimal. The sign key '-' toggles the
+sign. The clear key 'CLR' resets the accumulated number.
+</p>
+
+<p><img src="numeric_pad2.png" width="150" alt="numeric keypad">
+</p>
+
+<p>A separate "store" button must be added to write the actual keypad
+contents to the HMI server. Store keys come in integer and floating point 
+versions, depending on the numeric type desired.
+</p>
+
+<p><img src="ObjectsKeypadStore.png" width="100" alt="numeric keypad store">
+</p>
+
+<ol>
+	<li>Drag a numeric keypad onto the drawing.</li>
+	<li>Drag a store key onto the drawing.</li>
+	<li>Select the store key.</li>
+	<li>Set the "id" property.</li>
+</ol>
+
+<p>Since numeric keypads depend on having a specific name, you can have
+<strong>one</strong> standard keypad per HMI web page. If you need more than
+one keypad you will need to customise the numeric keypad to use a different
+name (copy the SVG file and change the embedded Javascript names).  
+</p>
+
+<p>You can however use the same keypad to provide input to different server 
+tags by simply using different store keys. You can use as many store keys 
+as you wish, but they will all derive their data from the same keypad (unless
+you modify them appropriately).   
+</p>
+
+
+<hr>
+
+<h2>Numeric Increment/Decrement</h2>
+
+
+<p>Numeric increment/decrement objects allow numeric values to be altered by 
+incrementing or decrementing them. A numeric increment/decrement object
+simply consists of a numeric display box with push buttons. The push buttons
+increment or decrement the value.
+</p>
+
+<p><img src="ObjectsNumericIncDec.png" width="150" alt="numeric increment/decrement">
+</p>
+
+<ol>
+<li>Drag a numeric display box onto the drawing. Boxes with a wide rims are
+   provided for this purpose.
+</li>
+<li>Add numeric digits (see the section on text and numbers for details). Set
+   the "id" property appropriately.
+</li>
+<li>Drag increment and decrement push buttons onto the drawing and position them
+   in suitable locations.  Set the "id" properties appropriately.
+</li>
+</ol>
+
+<hr>
+
+
+	</div>
+
+	<!-- Standard footer -->
+	<div id="footer">
+		<p>MB-HMI</p>
+	</div>
+
+</div>
+
+
+</body>
+</html>
+
+
+<!-- Copyright 2008 - 2011. Michael Griffin -->
+<!-- This file is part of MBLogic. -->
+<!-- MBLogic is free software: you can redistribute it and/or modify -->
+<!-- it under the terms of the GNU General Public License as published by -->
+<!-- the Free Software Foundation, either version 3 of the License, or -->
+<!-- (at your option) any later version. -->
+<!-- MBLogic is distributed in the hope that it will be useful, -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the -->
+<!-- GNU General Public License for more details. -->
+<!-- You should have received a copy of the GNU General Public License -->
+<!-- along with MBLogic. If not, see <http://www.gnu.org/licenses/>. -->
+

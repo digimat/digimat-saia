@@ -1,0 +1,525 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - ERP Protocol</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Communications</h3>
+		<ul>
+			<li><a href="serverconfig-en.html">Server Communications Configuration</a></li>
+			<li><a href="clienconfig-en.html">Client Communications Configuration</a></li>
+			<li><a href="genericclientsprotocols.html">Generic Client Protocols</a></li>
+			<li><a href="ComsFaults-en.html">Communications Faults</a></li>
+			<li><a href="ComsMonitor-en.html">Communications Monitoring and Trouble 
+				Shooting</a></li>
+			<li><a href="ComsExpRegs-en.html">Expanded Register Map</a></li>
+			<li><a href="ModbusSupport-en.html">Modbus/TCP Server and 
+				Client Protocol</a></li>
+			<li><a href="MBRest-en.html">MB-REST Web Service Protocol</a></li>
+			<li><a href="hmiprotocol-en.html">HMI Protocol</a></li>
+			<li><a href="genericclients.html">Generic Clients</a></li>
+			<li><a href="genframework.html">Generic Client Framework</a></li>
+			<li><a href="genuserprotocol.html">Generic Client User Protocols</a></li>
+			<li><a href="ModbusBasics-en.html">Modbus/TCP Basics</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>Help - ERP Protocol</h1>
+
+<hr>
+
+<h2>Overview:</h2> 
+
+<p>The ERP protocol is a subset of the HMI protocol which is intended to allow
+access for ERP/MRP (Enterprise/Manufacturing Resource Planning) applications. 
+This protocol uses the same configuration as the conventional HMI protocol, but
+limits the available features, and also allows the number of tags and the type
+of access (read or write).
+</p>
+
+<p>Like the HMI server, the ERP server can automatically convert types, perform
+scaling, and enforce data ranges. 
+</p>
+
+<hr>
+
+<h2>Web Service Protocols</h2>
+
+<p>The ERP protocol is a type of "web service protocol". A web service protocol
+operates over HTTP like a web page, but transfers machine readable data rather 
+than a simple web page. 
+</p>
+
+<hr>
+
+<h2>Basic Message Format</h2>
+
+<p>The ERP Protocol uses a subset of the HMI protocol using JSON over HTTP.
+JSON is a standard encoding of data for web services based on "keys" and 
+"values".
+</p>
+
+<pre class="examples">
+
+	{"key1":123, "somekey":"value", "arrayexample":[1, 2, 3]}
+
+</pre>
+
+<h3>Basic Message Request Format</h3>
+
+<p>The basic message format consists of the following:
+</p>
+
+<ul>
+	<li><strong>id</strong> - This is a client ID string which is used to 
+		identify the client. The contents can be any string.</li>
+	<li><strong>msgid</strong> - This is a sequential integer which is used by
+		the client to track requests and responses. The server will echo this
+		number back.</li>
+</ul>
+
+
+<pre class="examples">
+
+	{
+	"id":"ERP Client 123.",
+	"msgid":456,
+	}
+
+</pre>
+
+<h3>Basic Message Response Format</h3>
+
+<p>The basic response format contains the following:
+</p>
+
+<ul>
+	<li><strong>id</strong> - This is the server ID string which as defined in
+		the HMI configuration.</li>
+	<li><strong>msgid</strong> - This is an echo of the msgid value sent by the
+		client.</li>
+	<li><strong>stat</strong> - This is a string representing a status or error
+		code.</li>
+</ul>
+
+<pre class="examples">
+
+	{
+	"id": "HMIServer demo server",
+	"msgid": 456,
+	"stat": "ok",
+	}
+
+</pre>
+
+<h3>Status Codes</h3>
+
+
+<ul>
+	<li><strong>unauthorized</strong> - The client is not authorized to 
+		communicate with the server.</li>
+	<li><strong>protocolerror</strong> - An error was encountered in the 
+		protocol and it could not be accepted. The entire message was discarded 
+		by the server.</li>
+	<li><strong>commanderror</strong> - A request command field provided 
+		incorrect or invalid data. Check each possible error response for any 
+		errors. Multiple errors are possible. </li>
+	<li><strong>servererror</strong> - An unspecified error has occurred in the 
+		server which prevents the request from being completed. The error is not 
+		specified in any of the return fields. </li>
+	<li><strong>ok</strong> - No errors.</li>
+</ul>
+
+<hr>
+
+<h2>Read Command</h2>
+
+<p>The <em>read</em> command specifies which address tags should be read. It
+consists of a list of the address tag names which the client wishes to read.
+This command is optional and can be left out if it is not needed.
+</p>
+
+<h3>Request</h3>
+
+<pre class="examples">
+
+	{
+	"id":"ERP Client 123.",
+	"msgid":456,
+	"read" : ["Tank1Level", "WidgetCount"],
+	}
+
+</pre>
+
+<h3>Response</h3>
+
+<pre class="examples">
+
+	{
+	"id": "HMIServer demo server",
+	"msgid": 0,
+	"stat": "ok",
+	"timestamp": 1238156675.0,
+	"read": {"Tank1Level": 9875, "WidgetCount" : 87},
+	}
+
+</pre>
+
+<hr>
+
+<h2>Write Command</h2>
+
+<p>The <em>write</em> command is a group of address tags and values which are 
+to be written to the server.
+</p>
+
+<h3>Request</h3>
+
+<pre class="examples">
+
+	{
+	"id":"ERP Client 123.",
+	"msgid":456,
+	"write" : {"Pump1Speed" : 2250},
+	}
+
+</pre>
+
+<h3>Response</h3>
+
+<pre class="examples">
+
+	{
+	"id":"ERP Client 123.",
+	"msgid":456,
+	}
+
+</pre>
+
+<hr>
+
+<h2>Combined Read/Write</h2>
+
+<p>Reads and writes can be combined in a single transaction.
+</p>
+
+
+<h3>Request</h3>
+
+<pre class="examples">
+
+	{
+	"id":"ERP Client 123.",
+	"msgid":456,
+	"read" : ["Tank1Level", "WidgetCount"],
+	"write" : {"Pump1Speed" : 2250},
+	}
+
+</pre>
+
+<h3>Response</h3>
+
+<pre class="examples">
+
+	{
+	"id": "HMIServer demo server",
+	"msgid": 0,
+	"stat": "ok",
+	"timestamp": 1238156675.0,
+	"read": {"Tank1Level": 9875, "WidgetCount" : 87},
+	}
+
+</pre>
+
+<hr>
+
+<h2>Read and Write Errors</h2>
+
+<p>Read and write errors are reported in the "readerr" and "writeerr" fields
+in the response. The "readerr" and "writeerr" fields are only present in the
+response if there is a corresponding error to report.
+</p>
+
+
+<pre class="examples">
+
+	{
+	"id": "HMIServer demo server",
+	"msgid": 9875,
+	"stat": "commanderror",
+	"timestamp": 1238156675.0,
+	"writeerr": {"PBBad": "tagnotfound"}
+	}
+
+</pre>
+
+<h3>Error codes:</h3>
+
+<ul>
+	<li><strong>accessdenied</strong> - The client does not have authorization 
+		to access this tag.</li>
+	<li><strong>tagnotfound</strong> - The address tag is not recognized by the 
+		server.</li>
+	<li><strong>writeprotected</strong> - An attempt was made to write to an 
+		address which is write protected or otherwise not writable.</li>
+	<li><strong>badtype</strong> - The data value is of an incompatible type 
+		and cannot be converted to the desired type.</li>
+	<li><strong>outofrange</strong> - The data value is out of range. Range 
+		limits may be imposed by the server based on data type or through 
+		configuration limits imposed on a per-tag basis.</li>
+	<li><strong>addresserror</strong> - An error occurred in attempting to map 
+		the tag to the internal server address representation.</li>
+	<li><strong>servererror</strong> - An unspecified error has occurred in the 
+		server which prevents the request from being completed.</li>
+</ul>
+
+<hr>
+
+<h2>Configuration</h2>
+
+<p>The ERP server uses the same tag configuration as the HMI server. However,
+the ERP server has the following limits on it:
+</p>
+
+<ol>
+	<li>It on supports the "read" and "write" commands. None of the other 
+		commands (e.g. alarms, events, etc.) are supported.</li>
+	<li>Only those tags which are specified as being available to the ERP server
+		can be accessed by it.</li>
+	<li>The tags which are configured as being available to the ERP server can
+		be designated as read or write (or both). Tags which are designated as 
+		"read" but are not designated as "write" cannot be written to. </li> 
+	<li>Conversely, tags which are not designated as "read" cannot be read even
+		if they can be written to (marked "write"). A tag is read-write if the
+		ERP configuration lists it as both "read" and "write".    
+		</li>
+	<li>If the underlying memory type is not writable, list a tag as "write"
+		for ERP purposes will not make the tag writable, and you will still
+		receive an error when you attempt to write to it.  
+	</li>
+</ol>
+
+<p>Configuration syntax can be found in the section on HMI configuration, and
+also in the section on using the status web interface for form based 
+configuration.
+</p>
+
+<hr>
+
+<h2>Creating an ERP Client Interface</h2>
+
+<p>To create a custom client interface to the ERP server, you need the following:
+</p>
+
+<ul>
+	<li>A JSON library. These are available for almost all languages and are
+		standard in many.</li>
+	<li>The ability to make an HTTP POST request to a URL. This is also a very
+		common feature for modern programming languages</li>
+</ul>
+
+<p>You then need to do the following:
+</p>
+
+<ol>
+	<li>Find which server "tags", and make any additions or changes to them 
+		which are necessary. This is part of the server HMI configuration.</li>
+	<li>Add the tags to the ERP configuration in the server HMI configuration
+		file. To make the changes active, you may need to reload the server
+		configuration (this can be done while the system is running).</li>
+	<li>Construct the request message and encode it as JSON. You can combine 
+		<em>read</em> and <em>write</em> commands in the same message.</li>
+	<li>Make an HTTP POST request to the server, using the appropriate URL.
+		The server port is configurable. The JSON message should be attached 
+		to the request as content.</li>
+	<li>The server will respond with the data attached as content. </li>
+	<li>Decode the response JSON. </li>
+	<li>Check to see if the response "stat" is "ok". If it is not, an error
+		is present. </li>
+	<li>You may check the "msgid" to see if it matches the version sent in the
+		request.</li>
+	<li>If an error ws present ("stat" was not "ok"), check the "readerr" and 
+		"writeerr" fields for the reason. Errors are normally caused by 
+		attempting to use a tag which does not exist or which is write 
+		protected, or by attempting to write a value which is of an incompatible 
+		type or out of range. The server can be configured to enforce data 
+		ranges on a per-tag basis.</li>
+</ol>
+
+
+<hr>
+
+<h2>Example Client</h2>
+
+<p>The following is an example ERP client written in Python.
+</p>
+
+<pre class="examples">
+
+	#!/usr/bin/python
+	# This shows a basic demo for an ERP client.
+	# This will work with the standard HMI demo.
+	# 29-Dec-2010.
+
+	import json
+	import urllib2
+
+	# This is the data we are going to send to the server.
+	# We need a client id, and a message id. In addition, if we want to 
+	# read data, we need to include a list of the tags we want to read. If we want to
+	# write data, we need to include a dictionary with the tags and values that we
+	# want to write.
+	basicdemo = {
+	  'id' : 'ErpDemo',
+	  'msgid' : 0,
+	  'read' : ['PL1', 'PL4', 'PumpSpeedActual', 'PumpSpeedCmd', 'Tank1Level', 
+	  			'Tank2Number', 'hello', 'ButtonDisPB'],
+	  'write' : {'PB1' : 1, 'PumpSpeedCmd' : -2, 'writebad' : 777, 'SSPPGrip' : 1}
+	}
+
+	# Encode the dictionary into JSON format using the standard Python library.
+	JsonOut = json.dumps(basicdemo)
+
+	# Send the data using POST. 
+	req = urllib2.Request(url = 'http://localhost:8084/', data = JsonOut)
+	f = urllib2.urlopen(req)
+
+	# Read the response.
+	JsonIn = f.read()
+
+	# Convert from JSON into a dictionary. 
+	respdata = json.loads(JsonIn)
+
+	# We will iterate through the 'read' response and show the values that we read.
+	# The dictionary will also contain other data (such as errors) which are not 
+	# showing here. 
+	print('Read response was')
+	readdata = respdata.get('read', {})
+	for tag, value in readdata.items():
+		print('\tTag: %s  Value: %s' % (tag, value))
+
+	# Read errors.
+	readerr = respdata.get('readerr', {})
+	if readerr:
+		print('\nRead errors')
+		for tag, value in readerr.items():
+			print('\tTag: %s  Value: %s' % (tag, value))
+
+	# Write errors.
+	writeerr = respdata.get('writeerr', {})
+	if writeerr:
+		print('\nWrite errors')
+		for tag, value in writeerr.items():
+			print('\tTag: %s  Value: %s' % (tag, value))
+
+
+</pre>
+
+<p>The output from the above is (when used with the standard HMI
+demo configuration):
+</p>
+
+
+<pre class="examples">
+
+	Read response was
+		Tag: PumpSpeedActual  Value: 5
+		Tag: PL4  Value: 0
+		Tag: PumpSpeedCmd  Value: -2
+		Tag: PL1  Value: 1
+		Tag: Tank2Number  Value: 75.0
+		Tag: Tank1Level  Value: 70
+
+	Read errors
+		Tag: ButtonDisPB  Value: accessdenied
+		Tag: hello  Value: tagnotfound
+
+	Write errors
+		Tag: SSPPGrip  Value: accessdenied
+		Tag: writebad  Value: tagnotfound
+
+</pre>
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - ERP Protocol</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2010. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

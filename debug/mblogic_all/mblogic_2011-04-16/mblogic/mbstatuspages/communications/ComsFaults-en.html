@@ -1,0 +1,367 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Communications Errors</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Communications</h3>
+		<ul>
+			<li><a href="serverconfig-en.html">Server Communications Configuration</a></li>
+			<li><a href="clienconfig-en.html">Client Communications Configuration</a></li>
+			<li><a href="genericclientsprotocols.html">Generic Client Protocols</a></li>
+			<li><a href="ComsFaults-en.html">Communications Faults</a></li>
+			<li><a href="ComsMonitor-en.html">Communications Monitoring and Trouble 
+				Shooting</a></li>
+			<li><a href="ComsExpRegs-en.html">Expanded Register Map</a></li>
+			<li><a href="ModbusSupport-en.html">Modbus/TCP Server and 
+				Client Protocol</a></li>
+			<li><a href="MBRest-en.html">MB-REST Web Service Protocol</a></li>
+			<li><a href="hmiprotocol-en.html">HMI Protocol</a></li>
+			<li><a href="genericclients.html">Generic Clients</a></li>
+			<li><a href="genframework.html">Generic Client Framework</a></li>
+			<li><a href="genuserprotocol.html">Generic Client User Protocols</a></li>
+			<li><a href="ModbusBasics-en.html">Modbus/TCP Basics</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>Help - Communications Errors</h1>
+
+<hr>
+
+<h2>Overview</h2> 
+
+<p>Communications errors come in several differnt types: 
+</p>
+
+<ul>
+	<li>Connection errors.</li>
+	<li>Command errors.</li>
+</ul>
+
+<p>Communications errors can be viewed using the "status" web based monitoring
+interface. They are also reported in the system data table where they may be
+accessed by the soft logic program or other systems. 
+</p>
+
+<hr>
+
+<h2>Types of Errors</h2>
+
+
+<h3>Connection Errors</h3> 
+
+<p>Client connection faults are reported in the status monitoring web page and 
+in the data table (more details below). Servers do not initiate connections, so 
+they do not report the inability to create a connection.
+</p>
+
+<p>Connection faults codes are protocol dependent, to the degree that they must 
+not duplicate the error codes used for the protocol on that connection. 
+</p>
+
+<h3>Command Errors</h3>
+
+<p>Command errors are errors or faults which are defined by the particular 
+communications protocol being used. These are typically caused by either an 
+incorrect configuration or a problem in a remote client. Connection faults 
+are related to problems establishing or maintaining a connection between a 
+local client and a remote server. 
+</p>
+
+<hr>
+
+<h2>Status and Error Codes</h2>
+
+
+<h3>Connection Status and Error Codes</h3>
+
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Code</th> 
+	<th>Description</th> 
+</tr>
+<tr>
+	<td>starting</td>
+	<td>The connection is in the process of starting.</td>
+</tr>
+<tr>
+	<td>running</td>
+	<td>The connection is running normally.</td>
+</tr>
+<tr>
+	<td>stopped</td>
+	<td>The connection is stopped.</td>
+</tr>
+<tr>
+	<td>faulted</td>
+	<td>The connection is faulted.</td>
+</tr>
+
+</table>
+
+<h3>Client Command Status Codes</h3>
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Code</th>
+	<th>Data Table Value</th> 
+	<th>Description</th> 
+</tr>
+<tr>
+	<td>ok</td>
+	<td>0</td>
+	<td>No errors</td>
+</tr>
+<tr>
+	<td>badfunc</td>
+	<td>1</td>
+	<td>Unsupported function</td>
+</tr>
+<tr>
+	<td>badaddr</td>
+	<td>2</td>
+	<td>Invalid address</td>
+</tr>
+<tr>
+	<td>badqty</td>
+	<td>3</td>
+	<td>Invalid quantity</td>
+</tr>
+<tr>
+	<td>deviceerr</td>
+	<td>4</td>
+	<td>Device error</td>
+</tr>
+<tr>
+	<td>frameerr</td>
+	<td>5</td>
+	<td>Frame error</td>
+</tr>
+<tr>
+	<td>connection</td>
+	<td>255</td>
+	<td>Client connection lost</td>
+</tr>
+<tr>
+	<td>timeout</td>
+	<td>254</td>
+	<td>Message time out</td>
+</tr>
+<tr>
+	<td>servererr</td>
+	<td>253</td>
+	<td>Undefined server error</td>
+</tr>
+<tr>
+	<td>badtid</td>
+	<td>252</td>
+	<td>TID Error</td>
+</tr>
+<tr>
+	<td>noresult</td>
+	<td>251</td>
+	<td>No result</td>
+</tr>
+
+</table>
+
+
+
+<hr>
+
+<h2>Error Reporting</h2>
+
+<h3>Web Based Status Reporting</h3> 
+
+<p>Live fault information is displayed on the status web pages. This includes 
+connection and command errors, as well as a log of past errors. See the 
+documentation on the status web pages for more information. 
+</p>
+
+
+<h3>Data Table Reporting</h3> 
+
+<p>In the communications configuration, the user can specify a set of 
+addresses for each client to be used for reporting client communications 
+errors. Each time an error is detected, these addresses are updated to 
+indicate the error. This error information may be read using normal protocol 
+commands to detect if an error is present, and what the error is. 
+</p>
+
+<p>The same error is reported in all four memory types (coil, discrete input,
+holding register, input register) in the system data table. This allows an  
+error to be monitored in a manner which is convenient to any configuration.
+</p>
+
+<p>When an error is detected, the specified coil and discrete input are turned
+on, and the appropriate numeric code is written to the holding and input 
+registers.  
+</p>
+
+
+<p>If error information is present, it will not be reset or erased unless 
+specifically requested. However, newer errors will automatically overwrite 
+older error information.
+</p>
+
+<p>The error reporting addresses may be located anywhere in memory. It may be 
+convenient to place them adjacent to other data which is being read to permit 
+the data and error indication to be read in a single read operation.
+</p>
+
+<p>Error reporting is on a per-connection basis. This means that if a 
+connection uses multiple commands, then errors associated with any of these 
+commands will be stored in the same set of fault addresses. However, a 
+separate set of addresses should be used for each connection.
+</p>
+
+<hr>
+
+<h2>Resetting Error Codes</h2>
+
+<p>Error indication can be reset in two ways:
+</p>
+
+<ul>
+	<li>By overwriting the data table address directly.</li>
+	<li>By writing to a fault reset coil.</li>
+</ul>
+
+
+<p>Addresses used to report faults are normal data table addresses and may be 
+overwritten using normal protocol commands. However, this requires several 
+write operations, and the server protocol may not permit writing to all address 
+types.
+</p>
+
+<p>In addition to simply overwriting a fault address, a special set of coil 
+addresses has been reserved for resetting fault information. In the data table, 
+a range of coil addresses is regularly monitored to see if any of them have 
+been turned on. If one or more has been turned on, the system will look to 
+see if they have been associated with a particular client fault configuration. 
+If so, the associated fault indication addresses (as well as the reset coil 
+itself) will be reset.
+</p>
+
+<p>Any coils which are in the monitored range will be turned off regardless of 
+whether or not they are associated with a fault configuration. This means that 
+coils which are not used for fault reset may still not be used for any other 
+purpose. Writing to a coil in the monitored range but which is not configured 
+will not result in an error, but it will result in that coil being automatically 
+reset.
+</p>
+
+<p>The monitored coils are located in the upper 256 coil addresses (65279 to 
+65535). They are monitored approximately once per second. This means that it 
+may take up to approximately 1 second for a fault reset to complete once it 
+has been requested.
+</p>
+
+<p>Resetting a fault does not automatically re-initialise any communications. 
+It simply clears the fault reporting memory. It also does not affect the 
+display of faults on the status web pages.
+</p>
+
+<hr>
+
+<h2>Configuration</h2>
+
+<p>Faults reporting is configured via the system configuration file. The 
+following items can be configured:
+</p>
+
+<ul>
+	<li>The addresses (coil, discrete input, holding register, input 
+	register) used for reporting faults.</li>
+   <li>The address used for resetting a fault.</li>
+</ul>
+
+
+<p>See the documentation on system configuration for more details.
+</p>
+
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Communications Errors</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009 - 2010. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

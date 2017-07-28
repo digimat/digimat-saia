@@ -1,0 +1,246 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+	<title>Help - HMI - Passive Widget</title>
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Edit SVG</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Inkscape</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">Templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assemble Page</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Editing SVG with Inkscape</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Using the SVG Library with Inkscape</a></li>
+			<li><a href="/customwidgets/customwidgets.html">Custom Widgets</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">HMI web templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assembling web pages</a></li>
+			<li><a href="/hmilib/hmilib.html">HMI Javascript Client Libraries</a></li>
+			<li><a href="/basicconcepts/basicconcepts.html">Basic Concepts</a></li>
+			<li><a href="/manualpage/manualpage.html">Manual HMI Web Page Construction</a></li>
+		</ul>
+
+		<h3>Creating Custom Widgets</h3>
+		<ul>
+			<li><a href="/customwidgets/widgetbasics.html">Widget Basics</a></li>
+			<li><a href="/customwidgets/passivewidget.html">Passive Widget</a></li>
+			<li><a href="/customwidgets/hmibuilderdata.html">HMIBuilder Data</a></li>
+			<li><a href="/customwidgets/activewidget.html">Active Widgets</a></li>
+		</ul>
+
+	</div>
+
+
+
+	<!-- Put main content here -->
+	<div id="datadisplay">
+
+
+<h1>A Simple Passive SVG HMI Widget</h1>
+
+
+<h2>Overview</h2>
+
+
+<p>This section describes the different parts which make up a simple passive 
+widget. This will discuss some basics about SVG, but it is not intended as a 
+tutorial on SVG itself. 
+</p>
+
+<hr>
+
+<h2>A Simple Widget</h2>
+
+<p>The following shows the actual SVG XML code for a simple passive widget.  
+</p>
+
+<pre class="examples">
+
+	&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+	&lt;svg
+	   xmlns:svg="http://www.w3.org/2000/svg"
+	   xmlns="http://www.w3.org/2000/svg"
+	   version="1.0"
+	   width="100"
+	   height="40"&gt;
+
+	&lt;!-- This is a simple box for display numbers and text. --&gt;
+	&lt;rect x="0" y="0" width="100" height="35" fill="white" stroke="green" 
+				stroke-width="5" rx="10" ry="10" opacity="1.0" /&gt;
+
+	&lt;/svg&gt;
+
+</pre>
+
+<p>This is simply a box used as a background to display text or numbers on 
+top of. 
+</p>
+
+
+<p><img src="bezel.png" width="150" alt="clip art">
+</p>
+
+<p>It consists of the following components:
+</p>
+
+<hr>
+
+<h2>XML Header</h2>
+
+<p>The XML header tells other programs that this is a XML file. This 
+<strong><em>must</em></strong> be present, and it 
+<strong><em>must</em></strong> be the first line in the file.
+</p>
+
+<pre class="examples">
+
+	&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+
+</pre>
+
+
+<hr>
+
+<h2>SVG Document Type</h2>
+
+<p>This identifies it as an SVG file. Also important are the "width" and
+"height" attributes. The value of these will not matter when the widget is
+inserted into your final HMI drawing. However, setting these to the correct
+values will determine whether your computer's file browser will show them
+with the correct thumbnail views.  
+</p>
+
+<pre class="examples">
+
+	&lt;svg
+	   xmlns:svg="http://www.w3.org/2000/svg"
+	   xmlns="http://www.w3.org/2000/svg"
+	   version="1.0"
+	   width="100"
+	   height="40"&gt;
+
+</pre>
+
+<hr>
+
+<h2>Comments</h2>
+
+<p>You can (and probably should) add comments to the file by enclosing them
+within "&lt;!--" and "--&gt;" blocks.
+</p>
+
+<pre class="examples">
+
+	&lt;!-- This is a simple box for display numbers and text. --&gt;
+
+</pre>
+
+<hr>
+
+<h2>The SVG Artwork</h2>
+
+<p>This is not a tutorial on SVG. However, the following shows a simple 
+rectangle with rounded corners. We set the x and y coordinates to 0 because
+Inkscape (the drawing editor) will add it's own set of SVG coordinate 
+transforms wrapped around the widget when we drag it into the drawing.
+</p>
+
+<p>We set the width and heigh attributes to some convenient value. Although
+you can resize a widget after it is dragged into a drawing, it is advisable to
+set the default size to what you expect will typically be used to avoid any 
+unecessary effort when using a widget. 
+</p>
+
+<p>The fill and stroke values have been preset to the desirec colours. Although
+it would be possible to have no colours and to use the drawing editor to add
+the desired colours, providing a complete set of widgets in a predefined range
+of colours reduces the number of steps required when using the widget. 
+</p>
+
+<pre class="examples">
+
+	&lt;rect x="0" y="0" width="100" height="35" fill="white" stroke="green" 
+				stroke-width="5" rx="10" ry="10" opacity="1.0" /&gt;
+
+</pre>
+
+<hr>
+
+<h2>Closing SVG Tag</h2>
+
+<p>SVG is XML, and XML requires that all tags be explicitly "closed". This
+last element must always be present.
+</p>
+
+<pre class="examples">
+
+	&lt;/svg&gt;
+
+</pre>
+
+
+<hr>
+
+
+	</div>
+
+	<!-- Standard footer -->
+	<div id="footer">
+		<p>MB-HMI</p>
+	</div>
+
+</div>
+
+
+</body>
+</html>
+
+
+<!-- Copyright 2008 - 2011. Michael Griffin 
+This file is part of MBLogic. 
+MBLogic is free software: you can redistribute it and/or modify 
+it under the terms of the GNU General Public License as published by 
+the Free Software Foundation, either version 3 of the License, or 
+(at your option) any later version. 
+MBLogic is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details. 
+You should have received a copy of the GNU General Public License 
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>. 
+-->

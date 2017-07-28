@@ -1,0 +1,58 @@
+/* Page layout CSS for the MB-HMI demo. 
+	This contains the CSS for HMI pages with top menus plus a header.
+	This also sets the page with and the peripheral background colour.
+
+	2008 - 2010 M. Griffin
+*/
+
+/* This controls the appearance of the area outside of the defined screens. */
+body,
+html {
+	margin-top:0px;
+	margin-bottom:0px;
+	margin-right:0px;
+	margin-left:0px;
+	padding:0px;
+	}
+/* This provides the background image. */
+body {
+	background-image:url('pagebackground.png')
+	}
+
+/* This provides a container for the HTML elements so we can centre the contents. */
+#MBT_HTMLContainer {
+	margin:0px auto;
+	width:1000px;		/* Width of the HTML screens. */
+	background:tomato;	/* Peripheral background colour. */
+	color:black;		/* Font colour. */
+	}
+
+/* This sets the display styles for the standard HTML screens for pages with
+	horizontal menus across the top. */
+#MBT_HTMLScreensTop {
+	background:whitesmoke;	/* HTML screens background colour. */
+	}
+#MBT_HTMLScreensTop h2, #MBT_HTMLScreensTop h3, #MBT_HTMLScreensTop p {
+	padding:0px 10px;
+	}
+
+/* This is the "header" area at the top. */
+#MBT_TopHeader {
+	background:cornflowerblue;
+	}
+
+#MBT_TopHeader h1.pos_left {
+	padding:5px;
+	margin:0px;
+	width:750px;
+	}
+
+#MBT_TopHeader h1.pos_right {
+	padding:5px;
+	margin:0px;
+	width:400px;
+	position:absolute;
+	right:0px;
+	top:10px
+	}
+

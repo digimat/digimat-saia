@@ -1,0 +1,754 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+	<title>Help - HMI - HMI Push Buttons</title>
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Edit SVG</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Inkscape</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">Templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assemble Page</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Editing SVG with Inkscape</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Using the SVG Library with Inkscape</a></li>
+			<li><a href="/customwidgets/customwidgets.html">Custom Widgets</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">HMI web templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assembling web pages</a></li>
+			<li><a href="/hmilib/hmilib.html">HMI Javascript Client Libraries</a></li>
+			<li><a href="/basicconcepts/basicconcepts.html">Basic Concepts</a></li>
+			<li><a href="/manualpage/manualpage.html">Manual HMI Web Page Construction</a></li>
+		</ul>
+
+		<h3>Manual HMI Web Page Construction</h3>
+		<ul>
+			<li><a href="/manualpage/hmisampleslayout-en.html">Page Layout</a></li>
+			<li><a href="/manualpage/hmisamplespositioning-en.html">
+				Positioning Components on the Screen</a></li>
+			<li><a href="/manualpage/hmisamplescomms-en.html">
+				Communications, the Display List and Data Sources</a></li>
+			<li><a href="/manualpage/hmisamplesmenus-en.html">Menu Control</a></li>
+			<li><a href="/manualpage/hmisamplesalarms-en.html">
+				Events, Alarms, and System Status</a></li>
+			<li><a href="/manualpage/hmisamplesxul-en.html">
+				Mixing HTML and XUL with SVG</a></li>
+			<li><a href="/manualpage/hmisamplespushbuttons-en.html">Push Buttons</a></li>
+			<li><a href="/manualpage/hmisamplespilotlights-en.html">Pilot Lights</a></li>
+			<li><a href="/manualpage/hmisamplesnumerictext-en.html">
+				Numeric and Text Displays</a></li>
+			<li><a href="/manualpage/hmisamplesgauges-en.html">Tanks and Gauges</a></li>
+			<li><a href="/manualpage/hmisamplespipes-en.html">Piping and Pumps</a></li>
+			<li><a href="/manualpage/hmisamplesnumbinput-en.html">Numeric Inputs</a></li>
+			<li><a href="/manualpage/hmisamplesstripchart-en.html">Strip Charts</a></li>
+			<li><a href="/manualpage/hmisamplesbackground-en.html">Background Images</a></li>
+		 	<li><a href="/manualpage/hmisamplesvisualeffects-en.html">Visual Effects</a></li>
+		</ul>
+
+	</div>
+
+
+
+	<!-- Put main content here -->
+	<div id="datadisplay">
+
+<h1>Help - HMI Push Buttons</h1>
+
+<hr>
+
+<h2>Overview:</h2>
+
+<p>
+<img src="pb1.png" width="100" height="100" alt="Push button">
+<img src="pb2.png" width="100" height="100" alt="Push button">
+<img src="pbtank.png" width="151" height="63" alt="Push button">
+<img src="pb3.png" width="100" height="100" alt="Push button">
+	<img src="pboblong.png" width="111" height="47" alt="Push button">
+</p>
+
+<p>Push buttons are used to react to a user mouse click. They are typically 
+used to write a value to the server data table. However, other actions
+can also be initiated provided there is a function available to be called. 
+</p>
+
+<hr>
+
+<h2>SVG Library Graphics:</h2>
+
+<h3>Common Definitions</h3>
+
+<p>The push buttons all use the standard drop shadow filter to provide a
+shaded background. This is also used by many other graphics, so it needs
+to be defined once only. The "nut" graphic is used to provide a "nut"
+shape to the selector switches. It is also used for other graphics.
+</p>
+
+<pre class="examples">
+
+	&lt;defs&gt;
+		&lt;!-- The following filter is used to add a drop shadown. --&gt;
+		&lt;filter id="MB_DropShadowFilter"&gt;
+			&lt;feGaussianBlur stdDeviation="2"&gt;
+			&lt;/feGaussianBlur&gt;
+		&lt;/filter&gt;
+
+		&lt;!-- This is a decorative octagonal nut. --&gt;
+		&lt;g id="MB_NUT"&gt;
+			&lt;polygon transform="translate(5,5)" fill="grey" stroke="none"
+				filter="url(#MB_DropShadowFilter)"
+				points="18,-45 -18,-45 -45,-18 -45,18 -18,45 18,45 
+				45,18 45,-18 18,-45" /&gt;
+			&lt;polygon  fill="url(#MB_SilverGradient)" stroke="none"
+				points="18,-45 -18,-45 -45,-18 -45,18 -18,45 18,45 
+				45,18 45,-18 18,-45" /&gt;
+		&lt;/g&gt;
+
+	&lt;/defs&gt;
+
+</pre>
+
+<h3>Square Push Buttons</h3>
+
+<p>
+	<img src="pb1.png" width="100" height="100" alt="Push button">
+</p>
+
+<p>The square push button is composed of two square rectangles. The first is
+used to provide a drop shadow. The second provides the actual button. The 
+rectangles are offset such that the centre of the button is the currrent
+X and Y location.
+</p>
+
+<p>The fill colour, text label, and stroke width are defined when the button
+is actually used.
+</p>
+
+<pre class="examples">
+
+	&lt;defs&gt;
+		&lt;!-- Square push button. 80 x 80 px. --&gt;
+		&lt;g id="MB_SquarePB"&gt;
+			&lt;!-- This rectangle is used for the drop shadown and needs to match 
+				the size used for the button. --&gt;
+			&lt;rect x="-33" y="-33" width="80" height="80" rx="15"
+				fill="grey" stroke="none" stroke-width="0px" 
+				filter="url(#MB_DropShadowFilter)"/&gt;
+	
+			&lt;!-- This is the actual button.  --&gt;
+			&lt;rect x="-40" y="-40" width="80" height="80" rx="15"/&gt;
+		&lt;/g&gt;
+	&lt;/defs&gt;
+
+
+</pre>
+
+<h3>Rectangular Push Buttons</h3>
+
+<p>
+	<img src="pbrectangle.png" width="150" height="61" alt="Push button">
+</p>
+
+<p>The rectangular push button is similar to the square push button, but is
+both wider and shorter. This may be useful for cases where a longer text
+label is desired.
+</p>
+
+<pre class="examples">
+
+	&lt;defs&gt;
+		&lt;defs&gt;
+		&lt;!-- Rectangular push button.  140 x 50 px --&gt;
+		&lt;g id="MB_RectangularPB"&gt;
+				&lt;!-- This rectangle is used for the drop shadown. --&gt;
+				&lt;rect x="-63" y="-18" width="140" height="50" rx="15"
+					fill="grey" stroke="none" stroke-width="0px" 
+					filter="url(#MB_DropShadowFilter)"/&gt;
+		
+				&lt;!-- This is the actual button. --&gt;
+				&lt;rect x="-70" y="-25" width="140" height="50" rx="15"/&gt;
+		&lt;/g&gt;
+	&lt;/defs&gt;
+
+
+</pre>
+
+<h3>Oblong Push buttons</h3>
+
+<p>
+	<img src="pboblong.png" width="111" height="47" alt="Push button">
+</p>
+
+<p>The oblong push button is smaller than the rectangular push button, and
+is designed for applications where a longer text label is desired, but the
+button must still fit in a minimal space.
+</p>
+
+<pre class="examples">
+
+	&lt;defs&gt;
+		&lt;!-- Oblong push button. 100 x 36 px --&gt;
+		&lt;g id="MB_OblongPB"&gt;
+			&lt;!-- This rectangle is used for the drop shadown. --&gt;
+			&lt;rect x="-43" y="-11" width="100" height="35" rx="15"
+				fill="grey" stroke="none" stroke-width="0px" 
+				filter="url(#MB_DropShadowFilter)"/&gt;
+	
+			&lt;!-- This is the actual button. --&gt;
+			&lt;rect x="-50" y="-18" width="100" height="36" rx="15"/&gt;
+		&lt;/g&gt;
+	&lt;/defs&gt;
+
+</pre>
+
+
+<h3>Two and Three Position Selector Switches</h3>
+
+<p>
+	<img src="ssbare.png" width="99" height="104" alt="2 pos SS">
+</p>
+
+<p>A selector switch in the HMI system acts as an output indicator as well 
+as an input device. The switch can be rotated to indicate the current state
+of the monitored value in the controller. This allows the switch to combine
+the functions of a push button and pilot light in one device. 
+</p>
+
+<p>The actual selector switch does not include the labels. These much be added
+separately, as shown below. The selector switch itself can assume any rotation
+angle, allowing any number of positions. 
+</p>
+
+<p>
+	<img src="sswitch2.png" width="112" height="132" alt="2 pos SS">
+	<img src="sswitch3.png" width="127" height="130" alt="3 pos SS">
+</p>
+
+<p>The selector switch consists of an octagonal "nut", an inner circular
+area, a rectangular "actuator" area (where your fingers would grip on a real
+selector switch), and a small triangular "dot". The circular area may be
+any colour and is defined when the switch is used. 
+</p>
+
+<pre class="examples">
+
+	&lt;!-- Selector switch. --&gt;
+	&lt;defs&gt;
+		&lt;!-- This is a selector switch with a grey actuator. 
+			The circular base can be coloured using the fill property.--&gt;
+		&lt;g id="MB_SSwitch"&gt;
+			&lt;!-- This is a decorative nut. --&gt;
+			&lt;use xlink:href="#MB_NUT"/&gt;
+			&lt;!-- This forms the circular rotating inner area of the switch. --&gt;
+			&lt;circle cx="0px" cy="0px" r="35px" 
+				stroke="black" stroke-width="5px"/&gt;
+
+			&lt;!-- This is the rotating actuator. --&gt;
+			&lt;rect x="-8" y="-33" width="16" height="66" rx="5"
+				fill="grey" stroke-width="2px"/&gt;
+			&lt;polygon fill="white"
+				points="0,-30 -5,-20 5,-20 0,-30" /&gt;
+		&lt;/g&gt;
+
+	&lt;/defs&gt;
+
+</pre>
+
+<h3>Illuminated Push Buttons</h3>
+
+<p>
+	<img src="pbilluminated.png" width="94" height="96" alt="illuminated pb">
+</p>
+
+<p>Any push button may be turned into an illuminated push button by making the
+"fill" colour dynamic instead of using a fixed colour. The details of this are
+discussed below.
+</p>
+
+<hr>
+
+<h2>Creating Push Buttons</h2>
+
+<p>To turn the graphics into active push buttons, the graphics must be 
+combined with some Javascript scripting, and possibly some text labels.
+Combining this in different ways results in different types of push
+buttons. These are shown below.
+</p>
+
+<p>Each push button will have the following components:
+</p>
+
+<ul>
+	<li>A locating transform. This is a statement used to position the
+		button in the desired location. For example: 
+		transform="translate(100,0)" will move the button to X=100 and Y=0.
+		Note that transformations may be nested.
+	</li>
+	<li>A "fill" statement which determines the colour. For example:
+	fill="url(#MB_GreyGradient)"
+	</li>
+	<li>Some Javacript commands calling the required MBHMIProtocol function
+		to write data to the control system.
+	</li>
+	<li>Either a reference to the library, or a user created graphic made
+		from basic SVG elements. For example: &lt;use xlink:href="#MB_SquarePB" /&gt;
+	</li>
+	<li>An optional text label using a "text" statement. E.g. 
+		&lt;text x="0" y="8" font-size="24" stroke-width="2px" 
+					text-anchor="middle"&gt;PB1&lt;/text&gt;.
+	</li>
+	<li>An optional CSS class label to connect it with the CSS definitions
+		which provide styling and visual effects. E.g. class="buttonactivate"
+	</li>
+</ul>
+
+<hr>
+
+<h2>Momentary Push Buttons:</h2>
+
+<p>A momentary push button is a button which takes one action when pressed,
+and another action when released. This means there are two individual
+actions which must be initiated at different times.
+</p>
+
+<h3>SVG</h3>
+
+<pre class="examples">
+
+		&lt;!-- This first button illustrates a momentary push button. --&gt;
+		&lt;g transform="translate(100,0)" fill="url(#MB_GreyGradient)"
+			class="buttonactivate"
+			onmousedown="MBHMIProtocol.WriteImmediate('PB1', 1);" 
+			onmouseup="MBHMIProtocol.WriteImmediate('PB1', 0);" 
+			onmouseout="MBHMIProtocol.WriteImmediate('PB1', 0);"&gt;
+
+ 			&lt;!-- This is the actual button. --&gt;
+			&lt;use xlink:href="#MB_SquarePB" /&gt;
+ 			&lt;!-- This is the text label. --&gt;
+			&lt;text x="0" y="8" font-size="24" stroke-width="2px" 
+					text-anchor="middle"&gt;PB1&lt;/text&gt; 
+		&lt;/g&gt;
+
+</pre>
+
+<h3>Javascript Library Functions:</h3>
+
+<p>The following Javascript library functions are useful for this feature:
+</p>
+
+<ul>
+	<li>MBHMIProtocol.AddWrite </li>
+	<li>MBHMIProtocol.WriteImmediate </li>
+</ul>
+
+<h3>How it works:</h3>
+
+<p>The above example has three sections. The "use" and "text" elements
+simply display the artwork which make the button appear. 
+</p>
+
+<p>The data write actions are triggered by the "onmouse" calls. These are: 
+</p>
+
+<ul>
+	<li>onmousedown="MBHMIProtocol.WriteImmediate('PB1', 1);" 
+		- When the mouse button is pressed, a "1" is written to
+		the server for tag "PB1". </li>
+	<li>onmouseup="MBHMIProtocol.WriteImmediate('PB1', 0);" 
+		- When the mouse button is released, a "0" is written to
+		the server for tag "PB1". </li>
+	<li>onmouseout="MBHMIProtocol.WriteImmediate('PB1', 0);"
+		- This does the same as "onmouseup", but when the mouse
+		moves away from the HMI button. This is necessary so that the
+		button is released if the operator slides the mouse
+		pointer away from the HMI button with the mouse button 
+		still pressed. </li>
+</ul>
+
+<hr>
+
+
+<h2>Maintained Push Buttons:</h2>
+
+<p>A momentary push button is a button which takes one action when pressed,
+but no action when released. This means there is only one individual
+action which must be initiated.
+</p>
+
+<h3>SVG</h3>
+
+<pre class="examples">
+
+		&lt;!-- This shows a maintained push button. --&gt;
+		&lt;g transform="translate(100,0)" fill="url(#MB_RedGradient)"
+			class="buttonactivate"
+			onmousedown="MBHMIProtocol.WriteToggleImmediate('PB2', 'PL2');"&gt;
+		
+ 			&lt;!-- This is the actual button. --&gt;
+			&lt;use xlink:href="#MB_SquarePB" /&gt;
+ 			&lt;!-- This is the text label. --&gt;
+			&lt;text x="0" y="8" font-size="24" stroke-width="2px" 
+					text-anchor="middle"&gt;PB2&lt;/text&gt; 
+
+		&lt;/g&gt;
+
+</pre>
+
+
+<h3>Javascript Library Functions:</h3>
+
+<p>The following Javascript library functions are useful for this feature:
+</p>
+
+<ul>
+	<li>MBHMIProtocol.WriteToggleImmediate </li>
+</ul>
+
+
+<h3>How it works:</h3>
+
+<p>This maintained button takes one action when pressed, and then toggles the
+action when pressed a second time. The work is done by "onmousedown", although
+"onclick" could also be used.
+</p>
+
+<p>In this example, "WriteToggleImmediate" is used to toggle the value. A 
+pilot light "PL2" is used as a reference value, and the result is written
+to "PB2". The control system being monitored is expected to take some action 
+causing PL2 to change in response to PB2. It is possible to use PB2 as the
+reference as well as the write target. In that case though, there is no
+confirmation from the control system that some action has been taken.
+</p>
+
+<hr>
+
+<h2>Illuminated Push Buttons:</h2>
+
+<p>An illuminated push button combines the features of a push button and
+and pilot light. The push button may be of the momentary or maintained type.
+This example shows an illuminated maintained push button.
+</p>
+
+<h3>SVG</h3>
+
+<pre class="examples">
+
+	&lt;!-- This shows a maintained illuminated push button. --&gt;
+	&lt;g transform="translate(775,500)" 
+		class="buttonactivate"
+		onmousedown="MBHMIProtocol.WriteToggleImmediate('PB5', 'PB5');"&gt;
+
+		&lt;!-- This is the actual button. The button "id" connects it with the
+			pilot light action. --&gt;
+		&lt;g id="PB5" &gt;
+ 			&lt;!-- This is the actual button. --&gt;
+			&lt;use xlink:href="#MB_SquarePB" /&gt;
+ 			&lt;!-- This is the text label. --&gt;
+			&lt;text x="0" y="8" font-size="24" stroke-width="2px" 
+					text-anchor="middle"&gt;PB5&lt;/text&gt; 
+		&lt;/g&gt; 
+
+	&lt;/g&gt;
+
+</pre>
+
+<h3>Javascript</h3>
+
+<p>See the section on "pilot lights" for details on how the following works
+to provide the pilot light action.
+</p>
+
+<pre class="examples">
+
+	// Create a pilot light.
+	var PB5 = new MB_PilotLight(document, "PB5", "black", "violet", "orange");
+	// Add it to the display list. Remember to also add the tag to the list
+	// of addresses to read.
+	MBHMIProtocol.AddToDisplayList(PB5, "PB5", "read");
+
+</pre>
+
+
+<h3>Javascript Library Functions:</h3>
+
+<p>The Javascript library functions will be the same as those for normal
+push buttons and pilot lights.
+</p>
+
+<h3>How it works:</h3>
+
+<p>The illuminated push button combines the function of a pilot light with
+that of a push button. This is accomplished by simply using a pilot light
+in place of the fixed graphics of a push button. See the section on pilot
+lights for more information on how they work. This example is otherwise
+identical to the one for the regular maintained push button. 
+</p>
+
+
+<hr>
+
+
+<h2>Incrementing an Integer Counter:</h2>
+
+<p>This example shows how to increment an integer count value by
+using a push button. A register is incremented each time the
+push button is pressed. The increment value is selectable. It can be
+be negative, which would allow another button to decrement the same
+register. 
+</p>
+
+<h3>SVG</h3>
+
+<pre class="examples">
+
+		&lt;!-- This push button increments a count. --&gt;
+		&lt;g transform="translate(100,0)" fill="url(#MB_RedGradient)"
+			class="buttonactivate"
+			onmousedown="MBHMIProtocol.WriteIncImmediate('PB4', 'PL4', 1, 6);"&gt;
+ 			&lt;!-- This is the actual button. --&gt;
+			&lt;use xlink:href="#MB_SquarePB" /&gt;
+ 			&lt;!-- This is the text label. --&gt;
+			&lt;text x="0" y="8" font-size="24" stroke-width="2px" 
+					text-anchor="middle"&gt;PB4&lt;/text&gt; 
+		&lt;/g&gt;
+
+</pre>
+
+<h3>Javascript Library Functions:</h3>
+
+<p>The following Javascript library functions are useful for this feature:
+</p>
+
+<ul>
+	<li>MBHMIProtocol.WriteIncImmediate </li>
+</ul>
+
+<h3>How it works:</h3>
+
+<p>This is a push button similar to the others shown here, but it calls
+"MBHMIProtocol.WriteIncImmediate" to increment a value instead of writing
+a constant. It reads a reference tag (PL4) and increments it be a specified
+amount (1 in this example), up to a maximum limit (6 in this example). Each 
+time it is incremented it writes the result to a specified tag (PB4 in this 
+example). The control system is expected to take some action changing PL4 to 
+another value when PB4 changes. The target tag can be used as the reference 
+tag if desired. 
+</p>
+
+<hr>
+
+<h2>Selector Switches</h2>
+
+<p>The following shows how to create two and three position selector switches.
+Selector switches are similar in concept to push buttons. The labels (e.g. "UP",
+"DWN", etc.) are the active areas and operate in manner identical to the push
+button examples given above. 
+</p>
+
+<p>In addition, the switch itself acts a push button. With two position 
+selector switches, the switch toggles position each time it is clicked directly.
+With three position selector switches, the switch always returns to the centre
+position. 
+</p>
+
+<p>The above is the recommended behaviour, but anything else of course may be 
+programmed as desired.
+</p>
+
+<h3>SVG</h3>
+
+<p>The following is a two position selector switch.
+</p>
+
+<pre class="examples">
+
+	&lt;!-- This is a 2 position selector switch. --&gt;
+	&lt;g transform="translate(100, 400)" &gt;
+
+		&lt;!-- This provide targets for mouse clicks. --&gt;
+		&lt;g  class="sswitchactivate" 
+			onmousedown="MBHMIProtocol.WriteImmediate('SSPPVert', 0);"&gt;
+			&lt;rect x="-50" y="-70" width="50" height="70" fill="silver"/&gt;
+			&lt;text x="-43" y="-50" stroke-width="2px" font-size="16"&gt;UP&lt;/text&gt; 
+		&lt;/g&gt;
+		&lt;g  class="sswitchactivate" 
+			onmousedown="MBHMIProtocol.WriteImmediate('SSPPVert', 1);"&gt;
+			&lt;rect x="0" y="-70" width="50" height="70" fill="silver"/&gt;
+			&lt;text x="10" y="-50" stroke-width="2px" font-size="16"&gt;DWN&lt;/text&gt; 
+		&lt;/g&gt;
+
+
+		&lt;!-- This is the actual switch. --&gt;
+		&lt;g id="SSPPVert" class="sswitchactivate" fill="blue" 
+			onmousedown="MBHMIProtocol.WriteToggleImmediate('SSPPVert', 'SSPPVert');"&gt;
+			&lt;use xlink:href="#MB_SSwitch"/&gt;
+		&lt;/g&gt;
+	&lt;/g&gt;
+
+</pre>
+
+<p>The following is a three position selector switch.
+</p>
+
+
+<pre class="examples">
+
+		&lt;!-- This is a 3 position selector switch. --&gt;
+		&lt;g transform="translate(700, 275)" &gt;
+	
+			&lt;!-- This provide targets for mouse clicks. --&gt;
+			&lt;g  class="sswitchactivate" 
+					onmousedown="MBHMIProtocol.WriteImmediate('ShapeDemo', -1);" &gt;
+				&lt;rect x="-60" y="-70" width="40" height="70" fill="silver"/&gt;
+				&lt;text x="-57" y="-50"  font-size="14"&gt;CIR&lt;/text&gt; 
+			&lt;/g&gt;
+			&lt;g  class="sswitchactivate" 
+					onmousedown="MBHMIProtocol.WriteImmediate('ShapeDemo', 0);" &gt;
+				&lt;rect x="-20" y="-70" width="40" height="70" fill="silver"/&gt;
+				&lt;text x="-17" y="-50"  font-size="14"&gt;REC&lt;/text&gt; 
+			&lt;/g&gt;
+			&lt;g  class="sswitchactivate" 
+				onmousedown="MBHMIProtocol.WriteImmediate('ShapeDemo', 1);" &gt;
+				&lt;rect x="20" y="-70" width="40" height="70" fill="silver"/&gt;
+				&lt;text x="23" y="-50" font-size="14"&gt;HEX&lt;/text&gt; 
+			&lt;/g&gt;
+	
+	
+			&lt;!-- This is the rotating portion of the switch --&gt;
+			&lt;g id="ShapeSSwitch" class="sswitchactivate" fill="black" 
+						onmousedown="MBHMIProtocol.WriteImmediate('ShapeDemo', 0);"&gt;
+				&lt;use xlink:href="#MB_SSwitch"/&gt;
+			&lt;/g&gt;
+	
+		&lt;/g&gt;
+
+</pre>
+
+
+<h3>Javascript</h3>
+
+<p>The following shows the Javascript used to animate the selector switch 
+operators. 
+</p>
+
+<p>This is used for the two position selector switch.
+</p>
+
+<pre class="examples">
+
+	// Pick and place selector switch control for vertical axis.
+	var PPSSVertDisplay = new MB_2PosSSDisplay(document, "SSPPVert", -60, 60);
+	MBHMIProtocol.AddToDisplayList(PPSSVertDisplay, "SSPPVert", "read");
+
+</pre>
+
+<p>This is used for the three position selector switch.
+</p>
+
+
+<pre class="examples">
+
+	// Selector switch position.
+	var ShapeSSwitchDisplay = new MB_3PosSSDisplay(document, "ShapeSSwitch", -60, 0, 60);
+	MBHMIProtocol.AddToDisplayList(ShapeSSwitchDisplay, "ShapeDemo", "read");
+
+</pre>
+
+
+<h3>Javascript Library Functions:</h3>
+
+<ul>
+	<li>MBHMIProtocol.WriteImmediate </li>
+	<li>MBHMIProtocol.WriteToggleImmediate</li>
+	<li>MB_2PosSSDisplay</li>
+	<li>MB_3PosSSDisplay</li>
+</ul>
+
+<h3>How it works:</h3>
+
+<p>A selector switch combines the functions of a set of push buttons with that
+of a pilot light. The labels above the selector switch and the selector switch
+itself acts as push buttons. When you click on these, data is written to the
+server (e.g. PLC) and changes a data table value.
+</p> 
+
+<p>Meanwhile, a data table value (either the same or a different one) is 
+monitored and used to control the switch position. This serves the same 
+function as a pilot light, except that rather than changing colour via the 
+"fill" property, a rotation angle is applied. The data is not written to the 
+server as a result of the rotation. Rather the rotation is a result of a change
+in the data at the server.
+</p>
+
+<p>Since the selector switch operator serves as an indicator rather than as a 
+direct control, the control system (e.g. PLC, soft logic system, etc.) can 
+control the switch position and over ride attempts by the operator to change
+the current state. Also the control system can reset switches to the 
+appropriate position according to the current state of the machine. This offers
+a great deal more flexibility than is available from real selector switches.
+</p>
+
+
+<hr>
+
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - HMI Push Buttons</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

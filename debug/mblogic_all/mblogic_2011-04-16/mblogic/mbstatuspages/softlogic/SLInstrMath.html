@@ -1,0 +1,492 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Math Instructions</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Soft Logic</h3>
+		<ul>
+			<li><a href="SLSpecs-en.html">Specifications</a></li>
+			<li><a href="SLAddressing-en.html">Addressing</a></li>
+			<li><a href="SLInstructions-en.html">Instructions</a></li>
+			<li><a href="SLPrograms-en.html">Programming</a></li>
+			<li><a href="SLConfig-en.html">Configuration</a></li>
+			<li><a href="SLStatus-en.html">Program Monitoring and Reloading</a></li>
+			<li><a href="SLMemSave-en.html">Data Table Save/Restore</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>Math Instructions</h1>
+
+<hr>
+
+
+<p>Math instructions perform mathematical operations on registers and 
+constants, and output the results to registers.</p>
+
+<table class="helptable"  border="1">
+
+<tr><th><b>Instr.</b></th> <th><b>Desc.</b></th> <th><b># Param</b></th> 
+<th><b>One Shot</b></th> <th><b>SC40</b></th> <th><b>SC43</b></th> <th><b>SC46</b></th> 
+<th><b>Symbol</b></th> </tr>
+
+<tr>
+	<td>MATHDEC</td>
+	<td>Decimal math</td>
+	<td>3</td>
+	<td>X</td> 
+<td>X</td>
+	<td>X</td>
+	<td>X</td>
+<td> <img src="LadMathDec.png" width="225" alt="decimal math"></td>
+</tr>
+
+<tr>
+	<td>MATHHEX</td>
+	<td>Hexa- decimal math</td>
+	<td>3</td>
+	<td>X</td> 
+<td>X</td>
+	<td>X</td>
+	<td>X</td>
+<td> <img src="LadMathHex.png" width="225" alt="hex math"></td>
+</tr>
+
+<tr>
+	<td>SUM</td>
+	<td>Sum a range of registers</td>
+	<td>3 or 4</td>
+	<td>X</td> 
+<td></td>
+	<td>X</td>
+	<td></td>
+<td> <img src="LadMathSum.png" width="225" alt="math sum"></td>
+</tr>
+
+</table>
+
+<p>There are only three math instructions. However, they accept complete equations
+as input parameters allowing them to perform many different operations.</p>
+
+<p>The decimal and hexadecimal math instructions are similar except for the functions
+and operators they offer, and for the type of registers they operate on. The general
+operation of both is desribed here with the details of the functions and operators 
+listed separately below. 
+</p>
+
+<p>The MATHDEC and MATHHEX instruction expects the following parameters:
+</p>
+
+<ul>
+	<li>Destination - The the destination register. Register types may be DS, 
+	DD, DF, DH. The destination register must be compatible with the source 
+	registers. DH registers may not be mixed with the other register 
+	types.</li>
+	<li>A mandatory one shot parameter of 0 or 1. If the paramter is set to "1", 
+	the one-shot option is enabled and the instruction executes only when the 
+	logic stack transitions from false to true. If the paramter is set to "0", 
+	the one-shot option is disabled and the instruction executes whenever the 
+	logic stack is true. The one shot parameter must always be specified for 
+	these instructions as the variable number of equation elements would 
+	otherwise make it impossible to distinguish from from the equations. </li>
+	<li>Math equation - All elements following are treated as part of the math
+	equation and must form a legal mathematical equation. </li>
+</ul>
+
+
+<p>MATHDEC <i>destination one-shot equationparameters</i>
+</p>
+<p>MATHHEX <i>destination one-shot equationparameters</i>
+</p>
+
+<p>The error flags are set under the following conditions:
+</p>
+
+<ul>
+	<li>SC40 - A division by zero was attempted.</li>
+	<li>SC43 - The data could not be converted to the correct type, or the data 
+	value is out of range for the destination register.</li>
+	<li>SC46 - An unspecified math error has occurred. This includes all math 
+	errors not covered by the other math error flags.</li>
+</ul>
+
+
+<p>Example: </p>
+<pre class="examples">
+
+	// Decimal math. Will resolve to 10.77245
+	NETWORK 1
+	STR X1
+	COPY 2 DS1
+	MATHDEC DF1 0 (1 + DS1) ^ 2 + SQRT(PI)
+	
+	// Hexadecimal math. Will resolve to 22h (in hexadecimal)
+	NETWORK 2
+	STR X2
+	COPY 4 DH2
+	MATHHEX DH1 0 (LSH(DH2, 2h) + 1h) * 2h
+
+</pre>
+
+
+<h3>Decimal Math Operations</h3>
+
+<p>Decimal math operations are conducted by functions and operators.
+The input values may be DS, DD, or DF registers, or decimal constants. 
+The destination may be a DS, DD, or DF register.
+</p>
+
+<p>Angles for transcendental functions (SIN, COS, etc.) are in radians.
+</p>
+
+<p>Using a function that operates in floating point (transcendental, 
+logmarithic, square root), or using any floating point number (including
+the PI constant) will cause the entire equation to be conducted in floating
+point. The result will then be converted to a type that is compatible
+with the destination register. If a floating point number is copied to an
+integer register, the decimal part of the result is truncated, not rounded. 
+</p>
+
+<table class="helptable"  border="1">
+<tr>
+	<td><b>Operation</b></td>
+	<td><b>Description</b></td>
+	<td><b>Example</b></td>
+</tr>
+
+<tr>
+	<td>SIN</td>
+	<td>Sine</td>
+	<td>SIN(DF1)</td>
+</tr>
+<tr>
+	<td>COS</td>
+	<td>Cosine</td>
+	<td>COS(DF2)</td>
+</tr>
+<tr>
+	<td>TAN</td>
+	<td>Tangent</td>
+	<td>TAN(DF3)</td>
+</tr>
+<tr>
+	<td>ASIN</td>
+	<td>Arcsine</td>
+	<td>ASIN(DF4)</td>
+</tr>
+<tr>
+	<td>ACOS</td>
+	<td>Arccosine</td>
+	<td>ACOS(DF5)</td>
+</tr>
+<tr>
+	<td>ATAN</td>
+	<td>Arctagent</td>
+	<td>ATAN(DF6)</td>
+</tr>
+<tr>
+	<td>LOG</td>
+	<td>Log (base 10)</td>
+	<td>LOG(DF7)</td>
+</tr>
+<tr>
+	<td>LN</td>
+	<td>Natural log</td>
+	<td>LN(DF8)</td>
+</tr>
+<tr>
+	<td>SQRT</td>
+	<td>Square root</td>
+	<td>SQRT(DD3)</td>
+</tr>
+<tr>
+	<td>RAD</td>
+	<td>Convert degrees to radians</td>
+	<td>RAD(DF21)</td>
+</tr>
+<tr>
+	<td>DEG</td>
+	<td>Convert radians to degrees</td>
+	<td>DEG(DF22)</td>
+</tr>
+<tr>
+	<td>+</td>
+	<td>Add</td>
+	<td>DS1 + 7</td>
+</tr>
+<tr>
+	<td>-</td>
+	<td>Subtract</td>
+	<td>DS3 - DS4</td>
+</tr>
+<tr>
+	<td>*</td>
+	<td>Multiply</td>
+	<td>DS5 * 10</td>
+</tr>
+<tr>
+	<td>/</td>
+	<td>Divide</td>
+	<td>DF7 / DS1</td>
+</tr>
+<tr>
+	<td>MOD</td>
+	<td>Modulus (remainder)</td>
+	<td>DS22 MOD DS21</td>
+</tr>
+<tr>
+	<td>^</td>
+	<td>Exponentiate</td>
+	<td>DF52 ^ 3</td>
+</tr>
+<tr>
+	<td>PI</td>
+	<td>The constant PI</td>
+	<td>PI * DF102</td>
+</tr>
+<tr>
+	<td>()</td>
+	<td>Parentheses (group operations)</td>
+	<td>(DS2 + 71) * DF9</td>
+</tr>
+
+</table>
+
+<h3>Hexadecimal Math Operations</h3>
+
+<p>Hexadecimal math operations are conducted by functions and operators.
+The input values may be DH registers, or hexadecimal constants. 
+The destination must be a DH register.
+</p>
+
+<p>Shifts and rotates take place within a 16 bit register size.
+</p>
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Operation</th>
+	<th>Description</th>
+	<th>Example</th>
+</tr>
+
+<tr>
+	<td>LSH</td>
+	<td>Shift left a specified amount</td>
+	<td>LSH(DH1, 2h)</td>
+</tr>
+<tr>
+	<td>RSH</td>
+	<td>Shift right a specified amount</td>
+	<td>RSH(DH2, 2h)</td>
+</tr>
+<tr>
+	<td>LRO</td>
+	<td>Rotate left a specified amount</td>
+	<td>LRO(DH3, 10h)</td>
+</tr>
+<tr>
+	<td>RRO</td>
+	<td>Rotate right a specified amount</td>
+	<td>RRO(DH4, 10h)</td>
+</tr>
+<tr>
+	<td>AND</td>
+	<td>AND words</td>
+	<td>DH5 AND Fh</td>
+</tr>
+<tr>
+	<td>OR</td>
+	<td>OR words</td>
+	<td>DH6 OR 7Fh</td>
+</tr>
+<tr>
+	<td>XOR</td>
+	<td>XOR words</td>
+	<td>DH7 XOR 1Ah</td>
+</tr>
+<tr>
+	<td>+</td>
+	<td>Add</td>
+	<td>DH1 + 7h</td>
+</tr>
+<tr>
+	<td>-</td>
+	<td>Subtract</td>
+	<td>DH3 - DH4</td>
+</tr>
+<tr>
+	<td>*</td>
+	<td>Multiply</td>
+	<td>DH5 * 1fh</td>
+</tr>
+<tr>
+	<td>/</td>
+	<td>Divide</td>
+	<td>DH7 / DH1</td>
+</tr>
+<tr>
+	<td>MOD</td>
+	<td>Modulus (remainder)</td>
+	<td>DH22 MOD DH21</td>
+</tr>
+<tr>
+	<td>()</td>
+	<td>Parentheses (group operations)</td>
+	<td>(DH2 + a1h) * DH9</td>
+</tr>
+
+</table>
+
+<h3>Sum</h3>
+
+<p>The SUM function is provided as a separate instruction instead of being called
+from within the other math instructions.   
+</p>
+
+<p>The Sum instruction expects the following parameters:
+</p>
+
+<ul>
+	<li>Source Start - The start of the register address range. Register types 
+	may be DS, DD, DF, DH.</li>
+	<li>Source End - The end of the register address range. This must be a 
+	higher address of the same type as the source start. </li>
+	<li>Destination - The the destination register. Register types may be DS, 
+	DD, DF, DH. The destination register must be compatible with the source 
+	registers. </li>
+	<li>An optional one shot parameter of 0 or 1. If the paramter is set to "1", 
+	the one-shot option is enabled and the instruction executes only when the 
+	logic stack transitions from false to true. If the paramter is set to "0", 
+	the one-shot option is disabled and the instruction executes whenever the 
+	logic stack is true. If the parameter is missing, it has the same effect as 
+	setting it to "0".</li>
+</ul>
+
+
+<p>SUM <i>sourcestart sourceend destination (one-shot)</i>
+</p>
+
+<p>The error flags are set under the following conditions:
+</p>
+
+<ul>
+	<li>SC43 - The data could not be converted to the correct type, or the data 
+	value is out of range for the destination register.</li>
+</ul>
+
+
+<p>Example: </p>
+<pre class="examples">
+
+	// Sum a series of registers.
+	NETWORK 1
+	STR X1
+	SUM DS10 DS19 DF20
+	
+	// Sum with a one shot.
+	NETWORK 2
+	STR X2
+	SUM DH10 DH19 DH20 1
+
+</pre>
+
+
+
+</div>
+
+<div id="ladsampledisplay">
+
+<hr>
+
+<h2>Ladder Examples</h2>
+
+<p>The following shows examples in ladder format. 
+</p>
+
+<p>
+<img src="LadMath1.png" width="840" alt="match example 1">
+</p>
+
+</div>
+
+
+<hr>
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Soft Logic</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009 - 2010. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

@@ -1,0 +1,476 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Modbus Basics</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Communications</h3>
+		<ul>
+			<li><a href="serverconfig-en.html">Server Communications Configuration</a></li>
+			<li><a href="clienconfig-en.html">Client Communications Configuration</a></li>
+			<li><a href="genericclientsprotocols.html">Generic Client Protocols</a></li>
+			<li><a href="ComsFaults-en.html">Communications Faults</a></li>
+			<li><a href="ComsMonitor-en.html">Communications Monitoring and Trouble 
+				Shooting</a></li>
+			<li><a href="ComsExpRegs-en.html">Expanded Register Map</a></li>
+			<li><a href="ModbusSupport-en.html">Modbus/TCP Server and 
+				Client Protocol</a></li>
+			<li><a href="MBRest-en.html">MB-REST Web Service Protocol</a></li>
+			<li><a href="hmiprotocol-en.html">HMI Protocol</a></li>
+			<li><a href="genericclients.html">Generic Clients</a></li>
+			<li><a href="genframework.html">Generic Client Framework</a></li>
+			<li><a href="genuserprotocol.html">Generic Client User Protocols</a></li>
+			<li><a href="ModbusBasics-en.html">Modbus/TCP Basics</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>Help - Modbus Basics</h1>
+
+<hr>
+
+<h2>Overview:</h2> 
+
+<p>Modbus is the leading industrial open control protocol. This help page will
+discuss some of the basic concepts and correct some common misconceptions, but
+does not provide a detailed description of the protocol itself.
+</p>
+
+<hr>
+
+<h2>Types of Modbus:</h2> 
+
+<p>Modbus comes in several different types, depending upon the media over
+which it is transported.
+</p>
+
+<ul>
+	<li>Modbus RTU - This is original Modbus. It is used over RS-232 and RS-485
+		links. </li>
+	<li>Modbus ASCII - This is similar to Modbus RTU, but the data is encoded
+		in ASCII instead of raw binary. This version is mainly used over radio
+		links. </li>
+	<li>Modbus/TCP - This version is used over Ethernet. It is similar to Modbus
+		RTU, but uses the check-sum built into Ethernet rather than including 
+		the RTU check sum. </li>
+	<li>Modbus over Ethernet - This is a vague term used by some vendors, but
+		is not an officially recognised name. It is often used to refer to
+		tunnelling Modbus RTU over Ethernet between two points using special
+		hardware. This is <em>not</em> part of the Modbus standard and  the
+		format is vendor dependent. </li>
+	<li>Modbus/UDP - This is similar to Modbus/TCP but uses UDP Ethernet sockets 
+		instead of TCP sockets. This is offered by some vendors, but is 
+		<em>not</em> part of the Modbus standard. </li>
+	<li>Modbus+ - This is a proprietary protocol which uses the Modbus name, but
+		doesn't follow the Modbus communications standard. This is rarely 
+		encountered. </li>
+</ul>
+
+<p>MBLogic uses Modbus/TCP.
+</p>
+
+<hr>
+
+<h2>Communications</h2> 
+
+<h3>Client/Server or Master/Slave:</h3>
+
+<p>Like most communications protocols, Modbus uses a <em>client/server</em> type 
+protocol. This is also sometimes referred to as <em>master/slave</em>. A 
+"master" is the same thing as a "client", while a "slave" is the same thing as 
+a "server". The master/slave terms originated in industry, while the 
+client/server terms originated in the computer industry. The different terms 
+arose due to historical differences as to how they were being applied, but the 
+computer industry terms have to a large degree replaced the industrial terms 
+as industary has adopted more off the shelf computer technology. Typically, 
+the client is the PLC or controller, while the server is a field device such 
+as a valve bank or sensor block.
+</p>
+
+<p>A "client" sends a <em>request</em> to a "server". The server decodes the 
+request and sends back a <em>response</em> with the requested data or an 
+acknowledgement. This is the same as how other common protocols work. 
+</p>
+
+<p>For example, when you use a web browser to view a web page on the internet, 
+your web browser sends a "page request" to the web server. The web server
+decodes the request and sends back a web page as a "response". Your e-mail
+client program fetches your e-mail in the same way from a mail server.
+</p>
+
+<h3>Unit ID:</h3>
+
+<p>A Modbus message includes what is called the <em>unit ID</em>. A unit ID 
+is a number between 0 and 255 which is used to identify the server (or slave)
+address in RS-232 or RS-485 networks. Each server (slave) is assigned a
+"slave ID" number and listens for messages which contain this number in
+the unit ID field.
+</p>
+
+<p>Modbus/TCP also has the unit ID in its messages, but the Ethernet TCP/IP 
+address is used to decide where to actually delivery the message. Many or most
+server devices will ignore the unit ID. However, some will use the unit ID to
+decide whether to forward the message out a built-in serial port. This message
+forwarding allows older RS-485 devices to be used on newer Ethernet networks.
+However, support for this feature is only found in a few devices.   
+</p>
+
+<h3>Message ID:</h3>
+
+<p>When a Modbus message sends a request, it includes a <em>message ID</em>
+number. This is a number from 0 to 65,535. This number is normally incremented
+by the client for each request (and allowed to roll over to 0 again when it 
+overflows). This message ID is echoed back by the server. The client can use 
+this message ID number to determine if any messages are being lost or delayed
+in transmission.
+</p>
+
+<h3>Serial Communications Parameters:</h3>
+
+<p>When used over RS-232 or RS-585 networks, the usual serial communications
+parameters such as baud rate, parity, stop bits, etc. must be set correctly
+for all devices. Setting of these parameters is not dicussed here. Consult
+your vendor documentation for details. 
+</p>
+
+<h3>Ethernet Parameters:</h3>
+
+<p>When used over Ethernet, Modbus/TCP does not require setting the baud rate
+or other similar parameters. However it does require the use of the correct
+<em>IP address</em> and <em>port number</em>.    
+</p>
+
+<p>An "IP address" is the network address of the device which the message is
+being sent to. Each device on a network must have a unique IP address. The 
+number of possible IP addresses is very large (billions of addresses).  
+</p>
+
+<p>In addition to the IP address, the "port number" is required. An Ethernet
+"port number" does not refer to the physical connector. A port number is an 
+number send in the Ethernet header used by the operating system or firmware 
+in a device to determine which program a message should be sent to. This 
+allows multiple programs to share the same Ethernet adaptor without conflict.
+When a client sends a message, it sends it specifies a particular port number. 
+When the message is recieved by the server, the operating system or firmware
+will look at the port number and route the message to the correct program.
+</p>
+
+<p>When a server program starts up it will "bind to a port". That simply means
+that it will ask the operating system to be assigned a particular port
+number. Only one server may bind to the same port number at any time. If the 
+port number is already in use by another program the new server program will not
+be allowed to use it, and will encounter an error. When a server program shuts
+down, it frees the use of the port. The operating system will then wait for a
+certain time-out to pass (the standard is 70 seconds) before allowing that
+port number to be used again. 
+</p>
+
+<p>The "standard" port number for Modbus/TCP is port 502. So far as the protocol
+itself is concerned, the port number used by it is completely transparent. The 
+port number is not sent in the Modbus protocol message itself. However, port
+502 is recognised by convention as the standard port number to use, so most
+field devices will be listening on port 502. However, it is possible to run
+Modbus/TCP on alternate port numbers provided that all devices that are 
+participating in the communications can be configured to use the alternate
+port.   
+</p>
+
+<hr>
+
+<h2>Modbus Data Representation:</h2> 
+
+<h3>Data Table</h3>
+
+<p>Modbus uses the concept of a <em>data table</em> to refer to data. Data 
+tables should be familiar to anyone who has used a PLC. A data table is an 
+array or block of memory used to store data. Data is referenced using data 
+table addresses. Modbus data table addresses come in four types.   
+</p>
+
+<ul>
+	<li>Discrete inputs - These are read only boolean values. They are typically
+		used to represent sensor inputs and other boolean values which are
+		read but not written to by the user. </li>
+	<li>Coils - These are read-write boolean values. They are typically used to
+		represent outputs (e.g. valve solenoids) or internal bits which are
+		both read by and written to by the user. </li>
+	<li>Input registers - These are read only 16 bit integers. They are typically
+		used to represent analogue input values and other integer values which
+		are read but not written to by the user.</li>
+	<li>Holding registers - These are read-write 16 bit integers. They are 
+		typically used to represent analogue outputs or internal numbers which are
+		both read by and written to by the user. </li>
+</ul>
+
+<p>In addition to the native data types of boolean and integer, it is possible
+to store large integers, floating point numbers, and strings in a Modbus data
+table by splitting the data over several registers. However, Modbus does not
+offer any direct support for this, so the user is responsible for splitting
+the values up and storing them in separate locations. 
+</p>
+
+<h3>Data Table Addresses</h3>
+
+<p>Modbus data table addresses are simply integer numbers. Each address type 
+(discrete input, coil, input register, holding register) has its own numbered 
+set of addresses. For example, discrete input 42 and coil 42 are two separate 
+addresses.
+</p>
+
+<p>Modbus distinguishes between the <em>protocol</em> address and the 
+<em>data model</em> address. The addresses that are used in the protocol
+are numbered from 0 to 65,535. However, vendor documentation may number from 
+1 to 65,536. This documentation will refer to the <em>protocol</em> addresses
+(that is the first address is 0). 
+</p>
+
+<p>Although it is possible to have 65,536 addresses of each type the number 
+of addresses actually implemented in a particular device (sensor block, valve 
+bank, PLC, etc.) is usually much less that this. Each device designer is
+responsible for deciding what makes sense for their application. They will
+then normally supply a "memory map" or list of addresses for their device
+listing what addresses were implemented, and what each one does.
+</p>
+
+<p>It is also possible to "overlay" address types. That is, it is possible
+to design a device such that several different address types all refer to the
+same physical memory location. For example, it is possible to have holding
+register 10 and input register 10 both be the same memory location. In this 
+case if you were to write to holding register 10, the value would also appear
+in input register 10. The same applies to coils and discrete inputs.
+</p>
+
+<p>In the same way, it is possible to pack coils and discrete inputs in 
+registers. For example, coils 0 to 15 could be packed in holding register
+0, coils 16 to 31 in holding register 1, etc. This would allow multiple
+coils to be read (or written to) as words.
+</p>
+
+<p>Although overlay of data types and packing of coils into registers is
+possible, it is not often found in practice.
+</p>
+
+
+<h3>Some Common Misconceptions about Modbus Addresses</h3>
+
+<p>According to the Modbus standard, addresses are simply integers from 0 to
+65,535 with the different address ranges being referred to as coils, holding
+registers, etc. However, some vendors will document their hardware using 
+numerical prefixes which are not actually part of the Modbus address. This
+originated from some models of PLCs which used the Modbus communications
+protocol, and which also used numerical prefixes in their internal data
+table. This is similar to using "I", "Q", "V", etc. as address prefixes in IEC 
+type PLCs.  
+</p>
+
+<p>However, it is important to remember that these numerical prefixes
+are documentation methods and are <em>not</em> part of what the Modbus protocol 
+itself sends as part of the messages. A difference in documentation methods does
+not affect the compatibility of the protocol itself.
+</p>
+
+<p>These prefixes are they mentioned anywhere in the Modbus standard, but the
+following shows how they are typically used in documentation based on this
+older convention:  
+</p>
+
+<ul>
+	<li>0xxxx - Coils.</li>
+	<li>1xxxx - Discrete inputs.</li>
+	<li>3xxxx - Input registers.</li>
+	<li>4xxxx - Holding registers.</li>
+</ul>
+
+<p>Note that there is no 2xxxx address prefix.
+</p>
+
+<p>In addition to numerical prefixes, some documentation will refer to protocol 
+addresses (addresses start at 0), while other documentation will refer to data 
+model addresses (addresses start at 1). That is, the first holding register may
+be 0 or 1 (or 40000 versus 40001 using prefixes). However, this has no bearing 
+on what gets sent over the wire as a Modbus message. For a Modbus protocol message, 
+the lowest address is always "0", not "1". 
+</p>
+
+<p>This document uses standard Modbus terms and addresses throughout using 
+Modbus protocol addressing without prefixes or offsets. However, if you are 
+reading the documentation for sensor blocks, valves, and other devices, you 
+must keep in mind that some vendors may document their hardware in different 
+ways.
+</p>
+
+<hr>
+
+<h2>Modbus Commands, or "Functions":</h2> 
+
+<h3>Functions:</h3> 
+
+<p>Modbus commands are known as <em>functions</em>. A function is simply a 
+command to read or write a data table address. Functions are numbers such as 
+1, 2, 3, 4, etc. For example, function "1" will read one or more coils. 
+Function "15" will write to one or more coils. All function codes are defined 
+as part of the Modbus standard, but which functions were actually implemented 
+in any particular device is up to the device designer. For example, a valve bank
+may only implement functions for writing coils because that is all that
+was necessary for that device.    
+</p>
+
+<p>The most common functions are listed below. There are many other functions
+defined in the Modbus standard, but these are the ones most commonly 
+encountered. 
+</p>
+
+<ul>
+	<li>1 - Read multiple coils. </li> 
+	<li>2 - Read multiple discrete inputs. </li>
+	<li>3 - Read multiple holding registers. </li>
+	<li>4 - Read multiple input registers. </li>
+	<li>5 - Write single coil. </li>
+	<li>6 - Write single holding register. </li>
+	<li>15 - Write multiple coils. </li>
+	<li>16 - Write multiple holding registers. </li>
+</ul>
+
+<h3>Quantity:</h3> 
+
+<p>Modbus functions which read or write multiple addresses will also require
+a <em>quantity</em> parameter. The "quantity" parameter specifies the number of
+consecutive addresses to read or write.
+</p>
+
+<h3>Maximum Number of Addresses Which Can be Read or Written at Once:</h3> 
+
+<p>The modbus protocol specifies the maximum number of addresses which can be 
+read or written at one time. This limits the amount of data which must be 
+transferred in a single command to no more than 255 bytes. For a read command,
+the limit is 2000 coils or discrete inputs or 125 registers. For a write command,
+the limit is 1968 coils or 123 registers.
+</p>
+
+<hr>
+
+<h2>Modbus Errors:</h2> 
+
+<h3>Modbus Faults:</h3>
+
+<p>When a Modbus message is received by a server it is analysed to see of all 
+the parameters are correct. If everything is OK, the server will send a response.
+This response may consist of data, or it may just be an acknowledgement that
+the message was received. 
+</p>
+
+<p>If there are any error however, the server may do one of two things. If the
+message could not be decoded at all (e.g. there was a bad check sum), the message
+is simply discarded. If the message could be decoded but one or more parameters
+was incorrect (e.g. an attempt was made to read a non-existent address), then 
+the server will send a response containing a <em>fault code</em>. The fault 
+code is simply the function code from the request with 128 added to it. 
+</p>
+
+<p>For example, if the client sends a request with function 3 (read holding
+registers) that contains an error, the server will respond with a fault code
+of 131 (3 + 128 = 131).
+</p>
+
+
+<h3>Modbus Exceptions:</h3>
+
+<p>In addition to the fault code, the server will return an <em>exception 
+code</em> which provides more detail about what was wrong. Exception codes are 
+defined individually for each function, but for most common functions the 
+following will apply:  
+</p>
+
+<ul>
+	<li>1 = The requested function code (command) is not supported.</li>
+	<li>2 = The address is incorrect (does not exist). For functions which 
+		operate on multiple addresses, this check includes all addresses which 
+		are affected by the request. </li>
+	<li>3 = The quantity of addresses is incorrect. The quantity parameter
+		was too large (or was zero) for the function requested. </li>
+	<li>4 = Some unspecified error occured in the server which prevented
+		the request from being carried out. </li>
+</ul>
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Modbus Basics</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

@@ -1,0 +1,478 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Server Communications Configuration</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Communications</h3>
+		<ul>
+			<li><a href="serverconfig-en.html">Server Communications Configuration</a></li>
+			<li><a href="clienconfig-en.html">Client Communications Configuration</a></li>
+			<li><a href="genericclientsprotocols.html">Generic Client Protocols</a></li>
+			<li><a href="ComsFaults-en.html">Communications Faults</a></li>
+			<li><a href="ComsMonitor-en.html">Communications Monitoring and Trouble 
+				Shooting</a></li>
+			<li><a href="ComsExpRegs-en.html">Expanded Register Map</a></li>
+			<li><a href="ModbusSupport-en.html">Modbus/TCP Server and 
+				Client Protocol</a></li>
+			<li><a href="MBRest-en.html">MB-REST Web Service Protocol</a></li>
+			<li><a href="hmiprotocol-en.html">HMI Protocol</a></li>
+			<li><a href="genericclients.html">Generic Clients</a></li>
+			<li><a href="genframework.html">Generic Client Framework</a></li>
+			<li><a href="genuserprotocol.html">Generic Client User Protocols</a></li>
+			<li><a href="ModbusBasics-en.html">Modbus/TCP Basics</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>Help - Server Communications Configuration</h1>
+
+<hr>
+
+<h2>Overview</h2> 
+
+<p>Servers configurations are saved in a text file called 
+<strong><em>"mbserver.config"</em></strong>. This configuration 
+file is read on start up of the software and used to determine what protocols to 
+enable, what network addresses and ports to use, what data to read or write, etc. 
+This file must be edited in order to configure a system for every individual 
+application. 
+</p>
+
+<hr>
+
+<h2>Configuration Overview</h2>
+
+<h3>Editing a Configuration</h3>
+
+<p>There is one, and only one server communications configuration file for each 
+system. This file is in ASCII text format and may be edited with any standard text 
+editor. If you use a word processor, be sure to save in a plain text mode which 
+does not insert formatting characters into the text. 
+</p>
+
+<p>The status system also provided a web based forms for editing the 
+configuration rather than using a text editor.
+</p>
+
+<h3>Configuration Elements</h3>
+
+<p>A communications configuration file contains the following elements:
+</p>
+
+<ul>
+	<li>Server name - This allows a name to be assigned to the system and 
+	displayed on status web pages.</li>
+	<li>Server configurations - This configures the server names, protocol type, 
+	and IP port numbers.</li>
+	<li>Comments - Comments may be included in the configuration file to assist 
+	in documenting the particular application configuration.</li>
+</ul>
+
+
+
+<h3>Configuration Syntax</h3>
+
+<p>The configuration syntax has the following general properties:
+</p>
+
+<ul>
+	<li>Sections. Sections begin a series of related configuration values. 
+	A section name is an identifier which is enclosed by square brackets 
+	("[ ]"). A section includes all items until the beginning of a new section, 
+	or until the end of the file. Section names must be unique and must not
+	be duplicated in any other section. Duplicate section names are ignored. </li>
+	<li>Configuration items. Any line following the beginning of a section is considered 
+	to be an item which belongs to that section (excluding comments). Configuration 
+	items are key/value pairs in the format "key=value". </li>
+	<li>Each item must be on a separate line.</li>
+	<li>Keys are separated from values by equal signs ("="). Because equal signs are 
+	used as key/value separators, they may not be used as part of any key or value.</li>
+	<li>Parameters are case sensitive. All keys and values must be in the correct 
+	case. For example, "Main1", "main1", and "mAin1" are three different identifiers.</li>
+	<li>All keys or values which are defined by the configuration syntax are 
+	always in lower case. </li>
+	<li>User defined values may be in upper, lower, or mixed case.</li>
+	<li>The ampersand ("&amp;") character has special meaning. Certain sections are
+	predefined by the configuration system. The names for these will start with 
+	an ampersand. User defined section names may not start with an ampersand.
+	Command item names must start with an ampersand. Any item starting with
+	an ampersand is assumed to be a command. </li>
+</ul>
+
+
+<h3>Comments</h3>
+
+<p>Any line beginning with a '#' character is considered to be a comment and is 
+ignored. Comments must begin at the start of a line, and may not be on the same 
+line as any other valid input. 
+</p>
+
+<h4>Example</h4>
+
+<pre class="examples">
+
+	# 16-Apr-2008. This is a comment.
+	# This is also a comment.
+
+</pre>
+
+
+<hr>
+
+<h2>System Configuration</h2>
+
+<p>The system configuration contains parameters which are system wide
+as opposed to limited to a specific protocol.
+</p>
+
+<h3>Server ID Name</h3>
+
+<p>The server id name is the name applied to the complete system (not just an 
+individual protocol server). The server id name may be any arbitrary text, 
+including spaces. The server id name appears in a special section which is always
+called "&amp;system" (note the ampersand). The actual name used for the server is
+then indicated by a key called "serverid". The server id name is in the following 
+format:
+</p>
+
+
+<h3>Expanded Holding Register Map Offsets</h3>
+
+<p>The expanded register map configuration allows certain server protocols
+to access additional memory beyond the normal protocol limits. Details of
+this may be found in the separate section on expanced register maps. This
+section deals with the configuration parameters.
+</p>
+
+<p>By default, expanded register map support for servers is turned off.
+If you do not configure the parameters, unit IDs will simply be ignored
+by the servers. If you configure the parameters incorrectly, the expanded
+register map feature will also be disabled, as the system will not be
+able to calculate the address offsets correctly. 
+</p>
+
+<p>There are two parameters relating to expanded register maps. These are:
+</p>
+
+<ul>
+	<li><strong>mbaddrexp</strong> - This enables the feature.</li>
+	<li><strong>mbuidoffset</strong> - This sets the numeric UID offset and factor.</li>
+</ul>
+
+<p>The <strong>mbaddrexp</strong> parameter must be set to "incremental" to enable
+the expanded register map. Any other value will act to disable it. In future other
+algorithms may be introduced, but at present only "incremental" is available. 
+</p>
+
+<p>The <strong>mbuidoffset</strong> has two values which must be separated by a 
+comma. These are (in order) the "UID offset" and "UID factor". Details of how 
+to set these factors are discussed in the section on expanded register maps. 
+</p>
+
+<p>Both values must be positive integers. The UID offset must be less than 255.
+The UID factor must be less than the maximum holding register memory map 
+address. 
+</p>
+
+<h3>Example</h3>
+
+<pre class="examples">
+
+	[&amp;system]
+	serverid=Name of Example Server 
+	mbaddrexp=incremental
+	mbuidoffset=1,65536
+
+</pre>
+
+
+<hr>
+
+<h2>Server Configuration</h2>
+
+<h3>Configuration Items</h3>
+
+<p>Server configurations consist of three elements:
+</p>
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Item</th> 
+	<th>Description</th> 
+</tr>
+<tr>
+	<td>The section name.</td>
+	<td>This is used as the name of the server. This 
+	name is used to identify the server in the status monitoring system and 
+	will appear on the status web pages.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>This is the protocol type and is used to determing the communications
+	method used. This must be one of the recognised protocol types (listed below).
+	</td>
+</tr>
+<tr>
+	<td>protocol</td>
+	<td>This determines the protocol recognised by the server. This
+	must be one of the recognised protocols (listed below).</td>
+</tr>
+<tr>
+	<td>port</td>
+	<td>The IP port number. This must be a valid integer IP port number.</td>
+</tr>
+</table>
+
+
+<h3>Example</h3>
+
+<pre class="examples">
+
+	[Main1]
+	type=tcpserver
+	protocol=modbustcp
+	port=8502
+
+</pre>
+
+<h3>Types</h3>
+
+<p>The recognised types are:</p>
+<ul>
+	<li>tcpserver</li>
+</ul>
+
+<h3>Protocols</h3>
+
+<p>The recognised protocols are:</p>
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Protocol</th> 
+	<th>Description</th> 
+</tr>
+<tr>
+	<td>modbustcp</td>
+	<td>The Modbus/TCP protocol.</td>
+</tr>
+<tr>
+	<td>mbrest</td>
+	<td>A Modbus-like web service protocol (obsolete).</td>
+</tr>
+<tr>
+	<td>mbhmi</td>
+	<td>The server used to serve HMI web pages, and also provide a web
+		service protocol used by the HMI system.</td>
+</tr>
+<tr>
+	<td>rhmi</td>
+	<td>A restricted version of the "mbhmi" protocol. It uses the same 
+		configuration and resources as the "hmi" option, but write and alarm 
+		acknowledge commands are disabled.</td>
+</tr>
+<tr>
+	<td>erp</td>
+	<td>Another restricted version of the "mbhmi" protocol, intended for MRP/ERP
+		and other business integration applications. It uses the same 
+		configuration and resources as the "hmi" option, but only supports
+		"read" and "write" commands from a specified (filtered) tag list. </td>
+</tr>
+<tr>
+	<td>status</td>
+	<td>The status web server. This is not a communications server in the
+		same sense that the others are, but this allows the IP port number to be 
+		configured. If this server is not configured, the status web pages will not be 
+		available.</td>
+</tr>
+<tr>
+	<td>help</td>
+	<td>This is similar to the status protocol, in that it sets the address
+		used by a web server. In this case, this is the web server used for the "help"
+		system.</td>
+</tr>
+<tr>
+	<td>generic</td>
+	<td>This is a special server protocol used to support generic 
+		clients. You must enable this if you wish to make use of a generic client.</td>
+</tr>
+
+
+</table>
+
+<p>Only one server of each protocol can be configured. There is no limit however 
+to how many incoming client connections each server will accept. If a protocol 
+is not configured, that protocol server will not be active. 
+</p>
+
+<hr>
+
+<h2>Complete Example</h2>
+
+<p>The following is an example showing a complete configuration file. 
+</p>
+
+<h3>Example</h3>
+
+<pre class="examples">
+
+	# Test configuration for MB Server.
+	# 23-Jul-2010
+	
+	# Name of server.
+	[&amp;system]
+	serverid=Loopback Server
+	# The following parameters are optional.
+	mbaddrexp=incremental
+	mbuidoffset=1,65536
+	
+	# Server configurations.
+	# Modbus/TCP protocol.
+	[Main1]
+	type=tcpserver
+	protocol=modbustcp
+	port=8502
+	
+	# MB-REST web service protocol.
+	[Web1]
+	type=tcpserver
+	protocol=mbrest
+	port=8085
+	
+	# MB-HMI web server and web service protocol.
+	[HMI]
+	type=tcpserver
+	protocol=mbhmi
+	port=8082
+
+	# Restricted (read-only) version of the mbhmi protocol. 
+	[ROHMI]
+	protocol = rhmi
+	type = tcpserver
+	port = 8083
+
+	# Limited version of the mbhmi protocol for MRP/ERP applications.
+	[ERPAccess]
+	protocol = erp
+	type = tcpserver
+	port = 8084
+	
+	# Status web server.
+	[status]
+	type=tcpserver
+	protocol=status
+	port=8080
+	
+	# Help system web server.
+	[WebHelp]
+	type=tcpserver
+	protocol=help
+	port=8081
+	
+</pre>
+
+
+<hr>
+
+<h2>Loop Back Sample</h2>
+
+<p>The sample configuration file supplied with the system uses what is referred to 
+as a "loop-back" configuration for the clients. That is, a set of Modbus/TCP 
+clients are configured to poll the system's own Modbus/TCP server. This is not in 
+itself a useful feature. It is provided mainly to demonstrate the communications 
+features. A different configuration should be created for a practical application. 
+The sample configuration demonstrates the following features. 
+</p>
+
+<ul>
+	<li>The server is named "Loopback Server"</li>
+	<li>A Modbus/TCP server is started on port 8502.</li>
+	<li>A Modbus-like web service is start on port 8085.</li>
+	<li>An HMI server is started on port 8082.</li>
+	<li>A status web server is started on port 8080.</li>
+	<li>A help system web server is started on port 8081.</li>
+</ul>
+
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Server Communications Configuration</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009 - 2010. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

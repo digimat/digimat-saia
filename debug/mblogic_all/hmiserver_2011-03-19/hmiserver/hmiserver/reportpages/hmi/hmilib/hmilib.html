@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+	<title>Help - HMI - HMI Client Libraries</title>
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- Page navigation style sheet. -->
+<link rel="stylesheet" href="/pagenav.css" type="text/css">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo">
+			<span class="headtitle1">HMIServer </span>
+			<span class="headtitle2"> Help</span>
+		</p>
+	</div>
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statushmi.html">Config</a></li>
+			<li><a href="/statuscontrol.html">Control</a></li>
+			<li><a href="/datamsgsfield.html">Data Messages</a></li>
+			<li><a href="/hmiserverintro-en.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/hmiserverintro-en.html">Help</a></li>
+			<li><a href="/about-en.html">About</a></li>
+			<li><a href="/installation/install-en.html">Installation</a></li>
+			<li><a href="/installation/demos-en.html">Demo Applications</a></li>
+			<li><a href="/hmiserverstartparameters-en.html">Server Start Parameters</a></li>
+			<li><a href="/hmiservermonitor-en.html">HMI Server Monitoring</a></li>
+			<li><a href="/commsbasics-en.html">Communications Basics</a></li>
+			<li><a href="/hmiconfig-en.html">HMI Server Configuration</a></li>
+		</ul>
+
+		<h3>Topic Details for HMI Web Pages</h3>
+		<ul>
+			<li><a href="/hmi/hmibuilder/hmibuilder.html">MBLogic HMIBuilder</a></li>
+			<li><a href="/hmi/hmilib/hmilib.html">HMI Javascript Client Libraries</a></li>
+			<li><a href="/hmi/basicconcepts/basicconcepts.html">Basic Concepts</a></li>
+		</ul>
+
+		<h3>HMI Client Libraries</h3>
+		<ul>
+			<li><a href="/hmi/hmilib/hmiprotocollib-en.html">HMI Client Protocol Library</a></li>
+			<li><a href="/hmi/hmilib/hmidisplaylib-en.html">HMI Client Display Library</a></li>
+			<li><a href="/hmi/hmilib/hmieventlib-en.html">HMI Client Event and Alarm Library</a></li>
+		</ul>
+
+
+
+	</div>
+
+	<!-- Put main content here -->
+	<div id="datadisplay">
+
+
+
+	<h1>HMI Client Libraries:</h1>
+
+	<h2>Overview</h2>
+
+	<p>The HMI Client Libraries are Javascript libraries which are included in 
+	HMI web pages to enable continuous communications with the HMI server, and
+	to enable control of the input and output HMI widget devices. The web page
+	templates provided automatically import these libraries, but if you create
+	your own web page templates you will need to import these libraries yourself.  
+	</p>
+
+	<hr>
+
+	<h2>Libraries</h2>
+
+<ul>
+	<li><a href="/hmi/hmilib/hmiprotocollib-en.html">HMI Client Protocol Library</a>
+	 - This library is responsible for handling all communications between the 
+	HMI web browser (client) and the HMI server. In addition, it maintains the
+	"display list" which is responsible for calling the display objects and 
+	updating them with new data as it becomes available. In addition, input 
+	device widgets will use functions in this library to send their data to the
+	server.
+	</li>
+
+	<li><a href="/hmi/hmilib/hmidisplaylib-en.html">HMI Client Display Library</a>
+	 - The client display library provides a series of code objects which are
+	used to update the web browser SVG to reflect the state of the protocol 
+	"tags" they are monitoring. The protocol library will scan through the list
+	of code objects in use and update them whenever new data arrives. 
+	Each library object performs a specific function which emulates such 
+	things as pilot lights, numeric outputs, gauge readings, etc. These 
+	functions are named in a manner which reflects their use in such
+	familiar devices. However, their use is not limited to the provided SVG 
+	clip-art and user created clip art can also be animated with these 
+	functions.  
+	</li>
+
+	<li><a href="/hmi/hmilib/hmieventlib-en.html">HMI Client Event and Alarm Library</a>
+	 - The client even and alarm library is used to display alarms and events
+	in HTML tables. The web page templates already come with the necessary HTML 
+	structures and calls to the libraries to handle alarms and events. User
+	created custom web pages can also make use of this library. 
+	</li>
+
+</ul>
+
+
+	<hr>
+
+	</div>
+
+	<!-- Standard footer -->
+	<div id="footer">
+		<p>MB-HMI</p>
+	</div>
+
+</div>
+
+
+</body>
+</html>
+
+
+<!-- Copyright 2008 - 2010. Michael Griffin -->
+<!-- This file is part of MBLogic. -->
+<!-- MBLogic is free software: you can redistribute it and/or modify -->
+<!-- it under the terms of the GNU General Public License as published by -->
+<!-- the Free Software Foundation, either version 3 of the License, or -->
+<!-- (at your option) any later version. -->
+<!-- MBLogic is distributed in the hope that it will be useful, -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the -->
+<!-- GNU General Public License for more details. -->
+<!-- You should have received a copy of the GNU General Public License -->
+<!-- along with MBLogic. If not, see <http://www.gnu.org/licenses/>. -->
+

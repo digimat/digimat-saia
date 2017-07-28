@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<link rel="icon" type="image/png" href="/systemicon.png" >
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/statuspagelayout.css" type="text/css">
+
+<!-- This controls the page display. -->
+<script type="text/javascript" src="/statuspages/libprogcontrol.js"></script>
+<script type="text/javascript" src="/statuspages/libdata.js"></script>
+<script type="text/javascript" src="/statuspages/libstatutils.js"></script>
+
+<!-- Native JSON doesn't seem to be working in Opera 10.10. -->
+<script type="text/javascript" src="/statuspages/json2.js"></script>
+
+
+<title>Program</title>
+
+</head>
+
+<body onload="pageinit();">
+
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo">
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<div id="datadisplay">
+	
+	<h1>Program</h1>
+
+	<!-- This table gets filled at run time with a list of subroutines. -->
+
+	
+	<form name="softlogiccontrol" class="softlogiccontrol" 
+		action="statusprogram.html" method="post"> 
+
+		<table id="subrtable" class="displaytable"  border="1">
+			<tr> 
+				<th>Subroutine</th>
+			<!-- 	<th>Edit Ladder</th> -->
+				<th>Edit IL</th>
+				<th>Delete</th>
+			</tr>
+		</table>
+	
+		<p>
+			<input type="submit" name="deletesubr" value="Delete"> 
+		</p>
+	
+	</form>
+
+	<!-- This will force a manual page update. -->
+	<p>
+		<button class="controlbuttons" onclick="RefreshData();">Refresh Page</button>
+	</p> 
+
+	<hr>
+	
+	<h2>New Subroutine:</h2>
+	
+	<p>Enter the name of the new subroutine to add below. 
+	</p>
+	
+	<form name="softlogiccontrol" class="softlogiccontrol" 
+		action="statusprogram.html" method="post"> 
+	
+		<p>
+			<input type="text" maxlength="20" size="20" name="subrname">
+		</p>
+	
+		<p>
+			<input type="submit" name="addsubr" value="Add Subroutine"> 
+		</p>
+	
+	</form>
+
+	<hr>
+
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Program</p>
+</div>
+
+</div>
+
+<!-- This is the code for creating the data in the page. -->
+
+	<script type="text/javascript">
+
+	// Handles displaying page data.
+	var libutils = new libstatutils();
+	var Monitor = new ProgControl(libutils);
+
+	// Handles communications with the server.
+	var host = window.location.hostname;
+	var port = window.location.port;
+	var ServerData = new StatusDataIF(host, port, Monitor);
+
+
+	// Run a single update cycle.
+	function Update() {
+		// Get the data and display it.
+		ServerData.SendGetRequest("/statdata/plcsubrlist.js");
+	}
+
+
+	// Start up and initialisation.
+	function pageinit() {
+		// Start, after a short delay. 
+		window.setTimeout("Update()", 100);
+	}
+
+	// Refresh the page data.
+	function RefreshData() {
+		Update();
+	}
+
+	</script>
+
+
+</body>
+
+
+</html>
+
+<!-- Copyright 2008 - 2010. Michael Griffin 
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License 
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>. 
+-->
+

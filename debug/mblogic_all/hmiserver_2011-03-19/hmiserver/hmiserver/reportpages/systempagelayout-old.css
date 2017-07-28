@@ -1,0 +1,66 @@
+
+/* This controls display of the main screen. */
+#datadisplay {
+	padding:5px;
+	background:white;
+	width:1000px;
+	}
+
+#datadisplay h2, #datadisplay h3, #datadisplay p {
+	padding:0px 10px;
+	}
+
+
+/* This controls the appearance of examples. */
+.examples {
+	background-color:#CCCCCC
+	}
+
+
+/* This controls the appearance of tables in the help pages. */
+.helptable {
+	border-collapse: separate;
+	border-spacing: 5px 5px
+	}
+/* This controls the cell padding. */
+.helptable td {
+	padding: 5px
+	}
+/* This controls the padding for table headings. */
+.helptable th {
+	padding: 5px
+	}
+
+
+/* This controls the appearance of tables that need visible
+	borders between each item. */
+.displaytable {
+	border-collapse: separate;
+	border-spacing: 5px 5px
+	}
+/* This controls the cell padding. */
+.displaytable td {
+	padding: 5px
+	}
+/* This controls the padding for table headings. */
+.displaytable th {
+	padding: 5px
+	}
+
+
+
+/* This is used to indicate fault conditions. */
+#statusfault {
+	background-color:red;
+	}
+/* This is used to indicate a condition may have a problem. */
+#statusalert {
+	background-color:yellow;
+	}
+
+/* This is used to indicate a condition is OK. */
+#statusok {
+	background-color:green
+	}
+
+

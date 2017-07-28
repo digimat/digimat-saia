@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+	<title>Help - HMI - Combined Input and Output Devices</title>
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Edit SVG</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Inkscape</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">Templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assemble Page</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Editing SVG with Inkscape</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Using the SVG Library with Inkscape</a></li>
+			<li><a href="/customwidgets/customwidgets.html">Custom Widgets</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">HMI web templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assembling web pages</a></li>
+			<li><a href="/hmilib/hmilib.html">HMI Javascript Client Libraries</a></li>
+			<li><a href="/basicconcepts/basicconcepts.html">Basic Concepts</a></li>
+			<li><a href="/manualpage/manualpage.html">Manual HMI Web Page Construction</a></li>
+		</ul>
+
+		<h3>Using the SVG Library with Inkscape</h3>
+		<ul>
+			<li><a href="/svglibedit/svgboilerplate.html">Standard Boilerplate</a></li>
+			<li><a href="/svglibedit/svglayermenus.html">SVG Layer Menus</a></li>
+			<li><a href="/svglibedit/svgbackgroundart.html">Background Clip-Art</a></li>
+			<li><a href="/svglibedit/svginputsimple.html">Simple Input Devices</a></li>
+			<li><a href="/svglibedit/svgiocombined.html">Combined IO Devices</a></li>
+			<li><a href="/svglibedit/svgoutputsimple.html">Simple Output Objects</a></li>
+			<li><a href="/svglibedit/svgoutputrotate.html">Rotating Output Objects</a></li>
+			<li><a href="/svglibedit/svgoutputcolumn.html">Column Level Output Objects</a></li>
+			<li><a href="/svglibedit/svgpipes.html">Pipes, Ducts, and Conveyors</a></li>
+			<li><a href="/svglibedit/svgcharts.html">Charts</a></li>
+			<li><a href="/svglibedit/svgcompound.html">Compound Objects</a></li>
+		</ul>
+
+	</div>
+
+
+
+	<!-- Put main content here -->
+	<div id="datadisplay">
+
+
+
+<h1>Combined Input and Output Devices</h1>
+
+<p>Combined input and output devices include features from both input and
+output devices to allow activating inputs and viewing the current state to
+be performed by a single widget.</p>
+
+<hr>
+
+<h2>Illuminated Push Buttons</h2>
+
+
+<p>Illuminated push buttons are simply normal push buttons without a colour
+specified. This allows their colours to be set in the same way as a pilot
+light. Illuminated push buttons are found with the regular push buttons and
+can be recognized by their names ending with "none" rather than with a colour.
+</p>
+
+<p>The properties used are the same as those for regular push buttons.
+</p>
+
+<ol>
+	<li>Set the SVG "id" property using the same method as perscribed for push
+	buttons or pilot lights. </li>
+	<li>Set the label text using the same method as perscribed for push buttons.
+	</li>
+</ol>
+
+
+<hr>
+
+<h2>Selector Switches</h2>
+
+<p>Selector switch consists of two differnt components. These are the selector 
+switch labels and the selector switch operator ("knob"). The "labels" are not
+just for labeling purposes. They also act as push buttons to assist in setting
+the state of the selector switch. 
+</p>
+
+<p>The selector switch operator serves two purposes. It serves as an input 
+device in that it acts like a push button when activated. It also acts as an 
+output device in that the rotation angle of the operator indicates the current 
+state of the tag it follows. 
+</p>
+
+<p>A two position selector switch requires two labels and one actuator. A three 
+position selector switch requires three labels and one actuator. 
+</p>
+
+<p>The actuator on a two position selector switch will toggle when activated.
+The actuator on a three position selector switch will move to the centre 
+position when actuated.
+</p>
+
+
+<p><img src="ObjectsSelectorSwitches.png" width="250" alt="selector switches">
+</p>
+
+<h2>Two Position Selector Switches</h2>
+
+<p>To use a two position selector switch:
+</p>
+
+<ol>
+	<li>Drag a selector switch label onto the drawing and position it where 
+	desired.</li>
+	<li>Set the label text and id using the procedures as described for push 
+	buttons.</li>
+	<li>The label should write either a 0 or 1 constant to the server, 
+	according to whether you wish this position to be "off" "on". </li>
+	<li>Repeat this for the second selector switch label. The constant written 
+	by label should be the opposite of that chosen for the first label. </li>
+	<li>Drag a selector switch onto the drawing and position it where desired.</li>
+	<li>Set the id using the same procedures as described for push buttons.</li>
+</ol>
+
+
+<h2>Three Position Selector Switches</h2>
+
+<p>To use a three position selector switch:
+</p>
+
+<ol>
+	<li>Drag three selector switch labels onto the drawing and set their 
+	parameters using the same procedure as described for two position
+	selector switches. </li>
+	<li>However, the three position constants should be a negative number
+	for one position, zero for another, and a positive number for the last
+	position (e.g. -1, 0, and 1). </li>
+	<li>Drag a selector switch onto the drawing and position it where desired.</li>
+	<li>Set the id using the same procedures as described for
+	a selector switch label. </li>
+</ol>
+
+
+<hr>
+
+	</div>
+
+	<!-- Standard footer -->
+	<div id="footer">
+		<p>MB-HMI</p>
+	</div>
+
+</div>
+
+
+</body>
+</html>
+
+
+<!-- Copyright 2008 - 2011. Michael Griffin -->
+<!-- This file is part of MBLogic. -->
+<!-- MBLogic is free software: you can redistribute it and/or modify -->
+<!-- it under the terms of the GNU General Public License as published by -->
+<!-- the Free Software Foundation, either version 3 of the License, or -->
+<!-- (at your option) any later version. -->
+<!-- MBLogic is distributed in the hope that it will be useful, -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the -->
+<!-- GNU General Public License for more details. -->
+<!-- You should have received a copy of the GNU General Public License -->
+<!-- along with MBLogic. If not, see <http://www.gnu.org/licenses/>. -->
+

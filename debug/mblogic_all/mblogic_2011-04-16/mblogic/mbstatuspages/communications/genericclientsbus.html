@@ -1,0 +1,332 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>SAIA Ether-SBus Generic Client Configuration</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Communications</h3>
+		<ul>
+			<li><a href="serverconfig-en.html">Server Communications Configuration</a></li>
+			<li><a href="clienconfig-en.html">Client Communications Configuration</a></li>
+			<li><a href="genericclientsprotocols.html">Generic Client Protocols</a></li>
+			<li><a href="ComsFaults-en.html">Communications Faults</a></li>
+			<li><a href="ComsMonitor-en.html">Communications Monitoring and Trouble 
+				Shooting</a></li>
+			<li><a href="ComsExpRegs-en.html">Expanded Register Map</a></li>
+			<li><a href="ModbusSupport-en.html">Modbus/TCP Server and 
+				Client Protocol</a></li>
+			<li><a href="MBRest-en.html">MB-REST Web Service Protocol</a></li>
+			<li><a href="hmiprotocol-en.html">HMI Protocol</a></li>
+			<li><a href="genericclients.html">Generic Clients</a></li>
+			<li><a href="genframework.html">Generic Client Framework</a></li>
+			<li><a href="genuserprotocol.html">Generic Client User Protocols</a></li>
+			<li><a href="ModbusBasics-en.html">Modbus/TCP Basics</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>Help - SBus Generic Client Protocol</h1>
+
+<hr>
+
+<h2>Overview</h2> 
+
+<p>Generic client support is experiment at this time and is subject to change.
+</p>
+
+<hr>
+
+<h2>SAIA Ether-SBus</h2>
+
+<p>SAIA Ether-SBus (referred to here simply as "SBus") is the Ethernet version
+of the SBus protocol used by SAIA. The SBus client provides the ability to use
+the following SBus commands as a client:
+</p>
+
+<ul>
+	<li><strong>2</strong> - Read Flags</li>
+	<li><strong>3</strong> - Read Inputs</li>
+	<li><strong>5</strong> - Read Outputs</li>
+	<li><strong>6</strong> - Read Registers</li>
+	<li><strong>11</strong> - Write flags</li>
+	<li><strong>13</strong> - Write outputs</li>
+	<li><strong>14</strong> - Write Registers</li>
+</ul>
+
+<p>The client is implemented in the following files:
+</p>
+
+<ul>
+	<li>sbusudpclient.py</li>
+	<li>SBusMsg.py</li>
+	<li>ModbusDataLib.py</li>
+</ul>
+
+<hr>
+
+
+<h2>Standard Parameters</h2>
+
+<p>The following are the standard generic client parameters for this 
+generic client.
+</p> 
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Item</th> 
+	<th>Value</th>
+	<th>Description</th> 
+</tr>
+
+<tr>
+	<td>protocol</td>
+	<td>sbusudp</td>
+	<td>Selects SBus protocol</td>
+</tr>
+
+<tr>
+	<td>type</td>
+	<td>genericclient</td>
+	<td>Selects genericclient</td>
+</tr>
+<tr>
+	<td>clientfile</td>
+	<td>sbusudpclient.py -d 1</td>
+	<td>Specifies the name of the file used to implement the client.
+		The parameter "-d" will specify a start-up delay in seconds.</td>
+</tr>
+
+</table>
+
+
+<h3>Example:</h3>
+
+<pre class="examples">
+
+	type = genericclient
+	protocol = sbusudp
+	clientfile = sbusudpclient.py
+
+</pre>
+
+
+<hr>
+
+<h2>Client Parameters</h2>
+
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Item</th> 
+	<th>Description</th> 
+	<th>Valid Values</th>
+</tr>
+
+<tr>
+	<td>host</td>
+	<td>The name or IP address of the SBus server (PLC or field device).</td>
+	<td>Any valid host name or IP address (e.g. localhost, 127.0.0.1, etc.</td>
+</tr>
+
+<tr>
+	<td>port</td>
+	<td>The UDP port number of the SBus server.</td>
+	<td>This is normally 5050.</td>
+</tr>
+
+<tr>
+	<td>cmdtime</td>
+	<td>This is the delay time in milli-seconds between commands. </td>
+	<td>An integer greater than or equal to 0. </td>
+</tr>
+
+<tr>
+	<td>repeattime</td>
+	<td>This is the delay time in milli-seconds between repeating sets of 
+		commands. </td>
+	<td>An integer greater than or equal to 0. </td>
+</tr>
+
+<tr>
+	<td>retrytime</td>
+	<td>This is the delay time in milli-seconds between retrying commands in 
+		the event of an error. </td>
+	<td>An integer greater than or equal to 0. </td>
+</tr>
+
+<tr>
+	<td>timeout</td>
+	<td>This is the communications time-out milli-seconds.</td>
+	<td>An integer greater than or equal to 0. </td>
+</tr>
+
+</table>
+
+<h3>Example:</h3>
+
+<pre class="examples">
+
+	host = localhost
+	port = 5050
+	repeattime = 500
+	retrytime = 2000
+	cmdtime = 500
+	timeout = 1000
+
+</pre>
+
+
+<hr>
+
+<h2>Commands</h2>
+
+
+<table class="helptable"  border="1">
+<tr>
+	<th>Item</th> 
+	<th>Description</th> 
+	<th>Valid Values</th>
+</tr>
+
+<tr>
+	<td>action</td>
+	<td>This is reserved for future use.</td>
+	<td>Must always be "poll".</td>
+</tr>
+
+<tr>
+	<td>stn</td>
+	<td>The SBus "station" parameter.</td>
+	<td>0 to 255</td>
+</tr>
+
+<tr>
+	<td>cmd</td>
+	<td>The SBus command code.</td>
+	<td>Any of the supported SBus commands.</td>
+</tr>
+
+<tr>
+	<td>remoteaddr</td>
+	<td>The server (field device) data table address to read from or write to.</td>
+	<td>0 to 65,535</td>
+</tr>
+
+<tr>
+	<td>qty</td>
+	<td>The number of data elements to transfer.</td>
+	<td>1 to 128 for boolean addresses, 1 to 32 for register addresses.</td>
+</tr>
+
+<tr>
+	<td>datatype</td>
+	<td>The system data table memory type to read from or write to.</td>
+	<td>'coil', 'inp', 'holdingreg', 'inpreg'</td>
+</tr>
+
+<tr>
+	<td>dataoffset</td>
+	<td>Data offset index.</td>
+	<td>Greater than or equal to 0. Must be less than the maximum address 
+		transferred for the selected datatype.</td>
+</tr>
+
+</table>
+
+<h3>Example:</h3>
+
+<pre class="examples">
+
+	&readflag = action=poll, stn=1, cmd=2, remoteaddr=10, qty=10, datatype=coil, dataoffset=0
+	&writeflag = action=poll, stn=1, cmd=11, remoteaddr=0, qty=10, datatype=coil, dataoffset=0
+	&readreg = action=poll, stn=1, cmd=6, remoteaddr=0, qty=4, datatype=holdingreg, dataoffset=0
+	&readinp = action=poll, stn=1, cmd=3, remoteaddr=0, qty=10, datatype=coil, dataoffset=10
+	&writeoutp = action=poll, stn=1, cmd=13, remoteaddr=20, qty=10, datatype=coil, dataoffset=10
+	&writereg = action=poll, stn=1, cmd=14, remoteaddr=19, qty=10, datatype=holdingreg, dataoffset=10
+	&readoutp = action=poll, stn=1, cmd=5, remoteaddr=0, qty=10, datatype=coil, dataoffset=20
+
+</pre>
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>SAIA Ether-SBus Generic Client Configuration</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2010. Michael Griffin
+Copyright 2010, Juan Pomares
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

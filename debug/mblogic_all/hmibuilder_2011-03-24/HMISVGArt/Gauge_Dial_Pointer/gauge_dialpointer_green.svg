@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:mblogic="http://www.example.com/mblogic"
+   version="1.0"
+   width="7"
+   height="45">
+
+
+<!-- This is the actual dial pointer which we rotate. -->
+<g mblogic:widgettype="dialpointer" 
+	mblogic:widgetname="Dial Pointer"
+	mblogic:editcount="0"
+	mblogic:menu='[{"value": "", "type": "tag", "name": "Output Tag", "param": "outputtag"}, {"value": "30", "type": "int", "name": "Dial Offset", "param": "dialoffset"}, {"value": "330", "type": "int", "name": "Dial Maximum", "param": "dialmax"}, {"value": "0", "type": "int", "name": "Minimum Data Value", "param": "mindata"}, {"value": "32767", "type": "int", "name": "Maximum Data Value", "param": "maxdata"}]'
+	mblogic:inputfunc="[]"
+	mblogic:outputfunc='MBHMIProtocol.AddToDisplayList(new MB_DialGauge(document, "%(widgetid)s", %(dialoffset)s, %(dialmax)s, %(mindata)s, %(maxdata)s), "%(outputtag)s", "read");'
+	>
+
+	<g fill="green">
+		<!-- This is the centre part of the pointer. -->
+		<circle cx="0px" cy="0px" r="5px" stroke="black" stroke-width="2px"/>
+		<circle cx="0px" cy="0px" r="1px" fill="black" stroke="black" stroke-width="1px"/>
+		<!-- This is the pointer. -->
+		<polygon stroke="black" stroke-width="2px" points="-5,0 -0.6,40 0.6,40 5,0 0,5" />
+		<line x1="0" y1="5" x2="0" y2="40" stroke="black" stroke-width="1px"/>
+	</g>
+
+</g>
+
+</svg>
+

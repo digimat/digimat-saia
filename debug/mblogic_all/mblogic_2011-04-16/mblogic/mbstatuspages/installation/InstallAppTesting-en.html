@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Help - Installation Testing</title>
+
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/statussystem.html">Home</a></li>
+			<li><a href="/statuspages/statusconfigure.html">Configure</a></li>
+			<li><a href="/statuspages/statuscontrol.html">Control</a></li>
+			<li><a href="/statuspages/statusmonitor.html">Monitor Data</a></li>
+			<li><a href="/statuspages/statussysmon.html">System</a></li>
+			<li><a href="/statuspages/statusxref.html">XRef</a></li>
+			<li><a href="/helpmain.html">Help</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/helpmain.html">Help</a></li>
+			<li><a href="/general/General-en.html">General</a></li>
+			<li><a href="/statushelp/MBStatusHelp.html">System Status</a></li>
+			<li><a href="/communications/ComsIntro-en.html">Communications</a></li>
+			<li><a href="/softlogic/SLIntro-en.html">Soft Logic</a></li>
+			<li><a href="/hmi/HMIIntro-en.html">HMI</a></li>
+			<li><a href="/installation/InstallIntro-en.html">Installation</a></li>
+			<li><a href="/general/About-en.html">About</a></li>
+		</ul>
+
+		<h3>Topic Details for Installation</h3>
+		<ul>
+			<li><a href="InstallBaseApp-en.html">Installing the Base Application</a></li>
+			<li><a href="InstallTwisted-en.html">Installing Third Pary Support Software</a></li>
+			<li><a href="InstallStarting-en.html">Starting the Application</a></li>
+			<li><a href="InstallAppTesting-en.html">Testing the Application</a></li>
+			<li><a href="InstallStop-en.html">Stopping (Shutting Down) the Application</a></li>
+			<li><a href="InstallPort502-en.html">Using Port 502</a></li>
+		</ul>
+
+	</div>
+
+
+
+<div id="datadisplay">
+
+<h1>Help - Installation - Testing the Application</h1>
+
+<hr>
+
+<h2>Overview:</h2>
+
+<p>This section describes how to test the application after you have installed it.
+</p>
+
+<hr>
+
+<h2>Checking the Web Interface:<a name="Checking the Web Interface"></a></h2>
+
+<p>Check the system status web page by starting your web browser and entering 
+the following URL (this assumes you are using the sample configuration in 
+mbserver.config):
+</p>
+
+<pre class="examples">
+
+	http://localhost:8080/statussystem.html
+
+</pre>
+
+
+<p>You should see a web page titled "System Status" similar to the one shown
+below. 
+</p>
+
+<p>
+<img src="systemsummary.png" width="550" alt="Status Screen">
+</p>
+
+<p>Near the right side of the page should be a section titled "Subsystem Status".
+There should be a table with headings "Servers", "Clients", "Soft Logic",
+"Soft Logic IO", and "HMI". Each will be accompanied by a text status
+message and a coloured background status indication. 
+</p>
+
+<p>The monitoring system uses Javascript to fetch fresh data from the server
+on a regular basis. The page updates itself on a live basis and Javascript
+must be enabled to view any data. 
+</p>
+
+<hr>
+
+<h2>System Help:</h2>
+
+<p>If you can view the status system web page (see above), you will now be able
+to access the system on-line help. Click on the "Help" link in the menu near the 
+top of the stats web page.
+</p>
+
+<hr>
+
+<h2>Checking the User Help Server:</h2>
+
+<p>Check the user help system by starting your web browser and entering the 
+following URL (this assumes you are using the sample configuration in 
+mbserver.config):
+</p>
+
+<pre class="examples">
+
+	http://localhost:8081/index.html
+
+</pre>
+
+
+<p>You should see a web page titled "User Help". The default page is a place 
+holder which can be replaced with other content.
+</p>
+
+
+<hr>
+
+<h2>Running the HMI Demo:<a name="Running the HMI Demo"></a></h2>
+
+<p>Check the HMI system by starting your web browser and entering the following
+URL (this assumes you are using the sample configuration in 
+mbserver.config):
+</p>
+
+<pre class="examples">
+
+	http://localhost:8082/hmidemo.xhtml
+
+</pre>
+
+
+<p>Alternatively, the available HMI screens are listed at the bottom of the
+"configure" page. Click on the web page name to open it. 
+</p>
+
+<p>
+<img src="configsummary.png" width="400" alt="config summary">
+</p>
+
+<p>You should see a web page titled "MB-HMI Demo". You should see a number of 
+graphical elements including push buttons, pilot lights, tanks, and gauges.
+</p>
+
+<p>
+<img src="hmi_firefox_linux.png" width="250" alt="hmi page">
+</p>
+
+<p>Just above the middle of the screen on the left you should see a numeric 
+display box titled "Server Mesg ID:" the number appearing within the box 
+should be incrementing at a rate of approximately once per second. To the 
+left of this should be a box titled "Comm Status". The background of this 
+box should be green. If you see these items, the system is running correctly.
+</p>
+
+<p>The HMI demo uses vector graphics based on SVG. Most modern web browsers have
+this capability, including Firefox, Opera, Apple Safari, Google Chrome, etc.
+Some browsers based on older technology (e.g. any version of MS Internet 
+Explorer, old versions of Netscape Navigator, etc.) do not have this ability. 
+They may load but not display the page. 
+</p>
+
+<p>The demo page was developed and tested using Firefox, so that browser is 
+recommended for this test. Be sure that you have Javascript enabled, as it
+is needed to run the communications between the web page and the server.
+</p>
+
+
+
+<hr>
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - Installation - Testing the Application</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

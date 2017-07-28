@@ -1,0 +1,402 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+	<title>Help - HMI - HMI Visual Effects</title>
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Edit SVG</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Inkscape</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">Templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assemble Page</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Editing SVG with Inkscape</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Using the SVG Library with Inkscape</a></li>
+			<li><a href="/customwidgets/customwidgets.html">Custom Widgets</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">HMI web templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assembling web pages</a></li>
+			<li><a href="/hmilib/hmilib.html">HMI Javascript Client Libraries</a></li>
+			<li><a href="/basicconcepts/basicconcepts.html">Basic Concepts</a></li>
+			<li><a href="/manualpage/manualpage.html">Manual HMI Web Page Construction</a></li>
+		</ul>
+
+		<h3>Manual HMI Web Page Construction</h3>
+		<ul>
+			<li><a href="/manualpage/hmisampleslayout-en.html">Page Layout</a></li>
+			<li><a href="/manualpage/hmisamplespositioning-en.html">
+				Positioning Components on the Screen</a></li>
+			<li><a href="/manualpage/hmisamplescomms-en.html">
+				Communications, the Display List and Data Sources</a></li>
+			<li><a href="/manualpage/hmisamplesmenus-en.html">Menu Control</a></li>
+			<li><a href="/manualpage/hmisamplesalarms-en.html">
+				Events, Alarms, and System Status</a></li>
+			<li><a href="/manualpage/hmisamplesxul-en.html">
+				Mixing HTML and XUL with SVG</a></li>
+			<li><a href="/manualpage/hmisamplespushbuttons-en.html">Push Buttons</a></li>
+			<li><a href="/manualpage/hmisamplespilotlights-en.html">Pilot Lights</a></li>
+			<li><a href="/manualpage/hmisamplesnumerictext-en.html">
+				Numeric and Text Displays</a></li>
+			<li><a href="/manualpage/hmisamplesgauges-en.html">Tanks and Gauges</a></li>
+			<li><a href="/manualpage/hmisamplespipes-en.html">Piping and Pumps</a></li>
+			<li><a href="/manualpage/hmisamplesnumbinput-en.html">Numeric Inputs</a></li>
+			<li><a href="/manualpage/hmisamplesstripchart-en.html">Strip Charts</a></li>
+			<li><a href="/manualpage/hmisamplesbackground-en.html">Background Images</a></li>
+		 	<li><a href="/manualpage/hmisamplesvisualeffects-en.html">Visual Effects</a></li>
+		</ul>
+
+	</div>
+
+
+
+	<!-- Put main content here -->
+	<div id="datadisplay">
+
+<h1>Help - HMI Visual Effects</h1>
+
+<hr>
+
+<h2>Overview:</h2>
+
+<p>Numerous visual effects are possible using SVG and CSS. This section 
+describes how some of these work. This techniques can also be applied
+to other images if desired. 
+</p>
+
+
+<hr>
+
+<h2>Push Button Colours and Gradients:</h2>
+
+<p>
+<img src="pb1.png" width="96" height="96" alt="Push button">
+<img src="pb2.png" width="93" height="93" alt="Push button">
+<img src="pbrectangle.png" width="152" height="63" alt="Push button">
+<img src="pb3.png" width="91" height="91" alt="Push button">
+</p>
+
+
+<p>The push buttons in the examples shown here use colour gradients and drop 
+shadows to give a 3-D effect to their appearance. These effects are not required 
+for their function. However, their appearance does help to distinguish them from 
+other items so the operator knows they are actually buttons. The use of colour 
+gradients and drop shadows requires that certain definitions be created. These
+definitions can be shared amongst other buttons of the same colour.
+</p>
+
+<p>The button colour is determined by selecting the appropriate "id"
+and using it as the "fill" property.
+</p>
+
+<h3>SVG</h3>
+
+<pre class="examples">
+
+	&lt;!-- These are some definitions which are used below. --&gt;
+	&lt;defs&gt;
+		&lt;!-- These apply a linear colour gradient across the buttons. 
+			More colours can be added as needed. They only apply to the
+			current SVG section, and so have to be repeated if we need them 
+			elsewhere. --&gt;
+		&lt;!-- Red gradients. --&gt;
+		&lt;linearGradient id="MB_RedGradient" 
+				x1="1" y1="1" x2="0" y2="0"&gt;
+			&lt;stop offset="50%" stop-color="red" /&gt;
+			&lt;stop offset="100%" stop-color="white" /&gt;
+		&lt;/linearGradient&gt;
+
+		&lt;!-- Yellow gradients. --&gt;
+		&lt;linearGradient id="MB_YellowGradient" 
+				x1="1" y1="1" x2="0" y2="0"&gt;
+			&lt;stop offset="50%" stop-color="yellow" /&gt;
+			&lt;stop offset="100%" stop-color="white" /&gt;
+		&lt;/linearGradient&gt;
+
+		&lt;!-- Orange gradients. --&gt;
+		&lt;linearGradient id="MB_OrangeGradient" 
+				x1="1" y1="1" x2="0" y2="0"&gt;
+			&lt;stop offset="50%" stop-color="orange" /&gt;
+			&lt;stop offset="100%" stop-color="white" /&gt;
+		&lt;/linearGradient&gt;
+
+		&lt;!-- Green Gradients. --&gt;
+		&lt;linearGradient id="MB_GreenGradient" 
+				x1="1" y1="1" x2="0" y2="0"&gt;
+			&lt;stop offset="50%" stop-color="green" /&gt;
+			&lt;stop offset="100%" stop-color="white" /&gt;
+		&lt;/linearGradient&gt;
+
+		&lt;!-- Blue gradients. --&gt;
+		&lt;linearGradient id="MB_BlueGradient" 
+				x1="1" y1="1" x2="0" y2="0"&gt;
+			&lt;stop offset="50%" stop-color="blue" /&gt;
+			&lt;stop offset="100%" stop-color="white" /&gt;
+		&lt;/linearGradient&gt;
+
+			&lt;!-- Violet gradients. --&gt;
+		&lt;linearGradient id="MB_VioletGradient" 
+				x1="1" y1="1" x2="0" y2="0"&gt;
+			&lt;stop offset="50%" stop-color="violet" /&gt;
+			&lt;stop offset="100%" stop-color="white" /&gt;
+		&lt;/linearGradient&gt;
+
+		&lt;!-- Indigo Gradients. --&gt;
+		&lt;linearGradient id="MB_IndigoGradient" 
+				x1="1" y1="1" x2="0" y2="0"&gt;
+			&lt;stop offset="50%" stop-color="indigo" /&gt;
+			&lt;stop offset="100%" stop-color="white" /&gt;
+		&lt;/linearGradient&gt;
+
+		&lt;!-- Grey Gradients. --&gt;
+		&lt;linearGradient id="MB_GreyGradient" 
+				x1="1" y1="1" x2="0" y2="0"&gt;
+			&lt;stop offset="50%" stop-color="grey" /&gt;
+			&lt;stop offset="100%" stop-color="white" /&gt;
+		&lt;/linearGradient&gt;
+
+		&lt;!-- Black Gradients. --&gt;
+		&lt;linearGradient id="MB_BlackGradient" 
+				x1="1" y1="1" x2="0" y2="0"&gt;
+			&lt;stop offset="50%" stop-color="black" /&gt;
+			&lt;stop offset="100%" stop-color="white" /&gt;
+		&lt;/linearGradient&gt;
+
+		&lt;linearGradient id="MB_SilverGradient" 
+				x1="1" y1="1" x2="0" y2="0"&gt;
+			&lt;stop offset="50%" stop-color="silver" /&gt;
+			&lt;stop offset="100%" stop-color="white" /&gt;
+		&lt;/linearGradient&gt;
+
+		&lt;!-- The following filter is used to add a drop shadown. --&gt;
+		&lt;filter id="MB_DropShadowFilter"&gt;
+			&lt;feGaussianBlur stdDeviation="2"&gt;
+			&lt;/feGaussianBlur&gt;
+		&lt;/filter&gt;
+
+	&lt;/defs&gt;
+
+</pre>
+
+<hr>
+
+<h2>Push Button Animation Using CSS:</h2>
+
+<p>Another visual effect used is to "animate" the button using CSS (Cascading
+Style Sheets). CSS is a standard web technology which is used to apply 
+common styles to web pages. The style is applied to each button by enclosing
+it in a group with the class class="svgbuttondef". A "class" is used for style
+rather than "id" due to the rules of CSS. This however does allow both an "id"
+and a "class" to be assigned to the same thing. 
+</p>
+
+<p>This produces two effects. The "stroke" (border) of the button turns
+white when clicked. This is applied by the "active" CSS propery (stroke: white;).
+The other effect is for the border to widens slightly when the mouse passes 
+over it. This is applied by the "hover" property (stroke-width is changed
+from 5 to 7).  
+</p>
+
+<p>The following shows a push button in the normal state, and when activated.
+</p>
+
+<p>
+<img src="pb2.png" width="96" height="93" alt="Push button">
+<img src="pb2activate.png" width="91" height="91" alt="Push button">
+<img src="sswitch2.png" width="112" height="132" alt="selector switch">
+<img src="sswitch2activate.png" width="106" height="125" alt="selector switch">
+</p>
+
+<p>Different types of buttons may need slightly different styles in order to
+adjust the stroke width to the characteristics of the button. Using CSS is the 
+recommended method for providing push button feedback.
+</p>
+
+<pre class="examples">
+
+	/* The following style is used to animate SVG push buttons. It causes the 
+		outline (stroke) of the button to reverse when activated. */
+
+	/*  Regular push buttons. */
+	.buttonactivate {
+		stroke: black;
+		stroke-width: 5px;
+	}
+	
+	.buttonactivate:hover {
+		stroke: black;
+		stroke-width: 7px;
+	}
+	
+	.buttonactivate:active {
+		stroke: white;
+		stroke-width: 5px;
+	}
+
+	/* Selector switches. */
+	.sswitchactivate {
+		stroke: black;
+		stroke-width: 2px;
+	}
+	
+	.sswitchactivate:hover {
+		stroke: black;
+		stroke-width: 3px;
+	}
+	
+	.sswitchactivate:active {
+		stroke: white;
+		stroke-width: 4px;
+	}
+	
+	
+	/* Small triangular buttons. */
+	.tributton {
+		stroke: black;
+	}
+	
+	.tributton:hover {
+		stroke: black;
+	}
+	
+	.tributton:active {
+		stroke: white;
+	}
+
+</pre>
+
+<hr>
+
+<h2>Push Button Animation Using Javascript:</h2>
+
+<p>
+<img src="pb3.png" width="91" height="91" alt="Push button">
+<img src="pb3activate.png" width="91" height="91" alt="Push button">
+</p>
+
+
+<p>Animating the push buttons using CSS is simple and effective. If however
+it is desired to apply a different effect, it is possible to alter push
+button properties using Javascript.
+</p>
+
+<p>The following example is not explained in detail. However, a Javascript
+HMI library function is used to reverse the colour gradients (linerGradient)
+when the mouse button is pressed or released.
+</p>
+
+<pre class="examples">
+
+	&lt;!-- We group a pilot light and push button so we
+		can move them around together . --&gt;
+	&lt;g transform="translate(835,310)"&gt;
+		&lt;!-- This shows a octagonal pilot light. --&gt;
+		&lt;g id="PL3"&gt;
+			&lt;use xlink:href="#MB_PilotLightOctagonal" /&gt;
+		&lt;/g&gt;
+
+		&lt;!-- This applies a linear colour gradient across the button. 
+			We need to manipulate this gradient for what we are doing 
+			here, so this button needs its own gradient. --&gt;
+		&lt;linearGradient id="PB3Gradient" x1="1" y1="1" x2="0" y2="0"&gt;
+			&lt;stop id="PB3Gradient1" offset="50%" stop-color="blue" /&gt;
+			&lt;stop id="PB3Gradient2" offset="100%" stop-color="white" /&gt;
+		&lt;/linearGradient&gt;
+	
+		&lt;!-- This also shows a maintained push button. However, this version uses
+		Javascript to animate the button instead of CSS. --&gt;
+		&lt;g transform="translate(100,0)" fill="url(#PB3Gradient)"
+			onmousedown="MBHMIProtocol.WriteToggleImmediate('PB3', 'PL3');
+			PB3svg.ButtonPressed();"
+			onmouseup="PB3svg.ButtonReleased();"
+			onmouseout="PB3svg.ButtonReleased();"&gt;
+		
+ 			&lt;!-- This is the actual button. --&gt;
+			&lt;use xlink:href="#MB_SquarePB" /&gt;
+ 			&lt;!-- This is the text label. --&gt;
+			&lt;text x="0" y="8" font-size="24" stroke-width="2px" 
+				stroke="black" fill="black"
+					text-anchor="middle"&gt;PB3&lt;/text&gt; 
+		&lt;/g&gt;
+
+	&lt;/g&gt;
+
+</pre>
+
+<h3>Javascript</h3>
+
+<p>This shows how the button gradient is animated using Javascript.
+</p>
+
+<pre class="examples">
+
+	// This demonstrates using Javascript to give operator feedback when
+	// pressing a push button. This is an alternative to using CSS.
+	var PB3svg = new MB_SVGPushButton(document, "PB3Gradient1", "PB3Gradient2");
+
+</pre>
+
+
+<hr>
+
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - HMI Visual Effects</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+

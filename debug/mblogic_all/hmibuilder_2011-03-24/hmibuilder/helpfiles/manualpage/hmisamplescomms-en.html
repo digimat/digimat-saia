@@ -1,0 +1,552 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+	<title>Help - HMI - HMI Communications and the Display List</title>
+<link rel="icon" type="image/png" href="/systemicon.png">
+<!-- General page layout style sheet. -->
+<link rel="stylesheet" href="/helppagelayout.css" type="text/css">
+</head>
+
+<body>
+<div id="filler">
+
+	<div id="header">
+		<p class="headlogo">
+			<img src="/systemlogo.png" width="200" alt="MB Logic Logo"/>
+			<span class="headtitle1">MBLogic </span>
+			<span class="headtitle2"> for an open world in automation</span>
+		</p>
+	</div>
+
+
+
+	<!-- This is the standard nav bar. -->
+	<div id="nav">
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Edit SVG</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Inkscape</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">Templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assemble Page</a></li>
+		</ul>
+	</div>
+
+
+<hr>
+
+	<!-- This is the help system nav bar. -->
+	<div id="helpnav">
+		<h2>Help Topics</h2>
+		<ul>
+			<li><a href="/index.html">Home</a></li>
+			<li><a href="/svgedit/svgedit.html">Editing SVG with Inkscape</a></li>
+			<li><a href="/svglib/svglib.html">SVG Library</a></li>
+			<li><a href="/svglibedit/svglibedit.html">Using the SVG Library with Inkscape</a></li>
+			<li><a href="/customwidgets/customwidgets.html">Custom Widgets</a></li>
+			<li><a href="/hmitemplates/hmitemplates.html">HMI web templates</a></li>
+			<li><a href="/hmibuilder/hmibuilder.html">Assembling web pages</a></li>
+			<li><a href="/hmilib/hmilib.html">HMI Javascript Client Libraries</a></li>
+			<li><a href="/basicconcepts/basicconcepts.html">Basic Concepts</a></li>
+			<li><a href="/manualpage/manualpage.html">Manual HMI Web Page Construction</a></li>
+		</ul>
+
+		<h3>Manual HMI Web Page Construction</h3>
+		<ul>
+			<li><a href="/manualpage/hmisampleslayout-en.html">Page Layout</a></li>
+			<li><a href="/manualpage/hmisamplespositioning-en.html">
+				Positioning Components on the Screen</a></li>
+			<li><a href="/manualpage/hmisamplescomms-en.html">
+				Communications, the Display List and Data Sources</a></li>
+			<li><a href="/manualpage/hmisamplesmenus-en.html">Menu Control</a></li>
+			<li><a href="/manualpage/hmisamplesalarms-en.html">
+				Events, Alarms, and System Status</a></li>
+			<li><a href="/manualpage/hmisamplesxul-en.html">
+				Mixing HTML and XUL with SVG</a></li>
+			<li><a href="/manualpage/hmisamplespushbuttons-en.html">Push Buttons</a></li>
+			<li><a href="/manualpage/hmisamplespilotlights-en.html">Pilot Lights</a></li>
+			<li><a href="/manualpage/hmisamplesnumerictext-en.html">
+				Numeric and Text Displays</a></li>
+			<li><a href="/manualpage/hmisamplesgauges-en.html">Tanks and Gauges</a></li>
+			<li><a href="/manualpage/hmisamplespipes-en.html">Piping and Pumps</a></li>
+			<li><a href="/manualpage/hmisamplesnumbinput-en.html">Numeric Inputs</a></li>
+			<li><a href="/manualpage/hmisamplesstripchart-en.html">Strip Charts</a></li>
+			<li><a href="/manualpage/hmisamplesbackground-en.html">Background Images</a></li>
+		 	<li><a href="/manualpage/hmisamplesvisualeffects-en.html">Visual Effects</a></li>
+		</ul>
+
+	</div>
+
+
+
+	<!-- Put main content here -->
+	<div id="datadisplay">
+
+<h1>Help - HMI Communications and the Display List</h1>
+
+<hr>
+
+<h2>Overview:</h2>
+
+<p>This topic addresses communications between the client web page and the 
+server, and also how the <i>display list</i> is used to update the screens
+with the new data.
+</p>
+
+
+<hr>
+
+<h2>Communications:</h2>
+
+<h3>Communications Cycle:</h3>
+
+<p>Communications between the client (web browser) and the HMI server takes
+place over HTTP. HTTP is the standard web protocol carried over TCP/IP. The
+client regularly polls the server requesting data which it displays on its
+web page. Unlike traditional web pages, this polling takes place continuously,
+not just when the web page is loaded. This is often called "AJAX" 
+(Asynchronous Javascript And XML). The process works as follows:    
+</p>
+
+<ol>
+	<li>The user asks the web browser to load the web page containing the HMI
+		application.</li>
+	<li>The web browser asks the web server for the web page.</li>
+	<li>The web server sends the requested web page to the browser.</li>
+	<li>The web browser scans the page for links to additional files, including 
+		external Javascript, CSS, and static graphics (e.g. PNG files).</li>
+	<li>The web browser asks for each of these files, which the web server
+		sends in response.</li>
+	<li>When all the parts of the web page has been received, the web
+		browser executes the "in-line" Javascript code. This is where the
+		HMI objects such as push buttons, pilot lights, and other devices
+		are initialised. </li>
+	<li>The function identified by the page's	"onload" is executed.</li>
+	<li>The "onload" function sets up a call to a polling function which
+		gets called repeatedly on a timed basis.</li>
+	<li>This polling function calls the communications library to send a 
+		request to the server and to handle the response. </li>
+	<li>When the response arrives, the communications library uses the response
+		data to update the screen.</li>
+	<li>The polling cycle is repeated indefinitely. </li>
+</ol>
+
+<h3>Synchronous Versus Asynchronous Communications:</h3>
+
+<p>Synchronous communications is where the client (web browser) waits for a 
+response from the server before proceeding with any other tasks it may have. 
+Asynchronous communications is where the client does not wait for the response
+before proceeding with other tasks. Although the first "A" in "AJAX" stands for 
+"Asynchronous", there is no requirement for the communications to actually be
+asynchronous. The HMI protocol communications library allows for both options. 
+</p>
+
+<p>Synchronous communications is simpler than asynchronous communications and 
+may be easier to understand and debug. If the client and server have fast
+and reliable communications with one another then asynchronous communications
+has no real advantage. Asynchronous communications is better where the 
+communications may be unreliable. If a request fails, the client can 
+automatically try again instead of waiting indefinitely for a response.   
+</p>
+
+
+<h3>Tags:</h3>
+
+<p>The data to be polled is defined by HMI "tags". A tag is an alias for a 
+server data table memory address. The HMI server may obtain this data from
+another device (e.g. a PLC or I/O field device), but ultimately, there is
+a source of data. A tag must be defined in the server before the client
+can request to read or write it.  
+</p>
+
+<p>All tag names used by the client must be defined before hand. There are
+several types of tags.   
+</p>
+
+<ul>
+	<li>Ordinary "address tags" represent data able addresses directly are 
+		used with things like push buttons and pilot lights. </li>
+	<li>Alarm and event tags are not accessed directly. Instead, they are
+		requested by asking for the alarm or event zone(s) they are associated
+		with. This means it is not necessary to define each alarm or event tag,
+		but it is necessary to define the zones which will be used. </li>
+	<li>Some protocol features are accessed in a manner similar to tags, 
+		although they are not themselves actually tags and are not defined
+		in the server. </li>
+</ul>
+
+<p>Tags which are to be read on a cyclical basis are defined by listing them 
+in Javascript arrays and passing the arrays to the communications library 
+when it is initialised. Address tags are defined in the "read list". Alarm 
+zones are defined in the alarm "zone list". Event zones are defined in the
+event "zone list". 
+</p>
+
+<p>Tags which are written to are defined directly in the function which is
+responsible for initiating the write operation. Only address tags are written
+to. It is not possible to write to a zone tag (or an event or alarm tag).
+It is possible to read and write to the same tag, provided the server will
+permit it. Some tags may be write protected, in which case attempting to write
+to them will return an error. 
+</p>
+
+
+<h3>Javascript:</h3>
+
+
+<p>This shows how the communications is initialised in the "in-line"
+javascript. Firs the read list and zone lists are defined. Then the 
+communications object is initialised with the host name, port, client ID
+string, the read and zone lists, and a flag indicating whether the 
+communications should be synchronous or asynchronous.
+</p>
+
+<p>This should be done <em>once</em> and once only when a web client is
+started. All communications has to go through one point, and the web client
+can only talk to one server.
+</p>
+
+<pre class="examples">
+
+	// Make a list of all the address tags to be monitored. This is what we
+	// send to the server asking for values.
+	var ReadList = ["PL1", "PL2", "PL3", "PL4", "PB5", "PLWriteProt", 
+		"Tank1Level", "Tank2Level", "Tank1Number", "Tank2Number",  
+		"PumpSpeedCmd", "PumpSpeedActual", 
+		"StripChart1", "StripChart2",
+		"Testholdingreg32", "Testholdingregfloat",  
+		"Testholdingregdouble", "Testholdingregstr8",  
+		"Testholdingregstr16"];
+
+	// Make a list of the alarm and event zones to be monitored. Zones are
+	// used to filter alarms and events to only those we are interested in. 
+	var AlarmZoneList = ["zone1", "zone2", "zone3"];
+	var EventZoneList = ["zone1", "zone2", "zone3"];
+
+	/* This handles communications with the server. The configuration
+	parameters are read from a file. The final parameter enables asynchronous
+	communications. */
+
+	/* This handles communications with the server. 
+	The parameters are: 
+		1) The host name the web page was loaded from.
+		2) The port number the web page was loaded from. 
+		3) The client ID string.
+		4) The list of tags to poll for data.
+		5) The list of alarm zones to poll for new alarms.
+		6) The list of event zones to poll for new events.
+		7) true = Enable asynchronous communications.
+	The first two parameters use a standard Javascript feature.
+	Alternatively, these can be hard coded values if the host
+	and port are known in advance.
+	*/
+	var MBHMIProtocol = new HMIClient(window.location.hostname, 
+				window.location.port, "HMI 9876 from Water Pressure INC.", 
+				ReadList, AlarmZoneList, EventZoneList, true);
+
+</pre>
+
+
+<p>This defines the "on-load" function to execute. This is located at 
+the start of the page body, near the top of the web page. This must always 
+be present in some form.
+</p>
+
+<pre class="examples">
+
+	&lt;!-- This gets executed when the page is done loading. --&gt;
+	&lt;body onload="pageinit();"&gt;
+
+</pre>
+
+<p>This is the function which actually gets executed by the "onload". It can
+also perform any other initialisation operations that must be done once on
+start up. 
+</p>
+
+<pre class="examples">
+
+	// Start up and initialisation.
+	function pageinit() {
+
+		// Call the function back again at the set interval.
+		window.setTimeout("RunScanCycle()",500);
+	}
+
+</pre>
+
+<p>This function gets started by "pageinit", and then sets up a call to itself
+(a "call-back") on a regular basis thereafter. This example does the following:
+</p>
+
+<ul>
+	<li>MBHMIProtocol.SendRequest sends the request to the server. If synchronous 
+		communications was selected, it waits for a response. If asynchronous 
+		communications was selected, it returns immediately. </li>
+	<li>The call to MBHMIProtocol.CommsWatchDogTimeOut checks for a 
+		communications time-out. This is only useful when using asynchronous 
+		communications. When the request is sent, a timer is started. When the 
+		response is received, the timer is reset. A call to CommsWatchDogTimeOut 
+		will check to see if the time (specified in seconds in the parameter) 
+		has been exceeded. </li>
+	<li>An "if" statement is used to decide what to do in the events of a 
+		communications time out.</li>
+	<li>Finally, a call to the standard Javascript function "setTimeout" is
+		used to set up RunScanCycle to run again. This takes the function name
+		as the first parameter, and a time in milliseconds as the second
+		parameter. </li>
+</ul>
+
+<pre class="examples">
+
+	// Run all the operations required each scan cycle.
+	function RunScanCycle() {
+
+		// Query the server for updates.
+		MBHMIProtocol.SendRequest();
+
+		// Check the comms watch dog counters.
+		ComsTimeOut = MBHMIProtocol.CommsWatchDogTimeOut(10);
+		if (ComsTimeOut) {
+			CommWD.UpdateScreen(1);
+		} else {
+			CommWD.UpdateScreen(0);
+		}
+
+		// Call the function back again at the set interval.
+		// The time interval should be set to a larger value.
+		// on very slow computers.
+		window.setTimeout("RunScanCycle()", 1500);
+		
+	}
+
+</pre>
+
+
+<h3>Javascript Library Functions:</h3>
+
+<p>The following Javascript library functions are useful for this feature:
+</p>
+
+<ul>
+	<li>HMIClient</li>
+</ul>
+
+<hr>
+
+<h2>Standard HMI Javascript Libraries:</h2>
+
+<h3>The Javascript Programming Language:</h3>
+
+<p>Much of the web client HMI functionality is implemented using Javascript.
+Javascript is the standard programming language built into almost all web
+browsers. Despite the similarity in names, "Javascript" is not related to 
+"Java" (another programming language), and in fact has only slight 
+similiarties to Java. Javascript is executed directly in the web browser and 
+is the normal means of providing programmability for web applications. 
+</p>
+
+<p>The Javascript programming language is standardised and is very similar in 
+all web browsers, except for Microsoft's Internet Explorer, which uses its own
+proprietary dialect. If you are reading any reference material for Javascript,
+make sure that the material isn't refering to Microsoft's proprietary dialect. 
+</p>
+
+<h3>HMI Libraries:</h3>
+
+<p>The HMI system provides several standard libraries to implement its
+functionality these are:
+</p>
+
+<ul>
+	<li><strong><em>libhmiclient.js</em></strong> - This is the HMI 
+		communications library which is responsible for conducting communications
+		between the web browser and the server.</li>
+	<li><strong><em>libmbhmi.j</em></strong> - This is the client display 
+		library which provides means of manipulating graphical objects such as 
+		push buttons, pilot lights, and other display elements.</li>
+	<li><strong><em>libmbevents.js</em></strong> - This is the client event 
+		library which provides means of handling events, alarms, and communications
+		errors.</li>
+	<li><strong><em>json2.js</em></strong> - This is a third party library which
+		provides the JSON protocol encoding between the web browser and the 
+		server. Newer web browsers are implementing this function directly in
+		the browser itself, which means this library to eventually be
+		eliminated. </li>
+</ul>
+
+<h3>HMI Library Loading:</h3>
+
+<p>The standard HMI Javscript libraries are not stored in the same directory
+as the user HMI application. Instead they are stored in a library directory 
+called <em>"hmilib"</em>. This allows the user written HMI components to be
+easily identified for backup, and it also allows the application software
+to be upgraded without interfering with the user HMI web pages.
+</p>
+
+<p>When a web browser requests an HMI web page, the system looks 
+<strong><em>first</em></strong> in the user HMI web page directory 
+(<em>hmipages</em>). If the file is not found there, the system looks 
+<strong><em>next</em></strong> in the library directory (<em>"hmilib"</em>). 
+If the file is not found there, then an error is assumed and the system will 
+return a standard file not found response.
+</p>
+
+<p>This order allows the standard libraries to be replaced by customised
+versions simply by placing the customised version in the user HMI web page 
+directory. If the requested file is found in the user HMI web page directory,
+the system will not look for it in the library directory.
+</p>
+
+<p>However, it is not recommended to substitute files in this manner. If there
+is a reason to use a customised version of a library, it is better to simply
+give it a new name, place it into the HMI web page directory and to import 
+it into the web page using that name rather that the standard one. The system 
+does not attempt to track which libraries were imported, so there is no need 
+to use the same file names. 
+</p>
+
+<hr>
+
+<h2>Display List:</h2>
+
+<h3>Creating the Display List:</h3>
+
+<p>The "display list" is a list of HMI objects inside the communications library
+which is called to update the display when a response is received from the 
+server. The objects in the display list will be things such as pilot lights, 
+numeric and text displays, alarms, events, and other display objects.     
+</p>
+
+<p>An object is added to the display list by the following means.
+</p>
+
+<ul>
+	<li>The communications library must be initialised (see above). This is
+		required first because the display list is held inside the communications
+		object. Therefore, the communications must be ready to receive the display
+		list before anything can be added to it. </li>
+	<li>The display object (e.g. pilot light) must first be initialised. Some 
+		examples of pilot lights being initialised are shown below. </li>
+	<li>Each display object is then added to the end of the display list by 
+		calling the protocol library function "AddToDisplayList" (see some 
+		examples below). </li>
+</ul>
+
+<h3>Updating the Display:</h3>
+
+<p>When a response is received from the server, the communications library goes
+through the display list and calls each display object's "UpdateScreen" function
+(method) and passed the new data to it. The display object is responsible for
+knowing what to do with the data in order to update the screen.  
+</p>
+
+<p>Most HMI library objects only redraw their data on the screen if the data 
+has changed. However, some must redraw the screen each time they are called 
+because they operate continuously (e.g. strip charts). 
+</p>
+
+<p>An object is compatible with the display list if it contains an 
+"UpdateScreen" function that takes one parameter.
+</p>
+
+
+<h3>Display List Tag Types:</h3>
+
+<p>AddToDisplayList takes three parameters. The first is the object which is 
+to be added to the list, the second is the address tag which is to be monitored,
+and the third is the "tag type". The "tag type" tells the communications library
+where the source of the data is, and in some cases will over-ride the address
+tag parameter. 
+</p>
+
+<p>The display list tag types are:
+</p>
+
+<ul>
+	<li>read - The address tag data that was read from the server. </li>
+	<li>timestamp - The response message time stamp. This is a Unix epoch time
+		value (seconds since GMT midnight on the 1st of January 1970. 
+		</li>
+	<li>serverid - The id string identifying the server. </li>
+	<li>stat - The message status. "ok" indicates the message was OK.</li>
+	<li>msgid - The message id number. This is generated by the client and
+		echoed back by the server. This should change each cycle. </li>
+	<li>alarms - Any alarms from the server. </li>
+	<li>alarmhistory - The alarm history buffer. </li>
+	<li>events - The event buffer. </li>
+	<li>errors - The error buffer. </li>
+	<li>status - The status message buffer. </li>
+</ul>
+
+<p>If the tag type is "read", the address tag parameter determines the source
+of the data. If the tag type is any other value, the address tag parameter is
+ignored and the appropriate data source is selected. 
+</p>
+
+
+<h3>Javascript:</h3>
+
+<pre class="examples">
+
+	// This defines a pilot light control.
+	var PL1 = new MB_PilotLight(document, "PL1", "black", "green", "red");
+	var PL2 = new MB_PilotLight(document, "PL2", "black", "green", "red");
+	var PL3 = new MB_PilotLight(document, "PL3", "black", "blue", "yellow");
+	var ColourList = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"]; 
+	var PL4 = new MB_PLMultiColour(document, "PL4", "black", ColourList);
+	var PB5 = new MB_PilotLight(document, "PB5", "black", "violet", "orange");
+
+	// Now, add each of these screen objects to the list of things to update.
+	MBHMIProtocol.AddToDisplayList(PL1, "PL1", "read");
+	MBHMIProtocol.AddToDisplayList(PL2, "PL2", "read");
+	MBHMIProtocol.AddToDisplayList(PL3, "PL3", "read");
+	MBHMIProtocol.AddToDisplayList(PL4, "PL4", "read");
+	MBHMIProtocol.AddToDisplayList(PB5, "PB5", "read");
+
+</pre>
+
+
+<h3>Javascript Library Functions:</h3>
+
+<p>The following Javascript library functions are useful for this feature:
+</p>
+
+<ul>
+	<li>The HMI protocol library.</li>
+</ul>
+
+<hr>
+
+
+</div>
+
+
+<!-- Standard footer -->
+<div id="footer">
+	<p>Help - HMI Communications and the Display List</p>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<!-- Copyright 2009. Michael Griffin
+This file is part of MBLogic.
+MBLogic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+MBLogic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with MBLogic. If not, see <http://www.gnu.org/licenses/>.
+ -->
+
