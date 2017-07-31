@@ -2,7 +2,6 @@ import time
 import struct
 
 from request import SAIARequestReadStationNumber
-from request import SAIARequestReadItem
 from request import SAIARequestReadFlags
 from request import SAIARequestWriteFlags
 from request import SAIARequestReadInputs
@@ -152,7 +151,7 @@ class SAIALink(object):
 
     def readInputs(self, index, count=1):
         if self.isIdle():
-            request=SAIARequestReadFlags(self)
+            request=SAIARequestReadInputs(self)
             request.setup(index, count)
             return self.initiate(request)
 

@@ -351,7 +351,7 @@ class SAIARequestWriteRegisters(SAIARequest):
         self.ready()
 
     def encode(self):
-        # ----------------TODO-----------------------
+        # TODO: -----------------------
         data=listin2bin(self._values)
 
         # bytecount = number item to write (as msg length + 2)

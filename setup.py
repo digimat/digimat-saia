@@ -2,8 +2,8 @@ from setuptools import setup, find_packages
 
 setup(
     name='digimat.saia',
-    version='0.0.1',
-    description='Digimat Saia EtherSBus implementation',
+    version='0.0.2',
+    description='Digimat Saia EtherSBus (partial) client->server implementation',
     namespace_packages=['digimat'],
     author='Frederic Hess',
     author_email='fhess@splust.ch',

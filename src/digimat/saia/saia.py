@@ -1,22 +1,35 @@
 import time
 import socket
 
-# from threading import RLock
-# from threading import Event
-# from threading import Thread
-
 import logging
 import logging.handlers
-
-# from SBusMsg import SBusClientMessages
-# from SBusMsg import SBusServerMessages
 
 from digimat.jobs import JobManager
 
 from server import SAIAServer
 
-# SBus hints
-# https://github.com/boundary/wireshark/blob/master/epan/dissectors/packet-sbus.c
+# NOTICE
+# ------
+#
+# This is a *partial* EtherSbus Implementation, allowing us (digimat.ch) to communicate with
+# SAIA devices. Still in *alpha* phase
+#
+# SBus protocol (Serial or UDP) implementation is not public (bad point)
+# So, reading Open Source projects is your best way to success
+# Some good starting points may be :
+#
+# -- https://github.com/boundary/wireshark/blob/master/epan/dissectors/packet-sbus.c
+# -- http://mblogic.sourceforge.net/mbtools/sbpoll.html
+#
+# Using the SAIA PG5 debugger may also help understanding how things works.
+# Wireshark (as mentionned above) has ain excellent protocol decoder and you will find .pcap samples.
+#
+# Don't forget that the SAIA dynamic addressing *won't* be your friend here ! Think to fix
+# to static addresses all flags/registers you want to access.
+#
+# Frederic Hess
+# S+T S.A (www.st-sa.ch)
+# fhess@st-sa.ch
 
 
 class SAIAClient(object):
@@ -143,11 +156,12 @@ class SAIAClient(object):
                 if server:
                     try:
                         server.onMessage(data)
-                        return True
                     except:
                         self.logger.exception('onMessage()')
                 else:
                     self.logger.warning('unregistered server!')
+
+                return True
         except:
             pass
 
