@@ -532,7 +532,7 @@ boolhexlist = {
 # Create a new dictionary by inverting hexlist. The keys must be tuples,
 # as lists are not hashable.
 def MakeBoolHex():
-    return dict([(tuple(j), i) for i, j in boolhexlist.iteritems()])
+    return dict([(tuple(j), i) for i, j in boolhexlist.items()])
 boolhexlistinvert = MakeBoolHex()
 
 

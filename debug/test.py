@@ -1,14 +1,20 @@
 import time
-from digimat.saia import SAIAClient
+from digimat.saia import SAIANode
 
-c=SAIAClient()
+node=SAIANode()
 
-s=c.registerServer('192.168.0.45')
-f=s.memory.flags[1]
+s=node.registerServer('127.0.0.1')
+s.flags[5].on()
 
-s.dump()
+# s=node.registerServer('192.168.0.45')
 
+node.start()
 
-c.start()
-time.sleep(20.0)
-c.stop()
+while True:
+    try:
+        time.sleep(1.0)
+        node.server.dump()
+    except:
+        break
+
+node.stop()

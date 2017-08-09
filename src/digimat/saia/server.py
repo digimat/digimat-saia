@@ -1,17 +1,17 @@
 import time
 import struct
 
-from request import SAIARequestReadStationNumber
-from request import SAIARequestReadFlags
-from request import SAIARequestWriteFlags
-from request import SAIARequestReadInputs
-from request import SAIARequestReadOutputs
-from request import SAIARequestWriteOutputs
-from request import SAIARequestReadRegisters
-from request import SAIARequestWriteRegisters
+from .request import SAIARequestReadStationNumber
+from .request import SAIARequestReadFlags
+from .request import SAIARequestWriteFlags
+from .request import SAIARequestReadInputs
+from .request import SAIARequestReadOutputs
+from .request import SAIARequestWriteOutputs
+from .request import SAIARequestReadRegisters
+from .request import SAIARequestWriteRegisters
 
-from request import SAIASBusCRC
-from memory import SAIAMemory
+from .request import SAIASBusCRC
+from .memory import SAIAMemory
 
 
 class SAIALink(object):
@@ -94,7 +94,7 @@ class SAIALink(object):
                     return
 
                 if self._request.consumeRetry():
-                    if self.server.client.sendMessageToHost(self._request.data, self.server.host):
+                    if self.server.node.sendMessageToHost(self._request.data, self.server.host):
                         self._timeoutXmitInhibit=time.time()+self._delayXmitInhibit
                         self.setState(SAIALink.COMMSTATE_WAITRESPONSE, 2.0)
                         return
@@ -193,25 +193,24 @@ class SAIALink(object):
                     (msize, mversion, mtype, msequence, tattribute,
                         payload, mcrc)=struct.unpack('>LBBHB %ds H' % sizePayload, data)
                 else:
+                    # TODO: can this cas happend ?
                     payload=None
                     (msize, mversion, mtype, msequence, tattribute,
                         mcrc)=struct.unpack('>LBBHB H', data)
 
             if mcrc==SAIASBusCRC(data[0:-2]):
-                self.logger.debug('RX type %d seq %d payload %d bytes' % (tattribute, msequence, sizePayload))
+                self.logger.debug('RX msg type %d seq %d payload %d bytes' % (tattribute, msequence, sizePayload))
                 return (tattribute, msequence, payload)
 
             self.logger.error('bad size/crc')
         except:
             self.logger.exception('decodeMessage')
 
-    def onMessage(self, data):
+    def onMessage(self, mtype, mseq, payload):
         try:
-            (mtype, mseq, payload)=self.decodeMessage(data)
-            print "<--MESSAGE", mtype, mseq, len(payload)
-
             if mtype==0:    # Request
-                print "TODO: Process RemoteRequest?"
+                # must be intercepted at higher level
+                pass
 
             elif mtype==1:  # Response
                 if self.isWaitingResponse():
@@ -226,7 +225,7 @@ class SAIALink(object):
                 if self.isWaitingResponse():
                     if self._request.validateMessage(mseq):
                         try:
-                            code=int(payload[0])
+                            (code,)=struct.unpack('>B', payload[0])
                             result=bool(code)
                             self.reset(result)
                         except:
@@ -237,11 +236,11 @@ class SAIALink(object):
 
 
 class SAIAServer(object):
-    def __init__(self, client, host, lid=None):
-        self._client=client
+    def __init__(self, node, host, lid=None, localNodeMode=False):
+        self._node=node
         self._host=host
         self._lid=lid
-        self._memory=SAIAMemory(self)
+        self._memory=SAIAMemory(self, localNodeMode)
         self._link=SAIALink(self)
         self.setLid(lid)
 
@@ -264,7 +263,7 @@ class SAIAServer(object):
         try:
             if self.isLidValid(lid):
                 self._lid=lid
-                self.client.declareServerLid(self, lid)
+                self.node.declareServerLid(self, lid)
         except:
             pass
 
@@ -273,12 +272,12 @@ class SAIAServer(object):
         return self._host
 
     @property
-    def client(self):
-        return self._client
+    def node(self):
+        return self._node
 
     @property
     def logger(self):
-        return self.client.logger
+        return self.node.logger
 
     @property
     def memory(self):
@@ -288,8 +287,24 @@ class SAIAServer(object):
     def link(self):
         return self._link
 
-    def onMessage(self, data):
-        return self.link.onMessage(data)
+    @property
+    def inputs(self):
+        return self.memory.inputs
+
+    @property
+    def flags(self):
+        return self.memory.flags
+
+    @property
+    def outputs(self):
+        return self.memory.outputs
+
+    @property
+    def registers(self):
+        return self.memory.registers
+
+    def onMessage(self, mtype, mseq, payload):
+        return self.link.onMessage(mtype, mseq, payload)
 
     def manager(self):
         self._link.manager()

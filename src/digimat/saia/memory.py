@@ -1,8 +1,8 @@
 from Queue import Queue
 
-from items import SAIABooleanItem
-from items import SAIAAnalogItem
-from items import SAIAItems
+from .items import SAIABooleanItem
+from .items import SAIAAnalogItem
+from .items import SAIAItems
 
 
 # http://stackoverflow.com/questions/1581895/how-check-if-a-task-is-already-in-python-queue
@@ -29,7 +29,7 @@ class SAIAItemFlag(SAIABooleanItem):
         return self.server.link.readFlags(self.index, 1)
 
     def push(self):
-        return self.server.link.writeFlags(self.index, self.value)
+        return self.server.link.writeFlags(self.index, self.pushValue)
 
 
 class SAIAItemInput(SAIABooleanItem):
@@ -48,7 +48,7 @@ class SAIAItemOutput(SAIABooleanItem):
         return self.server.link.readOutputs(self.index, 1)
 
     def push(self):
-        return self.server.link.writeOutputs(self.index, self.value)
+        return self.server.link.writeOutputs(self.index, self.pushvalue)
 
 
 class SAIARegister(SAIAAnalogItem):
@@ -59,7 +59,7 @@ class SAIARegister(SAIAAnalogItem):
         return self.server.link.readRegisters(self.index, 1)
 
     def push(self):
-        return self.server.link.writeRegisters(self.index, self.value)
+        return self.server.link.writeRegisters(self.index, self.pushvalue)
 
 
 class SAIAFlags(SAIAItems):
@@ -79,8 +79,9 @@ class SAIAOutputs(SAIAItems):
 
 
 class SAIAMemory(object):
-    def __init__(self, server):
+    def __init__(self, server, localNodeMode=False):
         self._server=server
+        self._localNodeMode=localNodeMode
         self._inputs=SAIAInputs(self)
         self._outputs=SAIAOutputs(self)
         self._flags=SAIAFlags(self)
@@ -114,6 +115,9 @@ class SAIAMemory(object):
 
     def items(self):
         return (self._inputs, self._outputs, self._flags, self._registers)
+
+    def isLocalNodeMode(self):
+        return self._localNodeMode
 
     def refresh(self):
         for items in self.items():

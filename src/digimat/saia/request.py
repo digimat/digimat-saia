@@ -1,9 +1,8 @@
 import struct
 import time
 
-from ModbusDataLib import bin2boollist
-from ModbusDataLib import boollist2bin
-
+from .ModbusDataLib import bin2boollist
+from .ModbusDataLib import boollist2bin
 
 # This is the precalculated hash table for CCITT V.41.
 SAIASBusCRCTable = [
@@ -62,10 +61,20 @@ class SAIARequest(object):
     COMMAND_READ_INPUTS = 0x03
     COMMAND_READ_OUTPUTS = 0x05
     COMMAND_READ_REGISTERS = 0x06
+
     COMMAND_WRITE_FLAGS = 0x0b
     COMMAND_WRITE_OUTPUTS = 0x0c
     COMMAND_WRITE_REGISTERS = 0x0d
+
+    COMMAND_READ_PCD_STATUS_OWN = 0x1b
     COMMAND_READ_STATIONNUMBER = 0x1d
+    COMMAND_READ_PROGRAM_VERSION = 0x20
+    COMMAND_READ_SYSTEM_INFO = 0xab
+
+    # COMMAND_CLEAR_ALL = 0x5a
+    # COMMAND_CLEAR_FLAGS = 0x5b
+    # COMMAND_CLEAR_OUTPUTS = 0x5c
+    # COMMAND_CLEAR_REGISTERS = 0x5d
 
     def __init__(self, link, retry=3):
         self._link=link
@@ -81,7 +90,7 @@ class SAIARequest(object):
         pass
 
     def setup(self):
-        self.validate()
+        pass
 
     @property
     def link(self):
@@ -107,12 +116,12 @@ class SAIARequest(object):
             return item
 
         items=[]
-        if item:
+        if item is not None:
             items.append(item)
         return items
 
     def safeMakeBoolArray(self, item):
-        items=self.safeMakeArray()
+        items=self.safeMakeArray(item)
         return map(bool, items)
 
     def createFrameWithPayload(self, payload=None):
@@ -124,7 +133,7 @@ class SAIARequest(object):
         # Typical Request Format
         # ----------------------
         # frame length,
-        # protocol number (0,1), protocol type (0), frame type (0=REQ, 1=RESP, 2=ACK/NAK),
+        # protocol number (0,1), protocol type (0), sequence, frame type (0=REQ, 1=RESP, 2=ACK/NAK),
         # station address, command
         # [data]
         # crc
@@ -217,13 +226,13 @@ class SAIARequestReadStationNumber(SAIARequest):
         return None
 
     def processResponse(self, payload):
-        lid=int(payload[0])
-        print "RECEIVED LID", lid
+        (lid,)=struct.unpack('>B', payload)
+        print("RECEIVED LID", lid)
         self.server.setLid(lid)
         return True
 
     def onFailure(self):
-        print "DEBUG: Simulate LID rx"
+        print("DEBUG: Simulate LID rx")
         self.server.setLid(1)
 
 
@@ -249,10 +258,8 @@ class SAIARequestReadFlags(SAIARequestReadItem):
         index=self._address
         count=self._count
         values=bin2boollist(payload)
-        print index, count, values
 
         for n in range(count):
-            print "FLAG(%d)=%d" % (index+n, values[n])
             flags[index+n].setValue(values[n])
 
         return True
@@ -268,13 +275,14 @@ class SAIARequestWriteFlags(SAIARequest):
         self.ready()
 
     def encode(self):
+        print "WRITE", self._values
         data=boollist2bin(self._values)
 
         # bytecount = number item to write (as msg length + 2)
         bytecount=len(data)+2
         fiocount=len(self._values)-1
 
-        return struct.pack('>BHB %ds',  bytecount, self._address, fiocount, data)
+        return struct.pack('>BHB %ds' % len(data), bytecount, self._address, fiocount, data)
 
 
 class SAIARequestReadInputs(SAIARequestReadItem):
@@ -287,10 +295,10 @@ class SAIARequestReadInputs(SAIARequestReadItem):
         index=self._address
         count=self._count
         values=bin2boollist(payload)
-        print index, count, values
+        print(index, count, values)
 
         for n in range(count):
-            print "INPUT(%d)=%d" % (index+n, values[n])
+            print("INPUT(%d)=%d" % (index+n, values[n]))
             inputs[index+n].setValue(values[n])
 
         return True
@@ -306,10 +314,10 @@ class SAIARequestReadOutputs(SAIARequestReadItem):
         index=self._address
         count=self._count
         values=bin2boollist(payload)
-        print index, count, values
+        print(index, count, values)
 
         for n in range(count):
-            print "OUTPUT(%d)=%d" % (index+n, values[n])
+            print("OUTPUT(%d)=%d" % (index+n, values[n]))
             outputs[index+n].setValue(values[n])
 
         return True
@@ -330,12 +338,12 @@ class SAIARequestReadRegisters(SAIARequestReadItem):
         index=self._address
         count=self._count
         values=self.data2uint32list(payload)
-        print index, count, values
+        print(index, count, values)
 
         for n in range(count):
             item=registers[index+n]
             value=values[n]
-            print "REGISTER(%d)=%f" % (index+n, value)
+            print("REGISTER(%d)=%f" % (index+n, value))
             item.setValue(value)
 
         return True
@@ -352,7 +360,8 @@ class SAIARequestWriteRegisters(SAIARequest):
 
     def encode(self):
         # TODO: -----------------------
-        data=listin2bin(self._values)
+        # data=listin2bin(self._values)
+        data=None
 
         # bytecount = number item to write (as msg length + 2)
         bytecount=len(data)+2

@@ -71,9 +71,9 @@ class SAIAItem(object):
         self._stamp=0
         self._readOnly=readOnly
         self._delayRefresh=delayRefresh
-        self.onInit()
         self._eventPush=Event()
         self._eventPull=Event()
+        self.onInit()
         self.logger.debug('creating %s' % (self))
 
     @property
@@ -113,11 +113,14 @@ class SAIAItem(object):
         self._readOnly=state
 
     def signalPush(self, value):
-        if not self._eventPush.isSet():
-            self._eventPush.set()
-            self._parent.signalPush(self)
-        with self._parent._lock:
-            self._pushValue=value
+        if self.parent.isLocalNodeMode():
+            self.setValue(value)
+        else:
+            if not self._eventPush.isSet():
+                self._eventPush.set()
+                self._parent.signalPush(self)
+            with self._parent._lock:
+                self._pushValue=value
 
     def clearPush(self):
         self._eventPush.clear()
@@ -193,6 +196,12 @@ class SAIABooleanItem(SAIAItem):
     def off(self):
         self.value=False
 
+    def set(self):
+        self.on()
+
+    def clear(self):
+        self.off()
+
     def toggle(self):
         self.value=not self.value
 
@@ -227,6 +236,7 @@ class SAIAAnalogItem(SAIAItem):
 class SAIAItems(object):
     def __init__(self, memory, itemType, maxsize, readOnly=False):
         self._memory=memory
+        self._localNodeMode=memory.isLocalNodeMode()
         self._lock=RLock()
         self._itemType=itemType
         self._maxsize=maxsize
@@ -248,6 +258,9 @@ class SAIAItems(object):
     def logger(self):
         return self.memory.logger
 
+    def isLocalNodeMode(self):
+        return self._localNodeMode
+
     def setReadOnly(self, state=True):
         self._readOnly=state
 
@@ -265,10 +278,14 @@ class SAIAItems(object):
         except:
             pass
 
+    def isIndexValid(self, index):
+        if self.validateIndex(index) is not None:
+            return True
+
     def item(self, index):
         try:
             with self._lock:
-                return self._items[self.validateIndex(index)]
+                return self._indexItem[self.validateIndex(index)]
         except:
             pass
 
@@ -279,7 +296,8 @@ class SAIAItems(object):
         return self.declare(index)
 
     def declare(self, index, value=None):
-        if self.validateIndex(index):
+        index=self.validateIndex(index)
+        if index is not None:
             item=self.item(index)
             if item:
                 return item
