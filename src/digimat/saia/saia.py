@@ -182,6 +182,9 @@ class SAIANode(object):
         except:
             pass
 
+    def data2strhex(self, data):
+        return ' '.join(x.encode('hex') for x in data)
+
     def sendMessageToHost(self, data, host, port=None):
         try:
             s=self.open()
@@ -189,7 +192,7 @@ class SAIANode(object):
                 if port is None:
                     port=self._port
                 size=s.sendto(data, (host, port))
-                print("-->MESSAGE", host, port, size, len(data))
+                self.logger.debug('-->%s:%d %s' % (host, port, self.data2strhex(data)))
                 if size==len(data):
                     return True
                 self.logger.error('sendMessageToHost(%s)' % host)
@@ -206,14 +209,13 @@ class SAIANode(object):
                         payload, mcrc)=struct.unpack('>LBBHB %ds H' % sizePayload, data)
 
                     if mcrc==SAIASBusCRC(data[0:-2]):
-                        self.logger.debug('RX msg type %d seq %d payload %d bytes' % (tattribute,
-                            msequence, sizePayload))
                         return (tattribute, msequence, payload)
 
             self.logger.error('bad size/crc')
         except:
             self.logger.exception('decodeMessage')
 
+    # TODO: this function has to be better structured
     def onRequest(self, mseq, payload):
         try:
             (lid, cmd)=struct.unpack('> BB', payload[0:2])
@@ -250,15 +252,33 @@ class SAIANode(object):
                     (bytecount, address, fiocount)=struct.unpack('>BHB', data[0:4])
                     if address>=0 and fiocount<=32:
                         values=bin2boollist(data[4:])
-                        print values
                         for n in range(fiocount+1):
                             flags[address+n].value=values[n]
                         return SAIAResponseACK(self, mseq)
 
-                print "<--REQUEST(seq=%d, cmd=0x%02x)" % (mseq, cmd), ' '.join(x.encode('hex') for x in data)
+                elif cmd==SAIARequest.COMMAND_CLEAR_OUTPUTS:
+                    self.memory.outputs.clear()
+                    return SAIAResponseACK(self, mseq)
+
+                elif cmd==SAIARequest.COMMAND_CLEAR_FLAGS:
+                    self.memory.flags.clear()
+                    return SAIAResponseACK(self, mseq)
+
+                elif cmd==SAIARequest.COMMAND_CLEAR_REGISTERS:
+                    self.memory.registers.clear()
+                    return SAIAResponseACK(self, mseq)
+
+                elif cmd==SAIARequest.COMMAND_CLEAR_ALL:
+                    self.memory.outputs.clear()
+                    self.memory.flags.clear()
+                    self.memory.registers.clear()
+                    return SAIAResponseACK(self, mseq)
+
+                self.logger.warning("<--seq=%d, cmd=0x%02x %s" % (mseq, cmd, self.data2strhex(data)))
                 return SAIAResponseNAK(self, mseq)
         except:
             self.logger.exception('onRequest')
+            return SAIAResponseNAK(self, mseq)
 
     def dispatchMessage(self):
         try:
@@ -268,12 +288,18 @@ class SAIANode(object):
                 host=address[0]
                 port=address[1]
                 (mtype, mseq, payload)=self.decodeMessage(data)
+                self.logger.debug('<--%s:%d seq=%d %s' % (host, port, mseq, self.data2strhex(data)))
 
                 if mtype==0:
                     try:
                         response=self.onRequest(mseq, payload)
                         if response:
-                            self.sendMessageToHost(response.data, host, port)
+                            data=response.data
+                            if data is not None:
+                                self.sendMessageToHost(response.data, host, port)
+                            else:
+                                response=SAIAResponseNAK(self, mseq)
+                                self.sendMessageToHost(response.data, host, port)
                     except:
                         self.logger.exception('request')
                 else:

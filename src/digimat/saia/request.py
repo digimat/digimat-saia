@@ -71,10 +71,10 @@ class SAIARequest(object):
     COMMAND_READ_PROGRAM_VERSION = 0x20
     COMMAND_READ_SYSTEM_INFO = 0xab
 
-    # COMMAND_CLEAR_ALL = 0x5a
-    # COMMAND_CLEAR_FLAGS = 0x5b
-    # COMMAND_CLEAR_OUTPUTS = 0x5c
-    # COMMAND_CLEAR_REGISTERS = 0x5d
+    COMMAND_CLEAR_ALL = 0x5a
+    COMMAND_CLEAR_FLAGS = 0x5b
+    COMMAND_CLEAR_OUTPUTS = 0x5c
+    COMMAND_CLEAR_REGISTERS = 0x5d
 
     def __init__(self, link, retry=3):
         self._link=link

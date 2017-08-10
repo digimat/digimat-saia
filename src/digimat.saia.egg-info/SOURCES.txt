@@ -1,3 +1,5 @@
+MANIFEST.in
+README.rst
 setup.py
 src/digimat/__init__.py
 src/digimat.saia.egg-info/PKG-INFO
@@ -14,5 +16,6 @@ src/digimat/saia/__init__.py
 src/digimat/saia/items.py
 src/digimat/saia/memory.py
 src/digimat/saia/request.py
+src/digimat/saia/response.py
 src/digimat/saia/saia.py
 src/digimat/saia/server.py

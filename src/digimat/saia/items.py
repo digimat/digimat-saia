@@ -174,6 +174,12 @@ class SAIAItem(object):
         if self.age()>self.getRefreshDelay():
             self.signalPull()
 
+    def refresh(self):
+        self.signalPull()
+
+    def clear(self):
+        self.value=0
+
     def strValue(self):
         return str(self.value)
 
@@ -293,7 +299,8 @@ class SAIAItems(object):
         item=self.item(index)
         if item:
             return item
-        return self.declare(index)
+        if self.memory.isOnTheFlyItemCreationEnabled():
+            return self.declare(index)
 
     def declare(self, index, value=None):
         index=self.validateIndex(index)
@@ -311,9 +318,11 @@ class SAIAItems(object):
                 return item
 
     def declareRange(self, index, count, value=None):
-        while count>0:
-            self.declare(index, value)
-            index+=1
+        items=[]
+        for n in range(count):
+            item=self.declare(index+n, value)
+            items.append(item)
+        return items
 
     def signalPush(self, item=None):
         if item is None:
@@ -351,6 +360,11 @@ class SAIAItems(object):
     def dump(self):
         for item in self._items:
             print(item)
+
+    def clear(self):
+        with self._lock:
+            for item in self._items:
+                item.clear()
 
 
 if __name__ == "__main__":

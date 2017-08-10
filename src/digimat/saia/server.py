@@ -22,7 +22,7 @@ class SAIALink(object):
     COMMSTATE_ERROR = 10
     COMMSTATE_SUCCESS = 11
 
-    def __init__(self, server, delayXmitInhibit=0.1):
+    def __init__(self, server, delayXmitInhibit=0.01):
         self._server=server
         self._request=None
         self._state=None

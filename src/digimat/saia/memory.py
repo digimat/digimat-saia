@@ -79,9 +79,10 @@ class SAIAOutputs(SAIAItems):
 
 
 class SAIAMemory(object):
-    def __init__(self, server, localNodeMode=False):
+    def __init__(self, server, localNodeMode=False, enableOnTheFlyItemCreation=True):
         self._server=server
         self._localNodeMode=localNodeMode
+        self._enableOnTheFlyItemCreation=enableOnTheFlyItemCreation
         self._inputs=SAIAInputs(self)
         self._outputs=SAIAOutputs(self)
         self._flags=SAIAFlags(self)
@@ -112,6 +113,16 @@ class SAIAMemory(object):
     @property
     def registers(self):
         return self._registers
+
+    def enableOnTheFlyItemCreation(self, state=True):
+        self._enableOnTheFlyItemCreation=state
+
+    def disableOnTheFlyItemCreation(self):
+        self.enableOnTheFlyItemCreation(False)
+
+    def isOnTheFlyItemCreationEnabled(self):
+        if self._enableOnTheFlyItemCreation:
+            return True
 
     def items(self):
         return (self._inputs, self._outputs, self._flags, self._registers)

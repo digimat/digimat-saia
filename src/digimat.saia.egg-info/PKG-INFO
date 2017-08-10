@@ -1,10 +1,150 @@
 Metadata-Version: 1.0
 Name: digimat.saia
-Version: 0.0.2
-Summary: Digimat Saia EtherSBus (partial) client->server implementation
+Version: 0.0.11
+Summary: Digimat Saia EtherSBus (partial) client+server implementation
 Home-page: http://www.digimat.ch
 Author: Frederic Hess
 Author-email: fhess@splust.ch
 License: PSF
-Description: UNKNOWN
+Description: ===================
+        Python digimat.saia
+        ===================
+        
+        This is a Python 2.7 module allowing to create client+server **SSAIA EtherSBus** nodes. In the exemple above, a local
+        SBus node with address 253 (station number, or localid, or lid in our terminology) is created. 
+        
+        .. code-block:: python
+        
+            from digimat.saia import SAIANode
+        
+            node=SAIANode(253)
+            node.start()
+        
+            [...]
+        
+            node.stop()
+        
+        
+        SAIA EtherSBus
+        --------------
+        
+        This is mainly an UDP encapsulated version of the original serial SAIA S-Bus. The EtherSBus is natively implemented
+        in most SAIA nodes, providing an easy way to exchange information with 3rd party devices. The digimat.saia module
+        was mainly created to partially explore the S-Bus mecanisms on Raspberry Pi devices before starting a deeper implementation
+        on our `Digimat <https://www.st-sa.ch/digimat>`_ HVAC BMS infrastructure. 
+        
+        Please consider this work as in progress (**buggy**).
+        
+        At this time, we don't have access to any S-Bus or EtherSBus protocol official specifications. If you own such documentation,
+        feel free to forward to us, as SAIA doesn't seems to provide it. Some good starting points may include :
+        
+        * `SAIA faq <http://www.sbc-support.ch/faq>`_
+        * `WireShark EtherSBus plugin source code <https://github.com/boundary/wireshark/blob/master/epan/dissectors/packet-sbus.c>`_
+        * `SBPoll Python EtherSBus source code <http://mblogic.sourceforge.net/mbtools/sbpoll.html>`_
+        
+        Using the SAIA PG5 debugger may also help understanding how things works. Wireshark (as mentionned above) has an excellent protocol decoder and you will find .pcap samples.
+        
+        Don't forget that the SAIA dynamic addressing won't be your friend here ! Consider fixing your variables
+        to "static" addresses for allowing external access.
+        
+        
+        Installation
+        ------------
+        
+        .. code-block:: bash
+        
+            pip install digimat.saia
+        
+        
+        EtherSBus Node
+        --------------
+        
+        Once created, the SAIANode object will implicitely start a background task responsible fot all the protocol and bus variables management.
+        The task must be stop()ed before the program termination. Basically, the node contain a server (allowing other nodes to read an write 
+        data to it). The node can also register other remote SBus servers (acting as a client). Each server (local or remote) has it's own memory representation (SAIAMemory).
+        
+        The SAIAMemory object handle every SBus variables (inputs, outputs, flags, registers)
+        
+        .. code-block:: python
+        
+            myflag=node.memory.flags[18]
+            myflag.value=1
+        
+        The flag 18 is automatically created a the first call, returned as a SAIAItemFlag object, 
+        which can be used to play with the flag (local or remote).
+        
+        .. code-block:: python
+        
+            myflag.off()
+            myflag.on()
+            myflag.toggle()
+            print myflag.value
+        
+        The SAIAMemory provide a SAIAFlags object, accessible trough a .flags property, itself providing access to every 
+        registered SAIAItemFlag object. The same principle is used for inputs (SAIAItemInputs), outputs (SAIAItemOutputs) 
+        and registers (SAIAItemRegisters). Note that there are shortcuts implemented : *node.flags* can be used instead of *node.memory.flags*.
+        
+        One note about the "on the fly object creation" : this is actually also the case for remote (read/write) requests. In case of abuse,
+        this can create a large of unwanted amount of memory consumption.
+        
+        
+        EtherSBus Client
+        ----------------
+        
+        The node allow access to remote nodes (as many as you want) 
+        
+        .. code-block:: python
+        
+            server=node.registerServer('192.168.0.100')
+            myflag=server.memory.flags[5]
+        
+        The registration process provide a SAIAServer object (which is in fact a... client from the local node point of view). 
+        Local and remote data can be manipulated in the same manner. When a remote data object (input, output, flag, register) is
+        declared, an automatic pooling mecanism is launched in the background task. Refresh can also manually be 
+        triggered with a myflag.refresh() call. Changing the data value is also possible with a write
+        
+        .. code-block:: python
+        
+            myflag.value=1
+        
+        For a non local object, this will queue a write order with the new value. The actual value remains unchanged. When the write
+        order has been executed, a refresh order is immediately triggered, thus allowing the actual value to be updated. This tend
+        to keep the value synchonized with the remote value, even if something goes wrong. 
+        
+        The background manager try to be as reactive and idle as possible, keeping ressources for your application. Note
+        that automatic SAIA address resolution is implemented. Server registration needs only ip address, address (=lid) can also 
+        be given if needed
+        
+        .. code-block:: python
+        
+            server=node.registerServer(host, lid=54, port=5050)
+        
+        
+        Dumping & Debugging
+        -------------------
+        
+        The module use a lot of tcp logging. Limited debug can alos be done with objects .dump() methods. Try node.dump() or node.memory.dump()
+        or node.memory.flags.dump() 
+        
+        The local node can also be used itself, allowing protocol testing
+        
+        .. code-block:: python
+        
+            server=node.registerServer('127.0.0.1')
+            localFlag=node.memory.flags[1]
+            remoteFlag=server.memory.flags[1]
+        
+        In this example, localFlag and remoteFlag point to the same data, but the remoteFlag is a networked synchonized 
+        mirror representation of the localFlag.
+        
+        The SAIA Debugger can be partially used with the node. 
+        This helps a lot ;)
+        
+        
+        Documentation
+        -------------
+        
+        To be continuated. 
+        Writing in progress ;) don't knows if this is useful for someone.
+        
 Platform: UNKNOWN
