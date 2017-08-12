@@ -1,69 +1,18 @@
-import struct
+# import struct
 import time
 
 from threading import RLock
 from threading import Event
 
 
-class Singleton(object):
-    def __new__(cls):
-        if not hasattr(cls, 'instance'):
-            cls.instance=super(Singleton, cls).__new__(cls)
-        return cls.instance
-
-
-class SAIAValueFormater(Singleton):
-    def __init__(self, logger, *args, **kwds):
-        self._logger=logger
-        self.logger.debug('creating value formater %s' % self.__class__.__name__)
-        self.onInit(*args, **kwds)
-
-    @property
-    def logger(self):
-        return self._logger
-
-    def onInit(self, *args, **kwds):
-        pass
-
-    def decode(self, deviceValue):
-        """
-        decode UINT32 device value (register) to user value
-        """
-        return deviceValue
-
-    def encode(self, userValue):
-        """
-        encode user value to UINT32 (SAIA rigister)
-        """
-        return userValue
-
-
-class SAIAValueFormaterFloat32(SAIAValueFormater):
-    def onInit(self, *args, **kwds):
-        self._format='>f'
-        try:
-            if kwds['swap']:
-                self._format='<f'
-        except:
-            pass
-
-    def decode(self, deviceValue):
-        return struct.unpack(self._format, struct.pack('>I', deviceValue))
-
-    def encode(self, userValue):
-        return struct.unpack('>I', struct.pack(self._format, userValue))
-
-
-class SAIAValueFormaterInteger10(SAIAValueFormater):
-    def decode(self, deviceValue):
-        return float(deviceValue/10.0)
-
-    def encode(self, userValue):
-        return int(userValue*10.0)
+from .formaters import SAIAValueFormaterFloat32
+from .formaters import SAIAValueFormaterSwappedFloat32
+from .formaters import SAIAValueFormaterInteger10
+from .formaters import SAIAValueFormaterFFP
 
 
 class SAIAItem(object):
-    def __init__(self, parent, index, value=None, delayRefresh=None, readOnly=False):
+    def __init__(self, parent, index, value=0, delayRefresh=None, readOnly=False):
         self._parent=parent
         self._index=index
         self._value=self.validateValue(value)
@@ -126,9 +75,10 @@ class SAIAItem(object):
         self._eventPush.clear()
 
     def signalPull(self):
-        if not self._eventPull.isSet():
-            self._eventPull.set()
-            self._parent.signalPull(self)
+        if not self.parent.isLocalNodeMode():
+            if not self._eventPull.isSet():
+                self._eventPull.set()
+                self._parent.signalPull(self)
 
     def clearPull(self):
         self._eventPull.clear()
@@ -152,6 +102,7 @@ class SAIAItem(object):
     def value(self, value):
         with self._parent._lock:
             if not self._readOnly:
+                value=self.validateValue(value)
                 if self._value!=value:
                     self.signalPush(value)
 
@@ -218,6 +169,17 @@ class SAIABooleanItem(SAIAItem):
 
 
 class SAIAAnalogItem(SAIAItem):
+    def validateValue(self, value):
+        try:
+            if type(value)==float:
+                formater=SAIAValueFormaterFFP()
+                return formater.encode(value)
+
+            return int(value)
+        except:
+            pass
+        return value
+
     @property
     def float32(self):
         formater=SAIAValueFormaterFloat32()
@@ -229,6 +191,16 @@ class SAIAAnalogItem(SAIAItem):
         self.setValue(formater.encode(value))
 
     @property
+    def sfloat32(self):
+        formater=SAIAValueFormaterSwappedFloat32()
+        return formater.decode(self.getValue())
+
+    @sfloat32.setter
+    def sfloat32(self, value):
+        formater=SAIAValueFormaterSwappedFloat32()
+        self.setValue(formater.encode(value))
+
+    @property
     def int10(self):
         formater=SAIAValueFormaterInteger10()
         return formater.decode(self.getValue())
@@ -237,6 +209,21 @@ class SAIAAnalogItem(SAIAItem):
     def int10(self, value):
         formater=SAIAValueFormaterInteger10()
         self.setValue(formater.encode(value))
+
+    @property
+    def ffp(self):
+        formater=SAIAValueFormaterFFP()
+        return formater.decode(self.getValue())
+
+    @ffp.setter
+    def ffp(self, value):
+        formater=SAIAValueFormaterFFP()
+        self.setValue(formater.encode(value))
+
+    def strValue(self):
+        if self.value is not None:
+            return '%d' % self.value
+        return '<null>'
 
 
 class SAIAItems(object):
@@ -302,7 +289,7 @@ class SAIAItems(object):
         if self.memory.isOnTheFlyItemCreationEnabled():
             return self.declare(index)
 
-    def declare(self, index, value=None):
+    def declare(self, index, value=0):
         index=self.validateIndex(index)
         if index is not None:
             item=self.item(index)
@@ -342,7 +329,7 @@ class SAIAItems(object):
         self.signalPull()
 
     def manager(self):
-        count=min(8, len(self._tems))
+        count=min(8, len(self._items))
         while count>0:
             count-=1
             try:

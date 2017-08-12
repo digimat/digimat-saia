@@ -16,7 +16,10 @@ from .response import SAIAResponseReadStationNumber
 from .response import SAIAResponseReadProgramVersion
 from .response import SAIAResponseReadPcdStatusOwn
 from .response import SAIAResponseReadSystemInformation
+from .response import SAIAResponseReadInputs
+from .response import SAIAResponseReadOutputs
 from .response import SAIAResponseReadFlags
+from .response import SAIAResponseReadRegisters
 from .response import SAIAResponseACK
 from .response import SAIAResponseNAK
 
@@ -164,6 +167,9 @@ class SAIANode(object):
             self.logger.info('server(%s:%d) registered' % (host, port))
         return server
 
+    def registerLocalServer(self):
+        return self.registerServer('127.0.0.1', port=self.port)
+
     def declareServerLid(self, server, lid):
         if self.getServerFromLid():
             self.logger.error('duplicate server lid %d' % lid)
@@ -184,6 +190,9 @@ class SAIANode(object):
 
     def data2strhex(self, data):
         return ' '.join(x.encode('hex') for x in data)
+
+    def bin2dwordlist(self, data):
+        return list(struct.unpack('>%dL' % (len(data) / 4), data))
 
     def sendMessageToHost(self, data, host, port=None):
         try:
@@ -215,7 +224,7 @@ class SAIANode(object):
         except:
             self.logger.exception('decodeMessage')
 
-    # TODO: this function has to be better structured
+    # TODO: this core function has to be better structured and splitted
     def onRequest(self, mseq, payload):
         try:
             (lid, cmd)=struct.unpack('> BB', payload[0:2])
@@ -241,19 +250,55 @@ class SAIANode(object):
                 elif cmd==SAIARequest.COMMAND_READ_PCD_STATUS_OWN:
                     return SAIAResponseReadPcdStatusOwn(self, mseq)
 
-                elif cmd==SAIARequest.COMMAND_READ_FLAGS:
-                    response=SAIAResponseReadFlags(self, mseq)
+                elif cmd==SAIARequest.COMMAND_READ_INPUTS:
                     (count, index)=struct.unpack('>BH', data)
+                    response=SAIAResponseReadInputs(self, mseq)
                     response.setup(index, count+1)
                     return response
 
-                elif cmd==SAIARequest.COMMAND_WRITE_FLAGS:
-                    flags=self.memory.flags
+                elif cmd==SAIARequest.COMMAND_READ_OUTPUTS:
+                    (count, index)=struct.unpack('>BH', data)
+                    response=SAIAResponseReadOutputs(self, mseq)
+                    response.setup(index, count+1)
+                    return response
+
+                elif cmd==SAIARequest.COMMAND_READ_FLAGS:
+                    (count, index)=struct.unpack('>BH', data)
+                    response=SAIAResponseReadFlags(self, mseq)
+                    response.setup(index, count+1)
+                    return response
+
+                elif cmd==SAIARequest.COMMAND_READ_REGISTERS:
+                    (count, index)=struct.unpack('>BH', data)
+                    response=SAIAResponseReadRegisters(self, mseq)
+                    response.setup(index, count+1)
+                    return response
+
+                elif cmd==SAIARequest.COMMAND_WRITE_OUTPUTS:
+                    items=self.memory.outputs
                     (bytecount, address, fiocount)=struct.unpack('>BHB', data[0:4])
                     if address>=0 and fiocount<=32:
                         values=bin2boollist(data[4:])
                         for n in range(fiocount+1):
-                            flags[address+n].value=values[n]
+                            items[address+n].value=values[n]
+                        return SAIAResponseACK(self, mseq)
+
+                elif cmd==SAIARequest.COMMAND_WRITE_FLAGS:
+                    items=self.memory.flags
+                    (bytecount, address, fiocount)=struct.unpack('>BHB', data[0:4])
+                    if address>=0 and fiocount<=32:
+                        values=bin2boollist(data[4:])
+                        for n in range(fiocount+1):
+                            items[address+n].value=values[n]
+                        return SAIAResponseACK(self, mseq)
+
+                elif cmd==SAIARequest.COMMAND_WRITE_REGISTERS:
+                    items=self.memory.registers
+                    (bytecount, address)=struct.unpack('>BH', data[0:3])
+                    if address>=0:
+                        values=self.bin2dwordlist(data[3:])
+                        for n in range(len(values)):
+                            items[address+n].value=values[n]
                         return SAIAResponseACK(self, mseq)
 
                 elif cmd==SAIARequest.COMMAND_CLEAR_OUTPUTS:

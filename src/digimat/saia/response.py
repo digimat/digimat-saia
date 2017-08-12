@@ -147,9 +147,10 @@ class SAIAResponseReadSystemInformation(SAIAReply):
         return struct.pack('>BB', 1, 0x0)
 
 
-class SAIAResponseReadFlags(SAIAReply):
+class SAIAResponseReadBooleanItem(SAIAReply):
     def onInit(self):
         self.setReplyTypeResponse()
+        self._items=None
 
     def setup(self, address, count):
         if address>=0 and count>0 and count<=32:
@@ -158,13 +159,54 @@ class SAIAResponseReadFlags(SAIAReply):
             self.ready()
 
     def encode(self):
-        flags=self.memory.flags
         values=[]
 
         for n in range(self._count):
-            values.append(flags[self._address+n].value)
+            values.append(self._items[self._address+n].value)
 
         data=boollist2bin(values)
+        return struct.pack('>%ds' % len(data), data)
+
+
+class SAIAResponseReadFlags(SAIAResponseReadBooleanItem):
+    def onInit(self):
+        super(SAIAResponseReadFlags, self).onInit()
+        self._items=self.memory.flags
+
+
+class SAIAResponseReadInputs(SAIAResponseReadBooleanItem):
+    def onInit(self):
+        super(SAIAResponseReadInputs, self).onInit()
+        self._items=self.memory.inputs
+
+
+class SAIAResponseReadOutputs(SAIAResponseReadBooleanItem):
+    def onInit(self):
+        super(SAIAResponseReadOutputs, self).onInit()
+        self._items=self.memory.outputs
+
+
+class SAIAResponseReadRegisters(SAIAReply):
+    def onInit(self):
+        self.setReplyTypeResponse()
+        self._items=self.memory.registers
+
+    def setup(self, address, count):
+        if address>=0 and count>0 and count<=32:
+            self._address=address
+            self._count=count
+            self.ready()
+
+    def dwordlist2bin(self, dwordlist):
+        return struct.pack('>%dL' % len(dwordlist), *dwordlist)
+
+    def encode(self):
+        values=[]
+
+        for n in range(self._count):
+            values.append(self._items[self._address+n].value)
+
+        data=self.dwordlist2bin(values)
         return struct.pack('>%ds' % len(data), data)
 
 

@@ -48,10 +48,10 @@ class SAIAItemOutput(SAIABooleanItem):
         return self.server.link.readOutputs(self.index, 1)
 
     def push(self):
-        return self.server.link.writeOutputs(self.index, self.pushvalue)
+        return self.server.link.writeOutputs(self.index, self.pushValue)
 
 
-class SAIARegister(SAIAAnalogItem):
+class SAIAItemRegister(SAIAAnalogItem):
     def onInit(self):
         pass
 
@@ -59,23 +59,36 @@ class SAIARegister(SAIAAnalogItem):
         return self.server.link.readRegisters(self.index, 1)
 
     def push(self):
-        return self.server.link.writeRegisters(self.index, self.pushvalue)
+        return self.server.link.writeRegisters(self.index, self.pushValue)
 
 
-class SAIAFlags(SAIAItems):
+class SAIABooleanItems(SAIAItems):
+    pass
+
+
+class SAIAFlags(SAIABooleanItems):
     def __init__(self, memory, maxsize=65535):
         super(SAIAFlags, self).__init__(memory, SAIAItemFlag, maxsize)
 
 
-class SAIAInputs(SAIAItems):
+class SAIAInputs(SAIABooleanItems):
     def __init__(self, memory, maxsize=65535):
         super(SAIAInputs, self).__init__(memory, SAIAItemInput, maxsize)
         self.setReadOnly()
 
 
-class SAIAOutputs(SAIAItems):
+class SAIAOutputs(SAIABooleanItems):
     def __init__(self, memory, maxsize=65535):
         super(SAIAOutputs, self).__init__(memory, SAIAItemOutput, maxsize)
+
+
+class SAIAAnalogItems(SAIAItems):
+    pass
+
+
+class SAIARegisters(SAIAAnalogItems):
+    def __init__(self, memory, maxsize=65535):
+        super(SAIARegisters, self).__init__(memory, SAIAItemRegister, maxsize)
 
 
 class SAIAMemory(object):
@@ -86,7 +99,7 @@ class SAIAMemory(object):
         self._inputs=SAIAInputs(self)
         self._outputs=SAIAOutputs(self)
         self._flags=SAIAFlags(self)
-        self._registers=None
+        self._registers=SAIARegisters(self)
         self._queuePendingPull=UniqueQueue()
         self._queuePendingPush=UniqueQueue()
 
@@ -158,7 +171,7 @@ class SAIAMemory(object):
             for items in self.items():
                 items.manager()
         except:
-            pass
+            self.logger.exception('items:manager')
 
         if self.server.link.isIdle():
             item=self.getNextPendingPush()

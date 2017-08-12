@@ -63,8 +63,8 @@ class SAIARequest(object):
     COMMAND_READ_REGISTERS = 0x06
 
     COMMAND_WRITE_FLAGS = 0x0b
-    COMMAND_WRITE_OUTPUTS = 0x0c
-    COMMAND_WRITE_REGISTERS = 0x0d
+    COMMAND_WRITE_OUTPUTS = 0x0d
+    COMMAND_WRITE_REGISTERS = 0x0e
 
     COMMAND_READ_PCD_STATUS_OWN = 0x1b
     COMMAND_READ_STATIONNUMBER = 0x1d
@@ -343,7 +343,7 @@ class SAIARequestReadRegisters(SAIARequestReadItem):
         for n in range(count):
             item=registers[index+n]
             value=values[n]
-            print("REGISTER(%d)=%f" % (index+n, value))
+            print("REGISTER(%d)=%d" % (index+n, value))
             item.setValue(value)
 
         return True
@@ -358,16 +358,14 @@ class SAIARequestWriteRegisters(SAIARequest):
         self._values=self.safeMakeArray(values)
         self.ready()
 
-    def encode(self):
-        # TODO: -----------------------
-        # data=listin2bin(self._values)
-        data=None
+    def dwordlist2bin(self, dwordlist):
+        return struct.pack('>%dL' % len(dwordlist), *dwordlist)
 
+    def encode(self):
+        data=self.dwordlist2bin(self._values)
         # bytecount = number item to write (as msg length + 2)
         bytecount=len(data)+2
-        fiocount=len(self._values)-1
-
-        return struct.pack('>BHB %ds',  bytecount, self._address, fiocount, data)
+        return struct.pack('>BH %ds' % len(data), bytecount, self._address, data)
 
 
 if __name__ == "__main__":

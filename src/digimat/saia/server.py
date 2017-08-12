@@ -169,13 +169,13 @@ class SAIALink(object):
 
     def readRegisters(self, index, count=1):
         if self.isIdle():
-            request=SAIARequestReadRegisters()
+            request=SAIARequestReadRegisters(self)
             request.setup(index, count)
             return self.initiate(request)
 
     def writeRegisters(self, index, count=1):
         if self.isIdle():
-            request=SAIARequestWriteRegisters()
+            request=SAIARequestWriteRegisters(self)
             request.setup(index, count)
             return self.initiate(request)
 
