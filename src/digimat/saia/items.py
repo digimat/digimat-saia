@@ -220,6 +220,16 @@ class SAIAAnalogItem(SAIAItem):
         formater=SAIAValueFormaterFFP()
         self.setValue(formater.encode(value))
 
+    @property
+    def float(self):
+        formater=SAIAValueFormaterFFP()
+        return formater.decode(self.getValue())
+
+    @float.setter
+    def float(self, value):
+        formater=SAIAValueFormaterFFP()
+        self.setValue(formater.encode(value))
+
     def strValue(self):
         if self.value is not None:
             return '%d' % self.value

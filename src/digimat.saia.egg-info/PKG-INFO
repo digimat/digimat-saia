@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: digimat.saia
-Version: 0.0.16
+Version: 0.0.27
 Summary: Digimat Saia EtherSBus (partial) client+server implementation
 Home-page: http://www.digimat.ch
 Author: Frederic Hess
@@ -10,30 +10,34 @@ Description: ===================
         Python digimat.saia
         ===================
         
-        This is a Python 2.7 module allowing to create client+server `SAIA EtherSBus <https://wiki.wireshark.org/EtherSBus>`_  nodes. In the exemple above, a local
+        This is a Python 2.7 module allowing to create **client** and/or **server** `SAIA EtherSBus <https://wiki.wireshark.org/EtherSBus>`_  nodes. 
+        This code allow you to create low cost (and hopefully reliable) communication services with any EtherSBus device, reading and writing data from/to them. By data (items),
+        we mean inputs, outputs, flags and registers. More data-types can be supported in the future. In the exemple below, a local
         SBus node with address 253 (station number, or localid, or lid in our terminology) is created. 
         
         .. code-block:: python
         
-            from digimat.saia import SAIANode
+            >>> from digimat.saia import SAIANode
+            >>> node=SAIANode(253)
         
-            node=SAIANode(253)
-            node.start()
+        Congratulations ! You just have powered up your first EtherSNode device with 2 lines of code. A background task handle now for you all the network SBus frames. 
+        Open your SAIA PG5 Debugger and try to read/write some data to your node. When done, shutdown your node properly.
         
-            [...]
+        .. code-block:: python
         
-            node.stop()
+            >>> node.stop()
+            >>> quit()
         
         
         SAIA EtherSBus
         --------------
         
-        The EtherSBus is mainly an UDP encapsulated version of the serial SAIA S-Bus. The EtherSBus is natively implemented
-        in most recent SAIA nodes, providing an easy way to exchange (read/write) information with 3rd party devices. The digimat.saia module
+        The EtherSBus is mainly an UDP encapsulated version of the serial SAIA S-Bus. The EtherSBus is `natively implemented <https://www.sbc-support.com/fr/product-category/communication-protocols/>`_
+        in any SAIA nodes having a LAN port, providing a very easy way to exchange (read/write) information with 3rd party devices. The digimat.saia module
         was mainly created to partially explore the S-Bus mecanisms on Raspberry Pi devices before starting a deeper implementation
         on our `Digimat <https://www.st-sa.ch/digimat.html>`_ HVAC BMS infrastructure. 
         
-        Please consider this work as in progress (**buggy and incomplete**).
+        Please consider this work as *in progress* (**buggy and incomplete**).
         
         At this time, we don't have access to any S-Bus or EtherSBus protocol official specifications. If you own such documentation,
         please forward it to us (fhess@st-sa.ch), as SAIA doesn't want to provide it ;( Some good starting points may include :
@@ -46,7 +50,7 @@ Description: ===================
         and you will find some .pcap samples by googling "sbus pcap".
         
         Don't forget that the SAIA dynamic addressing won't be your friend here as you must know the address of the variable
-        you want read/write. Consider fixing your variables to "static" addresses in your PG5 configuartion.
+        you want read/write. Consider fixing your variables to "static" addresses in your PG5 configuration.
         
         
         Installation
@@ -108,7 +112,7 @@ Description: ===================
             >>> print node.memory.flags[19]
             None
         
-        Items can created by "declaring" them
+        Items can created by "declaring" them, individually or by range
         
         .. code-block:: python
         
@@ -128,7 +132,7 @@ Description: ===================
             >>> print register.value
             100
         
-        They are always stored as "raw" values (without format). Helpers are available to set/get the register value with common encodings
+        Registers are always stored as "raw 32 bits" values (without encoding). Helpers are available to set/get the register value with common encodings
         
         .. code-block:: python
         
@@ -140,10 +144,17 @@ Description: ===================
         
         Actually, the following encoders/decoders accessors are implemented
         
-        * .float32 --> IEEE float32 encoding (big-endian)
-        * .sfloat32 --> Swapped IEEE float32 encoding (little-endian)
-        * .ffp --> Motorola Fast Floating Point encoding (SAIA Float)
-        * .int10 --> x10 rounded value (21.5275 is encoded as 215)
+        +---------------+-----------------------------------------------------+
+        | **.float32**  | IEEE float32 encoding (big-endian)                  |
+        +---------------+-----------------------------------------------------+
+        | **.sfloat32** | Swapped IEEE float32 encoding (little-endian)       |
+        +---------------+-----------------------------------------------------+
+        | **.ffp**      | Motorola Fast Floating Point encoding (SAIA Float)  |
+        +---------------+-----------------------------------------------------+
+        | **.float**    | Alias for FFP encodings (easier to remember)        |
+        +---------------+-----------------------------------------------------+
+        | **.int10**    | x10 rounded value (21.5175 is encoded as 215)       |
+        +---------------+-----------------------------------------------------+
         
         As in SAIA float values seems to be FFP encoded, the ffp encoder is automatically used
         when writing a float value to a register (instead of an int)
@@ -170,16 +181,18 @@ Description: ===================
             >>> server=node.registerServer('192.168.0.100')
             >>> myRemoteFlag=server.memory.flags[5]
         
-        The registration process provide a SAIAServer, containing a SAIAMemory object to access remote items. Local and remote data can be manipulated 
+        The registration process provide a SAIAServer object, containing a SAIAMemory object to access remote items. Local and remote data can be manipulated 
         in the same manner. When a remote data item (input, output, flag, register) is declared, an automatic pooling mecanism is launched in 
-        the background task. Refresh can also manually be triggered with a myRemoteFlag.refresh() call. You can query the elapsed time (in seconds) since
-        the last value update (refresh) with the myRemoteFlag.age() method. Changing the remote data value is fully transparent
+        the background task (manager). The default refresh rate is 60s per item,  modifiable with a myRemoteFlag.setRefreshDelay() call.
+        Alternatively, the refresh rate can be specified for the whole item collection, with a node.memory.flags.setRefreshDelay() call. 
+        Refresh can be triggered on demand with a myRemoteFlag.refresh() call or more globally with for example node.memory.flags.refresh() and node.memory.refresh() calls. 
+        You can query the elapsed time (in seconds) since the last value update (refresh) with the myRemoteFlag.age() method. Changing the remote data value is fully transparent
         
         .. code-block:: python
         
             >>> myRemoteFlag.value=1
         
-        For a non local object, this will queue a write order in the SAIAServer object with the new given value. The actual value of the item
+        For a non local object, this will automatically queue a write order in the SAIAServer object with the new given value. The actual value of the item
         remains unchanged. When the write order has been executed, a refresh order is immediately triggered, thus allowing the actual value to be updated. 
         This tend to keep the value synchonized with the remote value, even if something goes wrong. 
         
@@ -196,7 +209,13 @@ Description: ===================
         Dumping & Debugging
         -------------------
         
-        The module use a lot of tcp logging. Limited debug can also be done with objects .dump() methods. Try node.dump() or node.memory.dump()
+        By default, the module create and use a socket logger pointing on localhost. You can also give your own logger to the SAIANode
+        
+        .. code-block:: python
+        
+            >>> node=SAIANode(253, logger=mylogger)
+        
+        Limited debug can also be done with objects .dump() methods. Try node.dump() or node.memory.dump()
         or node.memory.flags.dump(). For debugging purposes, you can simulate a remote node by registering a remote node by pointing on yourself
         
         .. code-block:: python
@@ -220,22 +239,26 @@ Description: ===================
         
         .. code-block:: python
         
-            import time
             from digimat.saia import SAIANode
         
-            node=SAIANode()
+            node=SAIANode(253)
         
-            while True:
+            while node.isRunning():
                 try:
-                    time.sleep(3.0)
+                    # time.sleep(3.0)
+        
+                    # using integrated node.sleep() will 
+                    # handle CTRL-C and propagate node.stop()
+                    node.sleep(3.0)
+        
                     node.dump()
                 except:
                     break
         
-            node.stop()
+            # node.stop()
         
         
-        Open your SAIA Debugger on this node, and try reading/writing some items. You acn also use clear request with i,o,f and r items.
+        Open your SAIA Debugger on this node, and try reading/writing some items. You can also use clear request with i,o,f and r items.
         
         
         Documentation

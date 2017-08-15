@@ -76,6 +76,9 @@ class SAIARequest(object):
     COMMAND_CLEAR_OUTPUTS = 0x5c
     COMMAND_CLEAR_REGISTERS = 0x5d
 
+    COMMAND_RESTART_COLD_ALL = 0x39
+    COMMAND_RESTART_COLD_FLAG = 0xa6
+
     def __init__(self, link, retry=3):
         self._link=link
         self._retry=retry
@@ -107,6 +110,10 @@ class SAIARequest(object):
     @property
     def logger(self):
         return self.link.logger
+
+    @property
+    def sequence(self):
+        return self._sequence
 
     def initiate(self):
         return self.link.initiate(self)
@@ -227,13 +234,11 @@ class SAIARequestReadStationNumber(SAIARequest):
 
     def processResponse(self, payload):
         (lid,)=struct.unpack('>B', payload)
-        print("RECEIVED LID", lid)
         self.server.setLid(lid)
         return True
 
     def onFailure(self):
-        print("DEBUG: Simulate LID rx")
-        self.server.setLid(1)
+        pass
 
 
 class SAIARequestReadItem(SAIARequest):
@@ -275,7 +280,6 @@ class SAIARequestWriteFlags(SAIARequest):
         self.ready()
 
     def encode(self):
-        print "WRITE", self._values
         data=boollist2bin(self._values)
 
         # bytecount = number item to write (as msg length + 2)
@@ -295,7 +299,6 @@ class SAIARequestReadInputs(SAIARequestReadItem):
         index=self._address
         count=self._count
         values=bin2boollist(payload)
-        print(index, count, values)
 
         for n in range(count):
             print("INPUT(%d)=%d" % (index+n, values[n]))
@@ -314,7 +317,6 @@ class SAIARequestReadOutputs(SAIARequestReadItem):
         index=self._address
         count=self._count
         values=bin2boollist(payload)
-        print(index, count, values)
 
         for n in range(count):
             print("OUTPUT(%d)=%d" % (index+n, values[n]))
@@ -338,7 +340,6 @@ class SAIARequestReadRegisters(SAIARequestReadItem):
         index=self._address
         count=self._count
         values=self.data2uint32list(payload)
-        print(index, count, values)
 
         for n in range(count):
             item=registers[index+n]

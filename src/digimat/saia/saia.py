@@ -7,6 +7,9 @@ import logging.handlers
 
 from digimat.jobs import JobManager
 
+
+from .singleton import Singleton
+
 from .server import SAIAServer
 from .server import SAIASBusCRC
 
@@ -51,19 +54,297 @@ from .ModbusDataLib import bin2boollist
 # fhess@st-sa.ch
 
 
+class SAIANodeRequestHandler(object):
+    """
+    BaseClass for handling incoming request on local node
+    Every subclass will be automatically registered as a command-request handler associated
+    with the .COMMAND value. Class name can be anything you want.
+    """
+
+    COMMAND = None
+
+    def __init__(self, node):
+        self._node=node
+
+    @property
+    def node(self):
+        return self._node
+
+    @property
+    def logger(self):
+        return self.node.logger
+
+    @property
+    def sequence(self):
+        return self._sequence
+
+    def handler(self, data=None):
+        self.logger.error('%s:no handler!', self.__class__.__name__)
+
+    def bin2dwordlist(self, data):
+        return list(struct.unpack('>%dL' % (len(data) / 4), data))
+
+    def invoke(self, sequence, data):
+        self._sequence=sequence
+
+        try:
+            self.logger.debug('<--%s(seq=%d)' % (self.__class__.__name__, self.sequence))
+            response=self.handler(data)
+            if response:
+                return response
+        except:
+            self._node.logger.exception(self.__class__.__name__)
+
+        return self.nak()
+
+    def ack(self):
+        return SAIAResponseACK(self.node, self.sequence)
+
+    def nak(self):
+        return SAIAResponseNAK(self.node, self.sequence)
+
+
+class SAIAHandler_READ_STATIONNUMBER(SAIANodeRequestHandler):
+    COMMAND = SAIARequest.COMMAND_READ_STATIONNUMBER
+
+    def handler(self, data):
+        return SAIAResponseReadStationNumber(self.node, self.sequence)
+
+
+class SAIAHandler_READ_PROGRAM_VERSION(SAIANodeRequestHandler):
+    COMMAND = SAIARequest.COMMAND_READ_PROGRAM_VERSION
+
+    def handler(self, data):
+        return SAIAResponseReadProgramVersion(self.node, self.sequence)
+
+
+class SAIAHandler_READ_SYSTEM_INFO(SAIANodeRequestHandler):
+    COMMAND = SAIARequest.COMMAND_READ_SYSTEM_INFO
+
+    def handler(self, data):
+        # very minimal implementation since we don't have protocol description yet
+        response=SAIAResponseReadSystemInformation(self.node, self.sequence)
+        (b0, b1)=struct.unpack('>BB', data)
+        response.setup(b0, b1)
+        if b1==0:
+            return response
+
+
+class SAIAHandler_READ_PCD_STATUS_OWN(SAIANodeRequestHandler):
+    COMMAND = SAIARequest.COMMAND_READ_PCD_STATUS_OWN
+
+    def handler(self, data):
+        return SAIAResponseReadPcdStatusOwn(self.node, self.sequence)
+
+
+class SAIAHandler_READ_INPUTS(SAIANodeRequestHandler):
+    COMMAND = SAIARequest.COMMAND_READ_INPUTS
+
+    def handler(self, data):
+        (count, index)=struct.unpack('>BH', data)
+        response=SAIAResponseReadInputs(self.node, self.sequence)
+        response.setup(index, count+1)
+        return response
+
+
+class SAIAHandler_READ_OUTPUTS(SAIANodeRequestHandler):
+    COMMAND = SAIARequest.COMMAND_READ_OUTPUTS
+
+    def handler(self, data):
+        (count, index)=struct.unpack('>BH', data)
+        response=SAIAResponseReadOutputs(self.node, self.sequence)
+        response.setup(index, count+1)
+        return response
+
+
+class SAIAHandler_READ_FLAGS(SAIANodeRequestHandler):
+    COMMAND = SAIARequest.COMMAND_READ_FLAGS
+
+    def handler(self, data):
+        (count, index)=struct.unpack('>BH', data)
+        response=SAIAResponseReadFlags(self.node, self.sequence)
+        response.setup(index, count+1)
+        return response
+
+
+class SAIAHandler_READ_REGISTERS(SAIANodeRequestHandler):
+    COMMAND = SAIARequest.COMMAND_READ_REGISTERS
+
+    def handler(self, data):
+        (count, index)=struct.unpack('>BH', data)
+        response=SAIAResponseReadRegisters(self.node, self.sequence)
+        response.setup(index, count+1)
+        return response
+
+
+class SAIAHandler_WRITE_OUTPUTS(SAIANodeRequestHandler):
+    COMMAND = SAIARequest.COMMAND_WRITE_OUTPUTS
+
+    def handler(self, data):
+        items=self.node.memory.outputs
+        (bytecount, address, fiocount)=struct.unpack('>BHB', data[0:4])
+        if address>=0 and fiocount<=32:
+            values=bin2boollist(data[4:])
+            for n in range(fiocount+1):
+                items[address+n].value=values[n]
+            return self.ack()
+
+
+class SAIAHandler_WRITE_FLAGS(SAIANodeRequestHandler):
+    COMMAND = SAIARequest.COMMAND_WRITE_FLAGS
+
+    def handler(self, data):
+        items=self.node.memory.flags
+        (bytecount, address, fiocount)=struct.unpack('>BHB', data[0:4])
+        if address>=0 and fiocount<=32:
+            values=bin2boollist(data[4:])
+            for n in range(fiocount+1):
+                items[address+n].value=values[n]
+            return self.ack()
+
+
+class SAIAHandler_WRITE_REGISTERS(SAIANodeRequestHandler):
+    COMMAND = SAIARequest.COMMAND_WRITE_REGISTERS
+
+    def handler(self, data):
+        items=self.node.memory.registers
+        (bytecount, address)=struct.unpack('>BH', data[0:3])
+        if address>=0:
+            values=self.bin2dwordlist(data[3:])
+            for n in range(len(values)):
+                items[address+n].value=values[n]
+            return self.ack()
+
+
+class SAIAHandler_CLEAR_OUTPUTS(SAIANodeRequestHandler):
+    COMMAND = SAIARequest.COMMAND_CLEAR_OUTPUTS
+
+    def handler(self, data):
+        self.node.memory.outputs.clear()
+        return self.ack()
+
+
+class SAIAHandler_CLEAR_FLAGS(SAIANodeRequestHandler):
+    COMMAND = SAIARequest.COMMAND_CLEAR_FLAGS
+
+    def handler(self, data):
+        self.node.memory.flags.clear()
+        return self.ack()
+
+
+class SAIAHandler_CLEAR_REGISTERS(SAIANodeRequestHandler):
+    COMMAND = SAIARequest.COMMAND_CLEAR_REGISTERS
+
+    def handler(self, data):
+        self.node.memory.registers.clear()
+        return self.ack()
+
+
+class SAIAHandler_CLEAR_ALL(SAIANodeRequestHandler):
+    COMMAND = SAIARequest.COMMAND_CLEAR_ALL
+
+    def handler(self, data):
+        self.node.memory.outputs.clear()
+        self.node.memory.flags.clear()
+        self.node.memory.registers.clear()
+        self.node.memory.registers.clear()
+        return self.ack()
+
+
+# class SAIAHandler_RESTART_COLD_ALL(SAIANodeRequestHandler):
+    # COMMAND = SAIARequest.COMMAND_RESTART_COLD_ALL
+
+    # def handler(self, data):
+        # self.node._jobs.stop()
+        # return self.ack()
+
+
+# class SAIAHandler_RESTART_COLD_FLAG(SAIAHandler_RESTART_COLD_ALL):
+    # COMMAND = SAIARequest.COMMAND_RESTART_COLD_FLAG
+
+
+class SAIANodeHandler(Singleton):
+    def __init__(self, node):
+        self._node=node
+        self._handlers={}
+        self.registerAllHandlers()
+
+    @property
+    def node(self):
+        return self._node
+
+    @property
+    def logger(self):
+        return self.node.logger
+
+    def registerHandler(self, cls):
+        try:
+            command=cls.COMMAND
+            if command is not None and not self.handler(command):
+                self._handlers[command]=cls(self.node)
+                self.logger.debug('Registering node command 0x%02X handler %s' % (command, cls.__name__))
+        except:
+            pass
+
+    def registerAllHandlers(self):
+        def get_all_subclasses(cls):
+            """ Generator of all class's subclasses. """
+            try:
+                for subclass in cls.__subclasses__():
+                    yield subclass
+                    for subclass in get_all_subclasses(subclass):
+                        yield subclass
+            except TypeError:
+                return
+
+        def all_subclasses(classname):
+            for cls in get_all_subclasses(object):
+                if cls.__name__.split('.')[-1] == classname:
+                    break
+            else:
+                raise ValueError('class %s not found' % classname)
+            direct_subclasses = cls.__subclasses__()
+            return direct_subclasses + [g for s in direct_subclasses
+                for g in all_subclasses(s.__name__)]
+
+        try:
+            subcls=all_subclasses('SAIANodeRequestHandler')
+            for cls in subcls:
+                if cls.COMMAND is not None:
+                    self.registerHandler(cls)
+        except:
+            pass
+
+    def handler(self, command):
+        try:
+            return self._handlers[command]
+        except:
+            pass
+
+    def invoke(self, command, sequence, data):
+        handler=self.handler(command)
+        if handler:
+            try:
+                return handler.invoke(sequence, data)
+            except:
+                pass
+
+
 class SAIANode(object):
     SAIA_UDP_DEFAULT_PORT = 5050
 
-    def __init__(self, lid=253, port=SAIA_UDP_DEFAULT_PORT, logServer='localhost', logLevel=logging.DEBUG):
-        logger=logging.getLogger("SAIANode(%d)" % (port))
-        logger.setLevel(logLevel)
-        socketHandler = logging.handlers.SocketHandler(logServer, logging.handlers.DEFAULT_TCP_LOGGING_PORT)
-        logger.addHandler(socketHandler)
+    def __init__(self, lid=253, port=SAIA_UDP_DEFAULT_PORT, logger=None):
+        if logger is None:
+            logger=logging.getLogger("SAIANode(%d)" % (port))
+            logger.setLevel(logging.DEBUG)
+            socketHandler = logging.handlers.SocketHandler('localhost', logging.handlers.DEFAULT_TCP_LOGGING_PORT)
+            logger.addHandler(socketHandler)
+
         self._logger=logger
 
         self._socket=None
         self._lid=int(lid)
-        self._localServer=SAIAServer(self, '127.0.0.1', self._lid, localNodeMode=True)
+        self._localServer=SAIAServer(self, 'localnode', self._lid, localNodeMode=True)
         self.logger.info('localServer(%d) registered' % self._lid)
 
         self._port=int(port)
@@ -72,6 +353,8 @@ class SAIANode(object):
         self._indexServersByHost={}
         self._timeoutSocketInhibit=0
         self._currentServer=0
+
+        self._handler=SAIANodeHandler(self)
 
         self.start()
 
@@ -113,7 +396,7 @@ class SAIANode(object):
                 self.logger.info('Opening communication udp socket on port %d' % self._port)
                 s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
                 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-                # s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+                s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
                 # s.settimeout(3.0)
                 s.setblocking(False)
                 try:
@@ -191,9 +474,6 @@ class SAIANode(object):
     def data2strhex(self, data):
         return ' '.join(x.encode('hex') for x in data)
 
-    def bin2dwordlist(self, data):
-        return list(struct.unpack('>%dL' % (len(data) / 4), data))
-
     def sendMessageToHost(self, data, host, port=None):
         try:
             s=self.open()
@@ -201,7 +481,7 @@ class SAIANode(object):
                 if port is None:
                     port=self._port
                 size=s.sendto(data, (host, port))
-                self.logger.debug('-->%s:%d %s' % (host, port, self.data2strhex(data)))
+                # self.logger.debug('-->%s:%d %s' % (host, port, self.data2strhex(data)))
                 if size==len(data):
                     return True
                 self.logger.error('sendMessageToHost(%s)' % host)
@@ -224,103 +504,18 @@ class SAIANode(object):
         except:
             self.logger.exception('decodeMessage')
 
-    # TODO: this core function has to be better structured and splitted
     def onRequest(self, mseq, payload):
         try:
             (lid, cmd)=struct.unpack('> BB', payload[0:2])
-            data=payload[2:]
 
             if lid==255 or lid==self._lid:
-                if cmd==SAIARequest.COMMAND_READ_STATIONNUMBER:
-                    return SAIAResponseReadStationNumber(self, mseq)
+                data=payload[2:]
+                response=self._handler.invoke(cmd, mseq, data)
+                if not response:
+                    self.logger.error("RequestHandler(seq=%d,  cmd=0x%02X)[%s] not implemented" % (mseq, cmd, self.data2strhex(data)))
+                    response=SAIAResponseNAK(self, mseq)
 
-                elif cmd==SAIARequest.COMMAND_READ_PROGRAM_VERSION:
-                    response=SAIAResponseReadProgramVersion(self, mseq)
-                    return response
-
-                # very minimal implementation
-                elif cmd==SAIARequest.COMMAND_READ_SYSTEM_INFO:
-                    response=SAIAResponseReadSystemInformation(self, mseq)
-                    (b0, b1)=struct.unpack('>BB', data)
-                    response.setup(b0, b1)
-                    if b1==0:
-                        return response
-                    return
-
-                elif cmd==SAIARequest.COMMAND_READ_PCD_STATUS_OWN:
-                    return SAIAResponseReadPcdStatusOwn(self, mseq)
-
-                elif cmd==SAIARequest.COMMAND_READ_INPUTS:
-                    (count, index)=struct.unpack('>BH', data)
-                    response=SAIAResponseReadInputs(self, mseq)
-                    response.setup(index, count+1)
-                    return response
-
-                elif cmd==SAIARequest.COMMAND_READ_OUTPUTS:
-                    (count, index)=struct.unpack('>BH', data)
-                    response=SAIAResponseReadOutputs(self, mseq)
-                    response.setup(index, count+1)
-                    return response
-
-                elif cmd==SAIARequest.COMMAND_READ_FLAGS:
-                    (count, index)=struct.unpack('>BH', data)
-                    response=SAIAResponseReadFlags(self, mseq)
-                    response.setup(index, count+1)
-                    return response
-
-                elif cmd==SAIARequest.COMMAND_READ_REGISTERS:
-                    (count, index)=struct.unpack('>BH', data)
-                    response=SAIAResponseReadRegisters(self, mseq)
-                    response.setup(index, count+1)
-                    return response
-
-                elif cmd==SAIARequest.COMMAND_WRITE_OUTPUTS:
-                    items=self.memory.outputs
-                    (bytecount, address, fiocount)=struct.unpack('>BHB', data[0:4])
-                    if address>=0 and fiocount<=32:
-                        values=bin2boollist(data[4:])
-                        for n in range(fiocount+1):
-                            items[address+n].value=values[n]
-                        return SAIAResponseACK(self, mseq)
-
-                elif cmd==SAIARequest.COMMAND_WRITE_FLAGS:
-                    items=self.memory.flags
-                    (bytecount, address, fiocount)=struct.unpack('>BHB', data[0:4])
-                    if address>=0 and fiocount<=32:
-                        values=bin2boollist(data[4:])
-                        for n in range(fiocount+1):
-                            items[address+n].value=values[n]
-                        return SAIAResponseACK(self, mseq)
-
-                elif cmd==SAIARequest.COMMAND_WRITE_REGISTERS:
-                    items=self.memory.registers
-                    (bytecount, address)=struct.unpack('>BH', data[0:3])
-                    if address>=0:
-                        values=self.bin2dwordlist(data[3:])
-                        for n in range(len(values)):
-                            items[address+n].value=values[n]
-                        return SAIAResponseACK(self, mseq)
-
-                elif cmd==SAIARequest.COMMAND_CLEAR_OUTPUTS:
-                    self.memory.outputs.clear()
-                    return SAIAResponseACK(self, mseq)
-
-                elif cmd==SAIARequest.COMMAND_CLEAR_FLAGS:
-                    self.memory.flags.clear()
-                    return SAIAResponseACK(self, mseq)
-
-                elif cmd==SAIARequest.COMMAND_CLEAR_REGISTERS:
-                    self.memory.registers.clear()
-                    return SAIAResponseACK(self, mseq)
-
-                elif cmd==SAIARequest.COMMAND_CLEAR_ALL:
-                    self.memory.outputs.clear()
-                    self.memory.flags.clear()
-                    self.memory.registers.clear()
-                    return SAIAResponseACK(self, mseq)
-
-                self.logger.warning("<--seq=%d, cmd=0x%02x %s" % (mseq, cmd, self.data2strhex(data)))
-                return SAIAResponseNAK(self, mseq)
+                return response
         except:
             self.logger.exception('onRequest')
             return SAIAResponseNAK(self, mseq)
@@ -333,7 +528,7 @@ class SAIANode(object):
                 host=address[0]
                 port=address[1]
                 (mtype, mseq, payload)=self.decodeMessage(data)
-                self.logger.debug('<--%s:%d seq=%d %s' % (host, port, mseq, self.data2strhex(data)))
+                # self.logger.debug('<--%s:%d seq=%d %s' % (host, port, mseq, self.data2strhex(data)))
 
                 if mtype==0:
                     try:
@@ -386,24 +581,43 @@ class SAIANode(object):
 
     def start(self):
         try:
-            if self._jobManager:
+            if self._jobs:
                 return
         except:
             pass
 
-        self._jobManager=JobManager(self.logger)
-        self._jobManager.addJobFromFunction(self.manager)
-        self._jobManager.start()
+        self._jobs=JobManager(self.logger)
+        self._jobSAIA=self._jobs.addJobFromFunction(self.manager)
+        self._jobs.start()
 
     def stop(self):
         try:
-            self._jobManager.stop()
+            self._jobs.stop()
         except:
             pass
-        self._jobManager=None
+        self._jobSAIA=None
+        self._jobs=None
+
+    def isRunning(self):
+        try:
+            return self._jobSAIA.isRunning()
+        except:
+            pass
+
+    def sleep(self, delay):
+        try:
+            self._jobSAIA.sleep(delay)
+        except:
+            self.logger.exception('sleep')
+            time.sleep(delay)
+
+    def __del__(self):
+        self.stop()
 
     def dump(self):
-        return self.server.dump()
+        self.server.dump()
+        for server in self._servers:
+            server.dump()
 
 
 if __name__ == "__main__":

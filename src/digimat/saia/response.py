@@ -20,6 +20,7 @@ class SAIAReply(object):
         self._data=None
         self._ready=False
         self.onInit()
+        self.logger.debug('-->%s(seq=%d)' % (self.__class__.__name__, sequence))
 
     def onInit(self):
         pass
@@ -222,7 +223,7 @@ class SAIAResponseACK(SAIAReply):
 class SAIAResponseNAK(SAIAReply):
     def onInit(self):
         self.setReplyTypeAckNak()
-        self.setup(1)
+        self.setup(nakcode=1)
 
     def setup(self, nakcode):
         if nakcode>0:
@@ -230,5 +231,5 @@ class SAIAResponseNAK(SAIAReply):
             self.ready()
 
     def encode(self):
-        self.logger.error('NAK!')
+        self.logger.error('Reply NAK!')
         return struct.pack('>H', self._nakcode)

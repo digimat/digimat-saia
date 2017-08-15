@@ -20,3 +20,4 @@ src/digimat/saia/request.py
 src/digimat/saia/response.py
 src/digimat/saia/saia.py
 src/digimat/saia/server.py
+src/digimat/saia/singleton.py

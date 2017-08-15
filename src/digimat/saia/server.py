@@ -29,6 +29,8 @@ class SAIALink(object):
         self._timeout=0
         self._timeoutXmitInhibit=0
         self._delayXmitInhibit=delayXmitInhibit
+        self._timeoutWatchdog=time.time()+60
+        self._alive=False
         self._retry=0
         self._msgseq=0
         self.reset()
@@ -66,6 +68,10 @@ class SAIALink(object):
         self._request=None
         self.setState(SAIALink.COMMSTATE_IDLE)
 
+    def isAlive(self):
+        if self._alive:
+            return True
+
     def isIdle(self):
         if self._state==SAIALink.COMMSTATE_IDLE:
             return True
@@ -87,6 +93,9 @@ class SAIALink(object):
     def manager(self):
         try:
             if self._state==SAIALink.COMMSTATE_IDLE:
+                if self.isAlive() and time.time()>=self._timeoutWatchdog:
+                    self._alive=False
+                    self.logger.error('%s:link dead!' % self.server)
                 return
 
             elif self._state==SAIALink.COMMSTATE_PENDINGREQUEST:
@@ -94,6 +103,7 @@ class SAIALink(object):
                     return
 
                 if self._request.consumeRetry():
+                    self.logger.debug('-->%s(%d)' % (self._request.__class__.__name__, self._request.sequence))
                     if self.server.node.sendMessageToHost(self._request.data, self.server.host):
                         self._timeoutXmitInhibit=time.time()+self._delayXmitInhibit
                         self.setState(SAIALink.COMMSTATE_WAITRESPONSE, 2.0)
@@ -208,6 +218,7 @@ class SAIALink(object):
 
     def onMessage(self, mtype, mseq, payload):
         try:
+            self._timeoutWatchdog=time.time()+120.0
             if mtype==0:    # Request
                 # must be intercepted at higher level
                 pass
@@ -302,6 +313,9 @@ class SAIAServer(object):
     @property
     def registers(self):
         return self.memory.registers
+
+    def isAlive(self):
+        return self.link.isAlive()
 
     def onMessage(self, mtype, mseq, payload):
         return self.link.onMessage(mtype, mseq, payload)
