@@ -13,6 +13,7 @@ src/digimat/saia/ModbusDataLib.py
 src/digimat/saia/ModbusExtData.py
 src/digimat/saia/ModbusRestLib.py
 src/digimat/saia/__init__.py
+src/digimat/saia/__main__.py
 src/digimat/saia/formaters.py
 src/digimat/saia/items.py
 src/digimat/saia/memory.py

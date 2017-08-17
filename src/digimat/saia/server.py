@@ -1,4 +1,5 @@
 import time
+
 import struct
 
 from .request import SAIARequestReadStationNumber
@@ -103,8 +104,9 @@ class SAIALink(object):
                     return
 
                 if self._request.consumeRetry():
-                    self.logger.debug('-->%s(%d)' % (self._request.__class__.__name__, self._request.sequence))
-                    if self.server.node.sendMessageToHost(self._request.data, self.server.host):
+                    data=self._request.data
+                    self.logger.debug('-->%s' % self._request)
+                    if self.server.node.sendMessageToHost(data, self.server.host):
                         self._timeoutXmitInhibit=time.time()+self._delayXmitInhibit
                         self.setState(SAIALink.COMMSTATE_WAITRESPONSE, 2.0)
                         return
@@ -202,15 +204,8 @@ class SAIALink(object):
                 if sizePayload>0:
                     (msize, mversion, mtype, msequence, tattribute,
                         payload, mcrc)=struct.unpack('>LBBHB %ds H' % sizePayload, data)
-                else:
-                    # TODO: can this cas happend ?
-                    payload=None
-                    (msize, mversion, mtype, msequence, tattribute,
-                        mcrc)=struct.unpack('>LBBHB H', data)
-
-            if mcrc==SAIASBusCRC(data[0:-2]):
-                self.logger.debug('RX msg type %d seq %d payload %d bytes' % (tattribute, msequence, sizePayload))
-                return (tattribute, msequence, payload)
+                    if mcrc==SAIASBusCRC(data[0:-2]):
+                        return (tattribute, msequence, payload)
 
             self.logger.error('bad size/crc')
         except:
@@ -227,6 +222,7 @@ class SAIALink(object):
                 if self.isWaitingResponse():
                     if self._request.validateMessage(mseq, payload):
                         try:
+                            self.logger.debug('<--%s:processResponse(%d bytes)' % (self._request, len(payload)))
                             result=self._request.processResponse(payload)
                             self.reset(result)
                         except:
@@ -247,8 +243,11 @@ class SAIALink(object):
 
 
 class SAIAServer(object):
-    def __init__(self, node, host, lid=None, localNodeMode=False):
-        self._node=node
+
+    UDP_DEFAULT_PORT = 5050
+
+    def __init__(self, servers, host, lid=None, localNodeMode=False):
+        self._servers=servers
         self._host=host
         self._lid=lid
         self._memory=SAIAMemory(self, localNodeMode)
@@ -274,7 +273,7 @@ class SAIAServer(object):
         try:
             if self.isLidValid(lid):
                 self._lid=lid
-                self.node.declareServerLid(self, lid)
+                self.servers.assignServerLid(self, lid)
         except:
             pass
 
@@ -283,12 +282,16 @@ class SAIAServer(object):
         return self._host
 
     @property
+    def servers(self):
+        return self._servers
+
+    @property
     def node(self):
-        return self._node
+        return self.servers.node
 
     @property
     def logger(self):
-        return self.node.logger
+        return self.servers.logger
 
     @property
     def memory(self):
@@ -321,17 +324,118 @@ class SAIAServer(object):
         return self.link.onMessage(mtype, mseq, payload)
 
     def manager(self):
-        self._link.manager()
+        activity=False
+        if self._link.manager():
+            # print ">LINK"
+            activity=True
+
         if self.isLidValid(self._lid):
-            self._memory.manager()
+            if self._memory.manager():
+                activity=True
         else:
             self.link.readStationNumber()
+
+        if activity:
+            # print ">SERVER"
+            return True
 
     def __repr__(self):
         return '%s(%d)' % (self.host, self.lid)
 
     def dump(self):
         self.memory.dump()
+
+
+class SAIAServers(object):
+    def __init__(self, node):
+        self._node=node
+        self._servers=[]
+        self._indexByLid={}
+        self._indexByHost={}
+        self._currentServer=0
+
+    @property
+    def node(self):
+        return self._node
+
+    @property
+    def logger(self):
+        return self.node.logger
+
+    def getFromHost(self, host):
+        try:
+            return self._indexByHost[host]
+        except:
+            pass
+
+    def getFromLid(self, lid):
+        try:
+            return self._indexByLid[int(lid)]
+        except:
+            pass
+
+    def get(self, key):
+        server=self.getFromHost(key)
+        if server is None:
+            server=self.getFromLid(key)
+        return server
+
+    def __getitem__(self, key):
+        return self.get(key)
+
+    def declare(self, host, lid=None, port=SAIAServer.UDP_DEFAULT_PORT):
+        server=self.getFromHost(host)
+        if server is None:
+            server=SAIAServer(self, host, lid)
+            self._servers.append(server)
+            self._indexByHost[host]=server
+            self.logger.info('server(%s:%d) declared' % (host, port))
+        return server
+
+    def manager(self):
+        activity=False
+
+        if self._servers:
+            count=min(8, len(self._servers))
+            while count>0:
+                count-=1
+                try:
+                    server=self._servers[self._currentServer]
+                    self._currentServer+=1
+
+                    try:
+                        if server.manager():
+                            activity=True
+                    except:
+                        self.logger.exception('manager')
+                except:
+                    self._currentServer=0
+                    break
+
+        if activity:
+            return True
+
+    def dump(self):
+        for server in self._servers:
+            server.dump()
+
+    def assignServerLid(self, server, lid):
+        if self.getFromLid():
+            self.logger.error('duplicate server lid %d' % lid)
+            return
+
+        try:
+            del self._indexByLid[server.lid]
+        except:
+            pass
+
+        try:
+            if lid>=0 and lid<255:
+                self._indexByLid[lid]=server
+                self.logger.info('assign server %s with lid %d' % (server.host, lid))
+                return True
+        except:
+            pass
 
 
 if __name__ == "__main__":

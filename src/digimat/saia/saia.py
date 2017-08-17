@@ -12,6 +12,7 @@ from .singleton import Singleton
 
 from .server import SAIAServer
 from .server import SAIASBusCRC
+from .server import SAIAServers
 
 from .request import SAIARequest
 
@@ -181,74 +182,81 @@ class SAIAHandler_WRITE_OUTPUTS(SAIANodeRequestHandler):
     COMMAND = SAIARequest.COMMAND_WRITE_OUTPUTS
 
     def handler(self, data):
-        items=self.node.memory.outputs
-        (bytecount, address, fiocount)=struct.unpack('>BHB', data[0:4])
-        if address>=0 and fiocount<=32:
-            values=bin2boollist(data[4:])
-            for n in range(fiocount+1):
-                items[address+n].value=values[n]
-            return self.ack()
+        if not self.node.memory.isReadOnly():
+            items=self.node.memory.outputs
+            (bytecount, address, fiocount)=struct.unpack('>BHB', data[0:4])
+            if address>=0 and fiocount<=32:
+                values=bin2boollist(data[4:])
+                for n in range(fiocount+1):
+                    items[address+n].value=values[n]
+                return self.ack()
 
 
 class SAIAHandler_WRITE_FLAGS(SAIANodeRequestHandler):
     COMMAND = SAIARequest.COMMAND_WRITE_FLAGS
 
     def handler(self, data):
-        items=self.node.memory.flags
-        (bytecount, address, fiocount)=struct.unpack('>BHB', data[0:4])
-        if address>=0 and fiocount<=32:
-            values=bin2boollist(data[4:])
-            for n in range(fiocount+1):
-                items[address+n].value=values[n]
-            return self.ack()
+        if not self.node.memory.isReadOnly():
+            items=self.node.memory.flags
+            (bytecount, address, fiocount)=struct.unpack('>BHB', data[0:4])
+            if address>=0 and fiocount<=32:
+                values=bin2boollist(data[4:])
+                for n in range(fiocount+1):
+                    items[address+n].value=values[n]
+                return self.ack()
 
 
 class SAIAHandler_WRITE_REGISTERS(SAIANodeRequestHandler):
     COMMAND = SAIARequest.COMMAND_WRITE_REGISTERS
 
     def handler(self, data):
-        items=self.node.memory.registers
-        (bytecount, address)=struct.unpack('>BH', data[0:3])
-        if address>=0:
-            values=self.bin2dwordlist(data[3:])
-            for n in range(len(values)):
-                items[address+n].value=values[n]
-            return self.ack()
+        if not self.node.memory.isReadOnly():
+            items=self.node.memory.registers
+            (bytecount, address)=struct.unpack('>BH', data[0:3])
+            if address>=0:
+                values=self.bin2dwordlist(data[3:])
+                for n in range(len(values)):
+                    items[address+n].value=values[n]
+                return self.ack()
 
 
 class SAIAHandler_CLEAR_OUTPUTS(SAIANodeRequestHandler):
     COMMAND = SAIARequest.COMMAND_CLEAR_OUTPUTS
 
     def handler(self, data):
-        self.node.memory.outputs.clear()
-        return self.ack()
+        if not self.node.memory.isReadOnly():
+            self.node.memory.outputs.clear()
+            return self.ack()
 
 
 class SAIAHandler_CLEAR_FLAGS(SAIANodeRequestHandler):
     COMMAND = SAIARequest.COMMAND_CLEAR_FLAGS
 
     def handler(self, data):
-        self.node.memory.flags.clear()
-        return self.ack()
+        if not self.node.memory.isReadOnly():
+            self.node.memory.flags.clear()
+            return self.ack()
 
 
 class SAIAHandler_CLEAR_REGISTERS(SAIANodeRequestHandler):
     COMMAND = SAIARequest.COMMAND_CLEAR_REGISTERS
 
     def handler(self, data):
-        self.node.memory.registers.clear()
-        return self.ack()
+        if not self.node.memory.isReadOnly():
+            self.node.memory.registers.clear()
+            return self.ack()
 
 
 class SAIAHandler_CLEAR_ALL(SAIANodeRequestHandler):
     COMMAND = SAIARequest.COMMAND_CLEAR_ALL
 
     def handler(self, data):
-        self.node.memory.outputs.clear()
-        self.node.memory.flags.clear()
-        self.node.memory.registers.clear()
-        self.node.memory.registers.clear()
-        return self.ack()
+        if not self.node.memory.isReadOnly():
+            self.node.memory.outputs.clear()
+            self.node.memory.flags.clear()
+            self.node.memory.registers.clear()
+            self.node.memory.registers.clear()
+            return self.ack()
 
 
 # class SAIAHandler_RESTART_COLD_ALL(SAIANodeRequestHandler):
@@ -331,9 +339,7 @@ class SAIANodeHandler(Singleton):
 
 
 class SAIANode(object):
-    SAIA_UDP_DEFAULT_PORT = 5050
-
-    def __init__(self, lid=253, port=SAIA_UDP_DEFAULT_PORT, logger=None):
+    def __init__(self, lid=253, port=SAIAServer.UDP_DEFAULT_PORT, logger=None):
         if logger is None:
             logger=logging.getLogger("SAIANode(%d)" % (port))
             logger.setLevel(logging.DEBUG)
@@ -347,12 +353,10 @@ class SAIANode(object):
         self._localServer=SAIAServer(self, 'localnode', self._lid, localNodeMode=True)
         self.logger.info('localServer(%d) registered' % self._lid)
 
+        self._servers=SAIAServers(self)
+
         self._port=int(port)
-        self._servers=[]
-        self._indexServersByLid={}
-        self._indexServersByHost={}
         self._timeoutSocketInhibit=0
-        self._currentServer=0
 
         self._handler=SAIANodeHandler(self)
 
@@ -365,6 +369,10 @@ class SAIANode(object):
     @property
     def server(self):
         return self._localServer
+
+    @property
+    def servers(self):
+        return self._servers
 
     @property
     def memory(self):
@@ -385,6 +393,9 @@ class SAIANode(object):
     @property
     def registers(self):
         return self.memory.registers
+
+    def __getitem__(self, key):
+        return self.servers[key]
 
     def open(self):
         if self._socket:
@@ -419,57 +430,6 @@ class SAIANode(object):
             pass
 
         self._socket=None
-
-    def getServerFromHost(self, host):
-        try:
-            return self._indexServersByHost[host]
-        except:
-            pass
-
-    def getServerFromLid(self, lid):
-        try:
-            return self._indexServersByLid[int(lid)]
-        except:
-            pass
-
-    def getServer(self, key):
-        server=self.getServerFromHost(key)
-        if server is None:
-            server=self.getServerFromLid(key)
-        return server
-
-    def __getitem__(self, key):
-        return self.getServer(key)
-
-    def registerServer(self, host, lid=None, port=SAIA_UDP_DEFAULT_PORT):
-        server=self.getServerFromHost(host)
-        if server is None:
-            server=SAIAServer(self, host, lid)
-            self._servers.append(server)
-            self._indexServersByHost[host]=server
-            self.logger.info('server(%s:%d) registered' % (host, port))
-        return server
-
-    def registerLocalServer(self):
-        return self.registerServer('127.0.0.1', port=self.port)
-
-    def declareServerLid(self, server, lid):
-        if self.getServerFromLid():
-            self.logger.error('duplicate server lid %d' % lid)
-            return
-
-        try:
-            del self._indexServersByLid[server.lid]
-        except:
-            pass
-
-        try:
-            if lid>=0 and lid<255:
-                self._indexServersByLid[lid]=server
-                self.logger.info('assign server %s with lid %d' % (server.host, lid))
-                return True
-        except:
-            pass
 
     def data2strhex(self, data):
         return ' '.join(x.encode('hex') for x in data)
@@ -543,41 +503,46 @@ class SAIANode(object):
                     except:
                         self.logger.exception('request')
                 else:
-                    server=self.getServerFromHost(address[0])
+                    server=self.servers.getFromHost(address[0])
                     if server:
                         try:
                             server.onMessage(mtype, mseq, payload)
                         except:
                             self.logger.exception('onMessage()')
                     else:
-                        self.logger.warning('unregistered server %s!' % address[0])
+                        self.logger.warning('undeclared server %s!' % address[0])
 
                 return True
         except:
             pass
 
     def manager(self):
+        activity=False
+
         count=32
         while count>0:
             count-=1
             if not self.dispatchMessage():
                 break
+            activity=True
 
-        if self._servers:
-            count=min(8, len(self._servers))
-            while count>0:
-                count-=1
-                try:
-                    server=self._servers[self._currentServer]
-                    self._currentServer+=1
+        activity=self.servers.manager()
 
-                    try:
-                        server.manager()
-                    except:
-                        self.logger.exception('manager')
-                except:
-                    self._currentServer=0
-                    break
+        # Small booster, allowing to be more reactive
+        # during data burst, and more sleepy when idle
+        try:
+            if activity:
+                self._activityCounter=3
+
+            if self._activityCounter>0:
+                # bypass default job manager sleep (0.1)
+                self.sleep(0.01)
+                self._activityCounter-=1
+                return True
+        except:
+            pass
+
+        return False
 
     def start(self):
         try:
@@ -616,8 +581,7 @@ class SAIANode(object):
 
     def dump(self):
         self.server.dump()
-        for server in self._servers:
-            server.dump()
+        self.servers.dump()
 
 
 if __name__ == "__main__":

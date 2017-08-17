@@ -38,6 +38,10 @@ class SAIAItem(object):
         return self.parent.server
 
     @property
+    def memory(self):
+        return self.server.memory
+
+    @property
     def index(self):
         return self._index
 
@@ -61,6 +65,10 @@ class SAIAItem(object):
     def setReadOnly(self, state=True):
         self._readOnly=state
 
+    def isReadOnly(self):
+        if self._readOnly:
+            return True
+
     def signalPush(self, value):
         if self.parent.isLocalNodeMode():
             self.setValue(value)
@@ -80,11 +88,44 @@ class SAIAItem(object):
                 self._eventPull.set()
                 self._parent.signalPull(self)
 
+    def optimizePullCount(self, maxcount=8):
+        """
+        Try to increase item read count until maximum allowed (maxcount)
+        Only consecutive items are taken in account (no whole allowed)
+        """
+
+        try:
+            count=1
+            items=self.parent
+
+            index=self.index+1
+            while count<maxcount:
+                item=items.item(index)
+                if not item:
+                    break
+                index+=1
+                count+=1
+
+                # Cancel pull request as it will be requested here
+                # We don't cancel the pull queue. Theses items will simply
+                # be skiped by the pull manager
+                item.clearPull()
+
+            return count
+        except:
+            pass
+        return 1
+
     def clearPull(self):
         self._eventPull.clear()
 
-    def setValue(self, value):
-        if not self._readOnly:
+    def isPendingPullRequest(self):
+        if self._eventPull.isSet():
+            return True
+
+    def setValue(self, value, force=False):
+        # we must be able to setValue from a readItemResponse
+        if value is not None and force or not self.isReadOnly():
             value=self.validateValue(value)
             with self._parent._lock:
                 self._stamp=time.time()
@@ -101,7 +142,7 @@ class SAIAItem(object):
     @value.setter
     def value(self, value):
         with self._parent._lock:
-            if not self._readOnly:
+            if not self.isReadOnly():
                 value=self.validateValue(value)
                 if self._value!=value:
                     self.signalPush(value)
@@ -267,6 +308,10 @@ class SAIAItems(object):
     def setReadOnly(self, state=True):
         self._readOnly=state
 
+    def isReadOnly(self):
+        if self._readOnly:
+            return True
+
     def setRefreshDelay(self, delay):
         self._delayRefresh=delay
 
@@ -292,6 +337,10 @@ class SAIAItems(object):
         except:
             pass
 
+    def isItemDeclared(self, index):
+        if self.item(index):
+            return True
+
     def __getitem__(self, index):
         item=self.item(index)
         if item:
@@ -314,7 +363,7 @@ class SAIAItems(object):
                 item.signalPull()
                 return item
 
-    def declareRange(self, index, count, value=None):
+    def declareRange(self, index, count, value=0):
         items=[]
         for n in range(count):
             item=self.declare(index+n, value)

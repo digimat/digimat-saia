@@ -147,17 +147,15 @@ class SAIARequest(object):
 
         if payload:
             sizePayload=len(payload)
-            fformat='>L BBHB BB %ds' % sizePayload
             fsize=13+sizePayload
-            frame=struct.pack(fformat,
+            frame=struct.pack('>L BBHB BB %ds' % sizePayload,
                 fsize,
                 0, 0, self._sequence, 0,
                 self.server.lid, self._command,
                 payload)
         else:
-            fformat='>L BBHB BB'
             fsize=13
-            frame=struct.pack(fformat,
+            frame=struct.pack('>L BBHB BB',
                 fsize,
                 0, 0, self._sequence, 0,
                 self.server.lid, self._command)
@@ -223,6 +221,12 @@ class SAIARequest(object):
     def data2uint32list(self, data):
         return list(struct.unpack('>%dI' % (len(data) / 4), data))
 
+    def __repr__(self):
+        return '%s(mseq=%d)' % (self.__class__.__name__, self.sequence)
+
+    def __str__(self):
+        return self.__repr__()
+
 
 class SAIARequestReadStationNumber(SAIARequest):
     def onInit(self):
@@ -252,28 +256,33 @@ class SAIARequestReadItem(SAIARequest):
         return struct.pack('>BH',
                 self._count-1, self._address)
 
+    def items(self):
+        return None
 
-class SAIARequestReadFlags(SAIARequestReadItem):
-    def onInit(self):
-        self._command=SAIARequest.COMMAND_READ_FLAGS
+    def extractValuesFromPayload(self, payload):
+        return None
 
     def processResponse(self, payload):
-        flags=self.memory.flags
-
-        index=self._address
+        index0=self._address
         count=self._count
-        values=bin2boollist(payload)
+        values=self.extractValuesFromPayload(payload)
+
+        items=self.items()
 
         for n in range(count):
-            flags[index+n].setValue(values[n])
+            # decode only pre-declared (existing) items
+            # this allow sending grouped read requests
+            item=items.item(index0+n)
+            if item:
+                item.setValue(values[n], force=True)
 
         return True
 
+    def __repr__(self):
+        return '%s(mseq=%d, index=%d, count=%d)' % (self.__class__.__name__, self.sequence, self._address, self._count)
 
-class SAIARequestWriteFlags(SAIARequest):
-    def onInit(self):
-        self._command=SAIARequest.COMMAND_WRITE_FLAGS
 
+class SAIARequestWriteBooleanItem(SAIARequest):
     def setup(self, address, values):
         self._address=address
         self._values=self.safeMakeBoolArray(values)
@@ -289,43 +298,41 @@ class SAIARequestWriteFlags(SAIARequest):
         return struct.pack('>BHB %ds' % len(data), bytecount, self._address, fiocount, data)
 
 
-class SAIARequestReadInputs(SAIARequestReadItem):
+class SAIARequestReadBooleanItem(SAIARequestReadItem):
+    def extractValuesFromPayload(self, payload):
+        return bin2boollist(payload)
+
+
+class SAIARequestReadFlags(SAIARequestReadBooleanItem):
+    def onInit(self):
+        self._command=SAIARequest.COMMAND_READ_FLAGS
+
+    def items(self):
+        return self.memory.flags
+
+
+class SAIARequestWriteFlags(SAIARequestWriteBooleanItem):
+    def onInit(self):
+        self._command=SAIARequest.COMMAND_WRITE_FLAGS
+
+
+class SAIARequestReadInputs(SAIARequestReadBooleanItem):
     def onInit(self):
         self._command=SAIARequest.COMMAND_READ_INPUTS
 
-    def processResponse(self, payload):
-        inputs=self.memory.inputs
-
-        index=self._address
-        count=self._count
-        values=bin2boollist(payload)
-
-        for n in range(count):
-            print("INPUT(%d)=%d" % (index+n, values[n]))
-            inputs[index+n].setValue(values[n])
-
-        return True
+    def items(self):
+        return self.memory.inputs
 
 
-class SAIARequestReadOutputs(SAIARequestReadItem):
+class SAIARequestReadOutputs(SAIARequestReadBooleanItem):
     def onInit(self):
         self._command=SAIARequest.COMMAND_READ_OUTPUTS
 
-    def processResponse(self, payload):
-        outputs=self.memory.outputs
-
-        index=self._address
-        count=self._count
-        values=bin2boollist(payload)
-
-        for n in range(count):
-            print("OUTPUT(%d)=%d" % (index+n, values[n]))
-            outputs[index+n].setValue(values[n])
-
-        return True
+    def items(self):
+        return self.memory.outputs
 
 
-class SAIARequestWriteOutputs(SAIARequestWriteFlags):
+class SAIARequestWriteOutputs(SAIARequestWriteBooleanItem):
     def onInit(self):
         self._command=SAIARequest.COMMAND_WRITE_OUTPUTS
 
@@ -334,20 +341,11 @@ class SAIARequestReadRegisters(SAIARequestReadItem):
     def onInit(self):
         self._command=SAIARequest.COMMAND_READ_REGISTERS
 
-    def processResponse(self, payload):
-        registers=self.memory.registers
+    def items(self):
+        return self.memory.registers
 
-        index=self._address
-        count=self._count
-        values=self.data2uint32list(payload)
-
-        for n in range(count):
-            item=registers[index+n]
-            value=values[n]
-            print("REGISTER(%d)=%d" % (index+n, value))
-            item.setValue(value)
-
-        return True
+    def extractValuesFromPayload(self, payload):
+        return self.data2uint32list(payload)
 
 
 class SAIARequestWriteRegisters(SAIARequest):

@@ -154,7 +154,7 @@ class SAIAResponseReadBooleanItem(SAIAReply):
         self._items=None
 
     def setup(self, address, count):
-        if address>=0 and count>0 and count<=32:
+        if address>=0 and count>0 and count<=256:
             self._address=address
             self._count=count
             self.ready()

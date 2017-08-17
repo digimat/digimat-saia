@@ -1,3 +1,4 @@
+
 from Queue import Queue
 
 from .items import SAIABooleanItem
@@ -5,20 +6,20 @@ from .items import SAIAAnalogItem
 from .items import SAIAItems
 
 
-# http://stackoverflow.com/questions/1581895/how-check-if-a-task-is-already-in-python-queue
-class UniqueQueue(Queue):
-    def put(self, item, block=True, timeout=None):
-        if item not in self.queue:  # fix join bug
-            Queue.put(self, item, block, timeout)
-
+class SAIAItemQueue(Queue):
     def _init(self, maxsize):
-        self.queue = set()
+        self._queue=[]
+
+    def _qsize(self):
+        return len(self._queue)
 
     def _put(self, item):
-        self.queue.add(item)
+        if item not in self._queue:
+            self._queue.insert(0, item)
 
     def _get(self):
-        return self.queue.pop()
+        item=self._queue.pop()
+        return item
 
 
 class SAIAItemFlag(SAIABooleanItem):
@@ -26,7 +27,8 @@ class SAIAItemFlag(SAIABooleanItem):
         pass
 
     def pull(self):
-        return self.server.link.readFlags(self.index, 1)
+        count=self.optimizePullCount(32)
+        return self.server.link.readFlags(self.index, count)
 
     def push(self):
         return self.server.link.writeFlags(self.index, self.pushValue)
@@ -37,7 +39,8 @@ class SAIAItemInput(SAIABooleanItem):
         self.setReadOnly()
 
     def pull(self):
-        return self.server.link.readInputs(self.index, 1)
+        count=self.optimizePullCount(32)
+        return self.server.link.readInputs(self.index, count)
 
 
 class SAIAItemOutput(SAIABooleanItem):
@@ -45,7 +48,8 @@ class SAIAItemOutput(SAIABooleanItem):
         pass
 
     def pull(self):
-        return self.server.link.readOutputs(self.index, 1)
+        count=self.optimizePullCount(32)
+        return self.server.link.readOutputs(self.index, count)
 
     def push(self):
         return self.server.link.writeOutputs(self.index, self.pushValue)
@@ -56,7 +60,8 @@ class SAIAItemRegister(SAIAAnalogItem):
         pass
 
     def pull(self):
-        return self.server.link.readRegisters(self.index, 1)
+        count=self.optimizePullCount(8)
+        return self.server.link.readRegisters(self.index, count)
 
     def push(self):
         return self.server.link.writeRegisters(self.index, self.pushValue)
@@ -100,8 +105,9 @@ class SAIAMemory(object):
         self._outputs=SAIAOutputs(self)
         self._flags=SAIAFlags(self)
         self._registers=SAIARegisters(self)
-        self._queuePendingPull=UniqueQueue()
-        self._queuePendingPush=UniqueQueue()
+        self._queuePendingPull=SAIAItemQueue()
+        self._queuePendingPush=SAIAItemQueue()
+        self._readOnly=False
 
     @property
     def server(self):
@@ -126,6 +132,13 @@ class SAIAMemory(object):
     @property
     def registers(self):
         return self._registers
+
+    def setReadOnly(self, state=True):
+        self._readOnly=state
+
+    def isReadOnly(self):
+        if self._readOnly:
+            return True
 
     def enableOnTheFlyItemCreation(self, state=True):
         self._enableOnTheFlyItemCreation=state
@@ -160,13 +173,16 @@ class SAIAMemory(object):
 
     def getNextPendingPull(self):
         try:
-            item=self._queuePendingPull.get(False)
-            item.clearPull()
-            return item
+            while True:
+                item=self._queuePendingPull.get(False)
+                if item.isPendingPullRequest():
+                    item.clearPull()
+                    return item
         except:
             pass
 
     def manager(self):
+        activity=False
         try:
             for items in self.items():
                 items.manager()
@@ -177,10 +193,16 @@ class SAIAMemory(object):
             item=self.getNextPendingPush()
             if item:
                 item.push()
+                activity=True
 
             item=self.getNextPendingPull()
             if item:
                 item.pull()
+                activity=True
+
+        if activity:
+            # print ">MEMORY"
+            return True
 
     def dump(self):
         for items in self.items():
