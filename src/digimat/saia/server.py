@@ -233,8 +233,12 @@ class SAIALink(object):
                     if self._request.validateMessage(mseq):
                         try:
                             (code,)=struct.unpack('>B', payload[0])
-                            result=bool(code)
-                            self.reset(result)
+                            if code==0:
+                                self.logger.debug('<--ACK')
+                                self.reset(True)
+                            else:
+                                self.logger.error('<--ACK(%d)' % code)
+                                self.reset(False)
                         except:
                             self.logger.exception('processAck/Nak')
 

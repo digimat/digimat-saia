@@ -4,7 +4,7 @@ from .ModbusDataLib import boollist2bin
 
 from .request import SAIASBusCRC
 
-SAIA_CPU_TYPE = 'XXDIG'
+SAIA_CPU_TYPE = 'xxDIG'
 SAIA_FW_VERSION = '001'
 
 

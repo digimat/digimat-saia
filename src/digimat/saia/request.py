@@ -282,11 +282,35 @@ class SAIARequestReadItem(SAIARequest):
         return '%s(mseq=%d, index=%d, count=%d)' % (self.__class__.__name__, self.sequence, self._address, self._count)
 
 
-class SAIARequestWriteBooleanItem(SAIARequest):
+class SAIARequestWriteItem(SAIARequest):
+    def items(self):
+        return None
+
+    def refreshItems(self):
+        try:
+            items=self.items()
+            index0=self._address
+            for n in range(len(self._values)):
+                item=items[index0+n]
+                item.refresh()
+        except:
+            pass
+
+    def onSuccess(self):
+        self.refreshItems()
+
+    def onFailure(self):
+        self.refreshItems()
+
+
+class SAIARequestWriteBooleanItem(SAIARequestWriteItem):
     def setup(self, address, values):
         self._address=address
         self._values=self.safeMakeBoolArray(values)
         self.ready()
+
+    def items(self):
+        return self.memory.flags
 
     def encode(self):
         data=boollist2bin(self._values)
@@ -296,6 +320,9 @@ class SAIARequestWriteBooleanItem(SAIARequest):
         fiocount=len(self._values)-1
 
         return struct.pack('>BHB %ds' % len(data), bytecount, self._address, fiocount, data)
+
+    def __repr__(self):
+        return '%s(mseq=%d, index=%d, values=%s)' % (self.__class__.__name__, self.sequence, self._address, str(self._values))
 
 
 class SAIARequestReadBooleanItem(SAIARequestReadItem):
@@ -348,9 +375,12 @@ class SAIARequestReadRegisters(SAIARequestReadItem):
         return self.data2uint32list(payload)
 
 
-class SAIARequestWriteRegisters(SAIARequest):
+class SAIARequestWriteRegisters(SAIARequestWriteItem):
     def onInit(self):
         self._command=SAIARequest.COMMAND_WRITE_REGISTERS
+
+    def items(self):
+        return self.memory.flags
 
     def setup(self, address, values):
         self._address=address
@@ -365,6 +395,9 @@ class SAIARequestWriteRegisters(SAIARequest):
         # bytecount = number item to write (as msg length + 2)
         bytecount=len(data)+2
         return struct.pack('>BH %ds' % len(data), bytecount, self._address, data)
+
+    def __repr__(self):
+        return '%s(mseq=%d, index=%d, values=%s)' % (self.__class__.__name__, self.sequence, self._address, str(self._values))
 
 
 if __name__ == "__main__":

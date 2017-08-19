@@ -79,14 +79,44 @@ class SAIAItem(object):
             with self._parent._lock:
                 self._pushValue=value
 
+    def isPendingPushRequest(self):
+        if self._eventPull.isSet():
+            return True
+
     def clearPush(self):
         self._eventPush.clear()
+
+    def optimizePushCount(self, maxcount=8):
+        """
+        Try to increase item write count until maximum allowed (maxcount)
+        Only consecutive items are taken in account (no whole allowed)
+        """
+
+        try:
+            count=1
+            items=self.parent
+
+            index=self.index+1
+            while count<maxcount:
+                item=items.item(index)
+                if not item or not item.isPendingPushRequest():
+                    break
+                index+=1
+                count+=1
+
+            return count
+        except:
+            pass
+        return 1
 
     def signalPull(self):
         if not self.parent.isLocalNodeMode():
             if not self._eventPull.isSet():
                 self._eventPull.set()
                 self._parent.signalPull(self)
+
+    def clearPull(self):
+        self._eventPull.clear()
 
     def optimizePullCount(self, maxcount=8):
         """
@@ -106,6 +136,7 @@ class SAIAItem(object):
                 index+=1
                 count+=1
 
+                # TODO: better do it in the readResponse ACK ?
                 # Cancel pull request as it will be requested here
                 # We don't cancel the pull queue. Theses items will simply
                 # be skiped by the pull manager
@@ -115,9 +146,6 @@ class SAIAItem(object):
         except:
             pass
         return 1
-
-    def clearPull(self):
-        self._eventPull.clear()
 
     def isPendingPullRequest(self):
         if self._eventPull.isSet():

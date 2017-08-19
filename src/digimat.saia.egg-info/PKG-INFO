@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: digimat.saia
-Version: 0.0.40
+Version: 0.0.42
 Summary: Digimat Saia EtherSBus (partial) client+server implementation
 Home-page: http://www.digimat.ch
 Author: Frederic Hess

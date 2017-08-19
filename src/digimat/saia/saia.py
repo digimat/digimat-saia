@@ -553,6 +553,7 @@ class SAIANode(object):
 
         self._jobs=JobManager(self.logger)
         self._jobSAIA=self._jobs.addJobFromFunction(self.manager)
+        self._jobSAIA.setDaemon()
         self._jobs.start()
 
     def stop(self):

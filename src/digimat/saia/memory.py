@@ -31,7 +31,19 @@ class SAIAItemFlag(SAIABooleanItem):
         return self.server.link.readFlags(self.index, count)
 
     def push(self):
-        return self.server.link.writeFlags(self.index, self.pushValue)
+        # TODO: associer items avec la request
+        xxxx
+        count=self.optimizePushCount(32)
+        values=[]
+        index0=self.index
+        items=self.parents
+        for n in range(count):
+            item=items[index0+n]
+            print item
+            values.append(item.pushValue)
+
+        print "->WRITEFLAGS", values
+        return self.server.link.writeFlags(self.index, values)
 
 
 class SAIAItemInput(SAIABooleanItem):
@@ -60,7 +72,7 @@ class SAIAItemRegister(SAIAAnalogItem):
         pass
 
     def pull(self):
-        count=self.optimizePullCount(8)
+        count=self.optimizePullCount(16)
         return self.server.link.readRegisters(self.index, count)
 
     def push(self):
