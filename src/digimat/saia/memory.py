@@ -5,6 +5,14 @@ from .items import SAIABooleanItem
 from .items import SAIAAnalogItem
 from .items import SAIAItems
 
+from .request import SAIARequestReadFlags
+from .request import SAIARequestWriteFlags
+from .request import SAIARequestReadInputs
+from .request import SAIARequestReadOutputs
+from .request import SAIARequestWriteOutputs
+from .request import SAIARequestReadRegisters
+from .request import SAIARequestWriteRegisters
+
 
 class SAIAItemQueue(Queue):
     def _init(self, maxsize):
@@ -27,23 +35,14 @@ class SAIAItemFlag(SAIABooleanItem):
         pass
 
     def pull(self):
-        count=self.optimizePullCount(32)
-        return self.server.link.readFlags(self.index, count)
+        request=SAIARequestReadFlags(self.server.link)
+        request.setup(self, maxcount=96)
+        return request.initiate()
 
     def push(self):
-        # TODO: associer items avec la request
-        xxxx
-        count=self.optimizePushCount(32)
-        values=[]
-        index0=self.index
-        items=self.parents
-        for n in range(count):
-            item=items[index0+n]
-            print item
-            values.append(item.pushValue)
-
-        print "->WRITEFLAGS", values
-        return self.server.link.writeFlags(self.index, values)
+        request=SAIARequestWriteFlags(self.server.link)
+        request.setup(self, maxcount=96)
+        return request.initiate()
 
 
 class SAIAItemInput(SAIABooleanItem):
@@ -51,8 +50,9 @@ class SAIAItemInput(SAIABooleanItem):
         self.setReadOnly()
 
     def pull(self):
-        count=self.optimizePullCount(32)
-        return self.server.link.readInputs(self.index, count)
+        request=SAIARequestReadInputs(self.server.link)
+        request.setup(self, maxcount=96)
+        return request.initiate()
 
 
 class SAIAItemOutput(SAIABooleanItem):
@@ -60,11 +60,14 @@ class SAIAItemOutput(SAIABooleanItem):
         pass
 
     def pull(self):
-        count=self.optimizePullCount(32)
-        return self.server.link.readOutputs(self.index, count)
+        request=SAIARequestReadOutputs(self.server.link)
+        request.setup(self, maxcount=96)
+        return request.initiate()
 
     def push(self):
-        return self.server.link.writeOutputs(self.index, self.pushValue)
+        request=SAIARequestWriteOutputs(self.server.link)
+        request.setup(self, maxcount=96)
+        return request.initiate()
 
 
 class SAIAItemRegister(SAIAAnalogItem):
@@ -72,11 +75,14 @@ class SAIAItemRegister(SAIAAnalogItem):
         pass
 
     def pull(self):
-        count=self.optimizePullCount(16)
-        return self.server.link.readRegisters(self.index, count)
+        request=SAIARequestReadRegisters(self.server.link)
+        request.setup(self, maxcount=48)
+        return request.initiate()
 
     def push(self):
-        return self.server.link.writeRegisters(self.index, self.pushValue)
+        request=SAIARequestWriteRegisters(self.server.link)
+        request.setup(self, maxcount=48)
+        return request.initiate()
 
 
 class SAIABooleanItems(SAIAItems):
@@ -177,9 +183,11 @@ class SAIAMemory(object):
 
     def getNextPendingPush(self):
         try:
-            item=self._queuePendingPush.get(False)
-            item.clearPush()
-            return item
+            while True:
+                item=self._queuePendingPush.get(False)
+                if item.isPendingPushRequest():
+                    item.clearPush()
+                    return item
         except:
             pass
 

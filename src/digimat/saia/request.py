@@ -245,25 +245,49 @@ class SAIARequestReadStationNumber(SAIARequest):
         pass
 
 
-class SAIARequestReadItem(SAIARequest):
-    def setup(self, address, count=1):
-        self._address=address
-        self._count=count
+class SAIARequestReadItems(SAIARequest):
+    def setup(self, item, maxcount=1):
+        self._item=item
+        self._count=self.optimizePullCount(maxcount)
         self.ready()
+
+    @property
+    def item(self):
+        return self._item
+
+    def items(self):
+        return self.item.parent
+
+    def optimizePullCount(self, maxcount):
+        """
+        Try to increase item read count
+        Only consecutive items are taken in account (no whole allowed)
+        """
+
+        try:
+            count=1
+            item=self.item
+            while count<maxcount:
+                item=item.next()
+                if not item or not item.isPendingPullRequest():
+                    break
+                count+=1
+
+            return count
+        except:
+            pass
+        return 1
 
     def encode(self):
         # count = number of item to read - 1
         return struct.pack('>BH',
-                self._count-1, self._address)
-
-    def items(self):
-        return None
+                self._count-1, self.item.index)
 
     def extractValuesFromPayload(self, payload):
         return None
 
     def processResponse(self, payload):
-        index0=self._address
+        index0=self.item.index
         count=self._count
         values=self.extractValuesFromPayload(payload)
 
@@ -275,43 +299,85 @@ class SAIARequestReadItem(SAIARequest):
             item=items.item(index0+n)
             if item:
                 item.setValue(values[n], force=True)
+                item.clearPull()
 
         return True
 
     def __repr__(self):
-        return '%s(mseq=%d, index=%d, count=%d)' % (self.__class__.__name__, self.sequence, self._address, self._count)
+        return '%s(mseq=%d, index=%d, count=%d)' % (self.__class__.__name__,
+            self.sequence, self.item.index, self._count)
 
 
-class SAIARequestWriteItem(SAIARequest):
+class SAIARequestReadRegisters(SAIARequestReadItems):
+    def onInit(self):
+        self._command=SAIARequest.COMMAND_READ_REGISTERS
+
+    def extractValuesFromPayload(self, payload):
+        return self.data2uint32list(payload)
+
+
+class SAIARequestReadBooleanItems(SAIARequestReadItems):
+    def extractValuesFromPayload(self, payload):
+        return bin2boollist(payload)
+
+
+class SAIARequestReadFlags(SAIARequestReadBooleanItems):
+    def onInit(self):
+        self._command=SAIARequest.COMMAND_READ_FLAGS
+
+
+class SAIARequestReadInputs(SAIARequestReadBooleanItems):
+    def onInit(self):
+        self._command=SAIARequest.COMMAND_READ_INPUTS
+
+
+class SAIARequestReadOutputs(SAIARequestReadBooleanItems):
+    def onInit(self):
+        self._command=SAIARequest.COMMAND_READ_OUTPUTS
+
+
+class SAIARequestWriteItems(SAIARequest):
+    def setup(self, item, maxcount=1):
+        self._item=item
+
+        values=[item.pushValue]
+        while len(values)<maxcount:
+            item=item.next()
+            if not item or not item.isPendingPushRequest():
+                break
+            values.append(item.pushValue)
+
+        self._values=self.safeMakeArray(values)
+        self.ready()
+
+    @property
+    def item(self):
+        return self._item
+
     def items(self):
-        return None
+        return self.item.parent
 
     def refreshItems(self):
         try:
             items=self.items()
-            index0=self._address
+            index0=self.item.index
             for n in range(len(self._values)):
                 item=items[index0+n]
-                item.refresh()
+                item.clearPush()
+                if item:
+                    item.refresh()
         except:
             pass
 
     def onSuccess(self):
+        # after push (write oending value), we need a refresh to update the actual value
         self.refreshItems()
 
     def onFailure(self):
-        self.refreshItems()
+        pass
 
 
-class SAIARequestWriteBooleanItem(SAIARequestWriteItem):
-    def setup(self, address, values):
-        self._address=address
-        self._values=self.safeMakeBoolArray(values)
-        self.ready()
-
-    def items(self):
-        return self.memory.flags
-
+class SAIARequestWriteBooleanItems(SAIARequestWriteItems):
     def encode(self):
         data=boollist2bin(self._values)
 
@@ -319,73 +385,26 @@ class SAIARequestWriteBooleanItem(SAIARequestWriteItem):
         bytecount=len(data)+2
         fiocount=len(self._values)-1
 
-        return struct.pack('>BHB %ds' % len(data), bytecount, self._address, fiocount, data)
+        return struct.pack('>BHB %ds' % len(data), bytecount, self.item.index, fiocount, data)
 
     def __repr__(self):
-        return '%s(mseq=%d, index=%d, values=%s)' % (self.__class__.__name__, self.sequence, self._address, str(self._values))
+        return '%s(mseq=%d, index=%d, values=%s)' % (self.__class__.__name__,
+            self.sequence, self.item.index, str(self._values))
 
 
-class SAIARequestReadBooleanItem(SAIARequestReadItem):
-    def extractValuesFromPayload(self, payload):
-        return bin2boollist(payload)
-
-
-class SAIARequestReadFlags(SAIARequestReadBooleanItem):
-    def onInit(self):
-        self._command=SAIARequest.COMMAND_READ_FLAGS
-
-    def items(self):
-        return self.memory.flags
-
-
-class SAIARequestWriteFlags(SAIARequestWriteBooleanItem):
+class SAIARequestWriteFlags(SAIARequestWriteBooleanItems):
     def onInit(self):
         self._command=SAIARequest.COMMAND_WRITE_FLAGS
 
 
-class SAIARequestReadInputs(SAIARequestReadBooleanItem):
-    def onInit(self):
-        self._command=SAIARequest.COMMAND_READ_INPUTS
-
-    def items(self):
-        return self.memory.inputs
-
-
-class SAIARequestReadOutputs(SAIARequestReadBooleanItem):
-    def onInit(self):
-        self._command=SAIARequest.COMMAND_READ_OUTPUTS
-
-    def items(self):
-        return self.memory.outputs
-
-
-class SAIARequestWriteOutputs(SAIARequestWriteBooleanItem):
+class SAIARequestWriteOutputs(SAIARequestWriteBooleanItems):
     def onInit(self):
         self._command=SAIARequest.COMMAND_WRITE_OUTPUTS
 
 
-class SAIARequestReadRegisters(SAIARequestReadItem):
-    def onInit(self):
-        self._command=SAIARequest.COMMAND_READ_REGISTERS
-
-    def items(self):
-        return self.memory.registers
-
-    def extractValuesFromPayload(self, payload):
-        return self.data2uint32list(payload)
-
-
-class SAIARequestWriteRegisters(SAIARequestWriteItem):
+class SAIARequestWriteRegisters(SAIARequestWriteItems):
     def onInit(self):
         self._command=SAIARequest.COMMAND_WRITE_REGISTERS
-
-    def items(self):
-        return self.memory.flags
-
-    def setup(self, address, values):
-        self._address=address
-        self._values=self.safeMakeArray(values)
-        self.ready()
 
     def dwordlist2bin(self, dwordlist):
         return struct.pack('>%dL' % len(dwordlist), *dwordlist)
@@ -394,10 +413,11 @@ class SAIARequestWriteRegisters(SAIARequestWriteItem):
         data=self.dwordlist2bin(self._values)
         # bytecount = number item to write (as msg length + 2)
         bytecount=len(data)+2
-        return struct.pack('>BH %ds' % len(data), bytecount, self._address, data)
+        return struct.pack('>BH %ds' % len(data), bytecount, self.item.index, data)
 
     def __repr__(self):
-        return '%s(mseq=%d, index=%d, values=%s)' % (self.__class__.__name__, self.sequence, self._address, str(self._values))
+        return '%s(mseq=%d, index=%d, values=%s)' % (self.__class__.__name__,
+            self.sequence, self.item.index, str(self._values))
 
 
 if __name__ == "__main__":

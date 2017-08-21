@@ -45,6 +45,20 @@ class SAIAItem(object):
     def index(self):
         return self._index
 
+    def next(self):
+        """
+        return the next item (i.e. the one with index=self.index+1)
+        return none if index+1 don't exists
+        """
+        return self.parent.item(self.index+1)
+
+    def previous(self):
+        """
+        return the previous item (i.e. the one with index=self.index-11)
+        return none if index-1 don't exists
+        """
+        return self.parent.item(self.index-1)
+
     def onInit(self):
         pass
 
@@ -80,34 +94,11 @@ class SAIAItem(object):
                 self._pushValue=value
 
     def isPendingPushRequest(self):
-        if self._eventPull.isSet():
+        if self._eventPush.isSet():
             return True
 
     def clearPush(self):
         self._eventPush.clear()
-
-    def optimizePushCount(self, maxcount=8):
-        """
-        Try to increase item write count until maximum allowed (maxcount)
-        Only consecutive items are taken in account (no whole allowed)
-        """
-
-        try:
-            count=1
-            items=self.parent
-
-            index=self.index+1
-            while count<maxcount:
-                item=items.item(index)
-                if not item or not item.isPendingPushRequest():
-                    break
-                index+=1
-                count+=1
-
-            return count
-        except:
-            pass
-        return 1
 
     def signalPull(self):
         if not self.parent.isLocalNodeMode():
@@ -117,35 +108,6 @@ class SAIAItem(object):
 
     def clearPull(self):
         self._eventPull.clear()
-
-    def optimizePullCount(self, maxcount=8):
-        """
-        Try to increase item read count until maximum allowed (maxcount)
-        Only consecutive items are taken in account (no whole allowed)
-        """
-
-        try:
-            count=1
-            items=self.parent
-
-            index=self.index+1
-            while count<maxcount:
-                item=items.item(index)
-                if not item:
-                    break
-                index+=1
-                count+=1
-
-                # TODO: better do it in the readResponse ACK ?
-                # Cancel pull request as it will be requested here
-                # We don't cancel the pull queue. Theses items will simply
-                # be skiped by the pull manager
-                item.clearPull()
-
-            return count
-        except:
-            pass
-        return 1
 
     def isPendingPullRequest(self):
         if self._eventPull.isSet():

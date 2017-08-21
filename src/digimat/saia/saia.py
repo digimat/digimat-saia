@@ -488,7 +488,7 @@ class SAIANode(object):
                 host=address[0]
                 port=address[1]
                 (mtype, mseq, payload)=self.decodeMessage(data)
-                # self.logger.debug('<--%s:%d seq=%d %s' % (host, port, mseq, self.data2strhex(data)))
+                self.logger.debug('<--%s:%d seq=%d %s' % (host, port, mseq, self.data2strhex(data)))
 
                 if mtype==0:
                     try:

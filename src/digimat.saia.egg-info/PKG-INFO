@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: digimat.saia
-Version: 0.0.42
+Version: 0.0.44
 Summary: Digimat Saia EtherSBus (partial) client+server implementation
 Home-page: http://www.digimat.ch
 Author: Frederic Hess
@@ -20,7 +20,7 @@ Description: ===================
             >>> from digimat.saia import SAIANode
             >>> node=SAIANode(253)
         
-        Congratulations ! You just have powered up your first EtherSNode device with 2 lines of code. A background task handle now for you all the network SBus frames. 
+        Congratulations ! You just have powered up your first EtherSNode device with 2 lines of code. A **background task handle now for you all the network SBus frames**. 
         Open your SAIA PG5 Debugger and try to read/write some data to your node. When done, shutdown your node properly.
         
         .. code-block:: python
@@ -70,9 +70,9 @@ Description: ===================
         Once created, the SAIANode object will implicitely start a background task responsible for protocol and bus variables management.
         The task must be stop()ed before the program termination. The node contains a server (allowing other nodes to read an write 
         data to it). The node can also donnect to other remote SBus servers, to read/write remote data. Each server (local or remote)
-        has it's own memory representation (SAIAMemory).
+        has it's own memory representation (SAIAMemory). Localnode memory is accessible trough node.memory (which is a shortcut to node.server.memory).
         
-        The SAIAMemory object handle every SBus variables (inputs, outputs, flags, registers). The SAIAMemory object provide a SAIAFlags object, 
+        The SAIAMemory object handle every SBus variables (inputs, outputs, flags, registers). The SAIAMemory object provide a SAIAItemFlags object, 
         accessible trough a .flags property, itself providing access to every registered SAIAItemFlag object (item). The same principle is used for inputs 
         (SAIAItemInputs), outputs (SAIAItemOutputs) and registers (SAIAItemRegisters). Note that there are shortcuts implemented : 
         *node.flags* can be used instead of *node.memory.flags*.
@@ -194,12 +194,11 @@ Description: ===================
             >>> server2=node.servers.declare('192.168.0.101')
             >>> myRemoteFlag=server1.memory.flags[5]
         
-        The declaration process provide a SAIAServer object, containing a SAIAMemory object to access remote items. Local and remote data can be manipulated 
+        The declaration process provide a SAIAServer object, containing a SAIAMemory object to access remote items. Thus, local and remote data can be manipulated 
         in the same manner. When a remote data item (input, output, flag, register) is declared, an automatic pooling mecanism is launched in 
-        the background task (manager). A basic optimiser try to group many items per request, avoiding to 
-        launch 1 request for 1 item refresh.
+        the background task (manager). A basic optimiser mecanism try to group many items per request, avoiding to launch 1 request for 1 item refresh.
         
-        The default refresh rate is 60s per item,  modifiable with a myRemoteFlag.setRefreshDelay() call.
+        The default refresh rate is 60s per item, modifiable with a myRemoteFlag.setRefreshDelay() call.
         Alternatively, the refresh rate can be specified for the whole item collection, with a node.memory.flags.setRefreshDelay() call. 
         Refresh can be triggered on demand with a myRemoteFlag.refresh() call or more globally with for example node.memory.flags.refresh() and node.memory.refresh() calls. 
         You can query the elapsed time (in seconds) since the last value update (refresh) with the myRemoteFlag.age() method. Changing the remote data value is fully transparent
@@ -210,22 +209,30 @@ Description: ===================
         
         For a non local object, this will automatically queue a write order in the SAIAServer object with the new given value. The actual value of the item
         remains unchanged. When the write order has been executed, a refresh order is immediately triggered, thus allowing the actual value to be updated. 
-        This tend to keep the value synchonized with the remote value, even if something goes wrong. 
+        This tend to keep the value synchonized with the remote value, even if something goes wrong. Please note that this approach can be problematic 
+        to write fast ON/OFF bursts.
         
         The background manager try to be as reactive and idle as possible, keeping ressources for your application. We tried to
         trap most of the possible errors, allowing using this module to be used as a standalone service. Note that automatic SAIA address 
         resolution is implemented, so that only remote IP address is required to register a remote node. If known, the SAIA station address *can* be
-        given during registration
+        given during registration (this will avoid the initial address resolution).
         
         .. code-block:: python
         
             >>> server=node.servers.declare(host, lid=54, port=5050)
         
+        As with items, servers can be declared by range for more convenience, by giving the ip address of the first server. The example below creates for you
+        10 servers (from 192.168.0.100 to 192.168.0.109, assigned with station addresses 200..209). 
+        
+        .. code-block:: python
+        
+            >>> servers=node.servers.declareRange('192.168.0.100', count=10, lid=200, port=5050)
+        
         Remember that declared servers can be retrieved at any time by lid or by ip address using the SAIAServers object 
         
         .. code-block:: python
         
-            >>> server=node.servers[54]
+            >>> server=node.servers[200]
             >>> server1=node.servers['192.168.0.100']
         
         

@@ -1,15 +1,8 @@
 import time
-
 import struct
+import ipaddress
 
 from .request import SAIARequestReadStationNumber
-from .request import SAIARequestReadFlags
-from .request import SAIARequestWriteFlags
-from .request import SAIARequestReadInputs
-from .request import SAIARequestReadOutputs
-from .request import SAIARequestWriteOutputs
-from .request import SAIARequestReadRegisters
-from .request import SAIARequestWriteRegisters
 
 from .request import SAIASBusCRC
 from .memory import SAIAMemory
@@ -91,6 +84,9 @@ class SAIALink(object):
     def isElapsed(self, age):
         return self.age()>=age
 
+    def data2strhex(self, data):
+        return ' '.join(x.encode('hex') for x in data)
+
     def manager(self):
         try:
             if self._state==SAIALink.COMMSTATE_IDLE:
@@ -106,6 +102,8 @@ class SAIALink(object):
                 if self._request.consumeRetry():
                     data=self._request.data
                     self.logger.debug('-->%s' % self._request)
+                    self.logger.debug('-->%s', self.data2strhex(data))
+
                     if self.server.node.sendMessageToHost(data, self.server.host):
                         self._timeoutXmitInhibit=time.time()+self._delayXmitInhibit
                         self.setState(SAIALink.COMMSTATE_WAITRESPONSE, 2.0)
@@ -148,48 +146,6 @@ class SAIALink(object):
                 self._request=request
                 self.setState(SAIALink.COMMSTATE_PENDINGREQUEST)
                 return True
-
-    def readFlags(self, index, count=1):
-        if self.isIdle():
-            request=SAIARequestReadFlags(self)
-            request.setup(index, count)
-            return self.initiate(request)
-
-    def writeFlags(self, index, values):
-        if self.isIdle():
-            request=SAIARequestWriteFlags(self)
-            request.setup(index, values)
-            return self.initiate(request)
-
-    def readInputs(self, index, count=1):
-        if self.isIdle():
-            request=SAIARequestReadInputs(self)
-            request.setup(index, count)
-            return self.initiate(request)
-
-    def readOutputs(self, index, count=1):
-        if self.isIdle():
-            request=SAIARequestReadOutputs(self)
-            request.setup(index, count)
-            return self.initiate(request)
-
-    def writeOutputs(self, index, values):
-        if self.isIdle():
-            request=SAIARequestWriteOutputs(self)
-            request.setup(index, values)
-            return self.initiate(request)
-
-    def readRegisters(self, index, count=1):
-        if self.isIdle():
-            request=SAIARequestReadRegisters(self)
-            request.setup(index, count)
-            return self.initiate(request)
-
-    def writeRegisters(self, index, count=1):
-        if self.isIdle():
-            request=SAIARequestWriteRegisters(self)
-            request.setup(index, count)
-            return self.initiate(request)
 
     def readStationNumber(self):
         if self.isIdle():
@@ -393,8 +349,22 @@ class SAIAServers(object):
             server=SAIAServer(self, host, lid)
             self._servers.append(server)
             self._indexByHost[host]=server
-            self.logger.info('server(%s:%d) declared' % (host, port))
+            self.logger.info('server(%s:%d:%s) declared' % (host, port, lid))
         return server
+
+    def declareRange(self, ip, count, lid=None, port=SAIAServer.UDP_DEFAULT_PORT):
+        servers=[]
+        try:
+            ip=ipaddress.ip_address(unicode(ip))
+            for n in range(count):
+                server=self.declare(str(ip), lid=lid, port=port)
+                servers.append(server)
+                ip+=1
+                if lid:
+                    lid+=1
+        except:
+            self.logger.exception('declareRange')
+        return servers
 
     def manager(self):
         activity=False
