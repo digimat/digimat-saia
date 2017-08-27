@@ -33,10 +33,6 @@ node.start()
 while node.isRunning():
     try:
         node.dump()
-        print "value", r.value
-        print "float32", r.float32
-        print "ffp", r.ffp
-        print
         node.sleep(2.0)
     except:
         break

@@ -1,6 +1,7 @@
 import time
 import socket
 import struct
+import sys
 
 import logging
 import logging.handlers
@@ -15,6 +16,7 @@ from .server import SAIASBusCRC
 from .server import SAIAServers
 
 from .request import SAIARequest
+from .request import SAIASBusCRCTableCheck
 
 from .response import SAIAResponseReadStationNumber
 from .response import SAIAResponseReadProgramVersion
@@ -65,6 +67,7 @@ class SAIANodeRequestHandler(object):
     COMMAND = None
 
     def __init__(self, node):
+        assert node.__class__.__name__=='SAIANode'
         self._node=node
 
     @property
@@ -214,6 +217,7 @@ class SAIAHandler_WRITE_REGISTERS(SAIANodeRequestHandler):
             items=self.node.memory.registers
             (bytecount, address)=struct.unpack('>BH', data[0:3])
             if address>=0:
+                # count=bytecount-1
                 values=self.bin2dwordlist(data[3:])
                 for n in range(len(values)):
                     items[address+n].value=values[n]
@@ -338,18 +342,37 @@ class SAIANodeHandler(Singleton):
                 pass
 
 
+class SAIALogger(object):
+    def __init__(self, title="SAIA"):
+        self._title=title
+
+    def create(self):
+        return logging.getLogger(self._title)
+
+    def tcp(self, level=logging.DEBUG, host='localhost'):
+        logger=self.create()
+        logger.setLevel(level)
+        handler = logging.handlers.SocketHandler(host, logging.handlers.DEFAULT_TCP_LOGGING_PORT)
+        logger.addHandler(handler)
+        return logger
+
+    def null(self):
+        logger=self.create()
+        logger.setLevel(logging.ERROR)
+        handler=logging.NullHandler()
+        logger.addHandler(handler)
+        return logger
+
+
 class SAIANode(object):
-    def __init__(self, lid=253, port=SAIAServer.UDP_DEFAULT_PORT, logger=None):
-        if logger is None:
-            logger=logging.getLogger("SAIANode(%d)" % (port))
-            logger.setLevel(logging.DEBUG)
-            socketHandler = logging.handlers.SocketHandler('localhost', logging.handlers.DEFAULT_TCP_LOGGING_PORT)
-            logger.addHandler(socketHandler)
-
-        self._logger=logger
-
+    def __init__(self, lid=253, port=SAIAServer.UDP_DEFAULT_PORT, logger=None, autostart=True):
         self._socket=None
         self._lid=int(lid)
+
+        if logger is None:
+            logger=SAIALogger().tcp()
+
+        self._logger=logger
         self._localServer=SAIAServer(self, 'localnode', self._lid, localNodeMode=True)
         self.logger.info('localServer(%d) registered' % self._lid)
 
@@ -360,7 +383,11 @@ class SAIANode(object):
 
         self._handler=SAIANodeHandler(self)
 
-        self.start()
+        if not SAIASBusCRCTableCheck():
+            self.logger.error('SAIA CRC table consistency failure!')
+
+        if autostart:
+            self.start()
 
     @property
     def logger(self):
@@ -396,6 +423,16 @@ class SAIANode(object):
 
     def __getitem__(self, key):
         return self.servers[key]
+
+    def isInteractiveMode(self):
+        try:
+            if sys.ps1:
+                interpreter = True
+        except AttributeError:
+            interpreter = False
+            if sys.flags.interactive:
+                interpreter = True
+        return interpreter
 
     def open(self):
         if self._socket:
@@ -485,10 +522,11 @@ class SAIANode(object):
             s=self.open()
             (data, address)=s.recvfrom(2048)
             if data:
+                # TODO: data is str in Python2 (OK), but bytes in Python3 (BAD). Use data.decode('utf-8')???
                 host=address[0]
                 port=address[1]
                 (mtype, mseq, payload)=self.decodeMessage(data)
-                self.logger.debug('<--%s:%d seq=%d %s' % (host, port, mseq, self.data2strhex(data)))
+                # self.logger.debug('<--%s:%d seq=%d %s' % (host, port, mseq, self.data2strhex(data)))
 
                 if mtype==0:
                     try:
@@ -543,6 +581,9 @@ class SAIANode(object):
             pass
 
         return False
+
+    def refresh(self):
+        self.servers.refresh()
 
     def start(self):
         try:

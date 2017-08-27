@@ -22,6 +22,7 @@ class SAIAItem(object):
         self._delayRefresh=delayRefresh
         self._eventPush=Event()
         self._eventPull=Event()
+        self._eventValue=Event()
         self.onInit()
         self.logger.debug('creating %s' % (self))
 
@@ -100,11 +101,12 @@ class SAIAItem(object):
     def clearPush(self):
         self._eventPush.clear()
 
-    def signalPull(self):
+    def signalPull(self, urgent=False):
         if not self.parent.isLocalNodeMode():
             if not self._eventPull.isSet():
                 self._eventPull.set()
-                self._parent.signalPull(self)
+                self._eventValue.clear()
+                self._parent.signalPull(self, urgent)
 
     def clearPull(self):
         self._eventPull.clear()
@@ -120,6 +122,7 @@ class SAIAItem(object):
             with self._parent._lock:
                 self._stamp=time.time()
                 self._value=value
+                self._eventValue.set()
 
     def getValue(self):
         return self._value
@@ -156,8 +159,19 @@ class SAIAItem(object):
         if self.age()>self.getRefreshDelay():
             self.signalPull()
 
-    def refresh(self):
-        self.signalPull()
+    def refresh(self, urgent=False):
+        self.signalPull(urgent)
+
+    def read(self, timeout=15.0):
+        self.refresh(urgent=True)
+        try:
+            if timeout<=0:
+                timeout=None
+            self._eventValue.wait(timeout)
+            return self.value
+        except:
+            pass
+        return None
 
     def clear(self):
         self.value=0
@@ -165,10 +179,19 @@ class SAIAItem(object):
     def strValue(self):
         return str(self.value)
 
+    def tag(self):
+        return None
+
     def __repr__(self):
-        return '%s.%s[%d](value=%s, age=%ds)' % (self.server,
-            self.__class__.__name__,
-            self.index, self.strValue(), self.age())
+        tag=self.tag
+        if tag:
+            return '%s.%s[%d:%s](value=%s, age=%ds)' % (self.server,
+                self.__class__.__name__,
+                self.index, tag, self.strValue(), self.age())
+        else:
+            return '%s.%s[%d](value=%s, age=%ds)' % (self.server,
+                self.__class__.__name__,
+                self.index, self.strValue(), self.age())
 
 
 class SAIABooleanItem(SAIAItem):
@@ -219,7 +242,7 @@ class SAIAAnalogItem(SAIAItem):
     @float32.setter
     def float32(self, value):
         formater=SAIAValueFormaterFloat32()
-        self.setValue(formater.encode(value))
+        self.value=formater.encode(value)
 
     @property
     def sfloat32(self):
@@ -229,7 +252,7 @@ class SAIAAnalogItem(SAIAItem):
     @sfloat32.setter
     def sfloat32(self, value):
         formater=SAIAValueFormaterSwappedFloat32()
-        self.setValue(formater.encode(value))
+        self.value=formater.encode(value)
 
     @property
     def int10(self):
@@ -239,7 +262,7 @@ class SAIAAnalogItem(SAIAItem):
     @int10.setter
     def int10(self, value):
         formater=SAIAValueFormaterInteger10()
-        self.setValue(formater.encode(value))
+        self.value=formater.encode(value)
 
     @property
     def ffp(self):
@@ -249,7 +272,7 @@ class SAIAAnalogItem(SAIAItem):
     @ffp.setter
     def ffp(self, value):
         formater=SAIAValueFormaterFFP()
-        self.setValue(formater.encode(value))
+        self.value=formater.encode(value)
 
     @property
     def float(self):
@@ -259,7 +282,7 @@ class SAIAAnalogItem(SAIAItem):
     @float.setter
     def float(self, value):
         formater=SAIAValueFormaterFFP()
-        self.setValue(formater.encode(value))
+        self.value=formater.encode(value)
 
     def strValue(self):
         if self.value is not None:
@@ -269,6 +292,7 @@ class SAIAAnalogItem(SAIAItem):
 
 class SAIAItems(object):
     def __init__(self, memory, itemType, maxsize, readOnly=False):
+        assert memory.__class__.__name__=='SAIAMemory'
         self._memory=memory
         self._localNodeMode=memory.isLocalNodeMode()
         self._lock=RLock()
@@ -308,9 +332,23 @@ class SAIAItems(object):
     def getRefreshDelay(self):
         return self._delayRefresh
 
+    def resolveIndex(self, index):
+        """
+        Provide a name (tag) to index resolution mecanism
+        Must be implemented by subclass if needed
+        """
+        return None
+
     def validateIndex(self, index):
         try:
-            n=int(index)
+            try:
+                n=int(index)
+            except:
+                try:
+                    n=self.resolveIndex(index)
+                except:
+                    pass
+
             if n>=0 and n<self._maxsize:
                 return n
         except:
@@ -360,22 +398,19 @@ class SAIAItems(object):
             items.append(item)
         return items
 
-    def signalPush(self, item=None):
-        if item is None:
-            for item in self._items:
-                self.memory._queuePendingPush.put(item)
-        else:
-            self.memory._queuePendingPush.put(item)
+    def signalPush(self, item):
+        self.memory._queuePendingPush.put(item)
 
-    def signalPull(self, item=None):
-        if item is None:
-            for item in self._items:
-                self.memory._queuePendingPull.put(item)
+    def signalPull(self, item, urgent=False):
+        if urgent:
+            self.memory._queuePendingPriorityPull.put(item)
         else:
             self.memory._queuePendingPull.put(item)
 
     def refresh(self):
-        self.signalPull()
+        with self._lock:
+            for item in self._items:
+                item.refresh()
 
     def manager(self):
         count=min(8, len(self._items))

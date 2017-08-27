@@ -14,6 +14,7 @@ class SAIAReply(object):
     REPLY_TYPE_ACKNAK = 2
 
     def __init__(self, node, sequence):
+        assert node.__class__.__name__=='SAIANode'
         self._node=node
         self._sequence=sequence
         self._replyType=None

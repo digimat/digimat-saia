@@ -1,6 +1,7 @@
 MANIFEST.in
 README.rst
 setup.py
+doc/screenshot.png
 src/digimat/__init__.py
 src/digimat.saia.egg-info/PKG-INFO
 src/digimat.saia.egg-info/SOURCES.txt
@@ -22,3 +23,4 @@ src/digimat/saia/response.py
 src/digimat/saia/saia.py
 src/digimat/saia/server.py
 src/digimat/saia/singleton.py
+src/digimat/saia/symbol.py

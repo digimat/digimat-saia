@@ -1,5 +1,7 @@
+import sys
 
-from Queue import Queue
+# python2-3 compatibility require 'pip install future'
+from queue import Queue
 
 from .items import SAIABooleanItem
 from .items import SAIAAnalogItem
@@ -12,6 +14,8 @@ from .request import SAIARequestReadOutputs
 from .request import SAIARequestWriteOutputs
 from .request import SAIARequestReadRegisters
 from .request import SAIARequestWriteRegisters
+
+from .symbol import SAIASymbol
 
 
 class SAIAItemQueue(Queue):
@@ -43,6 +47,13 @@ class SAIAItemFlag(SAIABooleanItem):
         request=SAIARequestWriteFlags(self.server.link)
         request.setup(self, maxcount=96)
         return request.initiate()
+
+    @property
+    def tag(self):
+        try:
+            return self.server.symbols.flag(self.index).tag
+        except:
+            pass
 
 
 class SAIAItemInput(SAIABooleanItem):
@@ -76,13 +87,20 @@ class SAIAItemRegister(SAIAAnalogItem):
 
     def pull(self):
         request=SAIARequestReadRegisters(self.server.link)
-        request.setup(self, maxcount=48)
+        request.setup(self, maxcount=32)
         return request.initiate()
 
     def push(self):
         request=SAIARequestWriteRegisters(self.server.link)
-        request.setup(self, maxcount=48)
+        request.setup(self, maxcount=32)
         return request.initiate()
+
+    @property
+    def tag(self):
+        try:
+            return self.server.symbols.register(self.index).tag
+        except:
+            pass
 
 
 class SAIABooleanItems(SAIAItems):
@@ -92,6 +110,14 @@ class SAIABooleanItems(SAIAItems):
 class SAIAFlags(SAIABooleanItems):
     def __init__(self, memory, maxsize=65535):
         super(SAIAFlags, self).__init__(memory, SAIAItemFlag, maxsize)
+
+    def resolveIndex(self, key):
+        try:
+            if isinstance(key, SAIASymbol):
+                return key.index
+            return self.server.symbols.flag(key).index
+        except:
+            pass
 
 
 class SAIAInputs(SAIABooleanItems):
@@ -113,9 +139,18 @@ class SAIARegisters(SAIAAnalogItems):
     def __init__(self, memory, maxsize=65535):
         super(SAIARegisters, self).__init__(memory, SAIAItemRegister, maxsize)
 
+    def resolveIndex(self, key):
+        try:
+            if isinstance(key, SAIASymbol):
+                return key.index
+            return self.server.symbols.register(key).index
+        except:
+            pass
+
 
 class SAIAMemory(object):
     def __init__(self, server, localNodeMode=False, enableOnTheFlyItemCreation=True):
+        assert server.__class__.__name__=='SAIAServer'
         self._server=server
         self._localNodeMode=localNodeMode
         self._enableOnTheFlyItemCreation=enableOnTheFlyItemCreation
@@ -124,6 +159,7 @@ class SAIAMemory(object):
         self._flags=SAIAFlags(self)
         self._registers=SAIARegisters(self)
         self._queuePendingPull=SAIAItemQueue()
+        self._queuePendingPriorityPull=SAIAItemQueue()
         self._queuePendingPush=SAIAItemQueue()
         self._readOnly=False
 
@@ -183,21 +219,35 @@ class SAIAMemory(object):
 
     def getNextPendingPush(self):
         try:
-            while True:
+            count=32
+            while count>0:
                 item=self._queuePendingPush.get(False)
                 if item.isPendingPushRequest():
                     item.clearPush()
                     return item
+                count-=1
         except:
             pass
 
     def getNextPendingPull(self):
+        count=32
         try:
-            while True:
+            while count>0:
+                item=self._queuePendingPriorityPull.get(False)
+                if item.isPendingPullRequest():
+                    item.clearPull()
+                    return item
+                count-=1
+        except:
+            pass
+
+        try:
+            while count>0:
                 item=self._queuePendingPull.get(False)
                 if item.isPendingPullRequest():
                     item.clearPull()
                     return item
+                count-=1
         except:
             pass
 
@@ -221,7 +271,6 @@ class SAIAMemory(object):
                 activity=True
 
         if activity:
-            # print ">MEMORY"
             return True
 
     def dump(self):

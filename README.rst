@@ -2,7 +2,7 @@
 Python digimat.saia
 ===================
 
-This is a Python 2.7 module allowing to create **client** and/or **server** `SAIA EtherSBus <https://wiki.wireshark.org/EtherSBus>`_  nodes.
+This is a Python 2.7 (Python 3 not fully compatible yet, but will be soon) module allowing to create **client** and/or **server** `SAIA EtherSBus <https://wiki.wireshark.org/EtherSBus>`_  nodes.
 This code allow you to create low cost (and hopefully reliable) communication services with any EtherSBus device, reading and writing data from/to them. By data (items),
 we mean inputs, outputs, flags and registers. More data-types may be supported in the future. In the exemple below, a local
 SBus node with address 253 (station number, or localid, or lid in our terminology) is created. 
@@ -20,7 +20,9 @@ Open your SAIA PG5 Debugger and try to read/write some data to your node. When d
     >>> node.stop()
     >>> quit()
 
-Please consider this work as *in progress* (**buggy, incomplete and currently only partially tested**).
+Please consider this work as *in progress* (**buggy, incomplete and currently only partially tested**). 
+Always use the latest version of this package, as it is frequently updated ! You will find a basic `Python interactive session demo here <https://asciinema.org/a/TDkfmkktqtYiJqDGXEDbNiNIU>`_.
+
 
 SAIA EtherSBus
 --------------
@@ -42,8 +44,10 @@ Using the SAIA PG5 debugger may also help understanding how things works. Wiresh
 and you will find some .pcap samples by googling "sbus pcap". Really useful.
 
 Don't forget that the SAIA dynamic addressing won't be your friend here as you must know the address of the variable
-you want read/write. Consider fixing your variables to "static" addresses in your PG5 configuration. And of course,
-EtherSBus communication has to be enabled on your PCD ;)
+you want to access (read/write). Consider fixing your variables to "static" addresses in your PG5 configuration (see SAIA FAQ #101533). 
+We have implemented some helpers to provide limited symbolic access using the PD5 .map file if you have it (see chapter "Symbolic Adressing" below).
+
+And of course, EtherSBus communication has to be enabled on your PCD ;)
 
 
 Installation
@@ -105,7 +109,7 @@ be disabled, and accessing a non pre-declared item will fail.
     >>> print node.memory.flags[19]
     None
 
-Items can created by "declaring" them, individually or by range
+Items can be manually-created by "declaring" them, individually or by range
 
 .. code-block:: python
 
@@ -149,7 +153,7 @@ Actually, the following encoders/decoders accessors are implemented
 | **.int10**    | x10 rounded value (21.5175 is encoded as 215)       |
 +---------------+-----------------------------------------------------+
 
-As in SAIA float values seems to be FFP encoded, the ffp encoder is automatically used
+As in SAIA float values *seems* to be FFP encoded (not really sure about that), the ffp encoder is automatically used
 when writing a float value to a register (instead of an int)
 
 .. code-block:: python
@@ -160,7 +164,9 @@ when writing a float value to a register (instead of an int)
     >>> myregister.value=2.0
     >>> print myregister.value
     2147483714
-    >>> print myregister.fft
+    >>> print myregister.ffp
+    2.0
+    >>> print myregister.float
     2.0
 
 
@@ -186,28 +192,47 @@ The node object allow access to (as many) remote EtherSBus node servers you need
     >>> server2=node.servers.declare('192.168.0.101')
     >>> myRemoteFlag=server1.memory.flags[5]
 
-The declaration process provide a SAIAServer object, containing a SAIAMemory object to access remote items. Thus, local and remote data can be manipulated 
-in the same manner. When a remote data item (input, output, flag, register) is declared, an automatic pooling mecanism is launched in 
+The declaration process provide a SAIAServer object, containing a SAIAMemory object to access remote items. Thus, **local and remote data can be manipulated 
+in the same manner**. When a remote data item (input, output, flag, register) is declared, an **automatic pooling mecanism** is launched in 
 the background task (manager). A basic optimiser mecanism try to group many items per request, avoiding to launch 1 request for 1 item refresh.
 
-The default refresh rate is 60s per item, modifiable with a myRemoteFlag.setRefreshDelay() call.
-Alternatively, the refresh rate can be specified for the whole item collection, with a node.memory.flags.setRefreshDelay() call. 
-Refresh can be triggered on demand with a myRemoteFlag.refresh() call or more globally with for example node.memory.flags.refresh() and node.memory.refresh() calls. 
-You can query the elapsed time (in seconds) since the last value update (refresh) with the myRemoteFlag.age() method. Changing the remote data value is fully transparent
+The default refresh rate is **60s** per item, modifiable with a myRemoteFlag.setRefreshDelay() call.  Alternatively, the refresh rate can be specified 
+for the whole item collection, with a node.memory.flags.setRefreshDelay() call. Refresh can be triggered on demand with with theses kind of call
+
+.. code-block:: python
+
+    >>> node.servers.refresh() or node.refresh()
+    >>> server.memory.refresh() or server.refresh()
+    >>> server.memory.flags.refresh() or server.flags.refresh()
+    >>> myRemoteFlag.refresh()
+
+You can query the elapsed time (in seconds) since the last value update (refresh) with the myRemoteFlag.age() method.  If you really need to get the very 
+actual value of an item (and not the last refreshed one), you need to initiate an item.refresh() and then 
+wait *a certain amount of time* allowing the read queue to be processed by the background task. 
+If you have declared thousand of items, this *may* take a while. The whole thing can be done with a simple item.read(),
+returning the just refrehed item.value (or None in case of timeout)
+
+.. code-block:: python
+
+    >>> myRemoteFlag.read()
+    True
+
+Theses refresh orders are processed with more priority than other "standard" polling-read, providing better responsiveness.
+A timeout can be passed to the read() function. **Changing** (**writing**) the remote data value is fully transparent
 
 .. code-block:: python
 
     >>> myRemoteFlag.value=1
 
-For a non local object, this will automatically queue a write order in the SAIAServer object with the new given value. The actual value of the item
-remains unchanged. When the write order has been executed, a refresh order is immediately triggered, thus allowing the actual value to be updated. 
-This tend to keep the value synchonized with the remote value, even if something goes wrong. Please note that this approach can be problematic 
-to write fast ON/OFF bursts.
+For a non local object, **this will automatically queue a write order** in the SAIAServer object with the new given value. **The actual value of the item
+remains unchanged**. **When the write order has been executed**, **a refresh order is immediately triggered**, thus **allowing the actual value to be updated**. 
+This tend to keep the value synchonized with the remote value, even if something goes wrong. As for read() orders, the read-after-write is
+processed with **more priority** than standard pooling requests (more responsive). Please note that this approach can be problematic to write fast ON/OFF bursts.
 
 The background manager try to be as reactive and idle as possible, keeping ressources for your application. We tried to
 trap most of the possible errors, allowing using this module to be used as a standalone service. Note that automatic SAIA address 
 resolution is implemented, so that only remote IP address is required to register a remote node. If known, the SAIA station address *can* be
-given during registration (this will avoid the initial address resolution).
+given during registration (this will avoid the initial address resolution to get the server address).
 
 .. code-block:: python
 
@@ -228,6 +253,72 @@ Remember that declared servers can be retrieved at any time by lid or by ip addr
     >>> server1=node.servers['192.168.0.100']
 
 
+Symbolic Addressing
+-------------------
+
+The EtherSBus doesn't provide item access by name (symbol name, tag). But **if you own the PG5 .map file generated at compile time**, you may have some help by passing
+this file during server declaration process. This will create a SAIASymbols object associated with the server, ready to serve you the requested SAIASymbol
+
+.. code-block:: python
+
+    >>> server=node.servers.declare('192.168.0.48', mapfile='xxxxx.map')
+    >>> print server.symbols.count()
+    2140
+
+    >>> symbol=server.symbols['RIO.Station_A12.Sonde3_16_Cmd_Reduit_Ch'] 
+    >>> print symbol.index
+    >>> 2295
+    >>> print symbol.attribute
+    >>> 'f'
+
+    >>> symbol=server.symbols.register(2295)
+    >>> print symbol.tag
+    >>> 'rio.station_a12.sonde3_16_cmd_reduit_ch' 
+
+**This allows bidirectional maping between symbols names (tag) and items indexes**, **assuming that your map file is uptodate** ! Cool. The symbolic access is in fact implemented
+in all SAIAItem objects index access, so that syntaxes like this are perfectly working
+
+.. code-block:: python
+
+    >>> server.registers[2295].value=99
+    >>> print server.registers['rio.station_a12.sonde3_16_cmd_reduit_ch'].value
+    99
+
+    >>> flag=server.flags.declare('Sonde3_42_Lib')
+    >>> print flag.index
+    >>> 4634
+
+Use it carefully. For ease of use, symbolic access is implemented *case insensitive*. In interactive mode,
+you can try to **mount** flags and registers symbols (SAIASymbol) as SAIASymbols object variables (mapped as .flag_xxx and .register_xxx) 
+so that the **interpreter autocompletion** will save you some precious keystroke
+
+.. code-block:: python
+
+    >>> symbols=server.symbols
+    >>> symbols.mount()
+
+    >>> print symbols.flag_sonde3_1<TAB>
+    s.flag_sonde3_10_defaut    s.flag_sonde3_13_defaut      s.flag_sonde3_19_defaut
+    s.flag_sonde3_10_lib       s.flag_sonde3_13_lib         s.flag_sonde3_19_setpoint
+    s.flag_sonde3_10_timeout   s.flag_sonde3_13_timeout     s.flag_sonde3_19_temp
+    s.flag_sonde3_11_defaut    s.flag_sonde3_14_defaut      s.flag_sonde3_19_timeout
+    s.flag_sonde3_11_lib       s.flag_sonde3_14_lib         s.flag_sonde3_1_defaut
+    s.flag_sonde3_11_timeout   s.flag_sonde3_14_timeout     s.flag_sonde3_1_timeout
+    s.flag_sonde3_12_defaut    s.flag_sonde3_15_defaut
+    s.flag_sonde3_12_lib       s.flag_sonde3_15_lib
+    s.flag_sonde3_12_timeout   s.flag_sonde3_15_timeout
+
+    >>> print symbols.flag_sonde3_11_timeout.index
+    3936
+
+When Python interactive mode is detected, symbols.mount() is automatically called for you. Items declaration can also be passed 
+as a SAIASymbol object, so that autocompletion is your friend
+
+.. code-block:: python
+
+    >>> server.flags.declare(symbols.flag_sonde3_11_timeout)
+
+
 Dumping & Debugging
 -------------------
 
@@ -246,8 +337,9 @@ You can also give your own logger to the SAIANode
 
     >>> node=SAIANode(253, logger=mylogger)
 
-Limited dump-debug can also be done with objects .dump() methods. Try node.dump(), node.memory.dump(),
-node.memory.flags.dump(), node.servers.dump(), server.dump(), etc. For debugging purposes, you can simulate a remote node 
+If you want to completely disable the logger, just pass a logger=SAIALogger().null() parameter.  Limited dump-debug can 
+also be done with objects .dump() methods. Try node.dump(), node.memory.dump(), node.memory.flags.dump(), 
+node.servers.dump(), server.dump(), etc. For debugging purposes, you can simulate a remote node 
 by registering a remote pointing on yourselfi (woo!)
 
 .. code-block:: python
@@ -307,10 +399,12 @@ you can run the demo node shown above with this command line
 
     python -m digimat.saia
 
-Good luck, Jim.
 
+TODO
+----
 
-Documentation
--------------
+Symbolic addressing based on .map files *seems* to be a good idea. In fact, we can go a bit further here since using some READ_DBX messages, we can
+get some system information blocks stored in the device. Thoses blocks contains the *device name*. As the .map file has the same name
+as the device name (i.e. "MyDeviceName --> MyDeviceName.map"), we can implement an automatic .map file loader.
 
-To be continued. Writing in progress ;) don't know if this is useful for someone.
+Documentation is very incomplete. Don't know if this is usefule for someone. Tell it to us.

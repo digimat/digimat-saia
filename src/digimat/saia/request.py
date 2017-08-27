@@ -1,5 +1,7 @@
 import struct
 import time
+from functools import reduce
+from builtins import bytes
 
 from .ModbusDataLib import bin2boollist
 from .ModbusDataLib import boollist2bin
@@ -41,7 +43,7 @@ SAIASBusCRCTable = [
 ]
 
 
-def SAIASBusCRC(inpdata):
+def SAIASBusCRC_old(data):
     """Calculate a CCIT V.41 CRC hash function based on the polynomial
         X^16 + X^12 + X^5 + 1 for SAIA S-Bus (initializer = 0x0000)
     Parameters: inpdata (string) = The string to calculate the crc on.
@@ -50,9 +52,26 @@ def SAIASBusCRC(inpdata):
     # This uses the built-in reduce rather than importing it from functools
     # in order to provide compatiblity with Python 2.5. This may have to be
     # changed in future for Python 3.x
-    return reduce(lambda crc, newchar:
+    crc=reduce(lambda crc, newchar:
         SAIASBusCRCTable[((crc >> 8) ^ ord(newchar)) & 0xFF] ^ ((crc << 8) & 0xFFFF),
-            inpdata, 0x0000)
+           data, 0x0000)
+    return crc
+
+
+def SAIASBusCRC(data):
+    crc=0
+    # using bytes() for Python2/3 compatibility
+    for b in bytes(data):
+        crc=SAIASBusCRCTable[((crc >> 8) ^ b) & 0xFF] ^ ((crc << 8) & 0xFFFF)
+    return crc
+
+
+def SAIASBusCRCTableCheck():
+    """
+    Simple CRC table consistency check
+    """
+    if sum(SAIASBusCRCTable)==8388480:
+        return True
 
 
 class SAIARequest(object):
@@ -79,15 +98,24 @@ class SAIARequest(object):
     COMMAND_RESTART_COLD_ALL = 0x39
     COMMAND_RESTART_COLD_FLAG = 0xa6
 
+    # COMMAND_RUN_PROCEDURE_OWN = 0x2f
+    COMMAND_READ_DBX = 0x9f
+
     def __init__(self, link, retry=3):
+        assert link.__class__.__name__=='SAIALink'
         self._link=link
         self._retry=retry
         self._data=None
+        self._dataReply=None
         self._command=0
         self._stamp=0
         self._ready=False
+        self._start=False
+        self._done=False
+        self._result=False
         self._sequence=0
         self.onInit()
+        SAIASBusCRCTableCheck()
 
     def onInit(self):
         pass
@@ -195,6 +223,10 @@ class SAIARequest(object):
             return self._data
         return self.build()
 
+    @property
+    def reply(self):
+        return self._dataReply
+
     def age(self):
         return time.time()-self._stamp
 
@@ -210,13 +242,42 @@ class SAIARequest(object):
                 return True
 
     def processResponse(self, payload):
-        return False
+        self._dataReply=payload
+        return True
 
     def onSuccess(self):
         pass
 
     def onFailure(self):
         pass
+
+    def isDone(self):
+        if self._done:
+            return True
+
+    def isActive(self):
+        if self._start and not self.isDone():
+            return True
+
+    def start(self):
+        self._start=True
+        self._done=False
+        self._result=False
+
+    def stop(self, success):
+        self._done=True
+        try:
+            if success:
+                self.onSuccess()
+                self._result=True
+            else:
+                self.onFailure()
+        except:
+            pass
+
+    def isSuccess(self):
+        if self.isDone() and self._result:
+            return True
 
     def data2uint32list(self, data):
         return list(struct.unpack('>%dI' % (len(data) / 4), data))
@@ -226,6 +287,9 @@ class SAIARequest(object):
 
     def __str__(self):
         return self.__repr__()
+
+    def data2strhex(self, data):
+        return ' '.join(x.encode('hex') for x in data)
 
 
 class SAIARequestReadStationNumber(SAIARequest):
@@ -243,6 +307,50 @@ class SAIARequestReadStationNumber(SAIARequest):
 
     def onFailure(self):
         pass
+
+
+# class SAIARequestReadSystemInformation(SAIARequest):
+    # def onInit(self):
+        # self._command=SAIARequest.COMMAND_READ_SYSTEM_INFO
+        # self.ready()
+
+    # def setup(self, block):
+        # self._block=block
+
+    # def encode(self):
+        # return struct.pack('>BB', 0x00, self._block)
+
+    # def processResponse(self, payload):
+        # return True
+
+    # def onFailure(self):
+        # pass
+
+
+class SAIARequestReadDBX(SAIARequest):
+    def onInit(self):
+        self._command=SAIARequest.COMMAND_READ_DBX
+
+    def setup(self, address, count):
+        self._address=address
+        self._count=count
+        self._response=None
+        self.ready()
+
+    def encode(self):
+        # address if 3 bytes long
+        buf=struct.pack('>L', self._address)[1:]
+        # 0x06 : ?
+        return struct.pack('>BBB3s', self._count-1, 0x00, 0x06, buf)
+
+
+# class SAIARequestRunProcedureOwn(SAIARequest):
+    # def onInit(self):
+        # self._command=SAIARequest.COMMAND_RUN_PROCEDURE_OWN
+        # self.ready()
+
+    # def encode(self):
+        # return None
 
 
 class SAIARequestReadItems(SAIARequest):
@@ -269,7 +377,9 @@ class SAIARequestReadItems(SAIARequest):
             item=self.item
             while count<maxcount:
                 item=item.next()
-                if not item or not item.isPendingPullRequest():
+                # if not item or not item.isPendingPullRequest():
+                # better try to systematically read multiples items
+                if not item:
                     break
                 count+=1
 
@@ -365,7 +475,7 @@ class SAIARequestWriteItems(SAIARequest):
                 item=items[index0+n]
                 item.clearPush()
                 if item:
-                    item.refresh()
+                    item.refresh(urgent=True)
         except:
             pass
 
@@ -411,8 +521,7 @@ class SAIARequestWriteRegisters(SAIARequestWriteItems):
 
     def encode(self):
         data=self.dwordlist2bin(self._values)
-        # bytecount = number item to write (as msg length + 2)
-        bytecount=len(data)+2
+        bytecount=len(data)+1
         return struct.pack('>BH %ds' % len(data), bytecount, self.item.index, data)
 
     def __repr__(self):
