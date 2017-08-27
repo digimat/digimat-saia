@@ -227,6 +227,7 @@ class SAIAServer(object):
         self.setLid(lid)
         self._symbols=SAIASymbols()
         self.loadSymbols(mapfile)
+        self.submitTransferReadDeviceInformation()
 
     def isLidValid(self, lid):
         try:
@@ -365,7 +366,7 @@ class SAIAServer(object):
             # print ">SERVER"
             return True
 
-    def readDeviceInformation(self):
+    def submitTransferReadDeviceInformation(self):
         self._transfers.submit(SAIATransferReadDeviceInformation(self))
 
     def __repr__(self):

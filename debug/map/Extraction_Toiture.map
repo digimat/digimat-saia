@@ -1,0 +1,858 @@
+SAIA PG5 LINKER V2.2.140                                               Page 1
+User: INDEA
+File: Extraction_Toiture.pcd   Linked: 22/03/17 22:44 
+
+        CODE    CODE    TXT/DB  EXTEN
+FILE    START   SEG     SEG     SEG     ASSEMBLY         FILE
+NUMBER  LINE    LINES   BYTES   BYTES   DATE AND TIME    NAME
+--------------------------------------------------------------------------------
+1       0       0       1164    0       22/03/17 22:44   _Extraction_Toiture.src
+2       0       1261    100     16      22/03/17 22:44   Toiture.fbd
+3       1261    0       232     0       22/03/17 22:44   _TCPIPDBX.src
+4       1261    0       0       0       22/03/17 22:44   InitODM.src
+5       1261    1079    230     16      22/03/17 22:44   heavac5.srx
+6       2340    78      12      0       14/10/14 11:02   sfuplib3.src
+--------------------------------------------------------------------------------
+
+CODE SEGMENT SIZE:      2743 LINES (10972 BYTES)
+TEXT/DB SEGMENT SIZE:   1738 BYTES
+EXTENSION MEM SIZE:     32 BYTES
+PUBLIC SYMBOLS:         459
+
+PUBLIC SYMBOLS
+___ETR___  F    2045          6#    6     
+___REFR    PB   0             6#    2     6     
+__DBSTRC__ R    2001..2103    6#    2     6     
+__DYNAMICS__.__FIRST_COUNTER__
+                1000          1#    
+__DYNAMICS__.__FIRST_DB__
+                3500          1#    
+__DYNAMICS__.__FIRST_FLAG__
+                2000          1#    
+__DYNAMICS__.__FIRST_RAM_DB__
+                6600          1#    
+__DYNAMICS__.__FIRST_RAM_TEXT__
+                5000          1#    
+__DYNAMICS__.__FIRST_REGISTER__
+                2000          1#    
+__DYNAMICS__.__FIRST_TEXT__
+                3000          1#    
+__DYNAMICS__.__FIRST_TIMER__
+                10            1#    
+__DYNAMICS__.__LAST_COUNTER__
+                1599          1#    
+__DYNAMICS__.__LAST_DB__
+                3999          1#    
+__DYNAMICS__.__LAST_FLAG__
+                8191          1#    
+__DYNAMICS__.__LAST_RAM_DB__
+                8191          1#    
+__DYNAMICS__.__LAST_RAM_TEXT__
+                6599          1#    
+__DYNAMICS__.__LAST_REGISTER__
+                8191          1#    
+__DYNAMICS__.__LAST_TEXT__
+                3499          1#    
+__DYNAMICS__.__LAST_TIMER__
+                49            1#    
+__FIRST_NON_VOLATILE_FLAG__
+                0             1#    
+__high     F    2046          6#    2     6     
+__LAST_TIMER__  49            1#    
+__LAST_VOLATILE_FLAG__
+                -1            1#    
+__LIBRARY__._SAIA_HEAVAC
+                1             5#    
+__LIBVERS__._BLI_
+                2007100       1#    
+__LIBVERS__._CWM_Email
+                2006150       1#    
+__LIBVERS__._DDC_Suite_25
+                2008160       1#    
+__LIBVERS__._DDC_Suite_27
+                2070128       1#    
+__LIBVERS__._DDCLibrary
+                2006208       1#    
+__LIBVERS__._EOB
+                2006147       1#    
+__LIBVERS__._EOBV3
+                3000011       1#    
+__LIBVERS__._ESUITE2
+                2000103       1#    
+__LIBVERS__._L6x_RoomController_PCD7_L60x
+                2006810       1#    
+__LIBVERS__._L79x_RoomController_PCD7_L79x
+                2006137       1#    
+__LIBVERS__._PEHA_PHC
+                1000100       1#    
+__LIBVERS__._SAIA_BELIMO
+                2007520       1#    
+__LIBVERS__._SAIA_BUES1
+                2007100       1#    
+__LIBVERS__._SAIA_D2H110
+                2002000       1#    
+__LIBVERS__._SAIA_D2H150
+                2002000       1#    
+__LIBVERS__._SAIA_D2H210
+                2002000       1#    
+__LIBVERS__._SAIA_D2H222
+                1001000       1#    
+__LIBVERS__._SAIA_D2H310
+                2001000       1#    
+__LIBVERS__._SAIA_D2H320
+                2044000       1#    
+__LIBVERS__._SAIA_D3T76XH100
+                1001000       1#    
+__LIBVERS__._SAIA_D3T76XH110
+                1000000       1#    
+__LIBVERS__._SAIA_D3T76XH150
+                1001000       1#    
+__LIBVERS__._SAIA_DALI
+                2007520       1#    
+__LIBVERS__._SAIA_DALIF26
+                2007530       1#    
+__LIBVERS__._SAIA_EIB
+                2007520       1#    
+__LIBVERS__._SAIA_ELine
+                1000140       1#    
+__LIBVERS__._SAIA_EnergyModbus
+                2007520       1#    
+__LIBVERS__._SAIA_EnergySBus
+                2006191       1#    
+__LIBVERS__._SAIA_FILE_SYSTEM
+                2007540       1#    
+__LIBVERS__._SAIA_HEAVAC
+                2007530       1#    
+__LIBVERS__._SAIA_HTTPC
+                1000130       1#    
+__LIBVERS__._SAIA_HWModemRF
+                1000010       1#    
+__LIBVERS__._SAIA_LONNET
+                2007520       1#    
+__LIBVERS__._SAIA_MODBUS
+                2007320       1#    
+__LIBVERS__._SAIA_MODEM
+                2007520       1#    
+__LIBVERS__._SAIA_PBUS_MODBUS_GTW
+                2000017       1#    
+__LIBVERS__._SAIA_ROOM_CONTROLLER_V11
+                2007520       1#    
+__LIBVERS__._SAIA_SFUPANLG
+                2007340       1#    
+__LIBVERS__._SAIA_SFUPBASE
+                2007340       1#    
+__LIBVERS__._SAIA_SFUPCOMM
+                2007340       1#    
+__LIBVERS__._SAIA_SHMI
+                2000210       1#    
+__LIBVERS__._SAIA_SMONITORING
+                1000130       1#    
+__LIBVERS__._SAIA_W3X5
+                2010000       1#    
+__LIBVERS__._SAIA_W6X5
+                2010000       1#    
+__LIBVERS__._SAIA_W745
+                2002000       1#    
+__LIBVERS__._SAIA_W800
+                2002000       1#    
+__LIBVERS__._SAIA_WIDE_AREA_AUTOMATION
+                2007520       1#    
+__LIBVERS__._SBC_FTPC
+                1000100       1#    
+__LIBVERS__._SBC_HVFD
+                1001000       1#    
+__LIBVERS__._SBCHDLog
+                2006182       1#    
+__LIBVERS__._SWA_Alarming
+                2006302       1#    
+__LIBVERS__._UID_JCI_N2_Bus
+                2006153       1#    
+__low      F    2047          6#    2     6     
+__PageProbeExtTypes
+                1             6#    
+__PCD_CURRENT_BUILD_KEY__
+           DB   3501          6#    2     6     
+__PCD_UID__
+           DB   3500          1#    1     
+__PCD1_F2611__  55            1#    
+__PCD1_G1100__  51            1#    
+__PCD1_G3600__  52            1#    
+__PCD1_G3601__  54            1#    
+__PCD1_M0160E0__
+                48            1#    
+__PCD1_M2020__  37            1#    
+__PCD1_M2110R1__
+                49            1#    
+__PCD1_M2120__  38            1#    
+__PCD1_M2160__  43            1#    
+__PCD1_M2220__  62            1#    
+__PCD1_Mxxx__   1             1#    
+__PCD1_W5300__  53            1#    
+__PCD2_BUES__   14            1#    
+__PCD2_M170__   3             1#    
+__PCD2_M4160__  60            1#    
+__PCD2_M4560__  61            1#    
+__PCD2_M480__   10            1#    
+__PCD2_M5440__  25            1#    
+__PCD2_M5540__  26            1#    
+__PCD2_M910__   11            1#    
+__PCD2_Mxxx__   2             1#    
+__PCD3_M2030V6__
+                27            1#    
+__PCD3_M2130V6__
+                28            1#    
+__PCD3_M2230A4T5__
+                30            1#    
+__PCD3_M2330A4T1__
+                31            1#    
+__PCD3_M2330A4T3__
+                32            1#    
+__PCD3_M2330A4T5__
+                33            1#    
+__PCD3_M302__   15            1#    
+__PCD3_M312__   22            1#    
+__PCD3_M316__   64            1#    
+__PCD3_M323__   16            1#    
+__PCD3_M333__   17            1#    
+__PCD3_M336__   65            1#    
+__PCD3_M534__   24            1#    
+__PCD3_M536__   66            1#    
+__PCD3_M544__   18            1#    
+__PCD3_M554__   19            1#    
+__PCD3_M556__   35            1#    
+__PCD3_M634__   20            1#    
+__PCD3_M636__   39            1#    
+__PCD3_M644__   29            1#    
+__PCD3_M654__   21            1#    
+__PCD3_M656__   36            1#    
+__PCD3_M6860__  47            1#    
+__PCD3_M6880__  56            1#    
+__PCD3_M6880_CPU1__
+                57            1#    
+__PCD3_T660__   34            1#    
+__PCD3_T665__   41            1#    
+__PCD3_T666__   42            1#    
+__PCD3_T668__   58            1#    
+__PCD4_M170__   9             1#    
+__PCD4_Mxxx__   4             1#    
+__PCD6_M5xx__   5             1#    
+__PCD6_Mxxx__   6             1#    
+__PCD7_D410VT5F__
+                46            1#    
+__PCD7_D412DT5F__
+                44            1#    
+__PCD7_D443WT5R__
+                59            1#    
+__PCD7_D457VT5F__
+                45            1#    
+__PCD7_D90VEM010__
+                40            1#    
+__PCS1_C8xx__   8             1#    
+__Saia_Sfup__._Watchdog
+           F    2048          6#    6     
+__Saia_Sfup__.MaxFlag
+                14335         1#    6     
+__Saia_Sfup__.rTmpCalc
+           R    2104          6#    6     
+__Saia_Sfup__.rTmpCalcRemainder
+           R    2105          6#    6     
+__Saia_Sfup__.rTmpCalcResult
+           R    2106          6#    6     
+__SAIASystemBuildTime__
+                050B245F6H    1#    6     
+__SASMVERS__    22140         1#    
+__TIME_BASE__   100           1#    
+__TIME_BASE_EXTN__
+                100           1#    
+__TIME_CONVERT__
+           F    2000          1#    1     5     
+__TIME_DIVFACT__
+                1             1#    5     
+__TIME_MULFACT__
+                1             1#    5     
+__TIME_MULTIPLY__
+           F    2001          1#    1     5     
+_HEAVAC._BID.Horloge._BIDSTR
+           DB   3502          2#    2     
+_HEAVAC._CLOCK._ALLPHDAY1
+           F    2290          5#    2     5     
+_HEAVAC._CLOCK._DAY
+           R    2245          5#    5     
+_HEAVAC._CLOCK._DAYINYEAR
+           R    2254          5#    5     
+_HEAVAC._CLOCK._DAYOW
+           R    2235          5#    2     5     
+_HEAVAC._CLOCK._DAYSLSC
+           DB   3503          5#    5     
+_HEAVAC._CLOCK._DAYSLST
+           DB   3504          5#    5     
+_HEAVAC._CLOCK._DHHMM
+           R    2251          5#    5     
+_HEAVAC._CLOCK._DOW0101
+           R    2255          5#    5     
+_HEAVAC._CLOCK._HHMM
+           R    2240          5#    2     5     
+_HEAVAC._CLOCK._HHMMSS
+           R    2233..2235    5#    2     5     
+_HEAVAC._CLOCK._HOUR
+           R    2246          5#    5     
+_HEAVAC._CLOCK._JJMMDD
+           R    2238..2253    5#    2     5     
+_HEAVAC._CLOCK._LEAP
+           F    2291          5#    5     
+_HEAVAC._CLOCK._MINODAY
+           R    2256          5#    5     
+_HEAVAC._CLOCK._MINUTE
+           R    2247          5#    5     
+_HEAVAC._CLOCK._MMDD
+           R    2239          5#    2     5     
+_HEAVAC._CLOCK._MMDDHHMM
+           R    2252          5#    5     
+_HEAVAC._CLOCK._MONTH
+           R    2244          5#    5     
+_HEAVAC._CLOCK._PHDAY
+           F    2293          5#    2     5     
+_HEAVAC._CLOCK._PHDAY1
+           F    2294          5#    2     5     
+_HEAVAC._CLOCK._SEASON
+           F    2295          5#    5     
+_HEAVAC._CLOCK._SECODAY
+           R    2253          5#    5     
+_HEAVAC._CLOCK._SECOND
+           R    2248          5#    5     
+_HEAVAC._CLOCK._SECTICK
+           F    2296          5#    5     
+_HEAVAC._CLOCK._TESTCLK
+           F    2299          5#    2     5     
+_HEAVAC._CLOCK._TESTCLK1
+           F    2300          5#    2     5     
+_HEAVAC._CLOCK._TESTCLKHW
+           F    2301          5#    5     
+_HEAVAC._CLOCK._TESTCLKRX
+           F    2302          5#    5     
+_HEAVAC._CLOCK._WEEK
+           R    2249          5#    2     5     
+_HEAVAC._CLOCK._WWD
+           R    2250          5#    2     5     
+_HEAVAC._CLOCK._YEAR
+           R    2242          5#    5     
+_HEAVAC._CLOCK._YYYYEAR
+           R    2243          5#    2     5     
+_HEAVAC._CLOCK._YYYYMMDD
+           R    2234          5#    2     5     
+_HEAVAC._FB._CLOCKFB
+           FB   0             5#    5     
+_HEAVAC._FB._CONV2
+           FB   1             5#    5     
+_HEAVAC._FB._CONV3
+           FB   2             5#    5     
+_HEAVAC._FB._DEADR
+           FB   3             5#    5     
+_HEAVAC._FB._DLGCODE
+           FB   4             5#    5     
+_HEAVAC._FB._DOWMONTH
+           FB   5             5#    5     
+_HEAVAC._FB._FT1B
+           FB   6             5#    5     
+_HEAVAC._FB._HYSTER
+           FB   7             5#    5     
+_HEAVAC._FB._ICODE
+           FB   8             5#    5     
+_HEAVAC._FB._KEYCODE
+           FB   9             5#    5     
+_HEAVAC._FB._MIMA
+           FB   10            5#    5     
+_HEAVAC._FB._REG1
+           FB   11            5#    5     
+_HEAVAC._FB._SAMPLE
+           FB   12            5#    2     5     
+_HEAVAC._FB._SHADE
+           FB   13            5#    5     
+_HEAVAC._FB._SHADE2
+           FB   14            5#    5     
+_HEAVAC._FB._SOWI
+           FB   15            5#    2     5     
+_HEAVAC._FB._SOWIFB
+           FB   16            5#    5     
+_HEAVAC._FB._SWSTATE
+           FB   17            5#    5     
+_HEAVAC._FB._TIME
+           FB   18            5#    5     
+_HEAVAC._PRIV._ERROR
+           F    2304          5#    5     
+A.HVC.Horl_GV_Extr1.Channel
+           F    2208..2209    2#    2     
+A.HVC.Horl_GV_Extr1.Day
+           R    2182          2#    2     
+A.HVC.Horl_GV_Extr1.OFFTime1
+           R    2175          2#    2     
+A.HVC.Horl_GV_Extr1.OFFTime2
+           R    2176          2#    2     
+A.HVC.Horl_GV_Extr1.OFFTime3
+           R    2177          2#    2     
+A.HVC.Horl_GV_Extr1.OFFTime4
+           R    2178          2#    2     
+A.HVC.Horl_GV_Extr1.OFFTime5
+           R    2179          2#    2     
+A.HVC.Horl_GV_Extr1.OFFTime6
+           R    2180          2#    2     
+A.HVC.Horl_GV_Extr1.OFFTime7
+           R    2181          2#    2     
+A.HVC.Horl_GV_Extr1.ONTime1
+           R    2168..2183    2#    2     
+A.HVC.Horl_GV_Extr1.ONTime2
+           R    2169          2#    2     
+A.HVC.Horl_GV_Extr1.ONTime3
+           R    2170          2#    2     
+A.HVC.Horl_GV_Extr1.ONTime4
+           R    2171          2#    2     
+A.HVC.Horl_GV_Extr1.ONTime5
+           R    2172          2#    2     
+A.HVC.Horl_GV_Extr1.ONTime6
+           R    2173          2#    2     
+A.HVC.Horl_GV_Extr1.ONTime7
+           R    2174          2#    2     
+A.HVC.Horl_GV_Extr2.Channel
+           F    2246..2247    2#    2     
+A.HVC.Horl_GV_Extr2.Day
+           R    2226          2#    2     
+A.HVC.Horl_GV_Extr2.OFFTime1
+           R    2219          2#    2     
+A.HVC.Horl_GV_Extr2.OFFTime2
+           R    2220          2#    2     
+A.HVC.Horl_GV_Extr2.OFFTime3
+           R    2221          2#    2     
+A.HVC.Horl_GV_Extr2.OFFTime4
+           R    2222          2#    2     
+A.HVC.Horl_GV_Extr2.OFFTime5
+           R    2223          2#    2     
+A.HVC.Horl_GV_Extr2.OFFTime6
+           R    2224          2#    2     
+A.HVC.Horl_GV_Extr2.OFFTime7
+           R    2225          2#    2     
+A.HVC.Horl_GV_Extr2.ONTime1
+           R    2212..2227    2#    2     
+A.HVC.Horl_GV_Extr2.ONTime2
+           R    2213          2#    2     
+A.HVC.Horl_GV_Extr2.ONTime3
+           R    2214          2#    2     
+A.HVC.Horl_GV_Extr2.ONTime4
+           R    2215          2#    2     
+A.HVC.Horl_GV_Extr2.ONTime5
+           R    2216          2#    2     
+A.HVC.Horl_GV_Extr2.ONTime6
+           R    2217          2#    2     
+A.HVC.Horl_GV_Extr2.ONTime7
+           R    2218          2#    2     
+A.HVC.Horl_PV_Extr1.Channel
+           F    2205..2206    2#    2     
+A.HVC.Horl_PV_Extr1.Day
+           R    2166          2#    2     
+A.HVC.Horl_PV_Extr1.OFFTime1
+           R    2159          2#    2     
+A.HVC.Horl_PV_Extr1.OFFTime2
+           R    2160          2#    2     
+A.HVC.Horl_PV_Extr1.OFFTime3
+           R    2161          2#    2     
+A.HVC.Horl_PV_Extr1.OFFTime4
+           R    2162          2#    2     
+A.HVC.Horl_PV_Extr1.OFFTime5
+           R    2163          2#    2     
+A.HVC.Horl_PV_Extr1.OFFTime6
+           R    2164          2#    2     
+A.HVC.Horl_PV_Extr1.OFFTime7
+           R    2165          2#    2     
+A.HVC.Horl_PV_Extr1.ONTime1
+           R    2152..2167    2#    2     
+A.HVC.Horl_PV_Extr1.ONTime2
+           R    2153          2#    2     
+A.HVC.Horl_PV_Extr1.ONTime3
+           R    2154          2#    2     
+A.HVC.Horl_PV_Extr1.ONTime4
+           R    2155          2#    2     
+A.HVC.Horl_PV_Extr1.ONTime5
+           R    2156          2#    2     
+A.HVC.Horl_PV_Extr1.ONTime6
+           R    2157          2#    2     
+A.HVC.Horl_PV_Extr1.ONTime7
+           R    2158          2#    2     
+A.HVC.Horl_PV_Extr2.Channel
+           F    2243..2244    2#    2     
+A.HVC.Horl_PV_Extr2.Day
+           R    2210          2#    2     
+A.HVC.Horl_PV_Extr2.OFFTime1
+           R    2203          2#    2     
+A.HVC.Horl_PV_Extr2.OFFTime2
+           R    2204          2#    2     
+A.HVC.Horl_PV_Extr2.OFFTime3
+           R    2205          2#    2     
+A.HVC.Horl_PV_Extr2.OFFTime4
+           R    2206          2#    2     
+A.HVC.Horl_PV_Extr2.OFFTime5
+           R    2207          2#    2     
+A.HVC.Horl_PV_Extr2.OFFTime6
+           R    2208          2#    2     
+A.HVC.Horl_PV_Extr2.OFFTime7
+           R    2209          2#    2     
+A.HVC.Horl_PV_Extr2.ONTime1
+           R    2196..2211    2#    2     
+A.HVC.Horl_PV_Extr2.ONTime2
+           R    2197          2#    2     
+A.HVC.Horl_PV_Extr2.ONTime3
+           R    2198          2#    2     
+A.HVC.Horl_PV_Extr2.ONTime4
+           R    2199          2#    2     
+A.HVC.Horl_PV_Extr2.ONTime5
+           R    2200          2#    2     
+A.HVC.Horl_PV_Extr2.ONTime6
+           R    2201          2#    2     
+A.HVC.Horl_PV_Extr2.ONTime7
+           R    2202          2#    2     
+A.HVC.Horloge.Date
+           R    2150          2#    2     
+A.HVC.Horloge.DateCmd
+           F    2121          2#    2     
+A.HVC.Horloge.DayOW
+           R    2151          2#    2     
+A.HVC.Horloge.Time
+           R    2149..2151    2#    2     
+A.HVC.Horloge.TimeCmd
+           F    2120          2#    2     
+Ala.Def_Batt_PCD
+           F    2262          2#    2     
+Ala.Def_Therm_Extra1
+           F    2073          2#    2     
+Ala.Def_Therm_Extra2
+           F    2074          2#    2     
+Ala.Gen.DI F    2075          2#    2     
+Extra1.Cde_GV
+           F    2029          1#    1     2     
+Extra1.Cde_PV
+           F    2028          1#    1     2     
+Extra1.Def_Ppe
+           F    2076          2#    2     
+Extra1.GV  F    2263          2#    2     
+Extra1.PV  F    2264          2#    2     
+Extra1.SM_GV
+           F    2019          1#    1     2     
+Extra1.SM_PV
+           F    2018          1#    1     2     
+Extra1.SP  F    2014          1#    1     2     
+Extra2.Cde_GV
+           F    2031          1#    1     2     
+Extra2.Cde_PV
+           F    2030          1#    1     2     
+Extra2.Def_Ppe
+           F    2077          2#    2     
+Extra2.GV  F    2265          2#    2     
+Extra2.PV  F    2266          2#    2     
+Extra2.SM_GV
+           F    2021          1#    1     2     
+Extra2.SM_PV
+           F    2020          1#    1     2     
+Extra2.SP  F    2015          1#    1     2     
+Gen.Autor  F    2267          2#    2     
+Gen.CLR    F    2036          1#    1     2     
+Gen.DI     F    2012          1#    1     2     
+Gen.Extra1_Autor
+           F    2268          2#    2     
+Gen.Extra1_lib
+           F    2269          2#    2     
+Gen.Extra2_lib
+           F    2270          2#    2     
+Gen.Lib    F    2271          2#    2     
+Gen.Quit   F    2013          1#    1     2     
+Gen.Quit_Soft
+           F    2272          2#    2     
+Gen.Sys_D  R    2230          2#    2     
+Gen.Sys_Def_Bat_PCD
+           F    2273          2#    2     
+Gen.Sys_EnD
+           F    2274          2#    2     
+Gen.Sys_EnT
+           F    2275          2#    2     
+Gen.Sys_HM R    2231          2#    2     
+Gen.Sys_ReC
+           F    2276          2#    2     
+Gen.Sys_ReD
+           F    2277          2#    2     
+Gen.Sys_ReN
+           F    2278          2#    2     
+Gen.Sys_YMD
+           R    2232          2#    2     
+IO.Slot1.DigitalInput10
+           F    2022          1#    1     
+IO.Slot1.DigitalInput11
+           F    2023          1#    1     
+IO.Slot1.DigitalInput12
+           F    2024          1#    1     
+IO.Slot1.DigitalInput13
+           F    2025          1#    1     
+IO.Slot1.DigitalInput14
+           F    2026          1#    1     
+IO.Slot1.DigitalInput15
+           F    2027          1#    1     
+IO.Slot1.DigitalInput4
+           F    2016          1#    1     
+IO.Slot1.DigitalInput5
+           F    2017          1#    1     
+IO.Slot1.IOAccess.DIGITAL_INPUTS_0TO15
+                0             1#    
+IO.Slot2.DigitalOutput10
+           F    2038          1#    1     
+IO.Slot2.DigitalOutput11
+           F    2039          1#    1     
+IO.Slot2.DigitalOutput12
+           F    2040          1#    1     
+IO.Slot2.DigitalOutput13
+           F    2041          1#    1     
+IO.Slot2.DigitalOutput14
+           F    2042          1#    1     
+IO.Slot2.DigitalOutput15
+           F    2043          1#    1     
+IO.Slot2.DigitalOutput4
+           F    2032          1#    1     
+IO.Slot2.DigitalOutput5
+           F    2033          1#    1     
+IO.Slot2.DigitalOutput6
+           F    2034          1#    1     
+IO.Slot2.DigitalOutput7
+           F    2035          1#    1     
+IO.Slot2.DigitalOutput9
+           F    2037          1#    1     
+IO.Slot2.IOAccess.DIGITAL_OUTPUT_0TO15
+                0             1#    
+S.CPU.Cpu       0             1#    
+S.CPU.Eline_System
+                0             1#    
+S.CPU.EnergyMonitoringEnabled
+                0             1#    
+S.CPU.FirstCounter
+           C    50            1#    
+S.CPU.FirstDynCounter
+           C    1000          1#    
+S.CPU.FirstDynDB
+           DB   3500          1#    
+S.CPU.FirstDynFlag
+           F    2000          1#    
+S.CPU.FirstDynRamDB
+           DB   6600          1#    
+S.CPU.FirstDynRamText
+           TEXT 5000          1#    
+S.CPU.FirstDynRegister
+           R    2000          1#    
+S.CPU.FirstDynText
+           TEXT 3000          1#    
+S.CPU.FirstDynTimer
+           T    10            1#    
+S.CPU.FirstNonvolatileFlag
+           F    0             1#    
+S.CPU.FirstWritableTextDB
+                -1            1#    
+S.CPU.FullHandshakeOnPort0
+                0             1#    
+S.CPU.HasVolatileFlags
+                0             1#    
+S.CPU.Interrupt0XOB
+                20            1#    
+S.CPU.Interrupt1XOB
+                21            1#    
+S.CPU.IPAddress 0C0A80A5AH    1#    
+S.CPU.IPChannel 9             1#    
+S.CPU.IPDefaultRouter
+                0C0A80A01H    1#    
+S.CPU.IPNode    10            1#    
+S.CPU.IPSubnetMask
+                0FFFFFF00H    1#    
+S.CPU.LastDynCounter
+           C    1599          1#    
+S.CPU.LastDynDB
+           DB   3999          1#    
+S.CPU.LastDynFlag
+           F    8191          1#    
+S.CPU.LastDynRamDB
+           DB   8191          1#    
+S.CPU.LastDynRamText
+           TEXT 6599          1#    
+S.CPU.LastDynRegister
+           R    8191          1#    
+S.CPU.LastDynText
+           TEXT 3499          1#    
+S.CPU.LastDynTimer
+           T    49            1#    
+S.CPU.LastTimer
+           T    49            1#    
+S.CPU.LastVolatileFlag
+                -1            1#    
+S.CPU.MaxCounter
+                1599          1#    
+S.CPU.MaxFlag   14335         1#    
+S.CPU.MaxFWVersion
+                999999        1#    
+S.CPU.MaxReg    16383         1#    
+S.CPU.MinFWVersion
+                12400         1#    
+S.CPU.NT_System 1             1#    
+S.CPU.PCD2M5_System
+                0             1#    
+S.CPU.PCD3_System
+                22            1#    
+S.CPU.PcdType   22            1#    
+S.CPU.ProgramVersion
+                1000000       1#    
+S.CPU.SbusBaudRate
+                9600          1#    
+S.CPU.SbusMode  2             1#    
+S.CPU.SbusModemBaudRate
+                9600          1#    
+S.CPU.SbusModemMode
+                2             1#    
+S.CPU.SbusModemPort
+                -1            1#    
+S.CPU.SbusPguPort
+                -1            1#    
+S.CPU.SbusStation
+                10            1#    
+S.CPU.TimerTimebase
+                100           1#    
+S.CPU.Use16BitAddressing
+                0             1#    
+S.CPU.Xob1Enable
+                0             1#    
+S.HVC.Clock.AllPHDay
+           F    2290          5#    5     
+S.HVC.Clock.ClkTest
+           F    2299          5#    5     
+S.HVC.Clock.ClkTest1
+           F    2300          5#    5     
+S.HVC.Clock.Day
+           R    2245          5#    5     
+S.HVC.Clock.DayInYear
+           R    2254          5#    5     
+S.HVC.Clock.DayOW
+           R    2235          5#    5     
+S.HVC.Clock.DHHMM
+           R    2251          5#    5     
+S.HVC.Clock.HHMM
+           R    2240          5#    5     
+S.HVC.Clock.HHMMSS
+           R    2233..2235    5#    5     
+S.HVC.Clock.Hour
+           R    2246          5#    5     
+S.HVC.Clock.MinODay
+           R    2256          5#    5     
+S.HVC.Clock.Minute
+           R    2247          5#    5     
+S.HVC.Clock.MMDD
+           R    2239          5#    5     
+S.HVC.Clock.MMDDHHMM
+           R    2252          5#    5     
+S.HVC.Clock.Month
+           R    2244          5#    5     
+S.HVC.Clock.PHDay
+           F    2293          5#    5     
+S.HVC.Clock.PHDay1
+           F    2294          5#    5     
+S.HVC.Clock.Season
+           F    2295          5#    5     
+S.HVC.Clock.SecODay
+           R    2253          5#    5     
+S.HVC.Clock.Second
+           R    2248          5#    5     
+S.HVC.Clock.SecTick
+           F    2296          5#    5     
+S.HVC.Clock.Week
+           R    2249          5#    5     
+S.HVC.Clock.WWD
+           R    2250          5#    5     
+S.HVC.Clock.Year
+           R    2242          5#    5     
+S.HVC.Clock.YYMMDD
+           R    2238..2253    5#    5     
+S.HVC.Clock.YYYYear
+           R    2243          5#    5     
+S.HVC.Clock.YYYYMMDD
+           R    2234          5#    5     
+S.IO.Slot1.DigitalInput
+           F    2012..2027    1#    1     
+S.IO.Slot2.DigitalOutput
+           F    2028..2043    1#    1     
+s.odm.FlagDiag
+           F    2002..2009    4#    4     
+s.odm.InitError
+           F    2010          4#    4     
+s.odm.InitExec
+           F    2011          4#    4     
+S.ODM.Initialized
+                1             1#    
+S.ODM.ReadTimeout
+                1000          1#    
+s.odm.RegChannel
+           R    2000          4#    4     
+S.PRJ.1er_3EME_SUD.IPChannel
+                9             1#    
+S.PRJ.1er_3EME_SUD.IPNode
+                0             1#    
+S.PRJ.1er_3EME_SUD.SbusStation
+                0             1#    
+S.PRJ.2ème_3EME_NORD.IPChannel
+                9             1#    
+S.PRJ.2ème_3EME_NORD.IPNode
+                1             1#    
+S.PRJ.2ème_3EME_NORD.SbusStation
+                1             1#    
+S.PRJ.3ème_4EME_SUD.IPChannel
+                9             1#    
+S.PRJ.3ème_4EME_SUD.IPNode
+                2             1#    
+S.PRJ.3ème_4EME_SUD.SbusStation
+                2             1#    
+S.PRJ.4ème_4EME_NORD.IPChannel
+                9             1#    
+S.PRJ.4ème_4EME_NORD.IPNode
+                3             1#    
+S.PRJ.4ème_4EME_NORD.SbusStation
+                3             1#    
+S.PRJ.5ème_5EME_NORD.IPChannel
+                9             1#    
+S.PRJ.5ème_5EME_NORD.IPNode
+                5             1#    
+S.PRJ.5ème_5EME_NORD.SbusStation
+                5             1#    
+S.PRJ.5ème_5EME_SUD.IPChannel
+                9             1#    
+S.PRJ.5ème_5EME_SUD.IPNode
+                4             1#    
+S.PRJ.5ème_5EME_SUD.SbusStation
+                4             1#    
+S.PRJ.AppLanguage
+                'fr'          1#    
+S.PRJ.Extraction_Toiture.SbusStation
+                10            1#    
+S.PRJ.LibLanguage
+                'fr'          1#    
+S.PRJ.NAEF.IPChannel
+                9             1#    
+S.PRJ.NAEF.IPNode
+                11            1#    
+S.PRJ.NAEF.SbusStation
+                11            1#    
+S.PRJ.ZURICH.IPChannel
+                9             1#    
+S.PRJ.ZURICH.IPNode
+                12            1#    
+S.PRJ.ZURICH.SbusStation
+                12            1#    
+S.SYS.SASMVERS  2002140       1#    
+Sys.Err_Bat
+           F    2279          2#    2     
+Sys.MaG_ReC
+           F    2280          2#    2     
+Sys.MaG_ReD
+           F    2281          2#    2     
+Sys.MaG_ReN
+           F    2282          2#    2     
+Sys.Start_Delay
+           F    2283          2#    2     
+
+Linkage complete. 0 errors, 0 warnings.

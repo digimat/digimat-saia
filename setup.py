@@ -12,7 +12,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='digimat.saia',
-    version='0.0.63',
+    version='0.0.67',
     description='Digimat Saia EtherSBus (partial) client+server implementation',
     long_description=long_description,
     namespace_packages=['digimat'],

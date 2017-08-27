@@ -18,9 +18,10 @@ src/digimat/saia/__main__.py
 src/digimat/saia/formaters.py
 src/digimat/saia/items.py
 src/digimat/saia/memory.py
+src/digimat/saia/node.py
 src/digimat/saia/request.py
 src/digimat/saia/response.py
-src/digimat/saia/saia.py
 src/digimat/saia/server.py
 src/digimat/saia/singleton.py
 src/digimat/saia/symbol.py
+src/digimat/saia/transfer.py

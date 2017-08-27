@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: digimat.saia
-Version: 0.0.63
+Version: 0.0.67
 Summary: Digimat Saia EtherSBus (partial) client+server implementation
 Home-page: http://www.digimat.ch
 Author: Frederic Hess
@@ -33,7 +33,7 @@ Description: ===================
         
         
         SAIA EtherSBus
-        --------------
+        ==============
         
         The EtherSBus is mainly an UDP encapsulated version of the serial SAIA S-Bus. The EtherSBus is `natively implemented <https://www.sbc-support.com/fr/product-category/communication-protocols/>`_
         in any SAIA nodes having a LAN port, providing a very easy way to exchange (read/write) information with 3rd party devices. The digimat.saia module
@@ -59,7 +59,7 @@ Description: ===================
         
         
         Installation
-        ------------
+        ============
         
         Nothing specific here, just use pip (which will also install the digimat.jobs module)
         
@@ -69,7 +69,7 @@ Description: ===================
         
         
         EtherSBus Node (Server)
-        -----------------------
+        =======================
         
         Once created, the SAIANode object will implicitely start a background task responsible for protocol and bus variables management.
         The task must be stop()ed before the program termination. The node contains a server (allowing other nodes to read an write 
@@ -190,7 +190,7 @@ Description: ===================
         
         
         EtherSBus Client
-        ----------------
+        ================
         
         The node object allow access to (as many) remote EtherSBus node servers you need
         
@@ -261,8 +261,58 @@ Description: ===================
             >>> server1=node.servers['192.168.0.100']
         
         
+        Data Transfers with Remote Servers
+        ----------------------------------
+        
+        The SAIAServer object contains a SAIATransferQueue service allowing to submit and queue SAIATransfer jobs in the background, used
+        for processing transfers that require multiple packet exchange like *read-block*, for example. When a remote server is declared, some
+        READ_DBX requests will be done with a SAIATransferReadDeviceInformation transfer to the remote server to retrieve the device 
+        information memory block, containing this kind of config
+        
+        .. code-block:: python
+        
+            PG5Licensee=DEMONSTRATION VERSION
+            PG5DeveloperID=CH_HeFr0617
+            PCName=WINFHE
+            Originator=DEMONSTRATION VERSION
+            PG5Version=V2.2.230
+            ProjectName=Test1
+            DeviceName=Device1
+            PcdType=PCD1.M2220
+            ANSICodePage=1252
+            ProgramVersion=1.0
+            ProgramID=E291E0E08F55CBEC
+            ProgramCRC=061C66CD
+            BuildDateTime=2017/08/18 17:46:50
+            DownloadDateTime=2017/08/18 17:49:47
+        
+        Once retrieved, theses informations maybe accessed with the server.getDeviceIfo() method (case insensitive)
+        
+        .. code-block:: python
+        
+            >>> print server.getDeviceInfo('DeviceName')
+            >>> Device1
+        
+        DeviceName, DeviceType (PcdType) and BuildDateTime can be directly accessed as a property method
+        
+        .. code-block:: python
+        
+            >>> print server.deviceName
+            >>> Device1
+            >>> print server.deviceType
+            >>> PCD1.M2220
+            >>> print server.buildTime
+            >>> 2017-08-18 17:46:50 (returned as a datetime object)
+        
+        You can force a deviceInfo refresh manually if anything goes wrong
+        
+        .. code-block:: python
+        
+            >>> server.submitTransferReadDeviceInformation()
+        
+        
         Symbolic Addressing
-        -------------------
+        ===================
         
         The EtherSBus doesn't provide item access by name (symbol name, tag). But **if you own the PG5 .map file generated at compile time**, you may have some help by passing
         this file during server declaration process. This will create a SAIASymbols object associated with the server, ready to serve you the requested SAIASymbol
@@ -319,15 +369,21 @@ Description: ===================
             >>> print symbols.flag_sonde3_11_timeout.index
             3936
         
-        When Python interactive mode is detected, symbols.mount() is automatically called for you. Items declaration can also be passed as a SAIASymbol object, so that autocompletion is your friend
+        When Python interactive mode is detected, symbols.mount() is automatically called for you. Items declaration can also be passed 
+        as a SAIASymbol object, so that autocompletion is your friend
         
         .. code-block:: python
         
             >>> server.flags.declare(symbols.flag_sonde3_11_timeout)
         
+        As said in the last section, we can access the deviceInformation properties, allowing to guess the .map filename. If the deviceName is "MySuperDevice", the associated 
+        .map file produced by the SAIA PG5 compiler will be "MySuperDevice.map" by default.  In fact, this can help us to do things automagically. 
+        **When a server is declared, the deviceInformation block is automatically retrieved
+        and then the a try is made to load the default associated .map file**.
+        
         
         Dumping & Debugging
-        -------------------
+        ===================
         
         By default, the module create and use a socket logger pointing on localhost. Launch your own tcp logger server
         and you will see the EtherSBus frames. If you don't have one, you can try our simple (and dirty) digimat.logserver
@@ -370,7 +426,7 @@ Description: ===================
         
         
         Demo Node
-        ---------
+        =========
         
         Using command line interpreter is cool, but for debugging, you will need to launch and relaunch your node. 
         Here is a minimal empty node implementation, stopable with <CTRL-C> 
@@ -406,12 +462,12 @@ Description: ===================
         
             python -m digimat.saia
         
-        Good luck, Jim.
         
+        TODO
+        ====
         
-        Documentation
-        -------------
-        
-        To be continued. Writing in progress ;) don't know if this is useful for someone.
+        Documentation is very incomplete. Don't know if this is usefule for someone. Tell it to us.
+        There is still some more locking mecanisms to implement making the background task reall thread safe. The
+        Python GIL make things yet wrongly safe.
         
 Platform: UNKNOWN

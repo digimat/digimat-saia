@@ -25,7 +25,7 @@ Always use the latest version of this package, as it is frequently updated ! You
 
 
 SAIA EtherSBus
---------------
+==============
 
 The EtherSBus is mainly an UDP encapsulated version of the serial SAIA S-Bus. The EtherSBus is `natively implemented <https://www.sbc-support.com/fr/product-category/communication-protocols/>`_
 in any SAIA nodes having a LAN port, providing a very easy way to exchange (read/write) information with 3rd party devices. The digimat.saia module
@@ -39,6 +39,8 @@ some good starting points may include :
 * `WireShark EtherSBus plugin source code <https://github.com/boundary/wireshark/blob/master/epan/dissectors/packet-sbus.c>`_
 * `SBPoll Python EtherSBus source code <http://mblogic.sourceforge.net/mbtools/sbpoll.html>`_
 * `SAIA faq <http://www.sbc-support.ch/faq>`_
+* The protocol specification *should* be available upon request per email to SAIA at support@saia-pcd.com, but you will need to
+  sign a non disclosure agreenment. Just ask for the "**Utilization Agreement for Saia S-Bus Developer Documentation**" document.
 
 Using the SAIA PG5 debugger may also help understanding how things works. Wireshark has an excellent protocol decoder 
 and you will find some .pcap samples by googling "sbus pcap". Really useful.
@@ -51,7 +53,7 @@ And of course, EtherSBus communication has to be enabled on your PCD ;)
 
 
 Installation
-------------
+============
 
 Nothing specific here, just use pip (which will also install the digimat.jobs module)
 
@@ -61,7 +63,7 @@ Nothing specific here, just use pip (which will also install the digimat.jobs mo
 
 
 EtherSBus Node (Server)
------------------------
+=======================
 
 Once created, the SAIANode object will implicitely start a background task responsible for protocol and bus variables management.
 The task must be stop()ed before the program termination. The node contains a server (allowing other nodes to read an write 
@@ -182,7 +184,7 @@ requests will be NAKed by your node.
 
 
 EtherSBus Client
-----------------
+================
 
 The node object allow access to (as many) remote EtherSBus node servers you need
 
@@ -253,8 +255,58 @@ Remember that declared servers can be retrieved at any time by lid or by ip addr
     >>> server1=node.servers['192.168.0.100']
 
 
+Data Transfers with Remote Servers
+----------------------------------
+
+The SAIAServer object contains a SAIATransferQueue service allowing to submit and queue SAIATransfer jobs in the background, used
+for processing transfers that require multiple packet exchange like *read-block*, for example. **When a remote server is declared**, **some
+READ_DBX requests will be automatically done using a SAIATransferReadDeviceInformation with the remote server to retrieve the device 
+information memory block**, containing this kind of config
+
+.. code-block:: python
+
+    PG5Licensee=DEMONSTRATION VERSION
+    PG5DeveloperID=CH_HeFr0617
+    PCName=WINFHE
+    Originator=DEMONSTRATION VERSION
+    PG5Version=V2.2.230
+    ProjectName=Test1
+    DeviceName=Device1
+    PcdType=PCD1.M2220
+    ANSICodePage=1252
+    ProgramVersion=1.0
+    ProgramID=E291E0E08F55CBEC
+    ProgramCRC=061C66CD
+    BuildDateTime=2017/08/18 17:46:50
+    DownloadDateTime=2017/08/18 17:49:47
+
+Once retrieved, theses informations may be accessed with the server.getDeviceInfo() method (case insensitive)
+
+.. code-block:: python
+
+    >>> print server.getDeviceInfo('DeviceName')
+    >>> 'Device1'
+
+The DeviceName, DeviceType (PcdType) and BuildDateTime can also be directly accessed as a server's property method
+
+.. code-block:: python
+
+    >>> print server.deviceName
+    >>> 'Device1'
+    >>> print server.deviceType
+    >>> 'PCD1.M2220'
+    >>> print server.buildTime
+    >>> datetime.datetime(2017, 8, 18, 17, 46, 50)
+
+You can force a deviceInfo refresh later if anything goes wrong
+
+.. code-block:: python
+
+    >>> server.submitTransferReadDeviceInformation()
+
+
 Symbolic Addressing
--------------------
+===================
 
 The EtherSBus doesn't provide item access by name (symbol name, tag). But **if you own the PG5 .map file generated at compile time**, you may have some help by passing
 this file during server declaration process. This will create a SAIASymbols object associated with the server, ready to serve you the requested SAIASymbol
@@ -318,9 +370,14 @@ as a SAIASymbol object, so that autocompletion is your friend
 
     >>> server.flags.declare(symbols.flag_sonde3_11_timeout)
 
+As said in the last section, we can access the deviceInformation properties, allowing to guess the .map filename. If the deviceName is "MySuperDevice", the associated 
+.map file produced by the SAIA PG5 compiler will be "MySuperDevice.map" by default. In fact, this can help us to do things automagically. 
+**When a server is declared, the deviceInformation block is automatically retrieved
+and then the a try is made to load the default associated .map file**.
+
 
 Dumping & Debugging
--------------------
+===================
 
 By default, the module create and use a socket logger pointing on localhost. Launch your own tcp logger server
 and you will see the EtherSBus frames. If you don't have one, you can try our simple (and dirty) digimat.logserver
@@ -363,7 +420,7 @@ mirror representation of the localFlag.
 
 
 Demo Node
----------
+=========
 
 Using command line interpreter is cool, but for debugging, you will need to launch and relaunch your node. 
 Here is a minimal empty node implementation, stopable with <CTRL-C> 
@@ -401,10 +458,8 @@ you can run the demo node shown above with this command line
 
 
 TODO
-----
-
-Symbolic addressing based on .map files *seems* to be a good idea. In fact, we can go a bit further here since using some READ_DBX messages, we can
-get some system information blocks stored in the device. Thoses blocks contains the *device name*. As the .map file has the same name
-as the device name (i.e. "MyDeviceName --> MyDeviceName.map"), we can implement an automatic .map file loader.
+====
 
 Documentation is very incomplete. Don't know if this is usefule for someone. Tell it to us.
+There is still some more locking mecanisms to implement making the background task reall thread safe. The
+Python GIL make things yet wrongly safe.
