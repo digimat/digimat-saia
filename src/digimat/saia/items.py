@@ -122,21 +122,21 @@ class SAIAItem(object):
             with self._parent._lock:
                 self._stamp=time.time()
                 self._value=value
-                self._eventValue.set()
+            self._eventValue.set()
 
     def getValue(self):
-        return self._value
+        with self._parent._lock:
+            return self._value
 
     @property
     def value(self):
-        with self._parent._lock:
-            return self.getValue()
+        return self.getValue()
 
     @value.setter
     def value(self, value):
-        with self._parent._lock:
-            if not self.isReadOnly():
-                value=self.validateValue(value)
+        if not self.isReadOnly():
+            value=self.validateValue(value)
+            with self._parent._lock:
                 if self._value!=value:
                     self.signalPush(value)
 
@@ -417,8 +417,9 @@ class SAIAItems(object):
         while count>0:
             count-=1
             try:
-                item=self._items[self._currentItem]
-                self._currentItem+=1
+                with self._lock:
+                    item=self._items[self._currentItem]
+                    self._currentItem+=1
 
                 try:
                     item.manager()
@@ -429,8 +430,9 @@ class SAIAItems(object):
                 break
 
     def dump(self):
-        for item in self._items:
-            print(item)
+        with self._lock:
+            for item in self._items:
+                print(item)
 
     def clear(self):
         with self._lock:

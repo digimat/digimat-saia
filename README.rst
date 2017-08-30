@@ -2,7 +2,7 @@
 Python digimat.saia
 ===================
 
-This is a Python 2.7 (Python 3 not fully compatible yet, but will be soon) module allowing to create **client** and/or **server** `SAIA EtherSBus <https://wiki.wireshark.org/EtherSBus>`_  nodes.
+This is a Python 2.7 (Python 3 not fully compatible yet, but will be in the future) module allowing to create **client** and/or **server** `SAIA EtherSBus <https://wiki.wireshark.org/EtherSBus>`_  nodes.
 This code allow you to create low cost (and hopefully reliable) communication services with any EtherSBus device, reading and writing data from/to them. By data (items),
 we mean inputs, outputs, flags and registers. More data-types may be supported in the future. In the exemple below, a local
 SBus node with address 253 (station number, or localid, or lid in our terminology) is created. 
@@ -28,9 +28,16 @@ SAIA EtherSBus
 ==============
 
 The EtherSBus is mainly an UDP encapsulated version of the serial SAIA S-Bus. The EtherSBus is `natively implemented <https://www.sbc-support.com/fr/product-category/communication-protocols/>`_
-in any SAIA nodes having a LAN port, providing a very easy way to exchange (read/write) information with 3rd party devices. The digimat.saia module
-was mainly created to partially explore the S-Bus mecanisms on Raspberry Pi devices before starting a deeper implementation
-on our `Digimat <https://www.st-sa.ch/digimat.html>`_ HVAC BMS infrastructure. 
+in any SAIA nodes having a LAN port, providing a very easy way to exchange (read/write) information with 3rd party devices. Using native S-Bus protocol instead 
+of something more *standard* like Modbus/IP or BACnet/IP has some advantages
+
+* No (or very few) setup is needed on the existing SAIA CPUs (means no or very few additional costs)
+* Mapping SAIA variables to Modbus/BACnet variables require additional specific config and hardware ressources that you may not have
+* Data communication using more sophisticated protocols like BACnet use more encapsulation around exchanged data. Using EtherSBus
+  is more *lightweight* and efficient.
+  
+The digimat.saia module was mainly created to partially explore the S-Bus mecanisms on Raspberry Pi devices 
+before starting a deeper implementation on our `Digimat <https://www.st-sa.ch/digimat.html>`_ HVAC BMS infrastructure. 
 
 At this time, we don't have access to any S-Bus or EtherSBus protocol official specifications. If you own such documentation,
 please forward it to us (fhess@st-sa.ch), as SAIA doesn't want to provide it ;( If you need to learn about this protocol,
@@ -39,23 +46,24 @@ some good starting points may include :
 * `WireShark EtherSBus plugin source code <https://github.com/boundary/wireshark/blob/master/epan/dissectors/packet-sbus.c>`_
 * `SBPoll Python EtherSBus source code <http://mblogic.sourceforge.net/mbtools/sbpoll.html>`_
 * `SAIA faq <http://www.sbc-support.ch/faq>`_
-* The protocol specification *should* be available upon request per email to SAIA at support@saia-pcd.com, but you will need to
-  sign a non disclosure agreenment. Just ask for the "**Utilization Agreement for Saia S-Bus Developer Documentation**" document.
+* The protocol specification *should* be theorically available upon request per email to SAIA at support@saia-pcd.com, 
+  but you will need to sign a non disclosure agreenment. Ask for the "**Utilization Agreement for Saia S-Bus Developer Documentation**" document.
 
 Using the SAIA PG5 debugger may also help understanding how things works. Wireshark has an excellent protocol decoder 
-and you will find some .pcap samples by googling "sbus pcap". Really useful.
+and you will easily find some .pcap samples by googling "sbus pcap". Really useful.
 
 Don't forget that the SAIA dynamic addressing won't be your friend here as you must know the address of the variable
 you want to access (read/write). Consider fixing your variables to "static" addresses in your PG5 configuration (see SAIA FAQ #101533). 
 We have implemented some helpers to provide limited symbolic access using the PD5 .map file if you have it (see chapter "Symbolic Adressing" below).
+This said, have a look on the *Symbolic Addressing* chapter below. There are some tricks available to help you using items tag name ;)
 
-And of course, EtherSBus communication has to be enabled on your PCD ;)
+Oh, and of course, EtherSBus communication has to be enabled on your PCD device ;)
 
 
 Installation
 ============
 
-Nothing specific here, just use pip (which will also install the digimat.jobs module)
+Nothing specific here, just use pip (which will also install modules dependencies)
 
 .. code-block:: bash
 
@@ -92,14 +100,15 @@ Each item provide some helpers methods to facilitate value manipulation
 
 .. code-block:: python
 
-    myflag.off()
-    myflag.on()
-    myflag.toggle()
-    myflag.set()
-    myflag.clear()
-    myflag.value=1
-    myflag.value=True
-    print myflag.value
+    >>> myflag.off()
+    >>> myflag.on()
+    >>> myflag.toggle()
+    >>> myflag.set()
+    >>> myflag.clear()
+    >>> myflag.value=1
+    >>> myflag.value=True
+    >>> print myflag.value
+    1
 
 By default, "on-the-fly-item-creation" is active. This means that any data item (flag, input, output, register) which is accessed (locally or remotely)
 will be dynamically instanciated if it doesn't exists.  This can create a large amount of unwanted memory consumption in case of abuse or bug. This mode can
@@ -256,7 +265,7 @@ Remember that declared servers can be retrieved at any time by lid or by ip addr
 
 
 Data Transfers with Remote Servers
-----------------------------------
+==================================
 
 The SAIAServer object contains a SAIATransferQueue service allowing to submit and queue SAIATransfer jobs in the background, used
 for processing transfers that require multiple packet exchange like *read-block*, for example. **When a remote server is declared**, **some
@@ -266,7 +275,7 @@ information memory block**, containing this kind of config
 .. code-block:: python
 
     PG5Licensee=DEMONSTRATION VERSION
-    PG5DeveloperID=CH_HeFr0617
+    PG5DeveloperID=CH_xxxxxxxx
     PCName=WINFHE
     Originator=DEMONSTRATION VERSION
     PG5Version=V2.2.230
@@ -304,6 +313,31 @@ You can force a deviceInfo refresh later if anything goes wrong
 
     >>> server.submitTransferReadDeviceInformation()
 
+If the deviceName is compatible with Python class variable naming convention, the SAIAServer object is automatically mapped (mounted)
+to a variable with the same name accessible in the node.servers (SAIAServers) object
+
+.. code-block:: python
+
+    >>> server=node.servers.Device1
+
+This is really useful in interactive sessions when combined with automatic node discovering (see below). 
+
+
+Network nodes discovering
+=========================
+
+Every SAIANode has a local SAIAServer object (node.server) allowing local data to be accessed by other SAIA EtherSBus clients. This local server
+has a manager() periodically called by the background task. You can ask this task to periodically scan the network and potentially discover
+other EtherSBus servers online on the LAN
+
+.. code-block:: python
+
+    >>> server.enableNodeDiscover(period=60)
+
+This will periodically broadcast a READ_STATIONNUMBER on the network (255.255.255.255) using a SAIATransferDiscoverNodes transfer service.
+When discovering mode is active, any response to this message received by the local node (not comming from a local network interface) will be 
+accepted an the corresponding remote server will be automatically delared for you. For convenience, the discover process is automatically started in Python interactive mode.
+
 
 Symbolic Addressing
 ===================
@@ -322,12 +356,14 @@ this file during server declaration process. This will create a SAIASymbols obje
     >>> 2295
     >>> print symbol.attribute
     >>> 'f'
+    >>> symbol.isFlag()
+    >>> True
 
     >>> symbol=server.symbols.register(2295)
     >>> print symbol.tag
     >>> 'rio.station_a12.sonde3_16_cmd_reduit_ch' 
 
-**This allows bidirectional maping between symbols names (tag) and items indexes**, **assuming that your map file is uptodate** ! Cool. The symbolic access is in fact implemented
+**This allows bidirectional mapping between symbols names (tag) and items indexes**, **assuming that your map file is uptodate** ! Cool. The symbolic access is in fact implemented
 in all SAIAItem objects index access, so that syntaxes like this are perfectly working
 
 .. code-block:: python
@@ -341,7 +377,7 @@ in all SAIAItem objects index access, so that syntaxes like this are perfectly w
     >>> 4634
 
 Use it carefully. For ease of use, symbolic access is implemented *case insensitive*. In interactive mode,
-you can try to **mount** flags and registers symbols (SAIASymbol) as SAIASymbols object variables (mapped as .flag_xxx and .register_xxx) 
+you can try to **mount** flags and registers symbols (SAIASymbol) as SAIASymbols object variables
 so that the **interpreter autocompletion** will save you some precious keystroke
 
 .. code-block:: python
@@ -349,18 +385,18 @@ so that the **interpreter autocompletion** will save you some precious keystroke
     >>> symbols=server.symbols
     >>> symbols.mount()
 
-    >>> print symbols.flag_sonde3_1<TAB>
-    s.flag_sonde3_10_defaut    s.flag_sonde3_13_defaut      s.flag_sonde3_19_defaut
-    s.flag_sonde3_10_lib       s.flag_sonde3_13_lib         s.flag_sonde3_19_setpoint
-    s.flag_sonde3_10_timeout   s.flag_sonde3_13_timeout     s.flag_sonde3_19_temp
-    s.flag_sonde3_11_defaut    s.flag_sonde3_14_defaut      s.flag_sonde3_19_timeout
-    s.flag_sonde3_11_lib       s.flag_sonde3_14_lib         s.flag_sonde3_1_defaut
-    s.flag_sonde3_11_timeout   s.flag_sonde3_14_timeout     s.flag_sonde3_1_timeout
-    s.flag_sonde3_12_defaut    s.flag_sonde3_15_defaut
-    s.flag_sonde3_12_lib       s.flag_sonde3_15_lib
-    s.flag_sonde3_12_timeout   s.flag_sonde3_15_timeout
+    >>> print symbols.flags.sonde3_1<TAB>
+    s.sonde3_10_defaut    s.sonde3_13_defaut      s.sonde3_19_defaut
+    s.sonde3_10_lib       s.sonde3_13_lib         s.sonde3_19_setpoint
+    s.sonde3_10_timeout   s.sonde3_13_timeout     s.sonde3_19_temp
+    s.sonde3_11_defaut    s.sonde3_14_defaut      s.sonde3_19_timeout
+    s.sonde3_11_lib       s.sonde3_14_lib         s.sonde3_1_defaut
+    s.sonde3_11_timeout   s.sonde3_14_timeout     s.sonde3_1_timeout
+    s.sonde3_12_defaut    s.sonde3_15_defaut
+    s.sonde3_12_lib       s.sonde3_15_lib
+    s.sonde3_12_timeout   s.sonde3_15_timeout
 
-    >>> print symbols.flag_sonde3_11_timeout.index
+    >>> print symbols.flags.sonde3_11_timeout.index
     3936
 
 When Python interactive mode is detected, symbols.mount() is automatically called for you. Items declaration can also be passed 
@@ -368,12 +404,17 @@ as a SAIASymbol object, so that autocompletion is your friend
 
 .. code-block:: python
 
-    >>> server.flags.declare(symbols.flag_sonde3_11_timeout)
+    >>> server.flags.declare(symbols.flags.sonde3_11_timeout)
+    >>> server.flags.declare(symbols['sonde3_11_timeout'])
 
 As said in the last section, we can access the deviceInformation properties, allowing to guess the .map filename. If the deviceName is "MySuperDevice", the associated 
 .map file produced by the SAIA PG5 compiler will be "MySuperDevice.map" by default. In fact, this can help us to do things automagically. 
 **When a server is declared, the deviceInformation block is automatically retrieved
 and then the a try is made to load the default associated .map file**.
+
+In Python 2.7, you may need to `enable autocompletion <https://stackoverflow.com/questions/246725/how-do-i-add-tab-completion-to-the-python-shell>`_ 
+on your ~/.pythonrc setup file. Alternatively you can use IPython, Jupyter or something simpler like `ptpython <https://github.com/jonathanslenders/ptpython>`_ for
+interactive sessions.
 
 
 Dumping & Debugging
@@ -450,7 +491,7 @@ Here is a minimal empty node implementation, stopable with <CTRL-C>
 
 Open your SAIA Debugger on this node, and try reading/writing some items. 
 You can also use SBus *clear* requests with i,o,f and r items. For your convenience, 
-you can run the demo node shown above with this command line
+you can run the demo node shown above with this simple command line
 
 .. code-block:: python
 
@@ -460,6 +501,6 @@ you can run the demo node shown above with this command line
 TODO
 ====
 
-Documentation is very incomplete. Don't know if this is usefule for someone. Tell it to us.
-There is still some more locking mecanisms to implement making the background task reall thread safe. The
-Python GIL make things yet wrongly safe.
+Documentation is very incomplete. Don't know if this is useful for someone. Tell it to us.
+There is still some more locking mecanisms to implement making the background task really thread safe. The
+Python GIL make things yet wrongly safe. Python 3 compatibility.

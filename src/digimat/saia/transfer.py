@@ -4,6 +4,7 @@ import time
 from queue import Queue
 
 from .request import SAIARequestReadDBX
+from .request import SAIARequestReadStationNumber
 
 
 class SAIATransfer(object):
@@ -14,6 +15,7 @@ class SAIATransfer(object):
         self._done=False
         self._timeoutWatchdog=0
         self._request=None
+        self._payload=None
 
     @property
     def server(self):
@@ -30,7 +32,10 @@ class SAIATransfer(object):
     def initiateTransfer(self):
         pass
 
-    def processDataAndContinueTransfer(self, request):
+    def processDataAndContinueTransfer(self, data):
+        pass
+
+    def finalizeTransferAndComputePayload(self):
         pass
 
     def onSuccess(self):
@@ -58,8 +63,9 @@ class SAIATransfer(object):
 
     def start(self):
         try:
-            self._start=True
+            self._payload=None
             self._done=False
+            self._start=True
             self.heartbeat()
             self.logger.debug('%s:start()' % self.__class__.__name__)
             self.initiateTransfer()
@@ -70,16 +76,28 @@ class SAIATransfer(object):
         self._start=False
         self._done=True
         self.logger.debug('%s:stop(%d)' % (self.__class__.__name__, result))
-        try:
-            if result:
+        if result:
+            try:
+                self.finalizeTransferAndComputePayload()
                 self.onSuccess()
-            else:
-                self.onFailure()
+                return
+            except:
+                pass
+        try:
+            self.onSuccess()
         except:
             pass
 
     def abort(self):
         self.stop(False)
+
+    def setPayload(self, data):
+        if self.isDone() and data and not self._payload:
+            self._payload=data
+
+    @property
+    def payload(self):
+        return self._payload
 
     def manager(self):
         activity=False
@@ -94,7 +112,8 @@ class SAIATransfer(object):
                             request=self._request
                             self._request=None
                             if request.isSuccess():
-                                self.processDataAndContinueTransfer(request.reply)
+                                data=request.reply
+                                self.processDataAndContinueTransfer(data)
                                 if self._request:
                                     activity=True
                                 else:
@@ -114,6 +133,14 @@ class SAIATransfer(object):
 
             return activity
 
+    def submit(self):
+        """
+        submit or resubmit transfer to the server
+        """
+        if not self.isActive():
+            self._payload=None
+            self.server.submitTransfer(self)
+
 
 class SAIATransferReadDeviceInformation(SAIATransfer):
     def send(self):
@@ -124,29 +151,54 @@ class SAIATransferReadDeviceInformation(SAIATransfer):
             self.submitRequest(request)
 
     def initiateTransfer(self):
+        self._buffer=''
         self._address=0x00
         self._count=0x64
         self._maxChunkSize=0x20
-        self._data=''
         self.send()
 
     def processDataAndContinueTransfer(self, data):
+        self._buffer+=data
         count=len(data)/4
         self._address+=count
         self._count-=count
-        self._data+=data
         self.send()
 
-    def onSuccess(self):
-        for item in self._data.split('\n'):
+    def finalizeTransferAndComputePayload(self):
+        data={}
+        for item in self._buffer.split('\n'):
             try:
                 (key, value)=item.split('=')
-                self.server.setDeviceInfo(key.strip(), value.strip())
+                data[key.strip()]=value.strip()
             except:
                 pass
 
-        #  TODO: lock #
+        self.setPayload(data)
+
+    def onSuccess(self):
+        data=self.payload
+        for key in data:
+            self.server.setDeviceInfo(key, data[key])
+
         self.server.loadSymbols()
+
+
+class SAIATransferDiscoverNodes(SAIATransfer):
+    def send(self):
+        request=SAIARequestReadStationNumber(self.link, broadcast=True)
+        self.submitRequest(request)
+
+    def initiateTransfer(self):
+        self.send()
+
+    def processDataAndContinueTransfer(self, data):
+        pass
+
+    def finalizeTransferAndComputePayload(self):
+        pass
+
+    def onSuccess(self):
+        pass
 
 
 class SAIATransferQueue(object):

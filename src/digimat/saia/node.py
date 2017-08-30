@@ -2,12 +2,12 @@ import time
 import socket
 import struct
 import sys
+import netifaces
 
 import logging
 import logging.handlers
 
 from digimat.jobs import JobManager
-
 
 from .singleton import Singleton
 
@@ -92,7 +92,7 @@ class SAIANodeRequestHandler(object):
         self._sequence=sequence
 
         try:
-            self.logger.debug('<--%s(seq=%d)' % (self.__class__.__name__, self.sequence))
+            self.logger.debug('localnode<--%s(seq=%d)' % (self.__class__.__name__, self.sequence))
             response=self.handler(data)
             if response:
                 return response
@@ -380,6 +380,10 @@ class SAIANode(object):
 
         self._port=int(port)
         self._timeoutSocketInhibit=0
+        self._interfaces=self.getInterfacesIpAddress()
+        if self._interfaces:
+            for address in self._interfaces:
+                self.logger.info('Found local interface [%s]' % address)
 
         self._handler=SAIANodeHandler(self)
 
@@ -423,6 +427,25 @@ class SAIANode(object):
 
     def __getitem__(self, key):
         return self.servers[key]
+
+    def getInterfacesIpAddress(self):
+        ip=[]
+        for i in netifaces.interfaces():
+            try:
+                iface = netifaces.ifaddresses(i).get(netifaces.AF_INET)
+                if iface is not None:
+                    for j in iface:
+                        ip.append(j['addr'])
+            except:
+                pass
+        return ip
+
+    def isIpAddressLocal(self, ip):
+        try:
+            if ip in self._interfaces:
+                return True
+        except:
+            pass
 
     def isInteractiveMode(self):
         try:
@@ -528,6 +551,7 @@ class SAIANode(object):
                 (mtype, mseq, payload)=self.decodeMessage(data)
                 # self.logger.debug('<--%s:%d seq=%d %s' % (host, port, mseq, self.data2strhex(data)))
 
+                # 0=REQUEST
                 if mtype==0:
                     try:
                         response=self.onRequest(mseq, payload)
@@ -548,7 +572,11 @@ class SAIANode(object):
                         except:
                             self.logger.exception('onMessage()')
                     else:
-                        self.logger.warning('undeclared server %s!' % address[0])
+                        if not self.isIpAddressLocal(address[0]):
+                            self.logger.warning('Message received from an undeclared server %s!' % address[0])
+                            if self.isInteractiveMode():
+                                # TODO: lock!
+                                self.servers.declare(address[0])
 
                 return True
         except:
@@ -564,7 +592,11 @@ class SAIANode(object):
                 break
             activity=True
 
-        activity=self.servers.manager()
+        if self.servers.manager():
+            activity=True
+
+        # TODO: local node manager is in fact a bit specific
+        self.server.manager()
 
         # Small booster, allowing to be more reactive
         # during data burst, and more sleepy when idle

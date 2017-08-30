@@ -21,7 +21,7 @@ class SAIAReply(object):
         self._data=None
         self._ready=False
         self.onInit()
-        self.logger.debug('-->%s(seq=%d)' % (self.__class__.__name__, sequence))
+        self.logger.debug('localnode-->%s(seq=%d)' % (self.__class__.__name__, sequence))
 
     def onInit(self):
         pass

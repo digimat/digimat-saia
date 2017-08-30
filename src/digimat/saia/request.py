@@ -101,9 +101,10 @@ class SAIARequest(object):
     # COMMAND_RUN_PROCEDURE_OWN = 0x2f
     COMMAND_READ_DBX = 0x9f
 
-    def __init__(self, link, retry=3):
+    def __init__(self, link, retry=3, broadcast=False):
         assert link.__class__.__name__=='SAIALink'
         self._link=link
+        self._broadcast=broadcast
         self._retry=retry
         self._data=None
         self._dataReply=None
@@ -204,6 +205,18 @@ class SAIARequest(object):
         if self._ready:
             return True
 
+    def isActive(self):
+        if self._start and not self.isDone():
+            return True
+
+    def isDone(self):
+        if self._done:
+            return True
+
+    def isSuccess(self):
+        if self.isDone() and self._result:
+            return True
+
     def build(self):
         try:
             if self.isReady():
@@ -251,14 +264,6 @@ class SAIARequest(object):
     def onFailure(self):
         pass
 
-    def isDone(self):
-        if self._done:
-            return True
-
-    def isActive(self):
-        if self._start and not self.isDone():
-            return True
-
     def start(self):
         self._start=True
         self._done=False
@@ -274,10 +279,6 @@ class SAIARequest(object):
                 self.onFailure()
         except:
             pass
-
-    def isSuccess(self):
-        if self.isDone() and self._result:
-            return True
 
     def data2uint32list(self, data):
         return list(struct.unpack('>%dI' % (len(data) / 4), data))

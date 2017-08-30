@@ -113,11 +113,15 @@ class SAIAFlags(SAIABooleanItems):
 
     def resolveIndex(self, key):
         try:
-            if isinstance(key, SAIASymbol):
+            if isinstance(key, SAIASymbol) and key.isFlag():
                 return key.index
             return self.server.symbols.flag(key).index
         except:
             pass
+
+    @property
+    def symbols(self):
+        return self.server.symbols.flags
 
 
 class SAIAInputs(SAIABooleanItems):
@@ -141,11 +145,15 @@ class SAIARegisters(SAIAAnalogItems):
 
     def resolveIndex(self, key):
         try:
-            if isinstance(key, SAIASymbol):
+            if isinstance(key, SAIASymbol) and key.isRegister():
                 return key.index
             return self.server.symbols.register(key).index
         except:
             pass
+
+    @property
+    def symbols(self):
+        return self.server.symbols.registers
 
 
 class SAIAMemory(object):

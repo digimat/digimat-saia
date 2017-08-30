@@ -5,9 +5,9 @@
 
 SAIANode
 |
-+- .server -- SAIAServer
-              |
-              +- .memory -- SAIAMemory
++- .server --> SAIAServer
+               |
+               +- .memory -- SAIAMemory
                             |
                             +- .flags -- SAIAFlags
                                          |

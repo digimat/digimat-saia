@@ -1,3 +1,5 @@
 future
+netifaces
+ipaddress
 digimat.jobs
 setuptools
