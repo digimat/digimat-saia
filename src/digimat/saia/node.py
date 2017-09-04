@@ -376,6 +376,7 @@ class SAIANode(object):
         self._localServer=SAIAServer(self, 'localnode', self._lid, localNodeMode=True)
         self.logger.info('localServer(%d) registered' % self._lid)
 
+        self._mapFileStoragePath=None
         self._servers=SAIAServers(self)
 
         self._port=int(port)
@@ -408,6 +409,10 @@ class SAIANode(object):
     @property
     def memory(self):
         return self.server.memory
+
+    @property
+    def lid(self):
+        return self._lid
 
     @property
     def inputs(self):
@@ -457,6 +462,15 @@ class SAIANode(object):
                 interpreter = True
         return interpreter
 
+    def setMapFileStoragePath(self, path):
+        self._mapFileStoragePath=path
+
+    def getMapFileStoragePath(self):
+        try:
+            return self._mapFileStoragePath
+        except:
+            pass
+
     def open(self):
         if self._socket:
             return self._socket
@@ -468,7 +482,8 @@ class SAIANode(object):
                 s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
                 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
                 s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-                # s.settimeout(3.0)
+                self.logger.debug('Socket SO_RCVBUF size is %d bytes', s.getsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF))
+                s.settimeout(3.0)
                 s.setblocking(False)
                 try:
                     s.bind(('', self._port))
@@ -543,7 +558,7 @@ class SAIANode(object):
     def dispatchMessage(self):
         try:
             s=self.open()
-            (data, address)=s.recvfrom(2048)
+            (data, address)=s.recvfrom(4096)
             if data:
                 # TODO: data is str in Python2 (OK), but bytes in Python3 (BAD). Use data.decode('utf-8')???
                 host=address[0]
@@ -595,7 +610,6 @@ class SAIANode(object):
         if self.servers.manager():
             activity=True
 
-        # TODO: local node manager is in fact a bit specific
         self.server.manager()
 
         # Small booster, allowing to be more reactive
@@ -656,6 +670,9 @@ class SAIANode(object):
     def dump(self):
         self.server.dump()
         self.servers.dump()
+
+    def __repr__(self):
+        return '<%s(lid=%d, port=%d)>' % (self.__class__.__name__, self._lid, self._port)
 
 
 if __name__ == "__main__":

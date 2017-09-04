@@ -141,6 +141,9 @@ class SAIATransfer(object):
             self._payload=None
             self.server.submitTransfer(self)
 
+    def __repr__(self):
+        return '<%s(active=%d, done=%d)>' % (self.__class__.__name__, bool(self.isActive()), bool(self.isDone()))
+
 
 class SAIATransferReadDeviceInformation(SAIATransfer):
     def send(self):
@@ -158,7 +161,9 @@ class SAIATransferReadDeviceInformation(SAIATransfer):
         self.send()
 
     def processDataAndContinueTransfer(self, data):
-        self._buffer+=data
+        # keep care of accented chars ;)
+        # using latin1 encoding by not sure if this is absolutely correct
+        self._buffer+=data.decode('latin1')
         count=len(data)/4
         self._address+=count
         self._count-=count
@@ -201,6 +206,15 @@ class SAIATransferDiscoverNodes(SAIATransfer):
         pass
 
 
+class SAIATransferFromRequest(SAIATransfer):
+    def __init__(self, request):
+        super(SAIATransferFromRequest, self).__init__(request.server)
+        self._wrappedRequest=request
+
+    def initiateTransfer(self):
+        self.submitRequest(self._wrappedRequest)
+
+
 class SAIATransferQueue(object):
     def __init__(self, server):
         assert server.__class__.__name__=='SAIAServer'
@@ -219,10 +233,14 @@ class SAIATransferQueue(object):
     def isEmpty(self):
         return self._queue.isEmpty()
 
+    def count(self):
+        return self._queue.qsize()
+
     def submit(self, transfer):
         assert isinstance(transfer, SAIATransfer)
         self._queue.put(transfer)
-        self.logger.debug('queue:%s', transfer.__class__.__name__)
+        self.logger.debug('queue:%s (size=%d)' % (transfer.__class__.__name__,
+                                self._queue.qsize()))
 
     def getNextTransfer(self):
         try:
@@ -243,3 +261,6 @@ class SAIATransferQueue(object):
                 self._transfer.start()
                 activity=True
         return activity
+
+    def __repr__(self):
+        return '<%s(%d items)>' % (self.__class__.__name__, self.count())

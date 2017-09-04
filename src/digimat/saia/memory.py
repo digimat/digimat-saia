@@ -1,4 +1,4 @@
-import sys
+# import sys
 
 # python2-3 compatibility require 'pip install future'
 from queue import Queue
@@ -195,6 +195,12 @@ class SAIAMemory(object):
     def registers(self):
         return self._registers
 
+    def count(self):
+        count=0
+        for items in self.items():
+            count+=items.count()
+        return count
+
     def setReadOnly(self, state=True):
         self._readOnly=state
 
@@ -285,6 +291,13 @@ class SAIAMemory(object):
         for items in self.items():
             if items:
                 items.dump()
+
+    def __repr__(self):
+        return '<%s(%d items, queues %dR:%dR!:%dW)>' % (self.__class__.__name__,
+            self.count(),
+            self._queuePendingPull.qsize(),
+            self._queuePendingPriorityPull.qsize(),
+            self._queuePendingPush.qsize())
 
 
 if __name__ == "__main__":

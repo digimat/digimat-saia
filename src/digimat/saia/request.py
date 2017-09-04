@@ -98,8 +98,10 @@ class SAIARequest(object):
     COMMAND_RESTART_COLD_ALL = 0x39
     COMMAND_RESTART_COLD_FLAG = 0xa6
 
-    # COMMAND_RUN_PROCEDURE_OWN = 0x2f
+    COMMAND_RUN_CPU_ALL = 0x30
     COMMAND_READ_DBX = 0x9f
+
+    COMMAND_READ_PCD_STATUS_OWN = 0x1b
 
     def __init__(self, link, retry=3, broadcast=False):
         assert link.__class__.__name__=='SAIALink'
@@ -308,6 +310,29 @@ class SAIARequestReadStationNumber(SAIARequest):
 
     def onFailure(self):
         pass
+
+
+class SAIARequestReadPcdStatusOwn(SAIARequest):
+    def onInit(self):
+        self._command=SAIARequest.COMMAND_READ_PCD_STATUS_OWN
+        self.ready()
+
+    def encode(self):
+        return None
+
+    def processResponse(self, payload):
+        (status,)=struct.unpack('>B', payload)
+        self.server.setStatus(status)
+        return True
+
+
+class SAIARequestRunCpuAll(SAIARequest):
+    def onInit(self):
+        self._command=SAIARequest.COMMAND_RUN_CPU_ALL
+        self.ready()
+
+    def encode(self):
+        return None
 
 
 # class SAIARequestReadSystemInformation(SAIARequest):

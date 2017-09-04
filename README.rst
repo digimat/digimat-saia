@@ -13,7 +13,9 @@ SBus node with address 253 (station number, or localid, or lid in our terminolog
     >>> node=SAIANode(253)
 
 Congratulations ! You just have powered up your first EtherSNode device with 2 lines of code. A **background task handle now for you all the network SBus frames**. 
-Open your SAIA PG5 Debugger and try to read/write some data to your node. When done, shutdown your node properly.
+Open your SAIA PG5 Debugger and try to read/write some data to your node. Of course, you can also talk to other SBus devices directly 
+from your node. You will find a basic `Python interactive session demo here <https://asciinema.org/a/0q7jfTE6Ooj7RPpVBL6bWfIj2>`_. 
+When done, shutdown your node properly.
 
 .. code-block:: python
 
@@ -21,7 +23,39 @@ Open your SAIA PG5 Debugger and try to read/write some data to your node. When d
     >>> quit()
 
 Please consider this work as *in progress* (**buggy, incomplete and currently only partially tested**). 
-Always use the latest version of this package, as it is frequently updated ! You will find a basic `Python interactive session demo here <https://asciinema.org/a/TDkfmkktqtYiJqDGXEDbNiNIU>`_.
+Always use the latest version of this package, as it is frequently updated ! 
+
+
+Non exhaustive features list
+============================
+
+Out of the box features
+
+* EtherSbus Server (expose local data to other EtherSBus nodes)
+* EtherSBus Client (remote access to N remote EtherSBus nodes)
+* Local Server AND Remote Client(s) simultaneous communication support
+* Read/Write of local and remote Inputs/Outputs/Flags/Registers data values trough simple objects .value get/set
+* Background task (thread) managing every server+clients messages once the node is started
+* Registers value encoders allowing working transparently with float, float32 and some other 32 bits encodings
+* Automatic pooling in the background of every declered remote items
+* Node station address automatic resolution
+* Automatic read/write requests aggregations (using one message for multiple items transfer)
+* Prioritized request queuing allowing urgent transactions to be processed first, providing good 
+  responsiveness even with tons of pooled items
+* Lightweight enough to be comfortably run on "poor" hardware systems (Raspberry Pi)
+* Compatible with the SAIA PG5 Debugger (display/write/clear orders)
+
+Optional features
+
+* Automatic *on-the-fly* local items creation when accessed by remote nodes (without prior declaration). This
+  allows very easy EtherSBus node creation, working *out-of-the-box* once launched
+* Periodic remote node discovering and declaration (trough broadcast messages)
+* Automatic remote node information retrieval (trough READ_DBX blocks transfers),
+  allowing to guess the PG5 compiler generated .map symbol file name ;) you will learn to love your .map files
+* PG5 symbols files (.map) parsing, allowing registers and flags symbolic access !
+* Dynamic objects creation iat runtime when .map file is loaded to enhance Python 
+  interactive sessions experience (autocompletion)
+* Logging for local or remote debugging trough TCP/IP.
 
 
 SAIA EtherSBus
@@ -35,19 +69,20 @@ of something more *standard* like Modbus/IP or BACnet/IP has some advantages
 * Mapping SAIA variables to Modbus/BACnet variables require additional specific config and hardware ressources that you may not have
 * Data communication using more sophisticated protocols like BACnet use more encapsulation around exchanged data. Using EtherSBus
   is more *lightweight* and efficient.
-  
+
 The digimat.saia module was mainly created to partially explore the S-Bus mecanisms on Raspberry Pi devices 
-before starting a deeper implementation on our `Digimat <https://www.st-sa.ch/digimat.html>`_ HVAC BMS infrastructure. 
+before starting a deeper implementation on our `Digimat <https://www.st-sa.ch/digimat.html>`_ HVAC BMS infrastructures. SAIA Burgess
+has absolutely **no implication** on this project and cannot be held responsible for any problem of any kind if you decide to use this module.
 
 At this time, we don't have access to any S-Bus or EtherSBus protocol official specifications. If you own such documentation,
-please forward it to us (fhess@st-sa.ch), as SAIA doesn't want to provide it ;( If you need to learn about this protocol,
+please forward it to us (fhess [at] st-sa [dot] ch), as SAIA doesn't want to provide it ;( If you need to learn about this protocol,
 some good starting points may include :
 
 * `WireShark EtherSBus plugin source code <https://github.com/boundary/wireshark/blob/master/epan/dissectors/packet-sbus.c>`_
 * `SBPoll Python EtherSBus source code <http://mblogic.sourceforge.net/mbtools/sbpoll.html>`_
 * `SAIA faq <http://www.sbc-support.ch/faq>`_
-* The protocol specification *should* be theorically available upon request per email to SAIA at support@saia-pcd.com, 
-  but you will need to sign a non disclosure agreenment. Ask for the "**Utilization Agreement for Saia S-Bus Developer Documentation**" document.
+* The protocol specification *should* be theorically available upon request per email to SAIA at support [at] saia-pcd [dot] com, 
+  but you will need to sign a non disclosure agreement. Ask for the "**Utilization Agreement for Saia S-Bus Developer Documentation**" document.
 
 Using the SAIA PG5 debugger may also help understanding how things works. Wireshark has an excellent protocol decoder 
 and you will easily find some .pcap samples by googling "sbus pcap". Really useful.
@@ -73,14 +108,14 @@ Nothing specific here, just use pip (which will also install modules dependencie
 EtherSBus Node (Server)
 =======================
 
-Once created, the SAIANode object will implicitely start a background task responsible for protocol and bus variables management.
+Once created, the **SAIANode** object will implicitely start a background task responsible for protocol and bus variables management.
 The task must be stop()ed before the program termination. The node contains a server (allowing other nodes to read an write 
 data to it). The node can also donnect to other remote SBus servers, to read/write remote data. Each server (local or remote)
 has it's own memory representation (SAIAMemory). Localnode memory is accessible trough node.memory (which is a shortcut to node.server.memory).
 
-The SAIAMemory object handle every SBus variables (inputs, outputs, flags, registers). The SAIAMemory object provide a SAIAItemFlags object, 
+The **SAIAMemory** object handle every SBus variables (**inputs**, **outputs**, **flags**, **registers**). The SAIAMemory object provide a **SAIAItemFlags** object, 
 accessible trough a .flags property, itself providing access to every registered SAIAItemFlag object (item). The same principle is used for inputs 
-(SAIAItemInputs), outputs (SAIAItemOutputs) and registers (SAIAItemRegisters). Note that there are shortcuts implemented : 
+(**SAIAItemInputs**), outputs (**SAIAItemOutputs**) and registers (**SAIAItemRegisters**). Note that there are shortcuts implemented : 
 *node.flags* can be used instead of *node.memory.flags*.
 
 .. code-block:: python
@@ -88,7 +123,7 @@ accessible trough a .flags property, itself providing access to every registered
     >>> myflag=node.memory.flags[18]
 
     >>> myflag
-    <class 'digimat.saia.memory.SAIAItemFlag'>
+    <SAIAItemFlag(index=0, value=OFF, age=1s)>
 
     >>> myflag.value=True
     >>> print myflag.value
@@ -127,9 +162,9 @@ Items can be manually-created by "declaring" them, individually or by range
     >>> myflag=node.memory.flags.declare(index=18)
     >>> myflags=node.flags.declareRange(index=100, count=3)
     >>> print myflags
-    [127.0.0.1(253).SAIAItemFlag[100](value=OFF, age=1502487757s),
-    127.0.0.1(253).SAIAItemFlag[101](value=OFF, age=1502487757s),
-    127.0.0.1(253).SAIAItemFlag[102](value=OFF, age=1502487757s)]
+    [<SAIAItemFlag(index=0, value=OFF, age=14s)>,
+    <SAIAItemFlag(index=1, value=OFF, age=1s)>,
+    <SAIAItemFlag(index=2, value=OFF, age=1s)>]
 
 Inputs, Outputs and Flags are boolean items. Registers are simple "32 bits uint values".
 
@@ -150,7 +185,7 @@ Registers are always stored as "raw 32 bits" values (without encoding). Helpers 
     >>> print myregister.float32
     21.5
 
-Actually, the following encoders/decoders accessors are implemented
+Actually, the following encoders/decoders accessors are implemented (each one is a derived class from **SAIAValueFormater**)
 
 +---------------+-----------------------------------------------------+
 | **.float32**  | IEEE float32 encoding (big-endian)                  |
@@ -195,7 +230,7 @@ requests will be NAKed by your node.
 EtherSBus Client
 ================
 
-The node object allow access to (as many) remote EtherSBus node servers you need
+The node object allow access to (as many) remote EtherSBus node servers you need, registered in a **SAIAServers** object
 
 .. code-block:: python
 
@@ -203,7 +238,7 @@ The node object allow access to (as many) remote EtherSBus node servers you need
     >>> server2=node.servers.declare('192.168.0.101')
     >>> myRemoteFlag=server1.memory.flags[5]
 
-The declaration process provide a SAIAServer object, containing a SAIAMemory object to access remote items. Thus, **local and remote data can be manipulated 
+The declaration process provide a **SAIAServer** object, containing a **SAIAMemory** object to access remote items. Thus, **local and remote data can be manipulated 
 in the same manner**. When a remote data item (input, output, flag, register) is declared, an **automatic pooling mecanism** is launched in 
 the background task (manager). A basic optimiser mecanism try to group many items per request, avoiding to launch 1 request for 1 item refresh.
 
@@ -263,11 +298,29 @@ Remember that declared servers can be retrieved at any time by lid or by ip addr
     >>> server=node.servers[200]
     >>> server1=node.servers['192.168.0.100']
 
+The background task poll each declared servers to maintain their running status (with READ_PCD_STATUS_OWN requests). The actual
+run status of a server is accessible trough the .status property 
+
+.. code-block:: python
+
+    >>> server.status
+    82 (0x52)
+    >>> server.isRunning()
+    True
+
+If your remote servers are stopped, this can be annoying. You can start them with the .run() method without 
+using the PG5 or the Debugger programs 
+
+.. code-block:: python
+
+    >>> server.run()
+    >>> servers.run()
+
 
 Data Transfers with Remote Servers
 ==================================
 
-The SAIAServer object contains a SAIATransferQueue service allowing to submit and queue SAIATransfer jobs in the background, used
+The SAIAServer object contains a **SAIATransferQueue** service allowing to submit and queue **SAIATransfer** jobs in the background, used
 for processing transfers that require multiple packet exchange like *read-block*, for example. **When a remote server is declared**, **some
 READ_DBX requests will be automatically done using a SAIATransferReadDeviceInformation with the remote server to retrieve the device 
 information memory block**, containing this kind of config
@@ -314,11 +367,11 @@ You can force a deviceInfo refresh later if anything goes wrong
     >>> server.submitTransferReadDeviceInformation()
 
 If the deviceName is compatible with Python class variable naming convention, the SAIAServer object is automatically mapped (mounted)
-to a variable with the same name accessible in the node.servers (SAIAServers) object
+to a variable with the same name (but lowercase and normalized) accessible in the node.servers (SAIAServers) object
 
 .. code-block:: python
 
-    >>> server=node.servers.Device1
+    >>> server=node.servers.device1
 
 This is really useful in interactive sessions when combined with automatic node discovering (see below). 
 
@@ -343,7 +396,7 @@ Symbolic Addressing
 ===================
 
 The EtherSBus doesn't provide item access by name (symbol name, tag). But **if you own the PG5 .map file generated at compile time**, you may have some help by passing
-this file during server declaration process. This will create a SAIASymbols object associated with the server, ready to serve you the requested SAIASymbol
+this file during server declaration process. This will create a **SAIASymbols** object associated with the server, ready to serve you the requested **SAIASymbol**
 
 .. code-block:: python
 
@@ -409,8 +462,8 @@ as a SAIASymbol object, so that autocompletion is your friend
 
 As said in the last section, we can access the deviceInformation properties, allowing to guess the .map filename. If the deviceName is "MySuperDevice", the associated 
 .map file produced by the SAIA PG5 compiler will be "MySuperDevice.map" by default. In fact, this can help us to do things automagically. 
-**When a server is declared, the deviceInformation block is automatically retrieved
-and then the a try is made to load the default associated .map file**.
+**When a server is declared, the deviceInformation block is automatically retrieved and then the a try is made to load the default associated .map file**. By default, the map
+file has to be stored in the current directory. This can be changed with the node.setMapFileStoragePath() method.
 
 In Python 2.7, you may need to `enable autocompletion <https://stackoverflow.com/questions/246725/how-do-i-add-tab-completion-to-the-python-shell>`_ 
 on your ~/.pythonrc setup file. Alternatively you can use IPython, Jupyter or something simpler like `ptpython <https://github.com/jonathanslenders/ptpython>`_ for
@@ -428,8 +481,7 @@ and you will see the EtherSBus frames. If you don't have one, you can try our si
     pip install -U digimat.logserver
     python -m digimat.logserver
 
-You can apply some basic output filtering with optional "--filter string" parameter. 
-You can also give your own logger to the SAIANode
+You can apply some basic output filtering with optional "--filter string" parameter. You can also give your own logger to the SAIANode
 
 .. code-block:: python
 

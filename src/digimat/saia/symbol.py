@@ -1,7 +1,15 @@
+import os
 from threading import RLock
+
+import re
+import unicodedata
 
 
 class SAIASymbol(object):
+    ATTRIBUTE_FLAG='f'
+    ATTRIBUTE_REGISTER='r'
+    ATTRIBUTE_COUNTRER='c'
+
     def __init__(self, data):
         self._attribute=None
         self._tag=None
@@ -27,19 +35,21 @@ class SAIASymbol(object):
 
     @property
     def index(self):
-        if self.attribute in ['r', 'f', 'c']:
+        if self.attribute in [SAIASymbol.ATTRIBUTE_FLAG,
+                SAIASymbol.ATTRIBUTE_REGISTER,
+                SAIASymbol.ATTRIBUTE_COUNTRER]:
             return self._address
 
     def isFlag(self):
-        if self.attribute=='f':
+        if self.attribute==SAIASymbol.ATTRIBUTE_FLAG:
             return True
 
     def isRegister(self):
-        if self.attribute=='r':
+        if self.attribute==SAIASymbol.ATTRIBUTE_REGISTER:
             return True
 
     def isCounter(self):
-        if self.attribute=='c':
+        if self.attribute==SAIASymbol.ATTRIBUTE_COUNTER:
             return True
 
     def load(self, data):
@@ -65,17 +75,48 @@ class SAIASymbol(object):
 
     def __repr__(self):
         if self.attribute:
-            return '<%s(%s:%s:%d)>' % (self.__class__.__name__, self.attribute, self.tag, self.address)
-        return '<%s(%s:%s:%s)>' % (self.__class__.__name__, self.attribute, self.tag, self.value)
+            return '<%s(attribute=%s, tag=%s, address=%d)>' % (self.__class__.__name__, self.attribute, self.tag, self.address)
+        return '<%s(attribute=%s, tag=%s, value=%s)>' % (self.__class__.__name__, self.attribute, self.tag, self.value)
 
 
 class SAIATagMount(object):
+    """
+    Special class allowing symbols to be accessed as local variable
+    in the SAIASymbols.flags.xxx or SAIASymbols.registers.yyy object
+    """
+
+    def __init__(self, symbols):
+        # assert symbols.__class.__name__=='SAIASymbols'
+        self._symbols=symbols
+
+    @property
+    def symbols(self):
+        return self._symbols
+
+    def strip_accents(self, text):
+        try:
+            text = unicode(text, 'utf-8')
+        except:
+            pass
+        text = unicodedata.normalize('NFD', text)
+        text = text.encode('ascii', 'ignore')
+        text = text.decode("utf-8")
+        return str(text)
+
+    def text_to_id(self, text):
+        text = self.strip_accents(text.lower())
+        text = re.sub('[ ]+', '_', text)
+        text = re.sub('[^0-9a-zA-Z_-]', '', text)
+        return text
+
     def normalizeTag(self, tag):
         try:
-            tag=tag.strip('_')
+            tag=self.text_to_id(tag)
+            tag=tag.strip(' _')
             tag=tag.replace('.', '_')
             tag=tag.replace('__', '_')
             tag=tag.strip('_')
+            return tag
         finally:
             return tag
 
@@ -89,15 +130,33 @@ class SAIATagMount(object):
             except:
                 pass
 
+    def __getitem__(self, key):
+        return self.symbols[key]
+
+
+class SAIATagMountFlags(SAIATagMount):
+    def __getitem__(self, key):
+        symbol=self.symbols[key]
+        if not symbol:
+            symbol=self.symbols.flag(key)
+        return symbol
+
+
+class SAIATagMountRegisters(SAIATagMount):
+    def __getitem__(self, key):
+        symbol=self.symbols[key]
+        if not symbol:
+            symbol=self.symbols.register(key)
+        return symbol
+
 
 class SAIASymbols(object):
-    def __init__(self, filename=None):
+    def __init__(self):
         self._lock=RLock()
         self._symbols={}
         self._index={}
-        self._flags=SAIATagMount()
-        self._registers=SAIATagMount()
-        self.load(filename)
+        self._flags=SAIATagMountFlags(self)
+        self._registers=SAIATagMountRegisters(self)
 
     @property
     def flags(self):
@@ -178,10 +237,15 @@ class SAIASymbols(object):
             symbol=SAIASymbol(line.split())
             self.add(symbol)
 
-    def load(self, filename):
+    def load(self, filename, path=None):
         try:
             if not self._symbols:
-                with open(filename, 'r') as f:
+                fpath=filename
+                if path:
+                    fpath=os.path.join(path, filename)
+                fpath=os.path.expanduser(fpath)
+
+                with open(fpath, 'r') as f:
                     self.loadSymbolsFromData(f.readlines())
         except:
             pass
@@ -199,13 +263,27 @@ class SAIASymbols(object):
             return symbol
 
     def flag(self, key):
-        return self.getWithAttribute('f', key)
+        return self.getWithAttribute(SAIASymbol.ATTRIBUTE_FLAG, key)
 
     def register(self, key):
-        return self.getWithAttribute('r', key)
+        return self.getWithAttribute(SAIASymbol.ATTRIBUTE_REGISTER, key)
 
     def counter(self, key):
-        return self.getWithAttribute('c', key)
+        return self.getWithAttribute(SAIASymbol.ATTRIBUTE_COUNTRER, key)
+
+    def search(self, key):
+        symbols=[]
+        with self._lock:
+            for symbol in self.all():
+                try:
+                    if key in symbol.tag:
+                        symbols.append(symbol)
+                except:
+                    pass
+        return symbols
+
+    def __repr__(self):
+        return '<%s(%d items)>' % (self.__class__.__name__, self.count())
 
 
 if __name__ == "__main__":

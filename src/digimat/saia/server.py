@@ -2,14 +2,20 @@ import time
 import struct
 import ipaddress
 from datetime import datetime
+import re
+import unicodedata
 
 from threading import RLock
 
+from .request import SAIARequest
 from .request import SAIARequestReadStationNumber
+from .request import SAIARequestRunCpuAll
+from .request import SAIARequestReadPcdStatusOwn
 
 from .transfer import SAIATransferQueue
 from .transfer import SAIATransferReadDeviceInformation
 from .transfer import SAIATransferDiscoverNodes
+from .transfer import SAIATransferFromRequest
 
 from .request import SAIASBusCRC
 from .memory import SAIAMemory
@@ -28,7 +34,7 @@ class SAIALink(object):
         assert server.__class__.__name__=='SAIAServer'
         self._server=server
         self._request=None
-        self._state=None
+        self._state=self.COMMSTATE_IDLE
         self._timeout=0
         self._timeoutXmitInhibit=0
         self._delayXmitInhibit=delayXmitInhibit
@@ -97,7 +103,8 @@ class SAIALink(object):
             if self._state==SAIALink.COMMSTATE_IDLE:
                 if self.isAlive() and time.time()>=self._timeoutWatchdog:
                     self._alive=False
-                    self.logger.error('%s:link dead!' % self.server)
+                    if not self.server.isLocalNode():
+                        self.logger.error('%s:link dead!' % self.server)
                 return
 
             elif self._state==SAIALink.COMMSTATE_PENDINGREQUEST:
@@ -116,7 +123,7 @@ class SAIALink(object):
                         if self._request._broadcast:
                             self.setState(SAIALink.COMMSTATE_SUCCESS)
                         else:
-                            self.setState(SAIALink.COMMSTATE_WAITRESPONSE, 2.0)
+                            self.setState(SAIALink.COMMSTATE_WAITRESPONSE, 1.0)
                         return
                     else:
                         self.setState(SAIALink.COMMSTATE_ERROR)
@@ -127,7 +134,7 @@ class SAIALink(object):
 
             elif self._state==SAIALink.COMMSTATE_WAITRESPONSE:
                 if self.isTimeout():
-                    self.logger.error('response timeout!')
+                    self.logger.error('%s-->%s:timeout!' % (self.server.host, self._request.__class__.__name__))
                     self.setState(SAIALink.COMMSTATE_PENDINGREQUEST)
                 return
 
@@ -151,23 +158,22 @@ class SAIALink(object):
             self.setState(SAIALink.COMMSTATE_ERROR)
 
     def initiate(self, request):
+        assert isinstance(request, SAIARequest)
         if self.isIdle():
-            if request is not None and request.isReady():
-                self._request=request
-                self._request.start()
-                self.setState(SAIALink.COMMSTATE_PENDINGREQUEST)
-                return True
+            try:
+                if request.isReady():
+                    self._request=request
+                    self._request.start()
+                    self.setState(SAIALink.COMMSTATE_PENDINGREQUEST)
+                    return True
+            except:
+                self.logger.exception('%s: initiate request!' % (self.server.host))
+        else:
+            self.logger.error('%s: request %s denied (link not idle)!' % (self.server.host, request.__class__.__name__))
 
     def readStationNumber(self):
         if self.isIdle():
-            request=SAIARequestReadStationNumber(self)
-            return self.initiate(request)
-
-    # def readSystemInformation(self, block=0):
-        # if self.isIdle():
-            # request=SAIARequestReadSystemInformation(self)
-            # request.setup(block)
-            # return self.initiate(request)
+            return self.initiate(SAIARequestReadStationNumber(self))
 
     def decodeMessage(self, data):
         try:
@@ -195,6 +201,7 @@ class SAIALink(object):
                 if self.isWaitingResponse():
                     if self._request.validateMessage(mseq, payload):
                         try:
+                            self._alive=True
                             self.logger.debug('%s-->%s:processResponse(%d bytes)' % (self.server.host, self._request, len(payload)))
                             result=self._request.processResponse(payload)
                             self.reset(result)
@@ -207,6 +214,7 @@ class SAIALink(object):
                         try:
                             (code,)=struct.unpack('>B', payload[0])
                             if code==0:
+                                self._alive=True
                                 self.logger.debug('%s-->ACK(mseq=%d)' % (self.server.host, mseq))
                                 self.reset(True)
                             else:
@@ -218,6 +226,9 @@ class SAIALink(object):
         except:
             self.logger.exception('onMessage')
 
+    def __repr__(self):
+        return '<%s(state=%d, alive=%d, mseq=%d)' % (self.__class__.__name__, self._state, bool(self.isAlive()), self._msgseq)
+
 
 class SAIAServer(object):
 
@@ -227,6 +238,8 @@ class SAIAServer(object):
         assert node.__class__.__name__=='SAIANode'
         self._lock=RLock()
         self._node=node
+        self._status=0
+        self._timeoutStatus=0
         self._host=host
         self._lid=lid
         self._memory=SAIAMemory(self, localNodeMode)
@@ -235,8 +248,8 @@ class SAIAServer(object):
         self._transfers=SAIATransferQueue(self)
         self.setLid(lid)
         self._symbols=SAIASymbols()
-        self.loadSymbols(mapfile)
         if not self.isLocalNodeMode():
+            self.loadSymbols(mapfile)
             self.submitTransferReadDeviceInformation()
         else:
             self._periodNodeDiscover=0
@@ -265,15 +278,6 @@ class SAIAServer(object):
     def address(self):
         return self.lid
 
-    def isLocalNodeMode(self):
-        return self._memory.isLocalNodeMode()
-
-    def enableNodeDiscover(self, period=60):
-        if self.isLocalNodeMode() and period>0:
-            self._timeoutNodeDiscover=0
-            self._periodNodeDiscover=period
-            self.logger.info('Network node scanning process enabled (%ds) for server %s' % (period, self.host))
-
     def setLid(self, lid):
         try:
             with self._lock:
@@ -282,47 +286,25 @@ class SAIAServer(object):
         except:
             pass
 
-    def loadSymbols(self, mapfile=None):
-        try:
-            if not mapfile:
-                mapfile=self.getDeviceInfo('DeviceName')+'.map'
+    @property
+    def status(self):
+        with self._lock:
+            return self._status
 
-            self._symbols.load(mapfile)
-            self.logger.info('%d symbols loaded for server %s' % (self._symbols.count(), self.host))
-            if self.node.isInteractiveMode():
-                self.logger.info('Interactive mode : dynamic mount symbols on server.symbols object')
-                self._symbols.mount()
-        except:
-            pass
+    def setStatus(self, status):
+        if status is not None:
+            with self._lock:
+                if status != self._status:
+                    self._status=status
+                    self.logger.info('%s->status(0x%02X)' % (self.host, status))
+
+    def isRunning(self):
+        if self.status==0x52:
+            return True
 
     @property
     def symbols(self):
         return self._symbols
-
-    def setDeviceInfo(self, key, value):
-        try:
-            if key and value:
-                with self._lock:
-                    self._deviceInfo[key.lower()]=value
-                    self.logger.info('server(%s)->%s=%s' % (self._host, key, value))
-                    if key.lower()=='devicename':
-                        self.node.servers.mount(self)
-        except:
-            pass
-
-    def getDeviceInfo(self, key):
-        try:
-            with self._lock:
-                return self._deviceInfo[key.lower()]
-        except:
-            pass
-
-    def getDeviceDateTimeInfo(self, key):
-        stamp=self.getDeviceInfo(key)
-        try:
-            return datetime.strptime(stamp, '%Y/%m/%d %H:%M:%S')
-        except:
-            pass
 
     @property
     def deviceName(self):
@@ -372,6 +354,54 @@ class SAIAServer(object):
     def registers(self):
         return self.memory.registers
 
+    def isLocalNodeMode(self):
+        return self._memory.isLocalNodeMode()
+
+    def enableNodeDiscover(self, period=60):
+        if self.isLocalNodeMode() and period>0:
+            self._timeoutNodeDiscover=0
+            self._periodNodeDiscover=period
+            self.logger.info('Network node scanning process enabled (%ds) for server %s' % (period, self.host))
+
+    def loadSymbols(self, mapfile=None):
+        try:
+            if not self.isLocalNodeMode():
+                if not mapfile and self.deviceName:
+                    mapfile=self.deviceName+'.map'
+
+                self._symbols.load(mapfile, path=self.node.getMapFileStoragePath())
+                self.logger.info('%d symbols loaded from file [%s] for server %s' % (self._symbols.count(), mapfile, self.host))
+                if self.node.isInteractiveMode():
+                    self.logger.info('Interactive mode : dynamic mount symbols on server.symbols object')
+                    self._symbols.mount()
+        except:
+            pass
+
+    def setDeviceInfo(self, key, value):
+        try:
+            if key and value:
+                with self._lock:
+                    self._deviceInfo[key.lower()]=value
+                    self.logger.debug('server(%s)->%s=%s' % (self._host, key, value))
+                    if key.lower()=='devicename':
+                        self.node.servers.mount(self)
+        except:
+            pass
+
+    def getDeviceInfo(self, key):
+        try:
+            with self._lock:
+                return self._deviceInfo[key.lower()]
+        except:
+            pass
+
+    def getDeviceDateTimeInfo(self, key):
+        stamp=self.getDeviceInfo(key)
+        try:
+            return datetime.strptime(stamp, '%Y/%m/%d %H:%M:%S')
+        except:
+            pass
+
     def isAlive(self):
         return self.link.isAlive()
 
@@ -387,6 +417,8 @@ class SAIAServer(object):
             activity=True
 
         if self.isLocalNodeMode():
+            # ----------------------------------------------
+            # Local Server
             if self._transfers.manager():
                 activity=True
 
@@ -397,14 +429,20 @@ class SAIAServer(object):
                 self.submitTransferDiscoverNodes()
                 self._timeoutNodeDiscover=time.time()+self._periodNodeDiscover
         else:
+            # ----------------------------------------------
+            # Remote Servers
             if self.isLidValid(self._lid):
                 if self._transfers.manager():
                     activity=True
 
                 if self._memory.manager():
                     activity=True
+
+                if time.time()>self._timeoutStatus:
+                    self.refreshStatus()
             else:
-                self.link.readStationNumber()
+                if self.link.isIdle():
+                    self.link.readStationNumber()
 
         if activity:
             # print ">SERVER"
@@ -420,11 +458,27 @@ class SAIAServer(object):
     def submitTransferDiscoverNodes(self):
         return self.submitTransfer(SAIATransferDiscoverNodes(self))
 
-    def __repr__(self):
-        return '%s(%d)' % (self.host, self.lid)
-
     def dump(self):
         self.memory.dump()
+
+    def run(self):
+        transfer=SAIATransferFromRequest(SAIARequestRunCpuAll(self.link))
+        return self.submitTransfer(transfer)
+
+    def refreshStatus(self):
+        self._timeoutStatus=time.time()+5.0
+        transfer=SAIATransferFromRequest(SAIARequestReadPcdStatusOwn(self.link))
+        return self.submitTransfer(transfer)
+
+    def ping(self):
+        self.refreshStatus()
+        return self.isAlive()
+
+    def __repr__(self):
+        count=self._transfers.count()
+        if count:
+            return '<%s(host=%s, lid=%d, status=0x%02X, %d pending xfers)>' % (self.__class__.__name__, self.host, self.lid, self.status, count)
+        return '<%s(host=%s, lid=%d, status=0x%02X)>' % (self.__class__.__name__, self.host, self.lid, self.status)
 
 
 class SAIAServers(object):
@@ -521,6 +575,10 @@ class SAIAServers(object):
         for server in self._servers:
             server.refresh()
 
+    def run(self):
+        for server in self._servers:
+            server.run()
+
     def dump(self):
         for server in self._servers:
             server.dump()
@@ -545,22 +603,47 @@ class SAIAServers(object):
         except:
             pass
 
+    def strip_accents(self, text):
+        try:
+            text = unicode(text, 'utf-8')
+        except:
+            pass
+        text = unicodedata.normalize('NFD', text)
+        text = text.encode('ascii', 'ignore')
+        text = text.decode("utf-8")
+        return str(text)
+
+    def text_to_id(self, text):
+        text = self.strip_accents(text.lower())
+        text = re.sub('[ ]+', '_', text)
+        text = re.sub('[^0-9a-zA-Z_-]', '', text)
+        return text
+
+    def normalizeTag(self, tag):
+        try:
+            tag=self.text_to_id(tag)
+            tag=tag.strip(' _')
+            tag=tag.replace('.', '_')
+            tag=tag.replace('__', '_')
+            tag=tag.strip('_')
+            return tag
+        finally:
+            return tag
+
     def mount(self, server):
         """
         create object variable (.deviceName) for better interactive usage with interpreter autocompletion
         """
         try:
-            name=server.deviceName
-            if name:
-                name=name.strip()
-                # TODO: name to variable cleaning
-                name=name.replace(' ', '_')
-
-                if not hasattr(self, name):
-                    setattr(self, name, server)
-                    self.logger.info('Server %s mounted as servers.%s object' % (server.host, name))
+            name=self.normalizeTag(server.deviceName)
+            if not hasattr(self, name):
+                setattr(self, name, server)
+                self.logger.info('Server %s mounted as [node.servers.%s] object' % (server.host, name))
         except:
             pass
+
+    def __repr__(self):
+        return '<%s(%d items)>' % (self.__class__.__name__, self.count())
 
 
 if __name__ == "__main__":

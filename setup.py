@@ -12,8 +12,8 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='digimat.saia',
-    version='0.0.77',
-    description='Digimat Saia EtherSBus (partial) client+server implementation',
+    version='0.0.89',
+    description='SAIA Burgess PCD EtherSBus Client+Server communication module',
     long_description=long_description,
     namespace_packages=['digimat'],
     author='Frederic Hess',

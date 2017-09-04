@@ -185,12 +185,10 @@ class SAIAItem(object):
     def __repr__(self):
         tag=self.tag
         if tag:
-            return '%s.%s[%d:%s](value=%s, age=%ds)' % (self.server,
-                self.__class__.__name__,
+            return '<%s(index=%d, tag=%s, value=%s, age=%ds)>' % (self.__class__.__name__,
                 self.index, tag, self.strValue(), self.age())
         else:
-            return '%s.%s[%d](value=%s, age=%ds)' % (self.server,
-                self.__class__.__name__,
+            return '<%s(index=%d, value=%s, age=%ds)>' % (self.__class__.__name__,
                 self.index, self.strValue(), self.age())
 
 
@@ -332,6 +330,10 @@ class SAIAItems(object):
     def getRefreshDelay(self):
         return self._delayRefresh
 
+    def count(self):
+        with self._lock:
+            return len(self._items)
+
     def resolveIndex(self, index):
         """
         Provide a name (tag) to index resolution mecanism
@@ -413,7 +415,7 @@ class SAIAItems(object):
                 item.refresh()
 
     def manager(self):
-        count=min(8, len(self._items))
+        count=min(32, len(self._items))
         while count>0:
             count-=1
             try:
@@ -438,6 +440,9 @@ class SAIAItems(object):
         with self._lock:
             for item in self._items:
                 item.clear()
+
+    def __repr__(self):
+        return '<%s(%d items)>' % (self.__class__.__name__, self.count())
 
 
 if __name__ == "__main__":
