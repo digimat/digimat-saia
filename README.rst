@@ -22,7 +22,7 @@ When done, shutdown your node properly.
     >>> node.stop()
     >>> quit()
 
-Please consider this work as *in progress* (**buggy, incomplete and currently only partially tested**). 
+Please consider this work as *in progress* (**currently only partially tested**). 
 Always use the latest version of this package, as it is frequently updated ! 
 
 
@@ -123,7 +123,7 @@ accessible trough a .flags property, itself providing access to every registered
     >>> myflag=node.memory.flags[18]
 
     >>> myflag
-    <SAIAItemFlag(index=0, value=OFF, age=1s)>
+    <SAIAItemFlag(index=18, value=OFF, age=1s)>
 
     >>> myflag.value=True
     >>> print myflag.value
@@ -162,9 +162,9 @@ Items can be manually-created by "declaring" them, individually or by range
     >>> myflag=node.memory.flags.declare(index=18)
     >>> myflags=node.flags.declareRange(index=100, count=3)
     >>> print myflags
-    [<SAIAItemFlag(index=0, value=OFF, age=14s)>,
-    <SAIAItemFlag(index=1, value=OFF, age=1s)>,
-    <SAIAItemFlag(index=2, value=OFF, age=1s)>]
+    [<SAIAItemFlag(index=100, value=OFF, age=3s)>,
+    <SAIAItemFlag(index=101, value=OFF, age=3s)>,
+    <SAIAItemFlag(index=102, value=OFF, age=3s)>]
 
 Inputs, Outputs and Flags are boolean items. Registers are simple "32 bits uint values".
 

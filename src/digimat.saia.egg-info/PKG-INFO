@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: digimat.saia
-Version: 0.0.89
+Version: 0.0.92
 Summary: SAIA Burgess PCD EtherSBus Client+Server communication module
 Home-page: http://www.digimat.ch
 Author: Frederic Hess
@@ -56,7 +56,7 @@ Description: ===================
         Optional features
         
         * Automatic *on-the-fly* local items creation when accessed by remote nodes (without prior declaration). This
-          allows very easy EtherSBus node creation, working *out-of-the-box* once created
+          allows very easy EtherSBus node creation, working *out-of-the-box* once launched
         * Periodic remote node discovering and declaration (trough broadcast messages)
         * Automatic remote node information retrieval (trough READ_DBX blocks transfers),
           allowing to guess the PG5 compiler generated .map symbol file name ;) you will learn to love your .map files
@@ -131,7 +131,7 @@ Description: ===================
             >>> myflag=node.memory.flags[18]
         
             >>> myflag
-            <class 'digimat.saia.memory.SAIAItemFlag'>
+            <SAIAItemFlag(index=18, value=OFF, age=1s)>
         
             >>> myflag.value=True
             >>> print myflag.value
@@ -170,9 +170,9 @@ Description: ===================
             >>> myflag=node.memory.flags.declare(index=18)
             >>> myflags=node.flags.declareRange(index=100, count=3)
             >>> print myflags
-            [127.0.0.1(253).SAIAItemFlag[100](value=OFF, age=1502487757s),
-            127.0.0.1(253).SAIAItemFlag[101](value=OFF, age=1502487757s),
-            127.0.0.1(253).SAIAItemFlag[102](value=OFF, age=1502487757s)]
+            [<SAIAItemFlag(index=100, value=OFF, age=3s)>,
+            <SAIAItemFlag(index=101, value=OFF, age=3s)>,
+            <SAIAItemFlag(index=102, value=OFF, age=3s)>]
         
         Inputs, Outputs and Flags are boolean items. Registers are simple "32 bits uint values".
         
@@ -305,6 +305,24 @@ Description: ===================
         
             >>> server=node.servers[200]
             >>> server1=node.servers['192.168.0.100']
+        
+        The background task poll each declared servers to maintain their running status (with READ_PCD_STATUS_OWN requests). The actual
+        run status of a server is accessible trough the .status property 
+        
+        .. code-block:: python
+        
+            >>> server.status
+            82 (0x52)
+            >>> server.isRunning()
+            True
+        
+        If your remote servers are stopped, this can be annoying. You can start them with the .run() method without 
+        using the PG5 or the Debugger programs 
+        
+        .. code-block:: python
+        
+            >>> server.run()
+            >>> servers.run()
         
         
         Data Transfers with Remote Servers

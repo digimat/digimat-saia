@@ -177,8 +177,13 @@ class SAIAItem(object):
         self.value=0
 
     def strValue(self):
-        return str(self.value)
+        try:
+            return str(self.value)
+        except:
+            pass
+        return ''
 
+    @property
     def tag(self):
         return None
 

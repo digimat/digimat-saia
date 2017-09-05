@@ -192,7 +192,7 @@ class SAIALink(object):
 
     def onMessage(self, mtype, mseq, payload):
         try:
-            self._timeoutWatchdog=time.time()+120.0
+            self._timeoutWatchdog=time.time()+20.0
             if mtype==0:    # Request
                 # must be intercepted at higher level
                 pass
