@@ -14,7 +14,12 @@ SBus node with address 253 (station number, or localid, or lid in our terminolog
 
 Congratulations ! You just have powered up your first EtherSNode device with 2 lines of code. A **background task handle now for you all the network SBus frames**. 
 Open your SAIA PG5 Debugger and try to read/write some data to your node. Of course, you can also talk to other SBus devices directly 
-from your node. You will find a basic `Python interactive session demo here <https://asciinema.org/a/0q7jfTE6Ooj7RPpVBL6bWfIj2>`_. 
+from your node.  To give you an idea, you will find a basic `Python interactive session demo here <https://asciinema.org/a/0q7jfTE6Ooj7RPpVBL6bWfIj2>`_. 
+
+.. image:: https://st-sa.ch/img/figures/digimat-saia-asciinema.png
+   :width: 360px
+   :target: https://asciinema.org/a/0q7jfTE6Ooj7RPpVBL6bWfIj2
+
 When done, shutdown your node properly.
 
 .. code-block:: python
@@ -120,6 +125,7 @@ accessible trough a .flags property, itself providing access to every registered
 
 .. code-block:: python
 
+    >>> node=SAIANode(253)
     >>> myflag=node.memory.flags[18]
 
     >>> myflag
@@ -347,18 +353,18 @@ Once retrieved, theses informations may be accessed with the server.getDeviceInf
 .. code-block:: python
 
     >>> print server.getDeviceInfo('DeviceName')
-    >>> 'Device1'
+    'Device1'
 
 The DeviceName, DeviceType (PcdType) and BuildDateTime can also be directly accessed as a server's property method
 
 .. code-block:: python
 
     >>> print server.deviceName
-    >>> 'Device1'
+    'Device1'
     >>> print server.deviceType
-    >>> 'PCD1.M2220'
+    'PCD1.M2220'
     >>> print server.buildTime
-    >>> datetime.datetime(2017, 8, 18, 17, 46, 50)
+    datetime.datetime(2017, 8, 18, 17, 46, 50)
 
 You can force a deviceInfo refresh later if anything goes wrong
 
@@ -385,11 +391,18 @@ other EtherSBus servers online on the LAN
 
 .. code-block:: python
 
-    >>> server.enableNodeDiscover(period=60)
+    >>> node.server.enableNetworkScanner(True)
 
 This will periodically broadcast a READ_STATIONNUMBER on the network (255.255.255.255) using a SAIATransferDiscoverNodes transfer service.
 When discovering mode is active, any response to this message received by the local node (not comming from a local network interface) will be 
-accepted an the corresponding remote server will be automatically delared for you. For convenience, the discover process is automatically started in Python interactive mode.
+accepted an the corresponding remote server will be automatically delared for you. For convenience, the discover process is automatically started in Python interactive mode. In fact,
+you can decide if network scanning should be active or not at the node creation
+
+.. code-block:: python
+
+    >>> node=SAIANode()              # network scanner is enabled only in interactive sessions
+    >>> node=SAIANode(scanner=True)  # scanner is enabled
+    >>> node=SAIANode(scanner=False) # scanner is disabled
 
 
 Symbolic Addressing
@@ -406,15 +419,15 @@ this file during server declaration process. This will create a **SAIASymbols** 
 
     >>> symbol=server.symbols['RIO.Station_A12.Sonde3_16_Cmd_Reduit_Ch'] 
     >>> print symbol.index
-    >>> 2295
+    2295
     >>> print symbol.attribute
-    >>> 'f'
+    'f'
     >>> symbol.isFlag()
-    >>> True
+    True
 
     >>> symbol=server.symbols.register(2295)
     >>> print symbol.tag
-    >>> 'rio.station_a12.sonde3_16_cmd_reduit_ch' 
+    'rio.station_a12.sonde3_16_cmd_reduit_ch' 
 
 **This allows bidirectional mapping between symbols names (tag) and items indexes**, **assuming that your map file is uptodate** ! Cool. The symbolic access is in fact implemented
 in all SAIAItem objects index access, so that syntaxes like this are perfectly working
@@ -427,7 +440,7 @@ in all SAIAItem objects index access, so that syntaxes like this are perfectly w
 
     >>> flag=server.flags.declare('Sonde3_42_Lib')
     >>> print flag.index
-    >>> 4634
+    4634
 
 Use it carefully. For ease of use, symbolic access is implemented *case insensitive*. In interactive mode,
 you can try to **mount** flags and registers symbols (SAIASymbol) as SAIASymbols object variables
@@ -462,12 +475,54 @@ as a SAIASymbol object, so that autocompletion is your friend
 
 As said in the last section, we can access the deviceInformation properties, allowing to guess the .map filename. If the deviceName is "MySuperDevice", the associated 
 .map file produced by the SAIA PG5 compiler will be "MySuperDevice.map" by default. In fact, this can help us to do things automagically. 
-**When a server is declared, the deviceInformation block is automatically retrieved and then the a try is made to load the default associated .map file**. By default, the map
+**When a server is declared, the deviceInformation block is automatically retrieved and a try is made to load the default associated .map file**. By default, the map
 file has to be stored in the current directory. This can be changed with the node.setMapFileStoragePath() method.
 
 In Python 2.7, you may need to `enable autocompletion <https://stackoverflow.com/questions/246725/how-do-i-add-tab-completion-to-the-python-shell>`_ 
 on your ~/.pythonrc setup file. Alternatively you can use IPython, Jupyter or something simpler like `ptpython <https://github.com/jonathanslenders/ptpython>`_ for
 interactive sessions.
+
+Keep an eye open on your memory ressources when enabling symbols ;) as this can declare thousands of variables.
+
+
+Tips & Tricks
+=============
+
+Servers (SAIAServers), items (SAIAItemFlags/Registers/Inputs/Outputs) are *iterable* objects. This allows things like
+
+.. code-block:: python
+
+    >>> server.flags.declareRange(0, 4096)
+    >>> # give a little time allowing the background task to refresh thoses 4K items
+    >>> flagsThatAreON=[flag for flag in server.flags if flag.value is True]
+
+    >>> for flag in server.flags:
+    >>>    flag.value=1
+
+When working with registers, accessing to the hex or bin value representation can be useful
+
+.. code-block:: python
+
+    >>> register=server.registers[50]
+    >>> register.value=100
+    >>> register.value
+    100
+    >>> register.hex
+    '0x64'
+    >>> register.bin
+    '1100100'
+
+When symbols are loaded, SAIAFlags and SAIARegisters objects can be declared by a *search* upon a *part* of their
+tag name.
+
+.. code-block:: python
+
+    >>> flags=server.flags.searchTagAndDeclare('timeout')
+    >>> print len(flags)
+    848
+    >>> registers=server.registers.searchTagAndDeclare('sonde')
+    >>> print len(registers)
+    626
 
 
 Dumping & Debugging
@@ -510,6 +565,32 @@ by registering a remote pointing on yourselfi (woo!)
 
 In this example, localFlag and remoteFlag points to the same data, but the remoteFlag is a networked synchonized 
 mirror representation of the localFlag.
+
+SAIA* objects *.__repr__* magic method is redefined to provide some useful information about the current state of the object.
+This can be useful to gather some informations about your data
+
+.. code-block:: python
+
+    >>> node
+    <SAIANode(lid=253, port=5050, 2 servers, booster=0)>
+
+    >>> node.servers
+    <SAIAServers(2 items)>
+
+    >>> node.servers[101]
+    <SAIAServer(host=192.168.0.49, lid=101, status=0x52)>
+
+    >>> server.memory
+    <SAIAMemory(144 items, queues 0R:0R!:0W)>
+    # 0R  = number of actual pending item-read in queue (background polling/refresh process)
+    # 0R! = number of actual pending urgent item-read in queue (manual refresh, read-after-write)
+    # 0W  = number of actual pending item-write in queue
+
+    >>> server.flags
+    <SAIAFlags(48 items, max=65535, readOnly=0, current=32, refresh=60s)>
+
+    >>> server.flags[28]
+    <SAIAItemFlag(index=28, value=OFF, age=8s, refresh=60s)>
 
 
 Demo Node
@@ -556,3 +637,6 @@ TODO
 Documentation is very incomplete. Don't know if this is useful for someone. Tell it to us.
 There is still some more locking mecanisms to implement making the background task really thread safe. The
 Python GIL make things yet wrongly safe. Python 3 compatibility.
+
+We have no way to test what 'S-Bus gateway' feature is. When enabled, a PCD may be able? to expose S-Bus
+sub nodes on its EtherSBus interface. This "proxy" mode access is not supported yet.

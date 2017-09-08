@@ -1,3 +1,4 @@
+from __future__ import print_function  # Python 2/3 compatibility
 import os
 from threading import RLock
 
@@ -153,6 +154,7 @@ class SAIATagMountRegisters(SAIATagMount):
 class SAIASymbols(object):
     def __init__(self):
         self._lock=RLock()
+        self._filepath=None
         self._symbols={}
         self._index={}
         self._flags=SAIATagMountFlags(self)
@@ -214,28 +216,55 @@ class SAIASymbols(object):
                     return symbol
 
     def loadSymbolsFromData(self, data):
-        section=False
-        dataSymbols=[]
+        if data:
+            section=False
+            dataSymbols=[]
 
-        for n in range(len(data)):
-            line=data[n].strip('\n')
+            for n in range(len(data)):
+                line=data[n].strip('\n')
 
-            if section:
-                if not line:
-                    break
+                if section:
+                    if not line:
+                        break
 
-                if line.lstrip()!=line:
-                    dataSymbols[-1]=dataSymbols[-1]+line
+                    if line.lstrip()!=line:
+                        dataSymbols[-1]=dataSymbols[-1]+line
+                    else:
+                        dataSymbols.append(line)
                 else:
-                    dataSymbols.append(line)
-            else:
-                if line.strip().lower()=='public symbols':
-                    section=True
-                    continue
+                    if line.strip().lower()=='public symbols':
+                        section=True
+                        continue
 
-        for line in dataSymbols:
-            symbol=SAIASymbol(line.split())
-            self.add(symbol)
+            for line in dataSymbols:
+                try:
+                    fields=line.split()
+                    if '..' in fields[2]:
+                        # looks like a range
+                        (start, stop)=fields[2].split('..')
+                        tag=fields[0]
+                        n=0
+                        for index in range(int(start), int(stop)+1):
+                            fields[0]=tag+str(n)
+                            n+=1
+                            fields[2]=index
+                            symbol=SAIASymbol(fields)
+                            self.add(symbol)
+                            if index>=stop:
+                                break
+                            index+=1
+                    else:
+                        symbol=SAIASymbol(fields)
+                        self.add(symbol)
+                except:
+                    pass
+
+    def retrieveData(self):
+        try:
+            with open(self._filepath, 'r') as f:
+                return f.readlines()
+        except:
+            pass
 
     def load(self, filename, path=None):
         try:
@@ -243,10 +272,9 @@ class SAIASymbols(object):
                 fpath=filename
                 if path:
                     fpath=os.path.join(path, filename)
-                fpath=os.path.expanduser(fpath)
-
-                with open(fpath, 'r') as f:
-                    self.loadSymbolsFromData(f.readlines())
+                self._filepath=os.path.expanduser(fpath)
+                data=self.retrieveData()
+                self.loadSymbolsFromData(data)
         except:
             pass
 

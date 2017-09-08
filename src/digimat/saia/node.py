@@ -1,3 +1,5 @@
+from __future__ import print_function  # Python 2/3 compatibility
+
 import time
 import socket
 import struct
@@ -365,7 +367,7 @@ class SAIALogger(object):
 
 
 class SAIANode(object):
-    def __init__(self, lid=253, port=SAIAServer.UDP_DEFAULT_PORT, logger=None, autostart=True):
+    def __init__(self, lid=253, port=SAIAServer.UDP_DEFAULT_PORT, logger=None, autostart=True, scanner=None):
         self._socket=None
         self._lid=int(lid)
 
@@ -375,6 +377,9 @@ class SAIANode(object):
         self._logger=logger
         self._localServer=SAIAServer(self, 'localnode', self._lid, localNodeMode=True)
         self.logger.info('localServer(%d) registered' % self._lid)
+        if scanner is None and self.isInteractiveMode():
+            scanner=True
+        self._localServer.enableNetworkScanner(scanner)
 
         self._mapFileStoragePath=None
         self._servers=SAIAServers(self)
@@ -672,7 +677,10 @@ class SAIANode(object):
         self.servers.dump()
 
     def __repr__(self):
-        return '<%s(lid=%d, port=%d)>' % (self.__class__.__name__, self._lid, self._port)
+        return '<%s(lid=%d, port=%d, %d servers, booster=%d)>' % (self.__class__.__name__,
+                        self._lid, self._port,
+                        self.servers.count(),
+                        self._activityCounter)
 
 
 if __name__ == "__main__":

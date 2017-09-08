@@ -1,3 +1,4 @@
+from __future__ import print_function  # Python 2/3 compatibility
 import struct
 import time
 from functools import reduce

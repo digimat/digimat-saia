@@ -1,3 +1,5 @@
+from __future__ import print_function  # Python 2/3 compatibility
+
 import time
 import struct
 import ipaddress
@@ -234,7 +236,7 @@ class SAIAServer(object):
 
     UDP_DEFAULT_PORT = 5050
 
-    def __init__(self, node, host, lid=None, localNodeMode=False, mapfile=None, nodeDiscoverPeriod=0):
+    def __init__(self, node, host, lid=None, localNodeMode=False, mapfile=None):
         assert node.__class__.__name__=='SAIANode'
         self._lock=RLock()
         self._node=node
@@ -252,11 +254,8 @@ class SAIAServer(object):
             self.loadSymbols(mapfile)
             self.submitTransferReadDeviceInformation()
         else:
-            self._periodNodeDiscover=0
-            self._timeoutNodeDiscover=0
-            if self.node.isInteractiveMode() or nodeDiscoverPeriod>0:
-                period=max(30, nodeDiscoverPeriod)
-                self.enableNodeDiscover(period=period)
+            self._networkScanner=False
+            self._timeoutNetworkScanner=0
 
     def isLidValid(self, lid):
         try:
@@ -357,11 +356,10 @@ class SAIAServer(object):
     def isLocalNodeMode(self):
         return self._memory.isLocalNodeMode()
 
-    def enableNodeDiscover(self, period=60):
-        if self.isLocalNodeMode() and period>0:
-            self._timeoutNodeDiscover=0
-            self._periodNodeDiscover=period
-            self.logger.info('Network node scanning process enabled (%ds) for server %s' % (period, self.host))
+    def enableNetworkScanner(self, state=True):
+        if self.isLocalNodeMode():
+            self._timeoutNetworkScanner=0
+            self._networkScanner=state
 
     def loadSymbols(self, mapfile=None):
         try:
@@ -425,9 +423,9 @@ class SAIAServer(object):
             if self._memory.manager():
                 activity=True
 
-            if self._periodNodeDiscover>0 and time.time()>self._timeoutNodeDiscover:
+            if self._networkScanner and time.time()>self._timeoutNetworkScanner:
                 self.submitTransferDiscoverNodes()
-                self._timeoutNodeDiscover=time.time()+self._periodNodeDiscover
+                self._timeoutNetworkScanner=time.time()+60
         else:
             # ----------------------------------------------
             # Remote Servers
@@ -521,6 +519,9 @@ class SAIAServers(object):
 
     def all(self):
         return self._servers
+
+    def __iter__(self):
+        return iter(self.all())
 
     def declare(self, host, lid=None, port=SAIAServer.UDP_DEFAULT_PORT, mapfile=None):
         server=self.getFromHost(host)

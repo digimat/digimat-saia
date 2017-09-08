@@ -1,4 +1,4 @@
-# import sys
+from __future__ import print_function  # Python 2/3 compatibility
 
 # python2-3 compatibility require 'pip install future'
 from queue import Queue
@@ -123,6 +123,18 @@ class SAIAFlags(SAIABooleanItems):
     def symbols(self):
         return self.server.symbols.flags
 
+    def searchTagAndDeclare(self, key):
+        items=[]
+        try:
+            symbols=self.server.symbols.search(key)
+            for s in symbols:
+                if s.isFlag():
+                    item=self.declare(s.index)
+                    items.append(item)
+        except:
+            pass
+        return items
+
 
 class SAIAInputs(SAIABooleanItems):
     def __init__(self, memory, maxsize=65535):
@@ -154,6 +166,18 @@ class SAIARegisters(SAIAAnalogItems):
     @property
     def symbols(self):
         return self.server.symbols.registers
+
+    def searchTagAndDeclare(self, key):
+        items=[]
+        try:
+            symbols=self.server.symbols.search(key)
+            for s in symbols:
+                if s.isRegister():
+                    item=self.declare(s.index)
+                    items.append(item)
+        except:
+            pass
+        return items
 
 
 class SAIAMemory(object):
@@ -218,8 +242,14 @@ class SAIAMemory(object):
         if self._enableOnTheFlyItemCreation:
             return True
 
-    def items(self):
+    def all(self):
         return (self._inputs, self._outputs, self._flags, self._registers)
+
+    def items(self):
+        return self.all()
+
+    def __iter__(self):
+        return iter(self.all())
 
     def isLocalNodeMode(self):
         return self._localNodeMode
@@ -276,13 +306,19 @@ class SAIAMemory(object):
         if self.server.link.isIdle():
             item=self.getNextPendingPush()
             if item:
-                item.push()
-                activity=True
-
-            item=self.getNextPendingPull()
-            if item:
-                item.pull()
-                activity=True
+                if item.push():
+                    activity=True
+                else:
+                    # TODO: requeue ?
+                    self.logger.error('push')
+            else:
+                item=self.getNextPendingPull()
+                if item:
+                    if item.pull():
+                        activity=True
+                    else:
+                        # TODO: requeue ?
+                        self.logger.error('pull')
 
         if activity:
             return True

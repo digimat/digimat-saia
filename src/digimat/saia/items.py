@@ -1,4 +1,5 @@
-# import struct
+from __future__ import print_function  # Python 2/3 compatibility
+
 import time
 
 from threading import RLock
@@ -190,11 +191,11 @@ class SAIAItem(object):
     def __repr__(self):
         tag=self.tag
         if tag:
-            return '<%s(index=%d, tag=%s, value=%s, age=%ds)>' % (self.__class__.__name__,
-                self.index, tag, self.strValue(), self.age())
+            return '<%s(index=%d, tag=%s, value=%s, age=%ds, refresh=%ds)>' % (self.__class__.__name__,
+                self.index, tag, self.strValue(), self.age(), self.getRefreshDelay())
         else:
-            return '<%s(index=%d, value=%s, age=%ds)>' % (self.__class__.__name__,
-                self.index, self.strValue(), self.age())
+            return '<%s(index=%d, value=%s, age=%ds, refresh=%ds)>' % (self.__class__.__name__,
+                self.index, self.strValue(), self.age(), self.getRefreshDelay())
 
 
 class SAIABooleanItem(SAIAItem):
@@ -292,6 +293,20 @@ class SAIAAnalogItem(SAIAItem):
             return '%d' % self.value
         return '<null>'
 
+    @property
+    def hex(self):
+        try:
+            return hex(self.value)
+        except:
+            return
+
+    @property
+    def bin(self):
+        try:
+            return bin(self.value)
+        except:
+            return
+
 
 class SAIAItems(object):
     def __init__(self, memory, itemType, maxsize, readOnly=False):
@@ -365,6 +380,15 @@ class SAIAItems(object):
         if self.validateIndex(index) is not None:
             return True
 
+    def all(self):
+        return self._items
+
+    def __iter__(self):
+        return iter(self.all())
+
+    def active(self):
+        return [item for item in self.all() if item.value]
+
     def item(self, index):
         try:
             with self._lock:
@@ -399,11 +423,15 @@ class SAIAItems(object):
                 return item
 
     def declareRange(self, index, count, value=0):
-        items=[]
-        for n in range(count):
-            item=self.declare(index+n, value)
-            items.append(item)
-        return items
+        with self._lock:
+            items=[]
+            for n in range(count):
+                item=self.declare(index+n, value)
+                items.append(item)
+            return items
+
+    def searchTagAndDeclare(self, key):
+        pass
 
     def signalPush(self, item):
         self.memory._queuePendingPush.put(item)
@@ -447,7 +475,12 @@ class SAIAItems(object):
                 item.clear()
 
     def __repr__(self):
-        return '<%s(%d items)>' % (self.__class__.__name__, self.count())
+        return '<%s(%d items, max=%d, readOnly=%d, current=%d, refresh=%ds)>' % (self.__class__.__name__,
+                    self.count(),
+                    self._maxsize,
+                    bool(self._readOnly),
+                    self._currentItem,
+                    self._delayRefresh)
 
 
 if __name__ == "__main__":
