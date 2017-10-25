@@ -4,8 +4,7 @@ Python digimat.saia
 
 This is a Python 2.7 (Python 3 not fully compatible yet, but will be in the future) module allowing to create **client** and/or **server** `SAIA EtherSBus <https://wiki.wireshark.org/EtherSBus>`_  nodes.
 This code allow you to create low cost (and hopefully reliable) communication services with any EtherSBus device, reading and writing data from/to them. By data (items),
-we mean inputs, outputs, flags and registers. More data-types may be supported in the future. In the exemple below, a local
-SBus node with address 253 (station number, or localid, or lid in our terminology) is created. 
+we mean inputs, outputs, flags, registers, timers and counters. In the exemple below, a local SBus node with address 253 (station number, or localid, or lid in our terminology) is created. 
 
 .. code-block:: python
 
@@ -20,6 +19,7 @@ from your node.  To give you an idea, you will find a basic `Python interactive 
    :width: 360px
    :target: https://asciinema.org/a/0q7jfTE6Ooj7RPpVBL6bWfIj2
 
+
 When done, shutdown your node properly.
 
 .. code-block:: python
@@ -27,8 +27,13 @@ When done, shutdown your node properly.
     >>> node.stop()
     >>> quit()
 
-Please consider this work as *in progress* (**currently only partially tested**). 
-Always use the latest version of this package, as it is frequently updated ! 
+Please consider this work as *in progress* (**currently only partially tested**).  Always use the latest version of this package, as it is frequently updated ! 
+Warning : if you observe a socket error at node start, this is probably due to the fact that the listening port is already opened on your machine from
+an other process. The default listening port is 5050. Try changing it to see if this fix the problem
+
+.. code-block:: python
+
+    >>> node=SAIANode(253, port=15050)
 
 
 Non exhaustive features list
@@ -39,10 +44,10 @@ Out of the box features
 * EtherSbus Server (expose local data to other EtherSBus nodes)
 * EtherSBus Client (remote access to N remote EtherSBus nodes)
 * Local Server AND Remote Client(s) simultaneous communication support
-* Read/Write of local and remote Inputs/Outputs/Flags/Registers data values trough simple objects .value get/set
+* Read/Write of local and remote Inputs/Outputs/Flags/Registers/Timers/Counters data values trough simple objects .value get/set
 * Background task (thread) managing every server+clients messages once the node is started
 * Registers value encoders allowing working transparently with float, float32 and some other 32 bits encodings
-* Automatic pooling in the background of every declered remote items
+* Automatic pooling in the background of every declared remote items (manual refresh is also possible)
 * Node station address automatic resolution
 * Automatic read/write requests aggregations (using one message for multiple items transfer)
 * Prioritized request queuing allowing urgent transactions to be processed first, providing good 
@@ -57,7 +62,7 @@ Optional features
 * Periodic remote node discovering and declaration (trough broadcast messages)
 * Automatic remote node information retrieval (trough READ_DBX blocks transfers),
   allowing to guess the PG5 compiler generated .map symbol file name ;) you will learn to love your .map files
-* PG5 symbols files (.map) parsing, allowing registers and flags symbolic access !
+* PG5 symbols files (.map) parsing, allowing flags, registers, timers and counters symbolic access !
 * Dynamic objects creation iat runtime when .map file is loaded to enhance Python 
   interactive sessions experience (autocompletion)
 * Logging for local or remote debugging trough TCP/IP.
@@ -93,8 +98,8 @@ Using the SAIA PG5 debugger may also help understanding how things works. Wiresh
 and you will easily find some .pcap samples by googling "sbus pcap". Really useful.
 
 Don't forget that the SAIA dynamic addressing won't be your friend here as you must know the address of the variable
-you want to access (read/write). Consider fixing your variables to "static" addresses in your PG5 configuration (see SAIA FAQ #101533). 
-We have implemented some helpers to provide limited symbolic access using the PD5 .map file if you have it (see chapter "Symbolic Adressing" below).
+you want to access (read/write). Consider fixing your variables to "static" addresses in your PG5 configuration (**read SAIA FAQ 101533**, to knows actions that may affect variables
+address change). We have implemented some helpers to provide limited symbolic access using the PD5 .map file if you have it (see chapter "Symbolic Adressing" below).
 This said, have a look on the *Symbolic Addressing* chapter below. There are some tricks available to help you using items tag name ;)
 
 Oh, and of course, EtherSBus communication has to be enabled on your PCD device ;)
@@ -116,11 +121,11 @@ EtherSBus Node (Server)
 Once created, the **SAIANode** object will implicitely start a background task responsible for protocol and bus variables management.
 The task must be stop()ed before the program termination. The node contains a server (allowing other nodes to read an write 
 data to it). The node can also donnect to other remote SBus servers, to read/write remote data. Each server (local or remote)
-has it's own memory representation (SAIAMemory). Localnode memory is accessible trough node.memory (which is a shortcut to node.server.memory).
+has it's own memory representation (SAIAMemory). Local-node memory is accessible trough node.memory (which is a shortcut to node.server.memory).
 
-The **SAIAMemory** object handle every SBus variables (**inputs**, **outputs**, **flags**, **registers**). The SAIAMemory object provide a **SAIAItemFlags** object, 
+The **SAIAMemory** object handle every SBus variables (**inputs**, **outputs**, **flags**, **registers**, **timers**, **counters**). The SAIAMemory object provide a **SAIAItemFlags** object, 
 accessible trough a .flags property, itself providing access to every registered SAIAItemFlag object (item). The same principle is used for inputs 
-(**SAIAItemInputs**), outputs (**SAIAItemOutputs**) and registers (**SAIAItemRegisters**). Note that there are shortcuts implemented : 
+(**SAIAItemInputs**), outputs (**SAIAItemOutputs**), registers (**SAIAItemRegisters**), timers (**SAIAItemTimers**) and counters (**SAIAItemCounters**). Note that there are shortcuts implemented : 
 *node.flags* can be used instead of *node.memory.flags*.
 
 .. code-block:: python
@@ -132,11 +137,11 @@ accessible trough a .flags property, itself providing access to every registered
     <SAIAItemFlag(index=18, value=OFF, age=1s)>
 
     >>> myflag.value=True
-    >>> print myflag.value
+    >>> myflag.value
     True
 
 The SAIAMemory object is initially created *empty* (with no items declared). Items are dynamically instanciated "on-the-fly" when they are accessed. In the example above,
-the flag 18 is created on the first call, and returned in a SAIAItemFlag object. Subsequent calls to this item will always return the same object instance.
+the flag 18 is created on the first call, and returned in a SAIAItemFlag object. Any further call to this item will always return the same object instance.
 Each item provide some helpers methods to facilitate value manipulation
 
 .. code-block:: python
@@ -148,7 +153,7 @@ Each item provide some helpers methods to facilitate value manipulation
     >>> myflag.clear()
     >>> myflag.value=1
     >>> myflag.value=True
-    >>> print myflag.value
+    >>> myflag.value
     1
 
 By default, "on-the-fly-item-creation" is active. This means that any data item (flag, input, output, register) which is accessed (locally or remotely)
@@ -158,7 +163,7 @@ be disabled, and accessing a non pre-declared item will fail.
 .. code-block:: python
 
     >>> node.memory.enableOnTheFlyItemCreation(False)
-    >>> print node.memory.flags[19]
+    >>> node.memory.flags[19]
     None
 
 Items can be manually-created by "declaring" them, individually or by range
@@ -167,18 +172,19 @@ Items can be manually-created by "declaring" them, individually or by range
 
     >>> myflag=node.memory.flags.declare(index=18)
     >>> myflags=node.flags.declareRange(index=100, count=3)
-    >>> print myflags
+    >>> myflags
     [<SAIAItemFlag(index=100, value=OFF, age=3s)>,
     <SAIAItemFlag(index=101, value=OFF, age=3s)>,
     <SAIAItemFlag(index=102, value=OFF, age=3s)>]
 
-Inputs, Outputs and Flags are boolean items. Registers are simple "32 bits uint values".
+You will also later discover a .declareForTagMatching() feature. Inputs, Outputs and Flags are boolean items. 
+Registers, Timers and Counters are simple "32 bits uint values".
 
 .. code-block:: python
 
     >>> myregister=node.memory.registers[0]
     >>> myregister.value=100
-    >>> print register.value
+    >>> register.value
     100
 
 Registers are always stored as "raw 32 bits" values (without encoding). Helpers are available to set/get the register value with common encodings
@@ -186,24 +192,26 @@ Registers are always stored as "raw 32 bits" values (without encoding). Helpers 
 .. code-block:: python
 
     >>> myregister.float32=21.5
-    >>> print myregister.value
+    >>> myregister.value
     1101791232
-    >>> print myregister.float32
+    >>> myregister.float32
     21.5
 
 Actually, the following encoders/decoders accessors are implemented (each one is a derived class from **SAIAValueFormater**)
 
-+---------------+-----------------------------------------------------+
-| **.float32**  | IEEE float32 encoding (big-endian)                  |
-+---------------+-----------------------------------------------------+
-| **.sfloat32** | Swapped IEEE float32 encoding (little-endian)       |
-+---------------+-----------------------------------------------------+
-| **.ffp**      | Motorola Fast Floating Point encoding (SAIA Float)  |
-+---------------+-----------------------------------------------------+
-| **.float**    | Alias for FFP encodings (easier to remember)        |
-+---------------+-----------------------------------------------------+
-| **.int10**    | x10 rounded value (21.5175 is encoded as 215)       |
-+---------------+-----------------------------------------------------+
++-----------------------+-----------------------------------------------------+
+| **.float32**          | IEEE float32 encoding (big-endian)                  |
++-----------------------+-----------------------------------------------------+
+| **.sfloat32**         | Swapped IEEE float32 encoding (little-endian)       |
++-----------------------+-----------------------------------------------------+
+| **.ffp**              | Motorola Fast Floating Point encoding (SAIA Float)  |
++-----------------------+-----------------------------------------------------+
+| **.float**            | Alias for FFP encodings (easier to remember)        |
++-----------------------+-----------------------------------------------------+
+| **.int10**            | x10 rounded value (21.5175 is encoded as 215)       |
++-----------------------+-----------------------------------------------------+
+| **.formatedvalue**    | Reuse the last used formater                        |
++-----------------------+-----------------------------------------------------+
 
 As in SAIA float values *seems* to be FFP encoded (not really sure about that), the ffp encoder is automatically used
 when writing a float value to a register (instead of an int)
@@ -211,16 +219,15 @@ when writing a float value to a register (instead of an int)
 .. code-block:: python
 
     >>> myregister.value=2
-    >>> print myregister.value
+    >>> myregister.value
     2
     >>> myregister.value=2.0
-    >>> print myregister.value
+    >>> myregister.value
     2147483714
-    >>> print myregister.ffp
+    >>> myregister.ffp
     2.0
-    >>> print myregister.float
+    >>> myregister.float
     2.0
-
 
 If for any reason you want your localnode to be read-only (for any 3rd party EtherSBus client), you can
 lock your local memory
@@ -230,13 +237,34 @@ lock your local memory
     >>> node.memory.setReadOnly()
 
 This can be very useful to implement a data-provider-only service, simply ignoring any incoming SBus write requests. Thoses
-requests will be NAKed by your node.
+requests will be NAKed by your node. Timers are managed (those declared *in the local node*). This means that any timer created will be automatically decremented until reaching 0
+
+.. code-block:: python
+
+    >>> timer=node.server.timers[0]
+    >>> timer.value=1000
+    >>> # wait some time
+    >>> timer.value
+    874
+    >>> timer.value
+    510
+    >>> timer.isTimeout()
+    False
+    >>> timer.clear()
+    >>> timer.isTimeout()
+    True
+
+The default tickBaseTime is 100ms (decrement each counter by 1 every 100ms), which can be set on the timers object 
+
+.. code-block:: python
+
+    >>> node.server.timers.setTickBaseTimeMs(100)
 
 
 EtherSBus Client
 ================
 
-The node object allow access to (as many) remote EtherSBus node servers you need, registered in a **SAIAServers** object
+Now the best part. The node object allow access to (as many) remote EtherSBus node servers you need, registered in a **SAIAServers** object
 
 .. code-block:: python
 
@@ -245,10 +273,10 @@ The node object allow access to (as many) remote EtherSBus node servers you need
     >>> myRemoteFlag=server1.memory.flags[5]
 
 The declaration process provide a **SAIAServer** object, containing a **SAIAMemory** object to access remote items. Thus, **local and remote data can be manipulated 
-in the same manner**. When a remote data item (input, output, flag, register) is declared, an **automatic pooling mecanism** is launched in 
-the background task (manager). A basic optimiser mecanism try to group many items per request, avoiding to launch 1 request for 1 item refresh.
+in the same manner**. When a remote data item (input, output, flag, register, timer or counter) is declared, an **automatic pooling mecanism** is launched in 
+the background task (manager). An **optimiser mecanism try to group many items per request**, avoiding to launch 1 request for 1 item refresh.
 
-The default refresh rate is **60s** per item, modifiable with a myRemoteFlag.setRefreshDelay() call.  Alternatively, the refresh rate can be specified 
+The default refresh rate is **60s** per item, modifiable with a myRemoteFlag.setRefreshDelay() call. Alternatively, the refresh rate can be specified 
 for the whole item collection, with a node.memory.flags.setRefreshDelay() call. Refresh can be triggered on demand with with theses kind of call
 
 .. code-block:: python
@@ -269,7 +297,7 @@ returning the just refrehed item.value (or None in case of timeout)
     >>> myRemoteFlag.read()
     True
 
-Theses refresh orders are processed with more priority than other "standard" polling-read, providing better responsiveness.
+Theses refresh orders are **processed with more priority** than other "standard" polling-read, providing better responsiveness.
 A timeout can be passed to the read() function. **Changing** (**writing**) the remote data value is fully transparent
 
 .. code-block:: python
@@ -279,12 +307,12 @@ A timeout can be passed to the read() function. **Changing** (**writing**) the r
 For a non local object, **this will automatically queue a write order** in the SAIAServer object with the new given value. **The actual value of the item
 remains unchanged**. **When the write order has been executed**, **a refresh order is immediately triggered**, thus **allowing the actual value to be updated**. 
 This tend to keep the value synchonized with the remote value, even if something goes wrong. As for read() orders, the read-after-write is
-processed with **more priority** than standard pooling requests (more responsive). Please note that this approach can be problematic to write fast ON/OFF bursts.
+processed with **more priority** than standard pooling requests (more responsive). Please note that this approach *can* be problematic to write fast ON/OFF bursts.
 
 The background manager try to be as reactive and idle as possible, keeping ressources for your application. We tried to
 trap most of the possible errors, allowing using this module to be used as a standalone service. Note that automatic SAIA address 
 resolution is implemented, so that only remote IP address is required to register a remote node. If known, the SAIA station address *can* be
-given during registration (this will avoid the initial address resolution to get the server address).
+given during registration (this will avoid the initial address resolution requests to get the server address).
 
 .. code-block:: python
 
@@ -314,8 +342,8 @@ run status of a server is accessible trough the .status property
     >>> server.isRunning()
     True
 
-If your remote servers are stopped, this can be annoying. You can start them with the .run() method without 
-using the PG5 or the Debugger programs 
+If your remote servers are stopped, this can be annoying ;) You can start them with the .run() method without 
+using the PG5 or the Debugger programs (assuming that *you* know what your are doing) 
 
 .. code-block:: python
 
@@ -352,18 +380,18 @@ Once retrieved, theses informations may be accessed with the server.getDeviceInf
 
 .. code-block:: python
 
-    >>> print server.getDeviceInfo('DeviceName')
+    >>> server.getDeviceInfo('DeviceName')
     'Device1'
 
 The DeviceName, DeviceType (PcdType) and BuildDateTime can also be directly accessed as a server's property method
 
 .. code-block:: python
 
-    >>> print server.deviceName
+    >>> server.deviceName
     'Device1'
-    >>> print server.deviceType
+    >>> server.deviceType
     'PCD1.M2220'
-    >>> print server.buildTime
+    >>> server.buildDateTime
     datetime.datetime(2017, 8, 18, 17, 46, 50)
 
 You can force a deviceInfo refresh later if anything goes wrong
@@ -404,6 +432,8 @@ you can decide if network scanning should be active or not at the node creation
     >>> node=SAIANode(scanner=True)  # scanner is enabled
     >>> node=SAIANode(scanner=False) # scanner is disabled
 
+Warning : we have seen some problems with node discovering enabled if nodes stations addresses are not unique. This has to be fixed in the future.
+
 
 Symbolic Addressing
 ===================
@@ -414,19 +444,19 @@ this file during server declaration process. This will create a **SAIASymbols** 
 .. code-block:: python
 
     >>> server=node.servers.declare('192.168.0.48', mapfile='xxxxx.map')
-    >>> print server.symbols.count()
+    >>> server.symbols.count()
     2140
 
     >>> symbol=server.symbols['RIO.Station_A12.Sonde3_16_Cmd_Reduit_Ch'] 
-    >>> print symbol.index
+    >>> symbol.index
     2295
-    >>> print symbol.attribute
+    >>> symbol.attribute
     'f'
     >>> symbol.isFlag()
     True
 
     >>> symbol=server.symbols.register(2295)
-    >>> print symbol.tag
+    >>> symbol.tag
     'rio.station_a12.sonde3_16_cmd_reduit_ch' 
 
 **This allows bidirectional mapping between symbols names (tag) and items indexes**, **assuming that your map file is uptodate** ! Cool. The symbolic access is in fact implemented
@@ -435,11 +465,11 @@ in all SAIAItem objects index access, so that syntaxes like this are perfectly w
 .. code-block:: python
 
     >>> server.registers[2295].value=99
-    >>> print server.registers['rio.station_a12.sonde3_16_cmd_reduit_ch'].value
+    >>> server.registers['rio.station_a12.sonde3_16_cmd_reduit_ch'].value
     99
 
     >>> flag=server.flags.declare('Sonde3_42_Lib')
-    >>> print flag.index
+    >>> flag.index
     4634
 
 Use it carefully. For ease of use, symbolic access is implemented *case insensitive*. In interactive mode,
@@ -451,7 +481,7 @@ so that the **interpreter autocompletion** will save you some precious keystroke
     >>> symbols=server.symbols
     >>> symbols.mount()
 
-    >>> print symbols.flags.sonde3_1<TAB>
+    >>> symbols.flags.sonde3_1<TAB>
     s.sonde3_10_defaut    s.sonde3_13_defaut      s.sonde3_19_defaut
     s.sonde3_10_lib       s.sonde3_13_lib         s.sonde3_19_setpoint
     s.sonde3_10_timeout   s.sonde3_13_timeout     s.sonde3_19_temp
@@ -462,7 +492,7 @@ so that the **interpreter autocompletion** will save you some precious keystroke
     s.sonde3_12_lib       s.sonde3_15_lib
     s.sonde3_12_timeout   s.sonde3_15_timeout
 
-    >>> print symbols.flags.sonde3_11_timeout.index
+    >>> symbols.flags.sonde3_11_timeout.index
     3936
 
 When Python interactive mode is detected, symbols.mount() is automatically called for you. Items declaration can also be passed 
@@ -480,7 +510,7 @@ file has to be stored in the current directory. This can be changed with the nod
 
 In Python 2.7, you may need to `enable autocompletion <https://stackoverflow.com/questions/246725/how-do-i-add-tab-completion-to-the-python-shell>`_ 
 on your ~/.pythonrc setup file. Alternatively you can use IPython, Jupyter or something simpler like `ptpython <https://github.com/jonathanslenders/ptpython>`_ for
-interactive sessions.
+interactive sessions. **Don't miss** the excellent `bpython <https://www.bpython-interpreter.org/>`_ project.
 
 Keep an eye open on your memory ressources when enabling symbols ;) as this can declare thousands of variables.
 
@@ -488,7 +518,7 @@ Keep an eye open on your memory ressources when enabling symbols ;) as this can 
 Tips & Tricks
 =============
 
-Servers (SAIAServers), items (SAIAItemFlags/Registers/Inputs/Outputs) are *iterable* objects. This allows things like
+Servers (SAIAServers), items (SAIAItemFlags/Registers/Inputs/Outputs/Timers/Counters) are *iterable* objects. This allows things like
 
 .. code-block:: python
 
@@ -499,7 +529,7 @@ Servers (SAIAServers), items (SAIAItemFlags/Registers/Inputs/Outputs) are *itera
     >>> for flag in server.flags:
     >>>    flag.value=1
 
-When working with registers, accessing to the hex or bin value representation can be useful
+When working with registers, timers and counters,  accessing to the hex or bin value representation can be useful
 
 .. code-block:: python
 
@@ -512,17 +542,24 @@ When working with registers, accessing to the hex or bin value representation ca
     >>> register.bin
     '1100100'
 
-When symbols are loaded, SAIAFlags and SAIARegisters objects can be declared by a *search* upon a *part* of their
+When symbols are loaded, SAIAFlags, SAIARegisters, SAIATimers and SAIACounters objects can be declared by a *search* upon a *part* of their
 tag name.
 
 .. code-block:: python
 
-    >>> flags=server.flags.searchTagAndDeclare('timeout')
-    >>> print len(flags)
-    848
-    >>> registers=server.registers.searchTagAndDeclare('sonde')
-    >>> print len(registers)
+    >>> registers=server.registers.declareForTagMatching('sonde')
+    >>> len(registers)
     626
+
+The *searched argument* may also be a compiled regex
+
+.. code-block:: python
+
+    >>> pattern=re.compile('sonde[0-9]+_[0-9]+_temp')
+    >>> registers=server.registers.declareForTagMatching(pattern)
+
+If for any reason you want to *pause* one remote server communications, you can use the server.pause(60) call (seconds). This is for example
+internally used to stop server communications when a station address conflict (duplicate address) is detected.
 
 
 Dumping & Debugging
@@ -553,20 +590,20 @@ by registering a remote pointing on yourselfi (woo!)
     >>> localFlag=node.memory.flags[1]
     >>> remoteFlag=server.memory.flags[1]
 
-    >>> print localFlag.value, remoteFlag.value
+    >>> localFlag.value, remoteFlag.value
     False, False
 
     >>> remoteFlag.value=1
 
     # network data synchronisation is done by the background manager task
 
-    >>> print localFlag.value
+    >>> localFlag.value
     True
 
 In this example, localFlag and remoteFlag points to the same data, but the remoteFlag is a networked synchonized 
 mirror representation of the localFlag.
 
-SAIA* objects *.__repr__* magic method is redefined to provide some useful information about the current state of the object.
+SAIA* objects *.__repr__* magic method are redefined to provide some useful information about the current state of the object.
 This can be useful to gather some informations about your data
 
 .. code-block:: python

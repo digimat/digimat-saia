@@ -190,11 +190,7 @@ class SAIAResponseReadOutputs(SAIAResponseReadBooleanItem):
         self._items=self.memory.outputs
 
 
-class SAIAResponseReadRegisters(SAIAReply):
-    def onInit(self):
-        self.setReplyTypeResponse()
-        self._items=self.memory.registers
-
+class SAIAResponseReadAnalogItem(SAIAReply):
     def setup(self, address, count):
         if address>=0 and count>0 and count<=32:
             self._address=address
@@ -212,6 +208,24 @@ class SAIAResponseReadRegisters(SAIAReply):
 
         data=self.dwordlist2bin(values)
         return struct.pack('>%ds' % len(data), data)
+
+
+class SAIAResponseReadRegisters(SAIAResponseReadAnalogItem):
+    def onInit(self):
+        self.setReplyTypeResponse()
+        self._items=self.memory.registers
+
+
+class SAIAResponseReadTimers(SAIAResponseReadAnalogItem):
+    def onInit(self):
+        self.setReplyTypeResponse()
+        self._items=self.memory.timers
+
+
+class SAIAResponseReadCounters(SAIAResponseReadAnalogItem):
+    def onInit(self):
+        self.setReplyTypeResponse()
+        self._items=self.memory.counters
 
 
 class SAIAResponseACK(SAIAReply):

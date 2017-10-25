@@ -105,7 +105,7 @@ class SAIALink(object):
             if self._state==SAIALink.COMMSTATE_IDLE:
                 if self.isAlive() and time.time()>=self._timeoutWatchdog:
                     self._alive=False
-                    if not self.server.isLocalNode():
+                    if not self.server.isLocalNodeMode():
                         self.logger.error('%s:link dead!' % self.server)
                 return
 
@@ -116,11 +116,12 @@ class SAIALink(object):
                 if self._request.consumeRetry():
                     data=self._request.data
                     host=self.server.host
+                    port=self.server.port
                     if self._request._broadcast:
-                        host='255.255.255.255'
+                        host=self.server.node.broadcastAddress
                     self.logger.debug('%s<--%s' % (host, self._request))
 
-                    if self.server.node.sendMessageToHost(data, host):
+                    if self.server.node.sendMessageToHost(data, host, port=port):
                         self._timeoutXmitInhibit=time.time()+self._delayXmitInhibit
                         if self._request._broadcast:
                             self.setState(SAIALink.COMMSTATE_SUCCESS)
@@ -129,7 +130,7 @@ class SAIALink(object):
                         return
                     else:
                         self.setState(SAIALink.COMMSTATE_ERROR)
-                        return
+                        self.server.pause(15.0)
 
                 self.reset()
                 return
@@ -236,13 +237,15 @@ class SAIAServer(object):
 
     UDP_DEFAULT_PORT = 5050
 
-    def __init__(self, node, host, lid=None, localNodeMode=False, mapfile=None):
+    def __init__(self, node, host, lid=None, localNodeMode=False, mapfile=None, port=UDP_DEFAULT_PORT):
         assert node.__class__.__name__=='SAIANode'
         self._lock=RLock()
         self._node=node
         self._status=0
         self._timeoutStatus=0
+        self._timeoutPause=0
         self._host=host
+        self._port=port or node._port
         self._lid=lid
         self._memory=SAIAMemory(self, localNodeMode)
         self._link=SAIALink(self)
@@ -250,8 +253,8 @@ class SAIAServer(object):
         self._transfers=SAIATransferQueue(self)
         self.setLid(lid)
         self._symbols=SAIASymbols()
+        self.loadSymbols(mapfile)
         if not self.isLocalNodeMode():
-            self.loadSymbols(mapfile)
             self.submitTransferReadDeviceInformation()
         else:
             self._networkScanner=False
@@ -295,7 +298,7 @@ class SAIAServer(object):
             with self._lock:
                 if status != self._status:
                     self._status=status
-                    self.logger.info('%s->status(0x%02X)' % (self.host, status))
+                    self.logger.info('%s->status(0x%02X)' % (self, status))
 
     def isRunning(self):
         if self.status==0x52:
@@ -314,12 +317,16 @@ class SAIAServer(object):
         return self.getDeviceInfo('pcdType')
 
     @property
-    def buildTime(self):
-        return self.getDeviceDateTimeInfo('buildDataTime')
+    def buildDateTime(self):
+        return self.getDeviceDateTimeInfo('buildDateTime')
 
     @property
     def host(self):
         return self._host
+
+    @property
+    def port(self):
+        return self._port
 
     @property
     def node(self):
@@ -353,8 +360,22 @@ class SAIAServer(object):
     def registers(self):
         return self.memory.registers
 
+    @property
+    def timers(self):
+        return self.memory.timers
+
+    @property
+    def counters(self):
+        return self.memory.counters
+
     def isLocalNodeMode(self):
         return self._memory.isLocalNodeMode()
+
+    def pause(self, delay):
+        timeout=time.time()+delay
+        if timeout>self._timeoutPause:
+            self._timeoutPause=timeout
+            self.logger.warning('server %s paused (%ds)' % (self, delay))
 
     def enableNetworkScanner(self, state=True):
         if self.isLocalNodeMode():
@@ -366,12 +387,12 @@ class SAIAServer(object):
             if not self.isLocalNodeMode():
                 if not mapfile and self.deviceName:
                     mapfile=self.deviceName+'.map'
-
-                self._symbols.load(mapfile, path=self.node.getMapFileStoragePath())
-                self.logger.info('%d symbols loaded from file [%s] for server %s' % (self._symbols.count(), mapfile, self.host))
-                if self.node.isInteractiveMode():
-                    self.logger.info('Interactive mode : dynamic mount symbols on server.symbols object')
-                    self._symbols.mount()
+                if mapfile:
+                    self._symbols.load(mapfile, path=self.node.getMapFileStoragePath())
+                    self.logger.info('%d symbols loaded from file [%s] for server %s' % (self._symbols.count(), mapfile, self))
+                    if self.node.isInteractiveMode():
+                        self.logger.info('Interactive mode : dynamic mount symbols on server.symbols object')
+                        self._symbols.mount()
         except:
             pass
 
@@ -429,18 +450,23 @@ class SAIAServer(object):
         else:
             # ----------------------------------------------
             # Remote Servers
-            if self.isLidValid(self._lid):
-                if self._transfers.manager():
-                    activity=True
-
-                if self._memory.manager():
-                    activity=True
-
-                if time.time()>self._timeoutStatus:
-                    self.refreshStatus()
+            if self._timeoutPause:
+                if time.time()>self._timeoutPause:
+                    self._timeoutPause=0
+                    self.logger.info('server %s resumed' % self)
             else:
-                if self.link.isIdle():
-                    self.link.readStationNumber()
+                if self.isLidValid(self._lid):
+                    if self._transfers.manager():
+                        activity=True
+
+                    if self._memory.manager():
+                        activity=True
+
+                    if time.time()>self._timeoutStatus:
+                        self.refreshStatus()
+                else:
+                    if self.link.isIdle():
+                        self.link.readStationNumber()
 
         if activity:
             # print ">SERVER"
@@ -526,7 +552,7 @@ class SAIAServers(object):
     def declare(self, host, lid=None, port=SAIAServer.UDP_DEFAULT_PORT, mapfile=None):
         server=self.getFromHost(host)
         if server is None and not self.node.isIpAddressLocal(host):
-            server=SAIAServer(self.node, host, lid, mapfile=mapfile)
+            server=SAIAServer(self.node, host, lid, port=port, mapfile=mapfile)
             self._servers.append(server)
             self._indexByHost[host]=server
             self.logger.info('server(%s:%d:%s) declared' % (host, port, lid))
@@ -587,7 +613,8 @@ class SAIAServers(object):
     def assignServerLid(self, server, lid):
         s=self.getFromLid(lid)
         if s and s!=server:
-            self.logger.error('duplicate server lid %d' % lid)
+            self.logger.error('duplicate server lid %d (%s<-->%s)!' % (lid, s.host, server.host))
+            server.pause(15.0)
             return
 
         try:

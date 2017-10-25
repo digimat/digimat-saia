@@ -1,6 +1,7 @@
 from __future__ import print_function  # Python 2/3 compatibility
 import os
 from threading import RLock
+from datetime import datetime
 
 import re
 import unicodedata
@@ -9,7 +10,8 @@ import unicodedata
 class SAIASymbol(object):
     ATTRIBUTE_FLAG='f'
     ATTRIBUTE_REGISTER='r'
-    ATTRIBUTE_COUNTRER='c'
+    ATTRIBUTE_TIMER='t'
+    ATTRIBUTE_COUNTER='c'
 
     def __init__(self, data):
         self._attribute=None
@@ -38,7 +40,8 @@ class SAIASymbol(object):
     def index(self):
         if self.attribute in [SAIASymbol.ATTRIBUTE_FLAG,
                 SAIASymbol.ATTRIBUTE_REGISTER,
-                SAIASymbol.ATTRIBUTE_COUNTRER]:
+                SAIASymbol.ATTRIBUTE_TIMER,
+                SAIASymbol.ATTRIBUTE_COUNTER]:
             return self._address
 
     def isFlag(self):
@@ -47,6 +50,10 @@ class SAIASymbol(object):
 
     def isRegister(self):
         if self.attribute==SAIASymbol.ATTRIBUTE_REGISTER:
+            return True
+
+    def isTimer(self):
+        if self.attribute==SAIASymbol.ATTRIBUTE_TIMER:
             return True
 
     def isCounter(self):
@@ -151,6 +158,22 @@ class SAIATagMountRegisters(SAIATagMount):
         return symbol
 
 
+class SAIATagMountTimers(SAIATagMount):
+    def __getitem__(self, key):
+        symbol=self.symbols[key]
+        if not symbol:
+            symbol=self.symbols.timer(key)
+        return symbol
+
+
+class SAIATagMountCounters(SAIATagMount):
+    def __getitem__(self, key):
+        symbol=self.symbols[key]
+        if not symbol:
+            symbol=self.symbols.counter(key)
+        return symbol
+
+
 class SAIASymbols(object):
     def __init__(self):
         self._lock=RLock()
@@ -159,6 +182,10 @@ class SAIASymbols(object):
         self._index={}
         self._flags=SAIATagMountFlags(self)
         self._registers=SAIATagMountRegisters(self)
+        self._timers=SAIATagMountTimers(self)
+        self._counters=SAIATagMountCounters(self)
+        self._user=None
+        self._stamp=None
 
     @property
     def flags(self):
@@ -167,6 +194,22 @@ class SAIASymbols(object):
     @property
     def registers(self):
         return self._registers
+
+    @property
+    def timers(self):
+        return self._timers
+
+    @property
+    def counters(self):
+        return self._counters
+
+    @property
+    def user(self):
+        return self._user
+
+    @property
+    def buildDateTime(self):
+        return self._stamp
 
     def all(self):
         with self._lock:
@@ -199,6 +242,10 @@ class SAIASymbols(object):
                         self._flags.mount(symbol)
                     elif symbol.isRegister():
                         self._registers.mount(symbol)
+                    elif symbol.isTimer():
+                        self._timers.mount(symbol)
+                    elif symbol.isCounter():
+                        self._counters.mount(symbol)
 
     def add(self, symbol):
         assert symbol.__class__.__name__=='SAIASymbol'
@@ -215,15 +262,40 @@ class SAIASymbols(object):
                         self._index[symbol.attribute][symbol.index]=symbol
                     return symbol
 
+    def decodeHeader(self, line):
+        try:
+            if 'user:' in line:
+                data=line.split(':', 1)
+                self._user=data[1].strip()
+
+            elif 'linked:' in line:
+                data=line.split(' '*2)
+                for item in data:
+                    (key, value)=item.split(':', 1)
+                    if key.strip()=='linked':
+                        value=value.strip()
+                        if value:
+                            # TODO: don't know if dateformat is PG5 regional format dependant
+                            stamp=datetime.strptime(value, '%m/%d/%y %H:%M')
+                            self._stamp=stamp
+        except:
+            pass
+
     def loadSymbolsFromData(self, data):
         if data:
-            section=False
             dataSymbols=[]
 
+            header=True
             for n in range(len(data)):
                 line=data[n].strip('\n')
+                if header:
+                    line=line.strip().lower()
+                    self.decodeHeader(line)
 
-                if section:
+                    if line=='public symbols':
+                        header=False
+                        continue
+                else:
                     if not line:
                         break
 
@@ -231,10 +303,6 @@ class SAIASymbols(object):
                         dataSymbols[-1]=dataSymbols[-1]+line
                     else:
                         dataSymbols.append(line)
-                else:
-                    if line.strip().lower()=='public symbols':
-                        section=True
-                        continue
 
             for line in dataSymbols:
                 try:
@@ -296,21 +364,38 @@ class SAIASymbols(object):
     def register(self, key):
         return self.getWithAttribute(SAIASymbol.ATTRIBUTE_REGISTER, key)
 
+    def timer(self, key):
+        return self.getWithAttribute(SAIASymbol.ATTRIBUTE_TIMER, key)
+
     def counter(self, key):
-        return self.getWithAttribute(SAIASymbol.ATTRIBUTE_COUNTRER, key)
+        return self.getWithAttribute(SAIASymbol.ATTRIBUTE_COUNTER, key)
 
     def search(self, key):
+        """
+        return all matching symbols
+        key may be a string or a re.compile() pattern
+        """
+
         symbols=[]
         with self._lock:
             for symbol in self.all():
                 try:
-                    if key in symbol.tag:
-                        symbols.append(symbol)
+                    try:
+                        if key.match(symbol.tag):
+                            symbols.append(symbol)
+                    except:
+                        if key in symbol.tag:
+                            symbols.append(symbol)
                 except:
                     pass
         return symbols
 
     def __repr__(self):
+        stamp=self.buildDateTime
+        if stamp:
+            return '<%s(%d items, buildDateTime=%s)>' % (self.__class__.__name__,
+                self.count(),
+                stamp.strftime('%d-%m-%Y %H:%M:%S'))
         return '<%s(%d items)>' % (self.__class__.__name__, self.count())
 
 

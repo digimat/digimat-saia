@@ -162,7 +162,7 @@ class SAIATransferReadDeviceInformation(SAIATransfer):
 
     def processDataAndContinueTransfer(self, data):
         # keep care of accented chars ;)
-        # using latin1 encoding by not sure if this is absolutely correct
+        # TODO: using latin1 encoding by not sure if this is absolutely correct
         self._buffer+=data.decode('latin1')
         count=len(data)/4
         self._address+=count

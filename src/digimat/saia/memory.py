@@ -2,6 +2,7 @@ from __future__ import print_function  # Python 2/3 compatibility
 
 # python2-3 compatibility require 'pip install future'
 from queue import Queue
+import time
 
 from .items import SAIABooleanItem
 from .items import SAIAAnalogItem
@@ -14,6 +15,10 @@ from .request import SAIARequestReadOutputs
 from .request import SAIARequestWriteOutputs
 from .request import SAIARequestReadRegisters
 from .request import SAIARequestWriteRegisters
+from .request import SAIARequestReadTimers
+from .request import SAIARequestWriteTimers
+from .request import SAIARequestReadCounters
+from .request import SAIARequestWriteCounters
 
 from .symbol import SAIASymbol
 
@@ -103,6 +108,85 @@ class SAIAItemRegister(SAIAAnalogItem):
             pass
 
 
+class SAIAItemTimer(SAIAAnalogItem):
+    def onInit(self):
+        if self.parent.isLocalNodeMode():
+            self._stampTimer=0
+
+    def pull(self):
+        request=SAIARequestReadTimers(self.server.link)
+        request.setup(self, maxcount=32)
+        return request.initiate()
+
+    def push(self):
+        request=SAIARequestWriteTimers(self.server.link)
+        request.setup(self, maxcount=32)
+        return request.initiate()
+
+    @property
+    def tag(self):
+        try:
+            return self.server.symbols.timer(self.index).tag
+        except:
+            pass
+
+    def decrementTimer(self):
+        if self.parent.isLocalNodeMode():
+            if self.value>0 and self._stampTimer>0:
+                baseTime=self.parent._tickBaseTime
+                elapsed=int((time.time()-self._stampTimer)/baseTime)
+                if elapsed>0:
+                    self._stampTimer+=elapsed*baseTime
+                    if self.value>elapsed:
+                        self.value-=elapsed
+                    else:
+                        self.value=0
+                        self.logger.info('<%s(index=%d)> Timeout!' % (self.__class__.__name__, self.index))
+
+            self._stampTimer=time.time()
+
+    def manager(self):
+        super(SAIAItemTimer, self).manager()
+        self.decrementTimer()
+
+    def isTimeout(self):
+        if self.value<=0:
+            return True
+
+
+class SAIAItemCounter(SAIAAnalogItem):
+    def onInit(self):
+        pass
+
+    def pull(self):
+        request=SAIARequestReadCounters(self.server.link)
+        request.setup(self, maxcount=32)
+        return request.initiate()
+
+    def push(self):
+        request=SAIARequestWriteCounters(self.server.link)
+        request.setup(self, maxcount=32)
+        return request.initiate()
+
+    @property
+    def tag(self):
+        try:
+            return self.server.symbols.counter(self.index).tag
+        except:
+            pass
+
+    def increment(self, value=1):
+        v0=self.value
+        self.value=v0+value
+
+    def decrement(self, value=1):
+        v0=self.value
+        if v0>value:
+            self.value=v0-value
+        else:
+            self.value=0
+
+
 class SAIABooleanItems(SAIAItems):
     pass
 
@@ -123,17 +207,15 @@ class SAIAFlags(SAIABooleanItems):
     def symbols(self):
         return self.server.symbols.flags
 
-    def searchTagAndDeclare(self, key):
-        items=[]
+    def searchSymbolsWithTag(self, key):
+        symbols=[]
         try:
-            symbols=self.server.symbols.search(key)
-            for s in symbols:
+            for s in self.server.symbols.search(key):
                 if s.isFlag():
-                    item=self.declare(s.index)
-                    items.append(item)
+                    symbols.append(s)
         except:
             pass
-        return items
+        return symbols
 
 
 class SAIAInputs(SAIABooleanItems):
@@ -167,17 +249,73 @@ class SAIARegisters(SAIAAnalogItems):
     def symbols(self):
         return self.server.symbols.registers
 
-    def searchTagAndDeclare(self, key):
-        items=[]
+    def searchSymbolsWithTag(self, key):
+        symbols=[]
         try:
-            symbols=self.server.symbols.search(key)
-            for s in symbols:
+            for s in self.server.symbols.search(key):
                 if s.isRegister():
-                    item=self.declare(s.index)
-                    items.append(item)
+                    symbols.append(s)
         except:
             pass
-        return items
+        return symbols
+
+
+class SAIATimers(SAIAAnalogItems):
+    def __init__(self, memory, maxsize=65535):
+        super(SAIATimers, self).__init__(memory, SAIAItemTimer, maxsize)
+        self._tickBaseTime=0.01
+
+    def setTickBaseTimeMs(self, basetime=100):
+        self._tickBaseTimeMs=basetime/1000.0
+
+    def resolveIndex(self, key):
+        try:
+            if isinstance(key, SAIASymbol) and key.isTimer():
+                return key.index
+            return self.server.symbols.timer(key).index
+        except:
+            pass
+
+    @property
+    def symbols(self):
+        return self.server.symbols.timer
+
+    def searchSymbolsWithTag(self, key):
+        symbols=[]
+        try:
+            for s in self.server.symbols.search(key):
+                if s.isTimer():
+                    symbols.append(s)
+        except:
+            pass
+        return symbols
+
+
+class SAIACounters(SAIAAnalogItems):
+    def __init__(self, memory, maxsize=65535):
+        super(SAIACounters, self).__init__(memory, SAIAItemCounter, maxsize)
+
+    def resolveIndex(self, key):
+        try:
+            if isinstance(key, SAIASymbol) and key.isCounter():
+                return key.index
+            return self.server.symbols.counter(key).index
+        except:
+            pass
+
+    @property
+    def symbols(self):
+        return self.server.symbols.counter
+
+    def searchSymbolsWithTag(self, key):
+        symbols=[]
+        try:
+            for s in self.server.symbols.search(key):
+                if s.isCounter():
+                    symbols.append(s)
+        except:
+            pass
+        return symbols
 
 
 class SAIAMemory(object):
@@ -190,6 +328,8 @@ class SAIAMemory(object):
         self._outputs=SAIAOutputs(self)
         self._flags=SAIAFlags(self)
         self._registers=SAIARegisters(self)
+        self._timers=SAIATimers(self)
+        self._counters=SAIACounters(self)
         self._queuePendingPull=SAIAItemQueue()
         self._queuePendingPriorityPull=SAIAItemQueue()
         self._queuePendingPush=SAIAItemQueue()
@@ -219,6 +359,14 @@ class SAIAMemory(object):
     def registers(self):
         return self._registers
 
+    @property
+    def timers(self):
+        return self._timers
+
+    @property
+    def counters(self):
+        return self._counters
+
     def count(self):
         count=0
         for items in self.items():
@@ -243,7 +391,7 @@ class SAIAMemory(object):
             return True
 
     def all(self):
-        return (self._inputs, self._outputs, self._flags, self._registers)
+        return (self._inputs, self._outputs, self._flags, self._registers, self._timers, self._counters)
 
     def items(self):
         return self.all()

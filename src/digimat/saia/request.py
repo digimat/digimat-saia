@@ -81,10 +81,14 @@ class SAIARequest(object):
     COMMAND_READ_INPUTS = 0x03
     COMMAND_READ_OUTPUTS = 0x05
     COMMAND_READ_REGISTERS = 0x06
+    COMMAND_READ_TIMERS = 0x07
+    COMMAND_READ_COUNTERS = 0x00
 
     COMMAND_WRITE_FLAGS = 0x0b
     COMMAND_WRITE_OUTPUTS = 0x0d
     COMMAND_WRITE_REGISTERS = 0x0e
+    COMMAND_WRITE_TIMERS = 0x0f
+    COMMAND_WRITE_COUNTERS = 0x0a
 
     COMMAND_READ_PCD_STATUS_OWN = 0x1b
     COMMAND_READ_STATIONNUMBER = 0x1d
@@ -95,6 +99,8 @@ class SAIARequest(object):
     COMMAND_CLEAR_FLAGS = 0x5b
     COMMAND_CLEAR_OUTPUTS = 0x5c
     COMMAND_CLEAR_REGISTERS = 0x5d
+    COMMAND_CLEAR_TIMERS = 0x5e
+    # No request for clearing counters
 
     COMMAND_RESTART_COLD_ALL = 0x39
     COMMAND_RESTART_COLD_FLAG = 0xa6
@@ -445,12 +451,24 @@ class SAIARequestReadItems(SAIARequest):
             self.sequence, self.item.index, self._count)
 
 
-class SAIARequestReadRegisters(SAIARequestReadItems):
+class SAIARequestReadAnalogItems(SAIARequestReadItems):
+    def extractValuesFromPayload(self, payload):
+        return self.data2uint32list(payload)
+
+
+class SAIARequestReadRegisters(SAIARequestReadAnalogItems):
     def onInit(self):
         self._command=SAIARequest.COMMAND_READ_REGISTERS
 
-    def extractValuesFromPayload(self, payload):
-        return self.data2uint32list(payload)
+
+class SAIARequestReadTimers(SAIARequestReadAnalogItems):
+    def onInit(self):
+        self._command=SAIARequest.COMMAND_READ_TIMERS
+
+
+class SAIARequestReadCounters(SAIARequestReadAnalogItems):
+    def onInit(self):
+        self._command=SAIARequest.COMMAND_READ_COUNTERS
 
 
 class SAIARequestReadBooleanItems(SAIARequestReadItems):
@@ -539,10 +557,7 @@ class SAIARequestWriteOutputs(SAIARequestWriteBooleanItems):
         self._command=SAIARequest.COMMAND_WRITE_OUTPUTS
 
 
-class SAIARequestWriteRegisters(SAIARequestWriteItems):
-    def onInit(self):
-        self._command=SAIARequest.COMMAND_WRITE_REGISTERS
-
+class SAIARequestWriteAnalogItems(SAIARequestWriteItems):
     def dwordlist2bin(self, dwordlist):
         return struct.pack('>%dL' % len(dwordlist), *dwordlist)
 
@@ -554,6 +569,21 @@ class SAIARequestWriteRegisters(SAIARequestWriteItems):
     def __repr__(self):
         return '%s(mseq=%d, index=%d, values=%s)' % (self.__class__.__name__,
             self.sequence, self.item.index, str(self._values))
+
+
+class SAIARequestWriteRegisters(SAIARequestWriteAnalogItems):
+    def onInit(self):
+        self._command=SAIARequest.COMMAND_WRITE_REGISTERS
+
+
+class SAIARequestWriteTimers(SAIARequestWriteAnalogItems):
+    def onInit(self):
+        self._command=SAIARequest.COMMAND_WRITE_TIMERS
+
+
+class SAIARequestWriteCounters(SAIARequestWriteAnalogItems):
+    def onInit(self):
+        self._command=SAIARequest.COMMAND_WRITE_COUNTERS
 
 
 if __name__ == "__main__":

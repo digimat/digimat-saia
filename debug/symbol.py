@@ -1,15 +1,7 @@
-from digimat.saia import SAIANode
+from digimat.saia import SAIASymbols
 
-node=SAIANode()
-server=node.servers.declare('192.168.0.48', mapfile='./map/pg5.map')
-symbols=server.symbols
-
-symbol=symbols.flag('s.com.ipchannel.xbsy')
-server.flags.declare(symbol)
-
-
-node.stop()
-
-
-
-
+s=SAIASymbols()
+s.load('1er_3EME_SUD.map')
+print s
+print s.user
+print s.buildDateTime

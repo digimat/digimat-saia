@@ -16,7 +16,6 @@ src/digimat/saia/__init__.py
 src/digimat/saia/__main__.py
 src/digimat/saia/formaters.py
 src/digimat/saia/items.py
-src/digimat/saia/mailer.py
 src/digimat/saia/memory.py
 src/digimat/saia/node.py
 src/digimat/saia/request.py

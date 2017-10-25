@@ -11,8 +11,8 @@ server2=node.servers.declare('192.168.0.49')
 f1=server1.flags[2010]
 f2=server2.flags[2010]
 
-server1.flags.declareRange(0, 1000)
-server2.flags.declareRange(0, 1000)
+# server1.flags.declareRange(0, 1000)
+# server2.flags.declareRange(0, 1000)
 
 # r=server.registers[15]
 # r.float32=56.4
@@ -24,7 +24,7 @@ while node.isRunning():
     try:
         # node.dump()
         node.sleep(3.0)
-        f1.toggle()
-        f2.toggle()
+        # f1.toggle()
+        # f2.toggle()
     except:
         break
