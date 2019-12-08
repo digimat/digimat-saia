@@ -14,6 +14,7 @@
 # Important:    WHEN EDITING THIS FILE, USE TABS TO INDENT - NOT SPACES!
 ##############################################################################
 
+from __future__ import division
 import struct
 
 ##############################################################################
@@ -216,8 +217,7 @@ class ExtendedDataTypes:
     ########################################################
     def SetHRegStr8(self, memaddr, strlen, datavalue):
         """Parameters:
-        memaddr (int) - A Holding register address for the first character
-            in the string. The string is stored with 2 characters per
+        mema
             register, with the first character in the lower byte.
         strlen (int) - The length (in registers) of the storage area for the
             string. The string data will be padded with 0 or truncated to fit.
@@ -233,7 +233,7 @@ class ExtendedDataTypes:
         # If the string is of an odd length, pad it out to an even length.
         if ((len(datavalue) % 2) != 0):
             datavalue = '%s\x00' % datavalue
-        reglist = list(struct.unpack('>%sh' % (len(datavalue) / 2), datavalue))
+        reglist = list(struct.unpack('>%sh' % (len(datavalue) // 2), datavalue))
         self._DataTable.SetHoldingRegistersIntList(memaddr, len(reglist), reglist)
 
     ########################################################
@@ -256,7 +256,7 @@ class ExtendedDataTypes:
         # If the string is of an odd length, pad it out to an even length.
         if ((len(datavalue) % 2) != 0):
             datavalue = '%s\x00' % datavalue
-        reglist = list(struct.unpack('>%sh' % (len(datavalue) / 2), datavalue))
+        reglist = list(struct.unpack('>%sh' % (len(datavalue) // 2), datavalue))
         self._DataTable.SetInputRegistersIntList(memaddr, len(reglist), reglist)
 
     ########################################################

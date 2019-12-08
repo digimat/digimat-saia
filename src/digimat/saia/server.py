@@ -388,8 +388,9 @@ class SAIAServer(object):
                 if not mapfile and self.deviceName:
                     mapfile=self.deviceName+'.map'
                 if mapfile:
-                    self._symbols.load(mapfile, path=self.node.getMapFileStoragePath())
-                    self.logger.info('%d symbols loaded from file [%s] for server %s' % (self._symbols.count(), mapfile, self))
+                    path=self.node.getMapFileStoragePath()
+                    self._symbols.load(mapfile, path=path)
+                    self.logger.info('%d symbols loaded from file [%s/%s] for server %s' % (self._symbols.count(), path, mapfile, self))
                     if self.node.isInteractiveMode():
                         self.logger.info('Interactive mode : dynamic mount symbols on server.symbols object')
                         self._symbols.mount()
@@ -654,6 +655,8 @@ class SAIAServers(object):
             tag=tag.replace('.', '_')
             tag=tag.replace('__', '_')
             tag=tag.strip('_')
+            if tag[0].isdigit():
+                tag='device_'+tag
             return tag
         finally:
             return tag

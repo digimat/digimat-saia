@@ -1,26 +1,26 @@
 SAIA PG5 LINKER V2.2.140                                               Page 1
 User: INDEA
-File: NAEF.pcd   Linked: 20/06/17 16:42 
+File: NAEF.pcd   Linked: 10/11/17 08:36 
 
         CODE    CODE    TXT/DB  EXTEN
 FILE    START   SEG     SEG     SEG     ASSEMBLY         FILE
 NUMBER  LINE    LINES   BYTES   BYTES   DATE AND TIME    NAME
 --------------------------------------------------------------------------------
-1       0       0       1576    0       20/06/17 16:42   _NAEF.src
-2       0       0       1236    0       20/06/17 15:45   NAEF.srcrio
-3       0       0       0       0       20/06/17 15:45   _RIO Symbols.sy5
-4       0       20467   972     48448   20/06/17 16:42   Display1.fbd
-5       20467   0       256     0       20/06/17 15:45   _TCPIPDBX.src
-6       20467   0       0       0       20/06/17 15:45   InitODM.src
-7       20467   1079    230     16      20/06/17 16:42   heavac5.srx
-8       21546   0       0       0       20/06/17 16:42   SBC_MacroLib.src
-9       21546   78      12      0       14/10/14 11:02   sfuplib3.src
+1       0       0       1576    0       10/11/17 08:36   _NAEF.src
+2       0       0       1276    0       09/11/17 13:58   NAEF.srcrio
+3       0       0       0       0       09/11/17 13:58   _RIO Symbols.sy5
+4       0       21036   972     48448   09/11/17 13:58   Display1.fbd
+5       21036   0       320     0       09/11/17 13:58   _TCPIPDBX.src
+6       21036   0       0       0       09/11/17 13:58   InitODM.src
+7       21036   1079    230     16      09/11/17 13:58   heavac5.srx
+8       22115   0       0       0       09/11/17 13:58   SBC_MacroLib.src
+9       22115   78      12      0       14/10/14 11:02   sfuplib3.src
 --------------------------------------------------------------------------------
 
-CODE SEGMENT SIZE:      23654 LINES (94616 BYTES)
-TEXT/DB SEGMENT SIZE:   4282 BYTES
+CODE SEGMENT SIZE:      24261 LINES (97044 BYTES)
+TEXT/DB SEGMENT SIZE:   4386 BYTES
 EXTENSION MEM SIZE:     48464 BYTES
-PUBLIC SYMBOLS:         2128
+PUBLIC SYMBOLS:         2235
 
 DOWNLOADABLE FILES
 1   ..\Hall_Galerie\Hall_Galerie.SRIO	Type,Number: 33,0
@@ -1025,6 +1025,38 @@ A.HVC.Horloge_Gen_Galerie.ONTime6
            R    3813          4#    4     
 A.HVC.Horloge_Gen_Galerie.ONTime7
            R    3814          4#    4     
+A.HVC.Horloge_Gen_Hall.Channel
+           F    4293..4294    4#    4     
+A.HVC.Horloge_Gen_Hall.Day
+           R    4121          4#    4     
+A.HVC.Horloge_Gen_Hall.OFFTime1
+           R    4114          4#    4     
+A.HVC.Horloge_Gen_Hall.OFFTime2
+           R    4115          4#    4     
+A.HVC.Horloge_Gen_Hall.OFFTime3
+           R    4116          4#    4     
+A.HVC.Horloge_Gen_Hall.OFFTime4
+           R    4117          4#    4     
+A.HVC.Horloge_Gen_Hall.OFFTime5
+           R    4118          4#    4     
+A.HVC.Horloge_Gen_Hall.OFFTime6
+           R    4119          4#    4     
+A.HVC.Horloge_Gen_Hall.OFFTime7
+           R    4120          4#    4     
+A.HVC.Horloge_Gen_Hall.ONTime1
+           R    4107..4122    4#    4     
+A.HVC.Horloge_Gen_Hall.ONTime2
+           R    4108          4#    4     
+A.HVC.Horloge_Gen_Hall.ONTime3
+           R    4109          4#    4     
+A.HVC.Horloge_Gen_Hall.ONTime4
+           R    4110          4#    4     
+A.HVC.Horloge_Gen_Hall.ONTime5
+           R    4111          4#    4     
+A.HVC.Horloge_Gen_Hall.ONTime6
+           R    4112          4#    4     
+A.HVC.Horloge_Gen_Hall.ONTime7
+           R    4113          4#    4     
 A.HVC.Horloge_Gen.Channel
            F    2860..2861    4#    4     
 A.HVC.Horloge_Gen.Day
@@ -1450,6 +1482,18 @@ Cde_H8.VAV_AP
            R    2552          4#    4     
 Cde_H8.VAV_AR
            R    2553          4#    4     
+Consignes.Linéaire_Hal.CurveX1
+           R    4174          4#    4     
+Consignes.Linéaire_Hall.CurveX1
+           R    4175          4#    4     
+Consignes.Linéaire_Hall.CurveX2
+           R    4176          4#    4     
+Consignes.Linéaire_Hall.CurveY1
+           R    4177          4#    4     
+Consignes.Linéaire_Hall.CurveY2
+           R    4178          4#    4     
+Consignes.Linéaire_Hall.Result
+           R    4179          4#    4     
 Consignes.Linéaire2_Gal.CurveX1
            R    2241          4#    4     
 Consignes.Linéaire2_Gal.CurveX2
@@ -1470,6 +1514,16 @@ Consignes.Linéaire2_Rez.CurveY2
            R    4228          4#    4     
 Consignes.Linéaire2_Rez.Result
            R    4229          4#    4     
+Consignes.Linéaire3_Gal.CurveX1
+           R    2226          4#    4     
+Consignes.Linéaire3_Gal.CurveX2
+           R    4132          4#    4     
+Consignes.Linéaire3_Gal.CurveY1
+           R    4133          4#    4     
+Consignes.Linéaire3_Gal.CurveY2
+           R    4134          4#    4     
+Consignes.Linéaire3_Gal.Result
+           R    4135          4#    4     
 destDir    TEXT 5005          4#    4     
 EChannel.Diag.Eline_0.SF_ButtonClear
            F    3241          4#    4     
@@ -2610,6 +2664,8 @@ Gen.Clear  F    2230          4#    4
 Gen.Cons   R    3926          4#    4     
 Gen.Cons_Galerie
            R    4156          4#    4     
+Gen.Cons_HGalerie
+           R    4123          4#    4     
 Gen.Cons_Plateau
            R    2254          4#    4     
 Gen.Horl   F    3973          4#    4     
@@ -2617,6 +2673,8 @@ Gen.Mode_Jour
            F    2430          4#    4     
 Gen.Mode_Jour_Galerie
            F    4101          4#    4     
+Gen.Mode_Jour_HGalerie
+           F    4296          4#    4     
 Gen.Quit   F    220           4#    
 Gen.Quit_HMI
            F    2291          4#    4     
@@ -2641,6 +2699,42 @@ Gen.Sys_ReN
 Gen.Sys_YMD
            R    2083          4#    4     
 Gen.T_Ext  R    99            4#    
+Hall_Galerie.Cde_Ch
+           R    4160          4#    4     
+Hall_Galerie.Cde_Fr
+           R    4161          4#    4     
+Hall_Galerie.Confort_Ch
+           R    4162          4#    4     
+Hall_Galerie.Confort_Fr
+           R    4163          4#    4     
+Hall_Galerie.Cons_Gen
+           R    4164          4#    4     
+Hall_Galerie.Lib
+           F    4358          4#    4     
+Hall_Galerie.Mode
+           R    4165          4#    4     
+Hall_Galerie.Mode_Gen
+           F    4359          4#    4     
+Hall_Galerie.Reduit_Ch
+           R    4166          4#    4     
+Hall_Galerie.Reduit_Fr
+           R    4167          4#    4     
+Hall_Galerie.SetPoint
+           R    4168          4#    4     
+Hall_Galerie.SP_Ch
+           R    4169          4#    4     
+Hall_Galerie.SP_Fr
+           R    4170          4#    4     
+Hall_Galerie.T1_Potard
+           R    4188          4#    4     
+Hall_Galerie.T1_Sonde
+           R    4189          4#    4     
+Hall_Galerie.TH_1.Temp
+           R    4171          4#    4     
+Hall_Galerie.TH_2.Temp
+           R    4172          4#    4     
+Hall_Galerie.TH_3.Temp
+           R    4173          4#    4     
 HDLog.File_0.Buffer
            R    2062          4#    4     
 HDLog.File_0.Mailbox
@@ -2762,48 +2856,174 @@ ReserveStatAi3
            R    2006          1#    1     
 ReserveStatAi4
            R    2007          1#    1     
-RIO.Hall_Galerie.Cons_Gen_Temp
-           R    2226          3#    
-RIO.Hall_Galerie.DigGen_Horloge
-           F    2431          3#    
-RIO.Hall_Galerie.DigGen01
-           F    2432          3#    
-RIO.Hall_Galerie.DigGen02
+RIO.Hall_Galerie.MasterZone1Ana00
+           R    4124          3#    4     
+RIO.Hall_Galerie.MasterZone1Ana01
+           R    4125          3#    4     
+RIO.Hall_Galerie.MasterZone1Ana02
+           R    4126          3#    4     
+RIO.Hall_Galerie.MasterZone1Ana03
+           R    4127          3#    4     
+RIO.Hall_Galerie.MasterZone1Ana04
+           R    4128          3#    4     
+RIO.Hall_Galerie.MasterZone1Ana05
+           R    4129          3#    4     
+RIO.Hall_Galerie.MasterZone1Ana06
+           R    4130          3#    
+RIO.Hall_Galerie.MasterZone1Ana07
+           R    4131          3#    
+RIO.Hall_Galerie.MasterZone1Dig00
+           F    2431          3#    4     
+RIO.Hall_Galerie.MasterZone1Dig01
+           F    2432          3#    4     
+RIO.Hall_Galerie.MasterZone1Dig02
            F    2433          3#    
-RIO.Hall_Galerie.DigGen03
+RIO.Hall_Galerie.MasterZone1Dig03
            F    2434          3#    
-RIO.Hall_Galerie.DigGen04
+RIO.Hall_Galerie.MasterZone1Dig04
            F    2435          3#    
-RIO.Hall_Galerie.DigGen05
+RIO.Hall_Galerie.MasterZone1Dig05
            F    2436          3#    
-RIO.Hall_Galerie.DigGen06
+RIO.Hall_Galerie.MasterZone1Dig06
            F    2437          3#    
-RIO.Hall_Galerie.DigGen07
+RIO.Hall_Galerie.MasterZone1Dig07
            F    2438          3#    
+RIO.Hall_Galerie.RioZone1Ana00
+           R    4138          3#    4     
+RIO.Hall_Galerie.RioZone1Ana01
+           R    4139          3#    4     
+RIO.Hall_Galerie.RioZone1Ana02
+           R    4140          3#    4     
+RIO.Hall_Galerie.RioZone1Ana03
+           R    4141          3#    4     
+RIO.Hall_Galerie.RioZone1Ana04
+           R    4142          3#    
+RIO.Hall_Galerie.RioZone1Ana05
+           R    4143          3#    
+RIO.Hall_Galerie.RioZone1Ana06
+           R    4144          3#    
+RIO.Hall_Galerie.RioZone1Ana07
+           R    4145          3#    
+RIO.Hall_Galerie.RioZone1Dig00
+           F    4297          3#    
+RIO.Hall_Galerie.RioZone1Dig01
+           F    4298          3#    
+RIO.Hall_Galerie.RioZone1Dig02
+           F    4299          3#    
+RIO.Hall_Galerie.RioZone1Dig03
+           F    4300          3#    
+RIO.Hall_Galerie.RioZone1Dig04
+           F    4301          3#    
+RIO.Hall_Galerie.RioZone1Dig05
+           F    4302          3#    
+RIO.Hall_Galerie.RioZone1Dig06
+           F    4303          3#    
+RIO.Hall_Galerie.RioZone1Dig07
+           F    4304          3#    
+RIO.Hall_Galerie.Slot0.DigitalInput00
+           F    2393          3#    
+RIO.Hall_Galerie.Slot0.DigitalInput01
+           F    2394          3#    
+RIO.Hall_Galerie.Slot0.DigitalInput02
+           F    2395          3#    
+RIO.Hall_Galerie.Slot0.DigitalInput03
+           F    2396          3#    
+RIO.Hall_Galerie.Slot0.DigitalInput04
+           F    2397          3#    
+RIO.Hall_Galerie.Slot0.DigitalInput05
+           F    2398          3#    
+RIO.Hall_Galerie.Slot0.DigitalInput06
+           F    2399          3#    
+RIO.Hall_Galerie.Slot0.DigitalInput07
+           F    2400          3#    
+RIO.Hall_Galerie.Slot0.DigitalInput08
+           F    2401          3#    
+RIO.Hall_Galerie.Slot0.DigitalInput09
+           F    2402          3#    
+RIO.Hall_Galerie.Slot0.DigitalInput10
+           F    2403          3#    
+RIO.Hall_Galerie.Slot0.DigitalInput11
+           F    2404          3#    
+RIO.Hall_Galerie.Slot0.DigitalInput12
+           F    2405          3#    
+RIO.Hall_Galerie.Slot0.DigitalInput13
+           F    2406          3#    
+RIO.Hall_Galerie.Slot0.DigitalInput14
+           F    2407          3#    
+RIO.Hall_Galerie.Slot0.DigitalInput15
+           F    2408          3#    
+RIO.Hall_Galerie.Slot1.AnalogueOutput00
+           R    2319          3#    
+RIO.Hall_Galerie.Slot1.AnalogueOutput01
+           R    2320          3#    
+RIO.Hall_Galerie.Slot1.AnalogueOutput02
+           R    2321          3#    
+RIO.Hall_Galerie.Slot1.AnalogueOutput03
+           R    2322          3#    
 RIO.Hall_Galerie.Slot1.StatusSwitch00
            F    2345          3#    
 RIO.Hall_Galerie.Slot1.StatusSwitch01
            F    2349          3#    
 RIO.Hall_Galerie.Slot1.StatusSwitch02
            F    2353          3#    
+RIO.Hall_Galerie.Slot2.AnalogueOutput00
+           R    2323          3#    
+RIO.Hall_Galerie.Slot2.AnalogueOutput01
+           R    2324          3#    
+RIO.Hall_Galerie.Slot2.AnalogueOutput02
+           R    2325          3#    
+RIO.Hall_Galerie.Slot2.AnalogueOutput03
+           R    2326          3#    
 RIO.Hall_Galerie.Slot2.StatusSwitch00
            F    2361          3#    
 RIO.Hall_Galerie.Slot2.StatusSwitch01
            F    2365          3#    
 RIO.Hall_Galerie.Slot2.StatusSwitch02
            F    2369          3#    
+RIO.Hall_Galerie.Slot3.AnalogueOutput00
+           R    2327          3#    
+RIO.Hall_Galerie.Slot3.AnalogueOutput01
+           R    2328          3#    
+RIO.Hall_Galerie.Slot3.AnalogueOutput02
+           R    2329          3#    
+RIO.Hall_Galerie.Slot3.AnalogueOutput03
+           R    2330          3#    
 RIO.Hall_Galerie.Slot3.StatusSwitch00
            F    2377          3#    
 RIO.Hall_Galerie.Slot3.StatusSwitch01
            F    2381          3#    
 RIO.Hall_Galerie.Slot3.StatusSwitch02
            F    2385          3#    
+RIO.Hall_Galerie.Slot4.AnalogueOutput00
+           R    2331          3#    
+RIO.Hall_Galerie.Slot4.AnalogueOutput01
+           R    2332          3#    
+RIO.Hall_Galerie.Slot4.AnalogueOutput02
+           R    2333          3#    
+RIO.Hall_Galerie.Slot4.AnalogueOutput03
+           R    2334          3#    
 RIO.Hall_Galerie.Slot4.StatusSwitch00
-           F    2393          3#    
+           F    4275          3#    
 RIO.Hall_Galerie.Slot4.StatusSwitch01
-           F    2397          3#    
+           F    4279          3#    
 RIO.Hall_Galerie.Slot4.StatusSwitch02
-           F    2401          3#    
+           F    4283          3#    
+RIO.Hall_Galerie.Slot5.AnalogueInput00
+           R    4180          3#    
+RIO.Hall_Galerie.Slot5.AnalogueInput01
+           R    4181          3#    
+RIO.Hall_Galerie.Slot5.AnalogueInput02
+           R    4182          3#    
+RIO.Hall_Galerie.Slot5.AnalogueInput03
+           R    4183          3#    
+RIO.Hall_Galerie.Slot5.AnalogueInput04
+           R    4184          3#    
+RIO.Hall_Galerie.Slot5.AnalogueInput05
+           R    4185          3#    
+RIO.Hall_Galerie.Slot5.AnalogueInput06
+           R    4186          3#    
+RIO.Hall_Galerie.Slot5.AnalogueInput07
+           R    4187          3#    
 RIO.Rez_SA1.Cde_H7.VAV_AP
            R    2166          3#    4     
 RIO.Rez_SA1.Cde_H7.VAV_AR
@@ -3269,38 +3489,6 @@ RIO.RIO.ST3A.ReserveAO2
            R    2054          3#    
 RIO.RIO.ST3A.ReserveAO3
            R    2055          3#    
-RIO.RIO.ST4A.R1_E1
-           R    2319          3#    
-RIO.RIO.ST4A.R1_E1_Galerie
-           R    2332          3#    
-RIO.RIO.ST4A.R10_E1
-           R    2328          3#    
-RIO.RIO.ST4A.R11_E1
-           R    2329          3#    
-RIO.RIO.ST4A.R2_E1
-           R    2320          3#    
-RIO.RIO.ST4A.R2_E1_Galerie
-           R    2333          3#    
-RIO.RIO.ST4A.R3_E1
-           R    2321          3#    
-RIO.RIO.ST4A.R4_E1
-           R    2322          3#    
-RIO.RIO.ST4A.R5_E1
-           R    2323          3#    
-RIO.RIO.ST4A.R6_E1
-           R    2324          3#    
-RIO.RIO.ST4A.R7_E1
-           R    2325          3#    
-RIO.RIO.ST4A.R8_E1
-           R    2326          3#    
-RIO.RIO.ST4A.R9_E1
-           R    2327          3#    
-RIO.RIO.ST4A.ReserveA01
-           R    2330          3#    
-RIO.RIO.ST4A.ReserveA02
-           R    2334          3#    
-RIO.RIO.ST4A.V4_Galerie
-           R    2331          3#    
 s.com.ELine_Driver.address
            R    3089          4#    4     
 s.com.ELine_Driver.channel
@@ -3564,6 +3752,12 @@ S.ODM.ReadTimeout
                 1000          1#    
 s.odm.RegChannel
            R    2086          6#    6     
+S.PRJ.1_NORD.IPChannel
+                9             1#    
+S.PRJ.1_NORD.IPNode
+                14            1#    
+S.PRJ.1_NORD.SbusStation
+                14            1#    
 S.PRJ.1_SUD.IPChannel
                 9             1#    
 S.PRJ.1_SUD.IPNode
@@ -3582,6 +3776,18 @@ S.PRJ.2ème_3EME_NORD.IPNode
                 1             1#    
 S.PRJ.2ème_3EME_NORD.SbusStation
                 1             1#    
+S.PRJ.2_NORD.IPChannel
+                9             1#    
+S.PRJ.2_NORD.IPNode
+                16            1#    
+S.PRJ.2_NORD.SbusStation
+                16            1#    
+S.PRJ.2_SUD.IPChannel
+                9             1#    
+S.PRJ.2_SUD.IPNode
+                15            1#    
+S.PRJ.2_SUD.SbusStation
+                15            1#    
 S.PRJ.3ème_4EME_SUD.IPChannel
                 9             1#    
 S.PRJ.3ème_4EME_SUD.IPNode
@@ -3628,18 +3834,24 @@ S.RIO.DiagFlagBase
            F    2006..2021    3#    2     3     
 S.RIO.GlobalDiagnostic
            F    2006          3#    
-S.RIO.Hall_Galerie.Cons_Gen
-           R    2226          3#    2     3     
 S.RIO.Hall_Galerie.DataExchange
            F    2014          3#    
 S.RIO.Hall_Galerie.Diagnostic
            F    2015          3#    
 S.RIO.Hall_Galerie.DiagnosticID
                 0             3#    
-S.RIO.Hall_Galerie.DigGen
-           F    2431..2438    3#    2     3     
 S.RIO.Hall_Galerie.IPAdds
                 0C0A80A63H    3#    
+S.RIO.Hall_Galerie.MasterZone1Ana
+           R    4124..4131    3#    2     3     
+S.RIO.Hall_Galerie.MasterZone1Dig
+           F    2431..2438    3#    2     3     
+S.RIO.Hall_Galerie.RioZone1Ana
+           R    4138..4145    3#    2     3     
+S.RIO.Hall_Galerie.RioZone1Dig
+           F    4297..4304    3#    2     3     
+S.RIO.Hall_Galerie.Slot0.DigitalInput
+           F    2393..2408    3#    2     3     
 S.RIO.Hall_Galerie.Slot1.AnalogueOutput
            R    2319..2322    3#    2     3     
 S.RIO.Hall_Galerie.Slot1.SwitchInput
@@ -3655,7 +3867,9 @@ S.RIO.Hall_Galerie.Slot3.SwitchInput
 S.RIO.Hall_Galerie.Slot4.AnalogueOutput
            R    2331..2334    3#    2     3     
 S.RIO.Hall_Galerie.Slot4.SwitchInput
-           F    2393..2408    3#    2     3     
+           F    4275..4290    3#    2     3     
+S.RIO.Hall_Galerie.Slot5.AnalogueInput
+           R    4180..4187    3#    2     3     
 S.RIO.Rez_SA1.Cons_Gen
            R    2227          3#    2     3     
 S.RIO.Rez_SA1.DataExchange

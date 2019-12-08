@@ -1,3 +1,5 @@
+from __future__ import division
+
 import time
 
 # python2-3 compatibility require 'pip install future'
@@ -164,7 +166,7 @@ class SAIATransferReadDeviceInformation(SAIATransfer):
         # keep care of accented chars ;)
         # TODO: using latin1 encoding by not sure if this is absolutely correct
         self._buffer+=data.decode('latin1')
-        count=len(data)/4
+        count=len(data)//4
         self._address+=count
         self._count-=count
         self.send()

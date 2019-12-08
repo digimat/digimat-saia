@@ -1,23 +1,23 @@
 SAIA PG5 LINKER V2.2.140                                               Page 1
 User: INDEA
-File: 5N_Station_A3.pcd   Linked: 10/04/17 15:11 
+File: 5N_Station_A3.pcd   Linked: 19/10/17 23:53 
 
         CODE    CODE    TXT/DB  EXTEN
 FILE    START   SEG     SEG     SEG     ASSEMBLY         FILE
 NUMBER  LINE    LINES   BYTES   BYTES   DATE AND TIME    NAME
 --------------------------------------------------------------------------------
-1       0       0       2256    0       10/04/17 15:11   _5N_Station_A3.src
-2       0       0       612     0       10/04/17 15:11   5N_Station_A3.srcrio
-3       0       0       0       0       10/04/17 15:11   _RIO Symbols.sy5
-4       0       9606    2106    1328    10/04/17 15:11   N5_Sstn_A3.fbd
-5       9606    1079    230     16      10/04/17 15:11   heavac5.srx
-6       10685   78      12      0       14/10/14 11:02   sfuplib3.src
+1       0       0       2256    0       19/10/17 23:53   _5N_Station_A3.src
+2       0       0       612     0       19/10/17 23:53   5N_Station_A3.srcrio
+3       0       0       0       0       19/10/17 23:53   _RIO Symbols.sy5
+4       0       9523    2106    1328    19/10/17 23:53   N5_Sstn_A3.fbd
+5       9523    1079    230     16      19/10/17 23:53   heavac5.srx
+6       10602   78      12      0       14/10/14 11:02   sfuplib3.src
 --------------------------------------------------------------------------------
 
-CODE SEGMENT SIZE:      11543 LINES (46172 BYTES)
+CODE SEGMENT SIZE:      11460 LINES (45840 BYTES)
 TEXT/DB SEGMENT SIZE:   5216 BYTES
 EXTENSION MEM SIZE:     1344 BYTES
-PUBLIC SYMBOLS:         840
+PUBLIC SYMBOLS:         848
 
 PUBLIC SYMBOLS
 ___ETR___  F    2229          6#    6     
@@ -72,15 +72,15 @@ __LIBVERS__._CWM_Email
 __LIBVERS__._DDC_Suite_25
                 2008160       1#    
 __LIBVERS__._DDC_Suite_27
-                2070128       1#    
+                2070137       1#    
 __LIBVERS__._DDCLibrary
                 2006208       1#    
 __LIBVERS__._EOB
                 2006147       1#    
 __LIBVERS__._EOBV3
-                3000011       1#    
+                3000030       1#    
 __LIBVERS__._ESUITE2
-                2000103       1#    
+                2000120       1#    
 __LIBVERS__._L6x_RoomController_PCD7_L60x
                 2006810       1#    
 __LIBVERS__._L79x_RoomController_PCD7_L79x
@@ -116,7 +116,7 @@ __LIBVERS__._SAIA_DALIF26
 __LIBVERS__._SAIA_EIB
                 2007520       1#    
 __LIBVERS__._SAIA_ELine
-                1000140       1#    
+                1002100       1#    
 __LIBVERS__._SAIA_EnergyModbus
                 2007520       1#    
 __LIBVERS__._SAIA_EnergySBus
@@ -129,10 +129,12 @@ __LIBVERS__._SAIA_HTTPC
                 1000130       1#    
 __LIBVERS__._SAIA_HWModemRF
                 1000010       1#    
+__LIBVERS__._SAIA_LONIP
+                2007300       1#    
 __LIBVERS__._SAIA_LONNET
                 2007520       1#    
 __LIBVERS__._SAIA_MODBUS
-                2007320       1#    
+                2007330       1#    
 __LIBVERS__._SAIA_MODEM
                 2007520       1#    
 __LIBVERS__._SAIA_PBUS_MODBUS_GTW
@@ -146,9 +148,9 @@ __LIBVERS__._SAIA_SFSYS
 __LIBVERS__._SAIA_SFUPANLG
                 2007340       1#    
 __LIBVERS__._SAIA_SFUPBASE
-                2007340       1#    
+                2007350       1#    
 __LIBVERS__._SAIA_SFUPCOMM
-                2007340       1#    
+                2007370       1#    
 __LIBVERS__._SAIA_SHMI
                 2000210       1#    
 __LIBVERS__._SAIA_SMONITORING
@@ -265,7 +267,7 @@ __Saia_Sfup__.rTmpCalcRemainder
 __Saia_Sfup__.rTmpCalcResult
            R    2184          6#    6     
 __SAIASystemBuildTime__
-                0481CCB83H    1#    6     
+                0EB24BA9BH    1#    6     
 __SASMVERS__    22140         1#    
 __TIME_BASE__   100           1#    
 __TIME_BASE_EXTN__
@@ -384,6 +386,8 @@ _HEAVAC._FB._TIME
            FB   18            5#    5     
 _HEAVAC._PRIV._ERROR
            F    2222          5#    5     
+A.EnOcean.EnOcean3.RcvFieldStrength
+           R    2556          4#    4     
 A.PCD.Communication.Channel2
                 2             4#    
 AP_5_22.Cde_VAV
@@ -502,18 +506,6 @@ EnOcean.Sensortec.RFx06_P_18.RcvTime
            R    137           4#    
 EnOcean.Sensortec.RFx06_P_18.TempCorr
            R    138           4#    
-EnOcean.Sensortec.RFx06_P_22.LearnCmd
-           F    117           4#    
-EnOcean.Sensortec.RFx06_P_22.LearnMode
-           F    118           4#    
-EnOcean.Sensortec.RFx06_P_22.RcvDate
-           R    139           4#    
-EnOcean.Sensortec.RFx06_P_22.RcvID
-           R    140           4#    
-EnOcean.Sensortec.RFx06_P_22.RcvTime
-           R    141           4#    
-EnOcean.Sensortec.RFx06_P_22.TempCorr
-           R    142           4#    
 EnOcean.Sensortec.RFx06_P_23.LearnCmd
            F    119           4#    
 EnOcean.Sensortec.RFx06_P_23.LearnMode
@@ -1043,15 +1035,19 @@ RIO.Sonde5_22_Cde_Clap
 RIO.Sonde5_22_Cde_Fr
            R    3058          3#    4     
 RIO.Sonde5_22_Cmd_Confort_Ch
-           R    2554          3#    4     
+           R    2902          3#    4     
 RIO.Sonde5_22_Cmd_Confort_Fr
-           R    2556          3#    4     
+           R    2904          3#    4     
+RIO.Sonde5_22_Cmd_Dec
+           R    2908          3#    4     
 RIO.Sonde5_22_Cmd_Mode
-           R    2558          3#    4     
+           R    2906          3#    4     
 RIO.Sonde5_22_Cmd_Reduit_Ch
-           R    2555          3#    4     
+           R    2903          3#    4     
 RIO.Sonde5_22_Cmd_Reduit_Fr
-           R    2557          3#    4     
+           R    2905          3#    4     
+RIO.Sonde5_22_Cmd_Temp
+           R    2907          3#    4     
 RIO.Sonde5_22_Defaut
            F    2671          3#    4     
 RIO.Sonde5_22_DP
@@ -1339,10 +1335,18 @@ S.IO.Slot7.SwitchInput
            F    2122..2137    1#    1     2     
 S.ODM.Initialized
                 0             1#    
+S.PRJ.1_NORD.SbusStation
+                14            1#    
+S.PRJ.1_SUD.SbusStation
+                13            1#    
 S.PRJ.1er_3EME_SUD.SbusStation
                 0             1#    
 S.PRJ.2ème_3EME_NORD.SbusStation
                 1             1#    
+S.PRJ.2_NORD.SbusStation
+                16            1#    
+S.PRJ.2_SUD.SbusStation
+                15            1#    
 S.PRJ.3ème_4EME_SUD.SbusStation
                 2             1#    
 S.PRJ.4ème_4EME_NORD.SbusStation
@@ -1411,7 +1415,7 @@ S.RIO.Sonde5_21
 S.RIO.Sonde5_22
            R    3055..3061    3#    2     3     
 S.RIO.Sonde5_22_Cmd
-           R    2554..2558    3#    2     3     
+           R    2902..2908    3#    2     3     
 S.RIO.Sonde5_23
            R    2635..2641    3#    2     3     
 S.RIO.Sonde5_23_Cmd
@@ -1574,6 +1578,8 @@ Sonde_5_22.Confort_Ch
            R    2053          4#    4     
 Sonde_5_22.Confort_Fr
            R    3199          4#    4     
+Sonde_5_22.Decalage
+           R    2557          4#    4     
 Sonde_5_22.Lib
            F    2374          4#    4     
 Sonde_5_22.Mode
@@ -1586,6 +1592,8 @@ Sonde_5_22.SP_Ch
            R    3073          4#    4     
 Sonde_5_22.SP_Fr
            R    2444          4#    4     
+Sonde_5_22.Temp
+           R    2558          4#    4     
 Sonde_5_23.Cde_Ch
            R    3065          4#    4     
 Sonde_5_23.Cde_Fr
@@ -1612,6 +1620,14 @@ Sonde5_22.Cde_VAV_Maxi
            R    2629          4#    4     
 Sonde5_22.Cde_VAV_Mini
            R    2630          4#    4     
+Sonde5_22.Decalage
+           R    2599          4#    4     
+Sonde5_22.Temp
+           R    2600          4#    4     
+Sonde5_4.Decalage
+           R    2601          4#    4     
+Sonde5_4.Temp
+           R    2602          4#    4     
 Sud_5.ConsTA
            R    230           4#    
 Sud_5.Horl F    152           4#    

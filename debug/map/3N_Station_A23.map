@@ -1,20 +1,20 @@
 SAIA PG5 LINKER V2.2.140                                               Page 1
 User: INDEA
-File: 3N_Station_A23.pcd   Linked: 08/05/17 14:40 
+File: 3N_Station_A23.pcd   Linked: 13/10/17 07:41 
 
         CODE    CODE    TXT/DB  EXTEN
 FILE    START   SEG     SEG     SEG     ASSEMBLY         FILE
 NUMBER  LINE    LINES   BYTES   BYTES   DATE AND TIME    NAME
 --------------------------------------------------------------------------------
-1       0       0       1676    0       08/05/17 14:40   _3N_Station_A23.src
-2       0       0       432     0       08/05/17 14:40   3N_Station_A23.srcrio
-3       0       0       0       0       08/05/17 14:40   _RIO Symbols.sy5
-4       0       7401    2106    1328    08/05/17 14:40   ST23A.fbd
-5       7401    1079    230     16      08/05/17 14:40   heavac5.srx
-6       8480    78      12      0       14/10/14 11:02   sfuplib3.src
+1       0       0       1676    0       13/10/17 07:41   _3N_Station_A23.src
+2       0       0       432     0       13/10/17 07:41   3N_Station_A23.srcrio
+3       0       0       0       0       13/10/17 07:41   _RIO Symbols.sy5
+4       0       7045    2106    1328    13/10/17 07:41   ST23A.fbd
+5       7045    1079    230     16      13/10/17 07:41   heavac5.srx
+6       8124    78      12      0       14/10/14 11:02   sfuplib3.src
 --------------------------------------------------------------------------------
 
-CODE SEGMENT SIZE:      9197 LINES (36788 BYTES)
+CODE SEGMENT SIZE:      8829 LINES (35316 BYTES)
 TEXT/DB SEGMENT SIZE:   4456 BYTES
 EXTENSION MEM SIZE:     1344 BYTES
 PUBLIC SYMBOLS:         868
@@ -267,7 +267,7 @@ __Saia_Sfup__.rTmpCalcRemainder
 __Saia_Sfup__.rTmpCalcResult
            R    2191          6#    6     
 __SAIASystemBuildTime__
-                0CA689844H    1#    6     
+                0B768A3B9H    1#    6     
 __SASMVERS__    22140         1#    
 __TIME_BASE__   100           1#    
 __TIME_BASE_EXTN__
@@ -858,54 +858,6 @@ EnOcean.PEHA.ANT_0.UnusedID
            R    2611          4#    4     
 EnOcean.PEHA.ANT_0.UnusedIDClear
            F    2395          4#    4     
-EnOcean.Sensortec.RFx06_P_35.LearnCmd
-           F    2396          4#    4     
-EnOcean.Sensortec.RFx06_P_35.LearnMode
-           F    2397          4#    4     
-EnOcean.Sensortec.RFx06_P_35.RcvDate
-           R    2612          4#    4     
-EnOcean.Sensortec.RFx06_P_35.RcvID
-           R    2613          4#    4     
-EnOcean.Sensortec.RFx06_P_35.RcvTime
-           R    2614          4#    4     
-EnOcean.Sensortec.RFx06_P_35.TempCorr
-           R    2615          4#    4     
-EnOcean.Sensortec.RFx06_P_36.LearnCmd
-           F    2398          4#    4     
-EnOcean.Sensortec.RFx06_P_36.LearnMode
-           F    2399          4#    4     
-EnOcean.Sensortec.RFx06_P_36.RcvDate
-           R    2616          4#    4     
-EnOcean.Sensortec.RFx06_P_36.RcvID
-           R    2617          4#    4     
-EnOcean.Sensortec.RFx06_P_36.RcvTime
-           R    2618          4#    4     
-EnOcean.Sensortec.RFx06_P_36.TempCorr
-           R    2619          4#    4     
-EnOcean.Sensortec.RFx06_P_37.LearnCmd
-           F    2400          4#    4     
-EnOcean.Sensortec.RFx06_P_37.LearnMode
-           F    2401          4#    4     
-EnOcean.Sensortec.RFx06_P_37.RcvDate
-           R    2620          4#    4     
-EnOcean.Sensortec.RFx06_P_37.RcvID
-           R    2621          4#    4     
-EnOcean.Sensortec.RFx06_P_37.RcvTime
-           R    2622          4#    4     
-EnOcean.Sensortec.RFx06_P_37.TempCorr
-           R    2623          4#    4     
-EnOcean.Sensortec.RFx06_P_38.LearnCmd
-           F    2402          4#    4     
-EnOcean.Sensortec.RFx06_P_38.LearnMode
-           F    2403          4#    4     
-EnOcean.Sensortec.RFx06_P_38.RcvDate
-           R    2624          4#    4     
-EnOcean.Sensortec.RFx06_P_38.RcvID
-           R    2625          4#    4     
-EnOcean.Sensortec.RFx06_P_38.RcvTime
-           R    2626          4#    4     
-EnOcean.Sensortec.RFx06_P_38.TempCorr
-           R    2627          4#    4     
 EnOcean.Sensortec.RFx06_P_39.LearnCmd
            F    2404          4#    4     
 EnOcean.Sensortec.RFx06_P_39.LearnMode
@@ -1106,15 +1058,19 @@ RIO.Sonde3_35_Cde_Clap
 RIO.Sonde3_35_Cde_Fr
            R    2021          3#    4     
 RIO.Sonde3_35_Cmd_Confort_Ch
-           R    2715          3#    4     
+           R    2612          3#    4     
 RIO.Sonde3_35_Cmd_Confort_Fr
-           R    2717          3#    4     
+           R    2614          3#    4     
+RIO.Sonde3_35_Cmd_Dec
+           R    2618          3#    4     
 RIO.Sonde3_35_Cmd_Mode
-           R    2719          3#    4     
+           R    2616          3#    4     
 RIO.Sonde3_35_Cmd_Reduit_Ch
-           R    2716          3#    4     
+           R    2613          3#    4     
 RIO.Sonde3_35_Cmd_Reduit_Fr
-           R    2718          3#    4     
+           R    2615          3#    4     
+RIO.Sonde3_35_Cmd_Temp
+           R    2617          3#    4     
 RIO.Sonde3_35_Defaut
            F    2435          3#    4     
 RIO.Sonde3_35_Lib
@@ -1136,15 +1092,19 @@ RIO.Sonde3_36_Cde_Clap
 RIO.Sonde3_36_Cde_Fr
            R    2036          3#    4     
 RIO.Sonde3_36_Cmd_Confort_Ch
-           R    2727          3#    4     
+           R    2619          3#    4     
 RIO.Sonde3_36_Cmd_Confort_Fr
-           R    2729          3#    4     
+           R    2621          3#    4     
+RIO.Sonde3_36_Cmd_Dec
+           R    2625          3#    4     
 RIO.Sonde3_36_Cmd_Mode
-           R    2731          3#    4     
+           R    2623          3#    4     
 RIO.Sonde3_36_Cmd_Reduit_Ch
-           R    2728          3#    4     
+           R    2620          3#    4     
 RIO.Sonde3_36_Cmd_Reduit_Fr
-           R    2730          3#    4     
+           R    2622          3#    4     
+RIO.Sonde3_36_Cmd_Temp
+           R    2624          3#    4     
 RIO.Sonde3_36_Defaut
            F    2437          3#    4     
 RIO.Sonde3_36_Lib
@@ -1166,15 +1126,19 @@ RIO.Sonde3_37_Cde_Clap
 RIO.Sonde3_37_Cde_Fr
            R    2735          3#    4     
 RIO.Sonde3_37_Cmd_Confort_Ch
-           R    2739          3#    4     
+           R    2877          3#    4     
 RIO.Sonde3_37_Cmd_Confort_Fr
-           R    2741          3#    4     
+           R    2879          3#    4     
+RIO.Sonde3_37_Cmd_Dec
+           R    2883          3#    4     
 RIO.Sonde3_37_Cmd_Mode
-           R    2743          3#    4     
+           R    2881          3#    4     
 RIO.Sonde3_37_Cmd_Reduit_Ch
-           R    2740          3#    4     
+           R    2878          3#    4     
 RIO.Sonde3_37_Cmd_Reduit_Fr
-           R    2742          3#    4     
+           R    2880          3#    4     
+RIO.Sonde3_37_Cmd_Temp
+           R    2882          3#    4     
 RIO.Sonde3_37_Defaut
            F    2439          3#    4     
 RIO.Sonde3_37_Lib
@@ -1196,15 +1160,19 @@ RIO.Sonde3_38_Cde_Clap
 RIO.Sonde3_38_Cde_Fr
            R    2747          3#    4     
 RIO.Sonde3_38_Cmd_Confort_Ch
-           R    2751          3#    4     
+           R    2884          3#    4     
 RIO.Sonde3_38_Cmd_Confort_Fr
-           R    2753          3#    4     
+           R    2886          3#    4     
+RIO.Sonde3_38_Cmd_Dec
+           R    2890          3#    4     
 RIO.Sonde3_38_Cmd_Mode
-           R    2755          3#    4     
+           R    2888          3#    4     
 RIO.Sonde3_38_Cmd_Reduit_Ch
-           R    2752          3#    4     
+           R    2885          3#    4     
 RIO.Sonde3_38_Cmd_Reduit_Fr
-           R    2754          3#    4     
+           R    2887          3#    4     
+RIO.Sonde3_38_Cmd_Temp
+           R    2889          3#    4     
 RIO.Sonde3_38_Defaut
            F    2441          3#    4     
 RIO.Sonde3_38_Lib
@@ -1482,10 +1450,18 @@ S.IO.Slot4.SwitchInput
            F    2074..2089    1#    1     2     
 S.ODM.Initialized
                 0             1#    
+S.PRJ.1_NORD.SbusStation
+                14            1#    
+S.PRJ.1_SUD.SbusStation
+                13            1#    
 S.PRJ.1er_3EME_SUD.SbusStation
                 0             1#    
 S.PRJ.2ème_3EME_NORD.SbusStation
                 1             1#    
+S.PRJ.2_NORD.SbusStation
+                16            1#    
+S.PRJ.2_SUD.SbusStation
+                15            1#    
 S.PRJ.3ème_4EME_SUD.SbusStation
                 2             1#    
 S.PRJ.3N_Station_A23.SbusStation
@@ -1517,19 +1493,19 @@ S.RIO.DigGen
 S.RIO.Sonde3_35
            R    2018..2026    3#    2     3     
 S.RIO.Sonde3_35_Cmd
-           R    2715..2719    3#    2     3     
+           R    2612..2618    3#    2     3     
 S.RIO.Sonde3_36
            R    2033..2041    3#    2     3     
 S.RIO.Sonde3_36_Cmd
-           R    2727..2731    3#    2     3     
+           R    2619..2625    3#    2     3     
 S.RIO.Sonde3_37
            R    2732..2738    3#    2     3     
 S.RIO.Sonde3_37_Cmd
-           R    2739..2743    3#    2     3     
+           R    2877..2883    3#    2     3     
 S.RIO.Sonde3_38
            R    2744..2750    3#    2     3     
 S.RIO.Sonde3_38_Cmd
-           R    2751..2755    3#    2     3     
+           R    2884..2890    3#    2     3     
 S.RIO.Sonde3_39
            R    2756..2762    3#    2     3     
 S.RIO.Sonde3_39_Cmd
@@ -1553,6 +1529,8 @@ Sonde3_35.Confort_Ch
            R    2652          4#    4     
 Sonde3_35.Confort_Fr
            R    2653          4#    4     
+Sonde3_35.Decalage
+           R    2359          4#    4     
 Sonde3_35.Lib
            F    2421          4#    4     
 Sonde3_35.Mode
@@ -1565,6 +1543,8 @@ Sonde3_35.SP_Ch
            R    2698          4#    4     
 Sonde3_35.SP_Fr
            R    2699          4#    4     
+Sonde3_35.Temp
+           R    2360          4#    4     
 Sonde3_36.Cde_Ch
            R    2657          4#    4     
 Sonde3_36.Cde_Clap
@@ -1575,6 +1555,8 @@ Sonde3_36.Confort_Ch
            R    2660          4#    4     
 Sonde3_36.Confort_Fr
            R    2661          4#    4     
+Sonde3_36.Decalage
+           R    2405          4#    4     
 Sonde3_36.Lib
            F    2422          4#    4     
 Sonde3_36.Mode
@@ -1587,6 +1569,8 @@ Sonde3_36.SP_Ch
            R    2700          4#    4     
 Sonde3_36.SP_Fr
            R    2701          4#    4     
+Sonde3_36.Temp
+           R    2406          4#    4     
 Sonde3_37.Cde_Ch
            R    2665          4#    4     
 Sonde3_37.Cde_Clap
@@ -1597,6 +1581,8 @@ Sonde3_37.Confort_Ch
            R    2668          4#    4     
 Sonde3_37.Confort_Fr
            R    2669          4#    4     
+Sonde3_37.Decalage
+           R    2407          4#    4     
 Sonde3_37.Lib
            F    2423          4#    4     
 Sonde3_37.Mode
@@ -1609,6 +1595,8 @@ Sonde3_37.SP_Ch
            R    2702          4#    4     
 Sonde3_37.SP_Fr
            R    2703          4#    4     
+Sonde3_37.Temp
+           R    2408          4#    4     
 Sonde3_38.Cde_Ch
            R    2673          4#    4     
 Sonde3_38.Cde_Clap
@@ -1619,6 +1607,8 @@ Sonde3_38.Confort_Ch
            R    2676          4#    4     
 Sonde3_38.Confort_Fr
            R    2677          4#    4     
+Sonde3_38.Decalage
+           R    2409          4#    4     
 Sonde3_38.Lib
            F    2424          4#    4     
 Sonde3_38.Mode
@@ -1631,6 +1621,8 @@ Sonde3_38.SP_Ch
            R    2704          4#    4     
 Sonde3_38.SP_Fr
            R    2705          4#    4     
+Sonde3_38.Temp
+           R    2454          4#    4     
 Sonde3_39.Cde_Ch
            R    2681          4#    4     
 Sonde3_39.Cde_Clap
@@ -1641,6 +1633,8 @@ Sonde3_39.Confort_Ch
            R    2684          4#    4     
 Sonde3_39.Confort_Fr
            R    2685          4#    4     
+Sonde3_39.Decalage
+           R    2455          4#    4     
 Sonde3_39.Lib
            F    2425          4#    4     
 Sonde3_39.Mode
@@ -1653,6 +1647,8 @@ Sonde3_39.SP_Ch
            R    2706          4#    4     
 Sonde3_39.SP_Fr
            R    2707          4#    4     
+Sonde3_39.Temp
+           R    2456          4#    4     
 Sonde3_40.Cde_Ch
            R    2689          4#    4     
 Sonde3_40.Cde_Clap
@@ -1663,6 +1659,8 @@ Sonde3_40.Confort_Ch
            R    2692          4#    4     
 Sonde3_40.Confort_Fr
            R    2693          4#    4     
+Sonde3_40.Decalage
+           R    2457          4#    4     
 Sonde3_40.Lib
            F    2426          4#    4     
 Sonde3_40.Mode
@@ -1675,5 +1673,7 @@ Sonde3_40.SP_Ch
            R    2031          4#    4     
 Sonde3_40.SP_Fr
            R    2032          4#    4     
+Sonde3_40.Temp
+           R    2458          4#    4     
 
 Linkage complete. 0 errors, 0 warnings.

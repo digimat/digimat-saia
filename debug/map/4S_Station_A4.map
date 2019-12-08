@@ -1,23 +1,23 @@
 SAIA PG5 LINKER V2.2.140                                               Page 1
 User: INDEA
-File: 4S_Station_A4.pcd   Linked: 21/06/17 08:45 
+File: 4S_Station_A4.pcd   Linked: 19/10/17 16:41 
 
         CODE    CODE    TXT/DB  EXTEN
 FILE    START   SEG     SEG     SEG     ASSEMBLY         FILE
 NUMBER  LINE    LINES   BYTES   BYTES   DATE AND TIME    NAME
 --------------------------------------------------------------------------------
-1       0       0       1332    0       21/06/17 08:45   _4S_Station_A4.src
-2       0       0       332     0       21/06/17 08:45   4S_Station_A4.srcrio
-3       0       0       0       0       21/06/17 08:45   _RIO Symbols.sy5
-4       0       2453    2106    1328    21/06/17 08:45   ST4A.fbd
-5       2453    1079    230     16      21/06/17 08:45   heavac5.srx
-6       3532    78      12      0       14/10/14 11:02   sfuplib3.src
+1       0       0       1332    0       19/10/17 16:41   _4S_Station_A4.src
+2       0       0       372     0       19/10/17 16:41   4S_Station_A4.srcrio
+3       0       0       0       0       19/10/17 16:41   _RIO Symbols.sy5
+4       0       3540    2106    1328    19/10/17 16:41   ST4A.fbd
+5       3540    1079    230     16      19/10/17 16:41   heavac5.srx
+6       4619    78      12      0       14/10/14 11:02   sfuplib3.src
 --------------------------------------------------------------------------------
 
-CODE SEGMENT SIZE:      3967 LINES (15868 BYTES)
-TEXT/DB SEGMENT SIZE:   4012 BYTES
+CODE SEGMENT SIZE:      5122 LINES (20488 BYTES)
+TEXT/DB SEGMENT SIZE:   4052 BYTES
 EXTENSION MEM SIZE:     1344 BYTES
-PUBLIC SYMBOLS:         482
+PUBLIC SYMBOLS:         574
 
 PUBLIC SYMBOLS
 ___ETR___  F    2165          6#    6     
@@ -267,7 +267,7 @@ __Saia_Sfup__.rTmpCalcRemainder
 __Saia_Sfup__.rTmpCalcResult
            R    2175          6#    6     
 __SAIASystemBuildTime__
-                0BE1348D5H    1#    6     
+                0BA9E1D62H    1#    6     
 __SASMVERS__    22140         1#    
 __TIME_BASE__   100           1#    
 __TIME_BASE_EXTN__
@@ -460,6 +460,78 @@ A.HVC.Sonde4_5_Fr.SetPt
            R    2181          4#    4     
 A.HVC.Sonde4_5_Fr.YOut
            R    2284          4#    4     
+A.HVC.Sonde4_5B_Ch.ActVal
+           R    2420          4#    4     
+A.HVC.Sonde4_5B_Ch.Auxiliary
+                0             4#    
+A.HVC.Sonde4_5B_Ch.DeadR
+           R    2419          4#    4     
+A.HVC.Sonde4_5B_Ch.Deviat
+           R    2421          4#    4     
+A.HVC.Sonde4_5B_Ch.Disable
+           R    2412..2425    4#    4     
+A.HVC.Sonde4_5B_Ch.Factor
+                1             4#    
+A.HVC.Sonde4_5B_Ch.IntTime
+           R    2416          4#    4     
+A.HVC.Sonde4_5B_Ch.LimHigh
+           R    2418          4#    4     
+A.HVC.Sonde4_5B_Ch.Limits
+                1             4#    
+A.HVC.Sonde4_5B_Ch.LimLow
+           R    2417          4#    4     
+A.HVC.Sonde4_5B_Ch.ManVal
+           R    2425          4#    4     
+A.HVC.Sonde4_5B_Ch.Mode
+           F    2365..2366    4#    4     
+A.HVC.Sonde4_5B_Ch.Offset
+           R    2414          4#    4     
+A.HVC.Sonde4_5B_Ch.PFac
+           R    2034          4#    4     
+A.HVC.Sonde4_5B_Ch.PFac00
+           R    2415          4#    4     
+A.HVC.Sonde4_5B_Ch.PtIni
+           R    2413          4#    4     
+A.HVC.Sonde4_5B_Ch.SetPt
+           R    2358          4#    4     
+A.HVC.Sonde4_5B_Ch.YOut
+           R    2424          4#    4     
+A.HVC.Sonde4_5B_Fr.ActVal
+           R    2434          4#    4     
+A.HVC.Sonde4_5B_Fr.Auxiliary
+                0             4#    
+A.HVC.Sonde4_5B_Fr.DeadR
+           R    2433          4#    4     
+A.HVC.Sonde4_5B_Fr.Deviat
+           R    2435          4#    4     
+A.HVC.Sonde4_5B_Fr.Disable
+           R    2426..2439    4#    4     
+A.HVC.Sonde4_5B_Fr.Factor
+                1             4#    
+A.HVC.Sonde4_5B_Fr.IntTime
+           R    2430          4#    4     
+A.HVC.Sonde4_5B_Fr.LimHigh
+           R    2432          4#    4     
+A.HVC.Sonde4_5B_Fr.Limits
+                1             4#    
+A.HVC.Sonde4_5B_Fr.LimLow
+           R    2431          4#    4     
+A.HVC.Sonde4_5B_Fr.ManVal
+           R    2439          4#    4     
+A.HVC.Sonde4_5B_Fr.Mode
+           F    2368..2369    4#    4     
+A.HVC.Sonde4_5B_Fr.Offset
+           R    2428          4#    4     
+A.HVC.Sonde4_5B_Fr.PFac
+           R    2360          4#    4     
+A.HVC.Sonde4_5B_Fr.PFac00
+           R    2429          4#    4     
+A.HVC.Sonde4_5B_Fr.PtIni
+           R    2427          4#    4     
+A.HVC.Sonde4_5B_Fr.SetPt
+           R    2362          4#    4     
+A.HVC.Sonde4_5B_Fr.YOut
+           R    2438          4#    4     
 A.PCD.Communication.Channel2
                 2             4#    
 EnOcean.ANT4_4R1.RcvID
@@ -502,6 +574,18 @@ EnOcean.Sensortec.RFx06_P_0.RcvTime
            R    2339          4#    4     
 EnOcean.Sensortec.RFx06_P_0.TempCorr
            R    2340          4#    4     
+EnOcean.Sensortec.RFx06_P_1.LearnCmd
+           F    2395          4#    4     
+EnOcean.Sensortec.RFx06_P_1.LearnMode
+           F    2396          4#    4     
+EnOcean.Sensortec.RFx06_P_1.RcvDate
+           R    2448          4#    4     
+EnOcean.Sensortec.RFx06_P_1.RcvID
+           R    2449          4#    4     
+EnOcean.Sensortec.RFx06_P_1.RcvTime
+           R    2450          4#    4     
+EnOcean.Sensortec.RFx06_P_1.TempCorr
+           R    2451          4#    4     
 EnOcean.Temp.T4_5.Defaut
            F    2263          4#    4     
 EnOcean.Temp.T4_5.SetPoint_App
@@ -510,6 +594,14 @@ EnOcean.Temp.T4_5.Temp
            R    2342          4#    4     
 EnOcean.Temp.T4_5.TimeOut
            F    2264          4#    4     
+EnOcean.Temp.T4_5B.Defaut
+           F    2397          4#    4     
+EnOcean.Temp.T4_5B.SetPoint_App
+           R    2452          4#    4     
+EnOcean.Temp.T4_5B.Temp
+           R    2453          4#    4     
+EnOcean.Temp.T4_5B.TimeOut
+           F    2398          4#    4     
 IO.Slot0.IOAccess.ANALOGUE_OUTPUT_0
                 0             1#    
 IO.Slot0.IOAccess.ANALOGUE_OUTPUT_1
@@ -640,6 +732,62 @@ RIO.Sonde4_5_Temp
            R    2288          3#    4     
 RIO.Sonde4_5_TimeOut
            F    2295          3#    4     
+RIO.Sonde4_5B_Cde_Ch
+           R    2466          3#    4     
+RIO.Sonde4_5B_Cde_Clap
+           R    2468          3#    4     
+RIO.Sonde4_5B_Cde_Fr
+           R    2467          3#    4     
+RIO.Sonde4_5B_Def02
+           F    2402          3#    
+RIO.Sonde4_5B_Def03
+           F    2403          3#    
+RIO.Sonde4_5B_Def04
+           F    2404          3#    
+RIO.Sonde4_5B_Def05
+           F    2405          3#    
+RIO.Sonde4_5B_Def06
+           F    2406          3#    
+RIO.Sonde4_5B_Def07
+           F    2407          3#    
+RIO.Sonde4_5B_Defaut
+           F    2400          3#    4     
+RIO.Sonde4_5B_Lib
+           F    2408          3#    4     
+RIO.Sonde4_5B_Lib01
+           F    2409          3#    
+RIO.Sonde4_5B_Lib02
+           F    2410          3#    
+RIO.Sonde4_5B_Lib03
+           F    2411          3#    
+RIO.Sonde4_5B_Lib04
+           F    2412          3#    
+RIO.Sonde4_5B_Lib05
+           F    2413          3#    
+RIO.Sonde4_5B_Lib06
+           F    2414          3#    
+RIO.Sonde4_5B_Lib07
+           F    2415          3#    
+RIO.Sonde4_5B_SetPoint
+           R    2465          3#    4     
+RIO.Sonde4_5B_SP_Ch
+           R    2469          3#    4     
+RIO.Sonde4_5B_SP_Fr
+           R    2470          3#    4     
+RIO.Sonde4_5B_Temp
+           R    2464          3#    4     
+RIO.Sonde4_5B_TimeOut
+           F    2401          3#    4     
+RIO.Sondes4_5B_Cmd_Confort_Ch
+           R    2471          3#    4     
+RIO.Sondes4_5B_Cmd_Confort_Fr
+           R    2473          3#    4     
+RIO.Sondes4_5B_Cmd_Mode
+           R    2475          3#    4     
+RIO.Sondes4_5B_Cmd_Reduit_Ch
+           R    2472          3#    4     
+RIO.Sondes4_5B_Cmd_Reduit_Fr
+           R    2474          3#    4     
 RIO.ST4A.V1_4_41
            R    2012          1#    1     4     
 RIO.ST4A.V1_4_42
@@ -849,12 +997,18 @@ S.IO.Slot3.SwitchInput
            F    2058..2073    1#    1     2     
 S.ODM.Initialized
                 0             1#    
+S.PRJ.1_NORD.SbusStation
+                14            1#    
 S.PRJ.1_SUD.SbusStation
                 13            1#    
 S.PRJ.1er_3EME_SUD.SbusStation
                 0             1#    
 S.PRJ.2ème_3EME_NORD.SbusStation
                 1             1#    
+S.PRJ.2_NORD.SbusStation
+                16            1#    
+S.PRJ.2_SUD.SbusStation
+                15            1#    
 S.PRJ.3ème_4EME_SUD.SbusStation
                 2             1#    
 S.PRJ.4ème_4EME_NORD.SbusStation
@@ -887,6 +1041,14 @@ S.RIO.Sonde4_5
            R    2288..2294    3#    2     3     
 S.RIO.Sonde4_5_Cmd
            R    2019..2023    3#    2     3     
+S.RIO.Sonde4_5B
+           R    2464..2470    3#    2     3     
+S.RIO.Sonde4_5B_Def
+           F    2400..2407    3#    2     3     
+S.RIO.Sonde4_5B_Lib
+           F    2408..2415    3#    2     3     
+S.RIO.Sondes4_5B_Cmd
+           R    2471..2475    3#    2     3     
 S.RIO.Trans2_Sonde4_2
            R    2016..2018    3#    2     3     
 S.SYS.SASMVERS  2002140       1#    
@@ -912,6 +1074,28 @@ Sonde4_5.SP_Ch
            R    2029          4#    4     
 Sonde4_5.SP_Fr
            R    2030          4#    4     
+Sonde4_5B.Cde_Ch
+           R    2454          4#    4     
+Sonde4_5B.Cde_Clap
+           R    2455          4#    4     
+Sonde4_5B.Cde_Fr
+           R    2456          4#    4     
+Sonde4_5B.Confort_Ch
+           R    2457          4#    4     
+Sonde4_5B.Confort_Fr
+           R    2458          4#    4     
+Sonde4_5B.Lib
+           F    2399          4#    4     
+Sonde4_5B.Mode
+           R    2459          4#    4     
+Sonde4_5B.Reduit_Ch
+           R    2460          4#    4     
+Sonde4_5B.Reduit_Fr
+           R    2461          4#    4     
+Sonde4_5B.SP_Ch
+           R    2462          4#    4     
+Sonde4_5B.SP_Fr
+           R    2463          4#    4     
 Sud_4.ConsTA
            R    2351          4#    4     
 Sud_4.Horl F    2266          4#    4     

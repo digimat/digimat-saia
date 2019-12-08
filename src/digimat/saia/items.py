@@ -237,7 +237,7 @@ class SAIABooleanItem(SAIAItem):
 
 class SAIAAnalogItem(SAIAItem):
     def onInit(self):
-        super(self, SAIAAnalogItem).onInit()
+        super(SAIAAnalogItem, self).onInit()
         self._formater=None
 
     def validateValue(self, value):

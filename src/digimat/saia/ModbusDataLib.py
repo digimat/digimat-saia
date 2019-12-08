@@ -96,9 +96,11 @@ Word and Packed Binary String Conversions:
 """
 #############################################################
 
+from __future__ import division
+
 import struct
 import array
-from builtins import bytes
+# from builtins import bytes
 
 ############################################################################################
 
@@ -165,7 +167,7 @@ def bin2intlist(binval):
     16 bit integers. E.g. '\xF1\x23\x12\xD9' --> [61731, 4825]
     binval *must* be an even number of bytes to convert to integers.
     """
-    return list(struct.unpack('>%dH' % (len(binval) / 2), binval))
+    return list(struct.unpack('>%dH' % (len(binval) // 2), binval))
 
 
 #############################################################
@@ -186,7 +188,7 @@ def signedbin2intlist(binval):
     binval *must* be an even number of bytes to convert to integers.
     E.g. '\xF1\x23\x12\xD9' --> [-3805, 4825]
     """
-    return list(struct.unpack('>%dh' % (len(binval) / 2), binval))
+    return list(struct.unpack('>%dh' % (len(binval) // 2), binval))
 
 
 #############################################################

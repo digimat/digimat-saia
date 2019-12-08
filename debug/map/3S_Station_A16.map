@@ -1,23 +1,23 @@
 SAIA PG5 LINKER V2.2.140                                               Page 1
 User: INDEA
-File: 3S_Station_A16.pcd   Linked: 27/03/17 07:17 
+File: 3S_Station_A16.pcd   Linked: 05/10/17 18:05 
 
         CODE    CODE    TXT/DB  EXTEN
 FILE    START   SEG     SEG     SEG     ASSEMBLY         FILE
 NUMBER  LINE    LINES   BYTES   BYTES   DATE AND TIME    NAME
 --------------------------------------------------------------------------------
-1       0       0       1336    0       27/03/17 07:17   _3S_Station_A16.src
-2       0       0       332     0       27/03/17 07:17   3S_Station_A16.srcrio
-3       0       0       0       0       27/03/17 07:17   _RIO Symbols.sy5
-4       0       2352    2106    1328    27/03/17 07:17   ST16A.fbd
-5       2352    1079    230     16      27/03/17 07:17   heavac5.srx
-6       3431    78      12      0       14/10/14 11:02   sfuplib3.src
+1       0       0       1336    0       05/10/17 18:05   _3S_Station_A16.src
+2       0       0       332     0       05/10/17 18:05   3S_Station_A16.srcrio
+3       0       0       0       0       05/10/17 18:05   _RIO Symbols.sy5
+4       0       2358    2106    1328    05/10/17 18:05   ST16A.fbd
+5       2358    1079    230     16      05/10/17 18:05   heavac5.srx
+6       3437    78      12      0       14/10/14 11:02   sfuplib3.src
 --------------------------------------------------------------------------------
 
-CODE SEGMENT SIZE:      3853 LINES (15412 BYTES)
+CODE SEGMENT SIZE:      3862 LINES (15448 BYTES)
 TEXT/DB SEGMENT SIZE:   4016 BYTES
 EXTENSION MEM SIZE:     1344 BYTES
-PUBLIC SYMBOLS:         479
+PUBLIC SYMBOLS:         485
 
 PUBLIC SYMBOLS
 ___ETR___  F    2155          6#    6     
@@ -72,15 +72,15 @@ __LIBVERS__._CWM_Email
 __LIBVERS__._DDC_Suite_25
                 2008160       1#    
 __LIBVERS__._DDC_Suite_27
-                2070128       1#    
+                2070137       1#    
 __LIBVERS__._DDCLibrary
                 2006208       1#    
 __LIBVERS__._EOB
                 2006147       1#    
 __LIBVERS__._EOBV3
-                3000011       1#    
+                3000030       1#    
 __LIBVERS__._ESUITE2
-                2000103       1#    
+                2000120       1#    
 __LIBVERS__._L6x_RoomController_PCD7_L60x
                 2006810       1#    
 __LIBVERS__._L79x_RoomController_PCD7_L79x
@@ -116,7 +116,7 @@ __LIBVERS__._SAIA_DALIF26
 __LIBVERS__._SAIA_EIB
                 2007520       1#    
 __LIBVERS__._SAIA_ELine
-                1000140       1#    
+                1002100       1#    
 __LIBVERS__._SAIA_EnergyModbus
                 2007520       1#    
 __LIBVERS__._SAIA_EnergySBus
@@ -129,10 +129,12 @@ __LIBVERS__._SAIA_HTTPC
                 1000130       1#    
 __LIBVERS__._SAIA_HWModemRF
                 1000010       1#    
+__LIBVERS__._SAIA_LONIP
+                2007300       1#    
 __LIBVERS__._SAIA_LONNET
                 2007520       1#    
 __LIBVERS__._SAIA_MODBUS
-                2007320       1#    
+                2007330       1#    
 __LIBVERS__._SAIA_MODEM
                 2007520       1#    
 __LIBVERS__._SAIA_PBUS_MODBUS_GTW
@@ -146,9 +148,9 @@ __LIBVERS__._SAIA_SFSYS
 __LIBVERS__._SAIA_SFUPANLG
                 2007340       1#    
 __LIBVERS__._SAIA_SFUPBASE
-                2007340       1#    
+                2007350       1#    
 __LIBVERS__._SAIA_SFUPCOMM
-                2007340       1#    
+                2007370       1#    
 __LIBVERS__._SAIA_SHMI
                 2000210       1#    
 __LIBVERS__._SAIA_SMONITORING
@@ -265,7 +267,7 @@ __Saia_Sfup__.rTmpCalcRemainder
 __Saia_Sfup__.rTmpCalcResult
            R    2234          6#    6     
 __SAIASystemBuildTime__
-                0FA60675DH    1#    6     
+                088CDA457H    1#    6     
 __SASMVERS__    22140         1#    
 __TIME_BASE__   100           1#    
 __TIME_BASE_EXTN__
@@ -384,6 +386,8 @@ _HEAVAC._FB._TIME
            FB   25            5#    5     
 _HEAVAC._PRIV._ERROR
            F    2148          5#    5     
+A.EnOcean.EnOcean.RcvFieldStrength
+           R    2357          4#    4     
 A.HVC.Sonde3_21_Ch.ActVal
            R    2258          4#    4     
 A.HVC.Sonde3_21_Ch.Auxiliary
@@ -845,10 +849,18 @@ S.IO.Slot3.SwitchInput
            F    2640..2655    1#    1     2     
 S.ODM.Initialized
                 0             1#    
+S.PRJ.1_NORD.SbusStation
+                14            1#    
+S.PRJ.1_SUD.SbusStation
+                13            1#    
 S.PRJ.1er_3EME_SUD.SbusStation
                 0             1#    
 S.PRJ.2ème_3EME_NORD.SbusStation
                 1             1#    
+S.PRJ.2_NORD.SbusStation
+                16            1#    
+S.PRJ.2_SUD.SbusStation
+                15            1#    
 S.PRJ.3ème_4EME_SUD.SbusStation
                 2             1#    
 S.PRJ.3S_Station_A16.SbusStation

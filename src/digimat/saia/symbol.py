@@ -124,6 +124,8 @@ class SAIATagMount(object):
             tag=tag.replace('.', '_')
             tag=tag.replace('__', '_')
             tag=tag.strip('_')
+            # if tag[0].isdigit():
+                # tag='i_'+tag
             return tag
         finally:
             return tag
@@ -186,6 +188,15 @@ class SAIASymbols(object):
         self._counters=SAIATagMountCounters(self)
         self._user=None
         self._stamp=None
+
+    def unload(self):
+        """release loaded symbolsi (freeing allocated memory)"""
+        self._symbols={}
+        self._index={}
+        self._flags=SAIATagMountFlags(self)
+        self._registers=SAIATagMountRegisters(self)
+        self._timers=SAIATagMountTimers(self)
+        self._counters=SAIATagMountCounters(self)
 
     @property
     def flags(self):
@@ -329,7 +340,7 @@ class SAIASymbols(object):
 
     def retrieveData(self):
         try:
-            with open(self._filepath, 'r') as f:
+            with open(self._filepath, 'r', errors='ignore') as f:
                 return f.readlines()
         except:
             pass

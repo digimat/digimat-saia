@@ -1,4 +1,6 @@
 from __future__ import print_function  # Python 2/3 compatibility
+from __future__ import division
+
 import struct
 import time
 from functools import reduce
@@ -290,7 +292,7 @@ class SAIARequest(object):
             pass
 
     def data2uint32list(self, data):
-        return list(struct.unpack('>%dI' % (len(data) / 4), data))
+        return list(struct.unpack('>%dI' % (len(data) // 4), data))
 
     def __repr__(self):
         return '%s(mseq=%d)' % (self.__class__.__name__, self.sequence)
@@ -402,7 +404,7 @@ class SAIARequestReadItems(SAIARequest):
     def optimizePullCount(self, maxcount):
         """
         Try to increase item read count
-        Only consecutive items are taken in account (no whole allowed)
+        Only consecutive items are taken in account (no hole allowed)
         """
 
         try:

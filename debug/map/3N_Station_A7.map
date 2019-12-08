@@ -1,23 +1,23 @@
 SAIA PG5 LINKER V2.2.140                                               Page 1
 User: INDEA
-File: 3N_Station_A7.pcd   Linked: 08/05/17 14:39 
+File: 3N_Station_A7.pcd   Linked: 13/10/17 07:40 
 
         CODE    CODE    TXT/DB  EXTEN
 FILE    START   SEG     SEG     SEG     ASSEMBLY         FILE
 NUMBER  LINE    LINES   BYTES   BYTES   DATE AND TIME    NAME
 --------------------------------------------------------------------------------
-1       0       0       1332    0       08/05/17 14:39   _3N_Station_A7.src
-2       0       0       324     0       08/05/17 14:39   3N_Station_A7.srcrio
-3       0       0       0       0       08/05/17 14:39   _RIO Symbols.sy5
-4       0       2358    2106    1328    08/05/17 14:39   ST7A.fbd
-5       2358    1079    230     16      08/05/17 14:39   heavac5.srx
+1       0       0       1332    0       13/10/17 07:40   _3N_Station_A7.src
+2       0       0       324     0       13/10/17 07:40   3N_Station_A7.srcrio
+3       0       0       0       0       13/10/17 07:40   _RIO Symbols.sy5
+4       0       2358    2106    1328    13/10/17 07:40   ST7A.fbd
+5       2358    1079    230     16      13/10/17 07:40   heavac5.srx
 6       3437    78      12      0       14/10/14 11:02   sfuplib3.src
 --------------------------------------------------------------------------------
 
 CODE SEGMENT SIZE:      3862 LINES (15448 BYTES)
 TEXT/DB SEGMENT SIZE:   4004 BYTES
 EXTENSION MEM SIZE:     1344 BYTES
-PUBLIC SYMBOLS:         477
+PUBLIC SYMBOLS:         481
 
 PUBLIC SYMBOLS
 ___ETR___  F    2165          6#    6     
@@ -846,10 +846,18 @@ S.IO.Slot3.SwitchInput
            F    2058..2073    1#    1     2     
 S.ODM.Initialized
                 0             1#    
+S.PRJ.1_NORD.SbusStation
+                14            1#    
+S.PRJ.1_SUD.SbusStation
+                13            1#    
 S.PRJ.1er_3EME_SUD.SbusStation
                 0             1#    
 S.PRJ.2ème_3EME_NORD.SbusStation
                 1             1#    
+S.PRJ.2_NORD.SbusStation
+                16            1#    
+S.PRJ.2_SUD.SbusStation
+                15            1#    
 S.PRJ.3ème_4EME_SUD.SbusStation
                 2             1#    
 S.PRJ.3N_Station_A7.SbusStation

@@ -35,10 +35,12 @@ class SAIAValueFormaterSwappedFloat32(SAIAValueFormater):
 
 class SAIAValueFormaterInteger10(SAIAValueFormater):
     def decode(self, deviceValue):
+        deviceValue=struct.unpack('>i', struct.pack('>I', deviceValue))[0]
         return round(float(deviceValue/10.0), 1)
 
     def encode(self, userValue):
-        return int(round(float(userValue)*10.0, 1))
+        userValue=int(round(float(userValue)*10.0, 1))
+        return struct.unpack('>I', struct.pack('>i', userValue))[0]
 
 
 class SAIAValueFormaterFFP(SAIAValueFormater):

@@ -1,26 +1,26 @@
 SAIA PG5 LINKER V2.2.140                                               Page 1
 User: INDEA
-File: 1er_3EME_SUD.pcd   Linked: 06/04/17 00:25 
+File: 1er_3EME_SUD.pcd   Linked: 05/10/17 18:06 
 
         CODE    CODE    TXT/DB  EXTEN
 FILE    START   SEG     SEG     SEG     ASSEMBLY         FILE
 NUMBER  LINE    LINES   BYTES   BYTES   DATE AND TIME    NAME
 --------------------------------------------------------------------------------
-1       0       0       2920    0       06/04/17 00:25   _1er_3EME_SUD.src
-2       0       0       3332    0       27/03/17 07:18   1er_3EME_SUD.srcrio
-3       0       0       0       0       27/03/17 07:18   _RIO Symbols.sy5
-4       0       14861   1032    61460   06/04/17 00:25   Display1.fbd
-5       14861   0       232     0       27/03/17 07:18   _TCPIPDBX.src
-6       14861   0       0       0       27/03/17 07:18   InitODM.src
-7       14861   1079    230     16      27/03/17 07:18   heavac5.srx
-8       15940   0       0       0       27/03/17 07:18   SBC_MacroLib.src
-9       15940   78      12      0       14/10/14 11:02   sfuplib3.src
+1       0       0       2920    0       05/10/17 18:06   _1er_3EME_SUD.src
+2       0       0       3332    0       05/10/17 18:06   1er_3EME_SUD.srcrio
+3       0       0       0       0       05/10/17 18:06   _RIO Symbols.sy5
+4       0       23152   1176    64148   05/10/17 18:06   Display1.fbd
+5       23152   0       320     0       05/10/17 18:06   _TCPIPDBX.src
+6       23152   0       0       0       05/10/17 18:06   InitODM.src
+7       23152   1079    230     16      05/10/17 18:06   heavac5.srx
+8       24231   0       0       0       05/10/17 18:06   SBC_MacroLib.src
+9       24231   78      12      0       14/10/14 11:02   sfuplib3.src
 --------------------------------------------------------------------------------
 
-CODE SEGMENT SIZE:      17910 LINES (71640 BYTES)
-TEXT/DB SEGMENT SIZE:   7758 BYTES
-EXTENSION MEM SIZE:     61476 BYTES
-PUBLIC SYMBOLS:         2039
+CODE SEGMENT SIZE:      26730 LINES (106920 BYTES)
+TEXT/DB SEGMENT SIZE:   7990 BYTES
+EXTENSION MEM SIZE:     64164 BYTES
+PUBLIC SYMBOLS:         2846
 
 DOWNLOADABLE FILES
 1   ..\3S_Station_A1\3S_Station_A1.SRIO	Type,Number: 33,0
@@ -70,13 +70,19 @@ __DYNAMICS__.__LAST_REGISTER__
 __DYNAMICS__.__LAST_TEXT__
                 3499          1#    
 __DYNAMICS__.__LAST_TIMER__
-                49            1#    
+                89            1#    
 __FIRST_NON_VOLATILE_FLAG__
                 0             1#    
 __high     F    2844          9#    4     9     
-__LAST_TIMER__  49            1#    
+__LAST_TIMER__  89            1#    
 __LAST_VOLATILE_FLAG__
                 -1            1#    
+__LEN__D_EChannel.M01.Parameters.SDB_ConfigIO
+                50            4#    4     
+__LEN__D_EChannel.M02.Parameters.SDB_ConfigIO
+                50            4#    4     
+__LEN__D_EChannel.M03.Parameters.SDB_ConfigIO
+                50            4#    4     
 __LIBRARY__._SAIA_DDCSUITE
                 1             4#    
 __LIBRARY__._SAIA_HEAVAC
@@ -88,15 +94,15 @@ __LIBVERS__._CWM_Email
 __LIBVERS__._DDC_Suite_25
                 2008160       1#    
 __LIBVERS__._DDC_Suite_27
-                2070128       1#    
+                2070137       1#    
 __LIBVERS__._DDCLibrary
                 2006208       1#    
 __LIBVERS__._EOB
                 2006147       1#    
 __LIBVERS__._EOBV3
-                3000011       1#    
+                3000030       1#    
 __LIBVERS__._ESUITE2
-                2000103       1#    
+                2000120       1#    
 __LIBVERS__._L6x_RoomController_PCD7_L60x
                 2006810       1#    
 __LIBVERS__._L79x_RoomController_PCD7_L79x
@@ -132,7 +138,7 @@ __LIBVERS__._SAIA_DALIF26
 __LIBVERS__._SAIA_EIB
                 2007520       1#    
 __LIBVERS__._SAIA_ELine
-                1000140       1#    
+                1002100       1#    
 __LIBVERS__._SAIA_EnergyModbus
                 2007520       1#    
 __LIBVERS__._SAIA_EnergySBus
@@ -145,24 +151,32 @@ __LIBVERS__._SAIA_HTTPC
                 1000130       1#    
 __LIBVERS__._SAIA_HWModemRF
                 1000010       1#    
+__LIBVERS__._SAIA_LONIP
+                2007300       1#    
 __LIBVERS__._SAIA_LONNET
                 2007520       1#    
 __LIBVERS__._SAIA_MODBUS
-                2007320       1#    
+                2007330       1#    
 __LIBVERS__._SAIA_MODEM
                 2007520       1#    
 __LIBVERS__._SAIA_PBUS_MODBUS_GTW
                 2000017       1#    
 __LIBVERS__._SAIA_ROOM_CONTROLLER_V11
                 2007520       1#    
+__LIBVERS__._SAIA_SFDBLIB
+                2000101       4#    
+__LIBVERS__._SAIA_SFELINE
+                3             4#    
 __LIBVERS__._SAIA_SFFILESYSTEM
                 2000002       4#    
+__LIBVERS__._SAIA_SFSYS
+                2000001       4#    
 __LIBVERS__._SAIA_SFUPANLG
                 2007340       1#    
 __LIBVERS__._SAIA_SFUPBASE
-                2007340       1#    
+                2007350       1#    
 __LIBVERS__._SAIA_SFUPCOMM
-                2007340       1#    
+                2007370       1#    
 __LIBVERS__._SAIA_SHMI
                 2000210       1#    
 __LIBVERS__._SAIA_SMONITORING
@@ -273,13 +287,13 @@ __Saia_Sfup__._Watchdog
 __Saia_Sfup__.MaxFlag
                 16383         1#    9     
 __Saia_Sfup__.rTmpCalc
-           R    2331          9#    9     
+           R    4403          9#    9     
 __Saia_Sfup__.rTmpCalcRemainder
-           R    2332          9#    9     
+           R    4404          9#    9     
 __Saia_Sfup__.rTmpCalcResult
-           R    2333          9#    9     
+           R    4405          9#    9     
 __SAIASystemBuildTime__
-                0A538798EH    1#    9     
+                075AFED5CH    1#    9     
 __SASMVERS__    22140         1#    
 __TIME_BASE__   100           1#    
 __TIME_BASE_EXTN__
@@ -293,131 +307,131 @@ __TIME_MULFACT__
 __TIME_MULTIPLY__
            F    2001          1#    1     7     
 _file_group.M1._DEBUG
-           R    3417          4#    4     
+           R    3780          4#    4     
 _file_group.M1._DEF
                 1             4#    
 _file_group.M1._ENABLE
-           F    4634          4#    4     
+           F    4937          4#    4     
 _file_group.M1._FBOXBUSY
-           F    4635          4#    4     
+           F    4938          4#    4     
 _file_group.M1._FBOXERR
-           R    3418          4#    4     
+           R    3781          4#    4     
 _file_group.M1._FSBUSY
-           F    2907          4#    4     
+           F    2956          4#    4     
 _file_group.M1._GROUPAC
                 255           4#    
 _file_group.M1._GROUPID
                 8             4#    
 _file_group.M1._HANDLE
-           R    3419          4#    4     
+           R    3782          4#    4     
 _file_group.M1._MEMORY
-           F    2913          4#    4     
+           F    2963          4#    4     
 _file_group.M1._RD
-           R    3420..3425    4#    4     
+           R    3783..3788    4#    4     
 _file_group.M1._RD0
-           R    3420..3425    4#    4     
+           R    3783..3788    4#    4     
 _file_group.M1._RD1
-           R    3421          4#    4     
+           R    3784          4#    4     
 _file_group.M1._RD2
-           R    3422          4#    4     
+           R    3785          4#    4     
 _file_group.M1._RD3
-           R    3423          4#    4     
+           R    3786          4#    4     
 _file_group.M1._RD4
-           R    3424          4#    4     
+           R    3787          4#    4     
 _file_group.M1._RD5
-           R    3425          4#    4     
+           R    3788          4#    4     
 _file_group.M1._RTEMP0
-           R    3471..3534    4#    4     
+           R    3789..3852    4#    4     
 _file_group.M1._SLOT
                 11            4#    
 _file_group.M1._TOKEN
-           F    4636          4#    4     
+           F    4939          4#    4     
 _file_group.M1._XDRIVE
-           TEXT 3034          4#    4     
+           TEXT 3056          4#    4     
 _file_group.M1._XTEMP0
-           TEXT 5013          4#    4     
+           TEXT 5011          4#    4     
 _file_group.M1._XTEMP1
-           TEXT 5014          4#    4     
+           TEXT 5012          4#    4     
 _file_group.MemoryM1._DEBUG
-           R    3417          4#    4     
+           R    3780          4#    4     
 _file_group.MemoryM1._DEF
                 1             4#    
 _file_group.MemoryM1._ENABLE
-           F    4634          4#    4     
+           F    4937          4#    4     
 _file_group.MemoryM1._FBOXBUSY
-           F    4635          4#    4     
+           F    4938          4#    4     
 _file_group.MemoryM1._FBOXERR
-           R    3418          4#    4     
+           R    3781          4#    4     
 _file_group.MemoryM1._FSBUSY
-           F    2907          4#    4     
+           F    2956          4#    4     
 _file_group.MemoryM1._GROUPAC
                 255           4#    
 _file_group.MemoryM1._GROUPID
                 8             4#    
 _file_group.MemoryM1._HANDLE
-           R    3419          4#    
+           R    3782          4#    
 _file_group.MemoryM1._MEMORY
-           F    2913          4#    
+           F    2963          4#    
 _file_group.MemoryM1._RD0
-           R    3420..3425    4#    4     
+           R    3783..3788    4#    4     
 _file_group.MemoryM1._RD1
-           R    3421          4#    4     
+           R    3784          4#    4     
 _file_group.MemoryM1._RD2
-           R    3422          4#    4     
+           R    3785          4#    4     
 _file_group.MemoryM1._RD3
-           R    3423          4#    4     
+           R    3786          4#    4     
 _file_group.MemoryM1._RD4
-           R    3424          4#    4     
+           R    3787          4#    4     
 _file_group.MemoryM1._RD5
-           R    3425          4#    
+           R    3788          4#    
 _file_group.MemoryM1._RTEMP0
-           R    3471..3534    4#    
+           R    3789..3852    4#    
 _file_group.MemoryM1._SLOT
                 11            4#    
 _file_group.MemoryM1._TOKEN
-           F    4636          4#    4     
+           F    4939          4#    4     
 _file_group.MemoryM1._XDRIVE
-           TEXT 3034          4#    4     
+           TEXT 3056          4#    4     
 _file_group.MemoryM1._XTEMP0
-           TEXT 5013          4#    
+           TEXT 5011          4#    
 _file_group.MemoryM1._XTEMP1
-           TEXT 5014          4#    
+           TEXT 5012          4#    
 _HEAVAC._CLOCK._ALLPHDAY1
            F    2822          7#    4     7     
 _HEAVAC._CLOCK._DAY
-           R    2402          7#    7     
+           R    4385          7#    7     
 _HEAVAC._CLOCK._DAYINYEAR
-           R    2411          7#    7     
+           R    4394          7#    7     
 _HEAVAC._CLOCK._DAYOW
-           R    2392          7#    4     7     
+           R    4375          7#    4     7     
 _HEAVAC._CLOCK._DAYSLSC
            DB   3501          7#    7     
 _HEAVAC._CLOCK._DAYSLST
            DB   3502          7#    7     
 _HEAVAC._CLOCK._DHHMM
-           R    2408          7#    7     
+           R    4391          7#    7     
 _HEAVAC._CLOCK._DOW0101
-           R    2412          7#    7     
+           R    4395          7#    7     
 _HEAVAC._CLOCK._HHMM
-           R    2397          7#    4     7     
+           R    4380          7#    4     7     
 _HEAVAC._CLOCK._HHMMSS
-           R    2390..2392    7#    4     7     
+           R    4373..4375    7#    4     7     
 _HEAVAC._CLOCK._HOUR
-           R    2403          7#    7     
+           R    4386          7#    7     
 _HEAVAC._CLOCK._JJMMDD
-           R    2395..2410    7#    4     7     
+           R    4378..4393    7#    4     7     
 _HEAVAC._CLOCK._LEAP
            F    2823          7#    7     
 _HEAVAC._CLOCK._MINODAY
-           R    2413          7#    7     
+           R    4396          7#    7     
 _HEAVAC._CLOCK._MINUTE
-           R    2404          7#    7     
+           R    4387          7#    7     
 _HEAVAC._CLOCK._MMDD
-           R    2396          7#    7     
+           R    4379          7#    7     
 _HEAVAC._CLOCK._MMDDHHMM
-           R    2409          7#    7     
+           R    4392          7#    7     
 _HEAVAC._CLOCK._MONTH
-           R    2401          7#    7     
+           R    4384          7#    7     
 _HEAVAC._CLOCK._PHDAY
            F    2825          7#    4     7     
 _HEAVAC._CLOCK._PHDAY1
@@ -425,9 +439,9 @@ _HEAVAC._CLOCK._PHDAY1
 _HEAVAC._CLOCK._SEASON
            F    2827          7#    7     
 _HEAVAC._CLOCK._SECODAY
-           R    2410          7#    7     
+           R    4393          7#    7     
 _HEAVAC._CLOCK._SECOND
-           R    2405          7#    7     
+           R    4388          7#    7     
 _HEAVAC._CLOCK._SECTICK
            F    2828          7#    7     
 _HEAVAC._CLOCK._TESTCLK
@@ -439,15 +453,15 @@ _HEAVAC._CLOCK._TESTCLKHW
 _HEAVAC._CLOCK._TESTCLKRX
            F    2834          7#    7     
 _HEAVAC._CLOCK._WEEK
-           R    2406          7#    4     7     
+           R    4389          7#    4     7     
 _HEAVAC._CLOCK._WWD
-           R    2407          7#    4     7     
+           R    4390          7#    4     7     
 _HEAVAC._CLOCK._YEAR
-           R    2399          7#    7     
+           R    4382          7#    7     
 _HEAVAC._CLOCK._YYYYEAR
-           R    2400          7#    7     
+           R    4383          7#    7     
 _HEAVAC._CLOCK._YYYYMMDD
-           R    2391          7#    4     7     
+           R    4374          7#    4     7     
 _HEAVAC._FB._CLOCKFB
            FB   0             7#    7     
 _HEAVAC._FB._CONV2
@@ -488,213 +502,328 @@ _HEAVAC._FB._TIME
            FB   18            7#    7     
 _HEAVAC._PRIV._ERROR
            F    2836          7#    7     
-_RUN_9     F    2955          4#    4     
+_RUN_1     F    5225          4#    4     
+_RUN_9     F    3013          4#    4     
+_SFUPCOMM._FBUFF_1
+           F    5192..5223    4#    4     
 _SFUPCOMM._FBUFF_9
-           F    2961..2992    4#    4     
+           F    2980..3011    4#    4     
+_SFUPCOMM._RBUFF_1
+           R    4427..4458    4#    4     
 _SFUPCOMM._RBUFF_9
-           R    2495..2526    4#    4     
+           R    2523..2554    4#    4     
+_SFUPCOMM._RCOMMON_1
+           R    4459..4466    4#    4     
 _SFUPCOMM._RCOMMON_9
-           R    2443..2450    4#    4     
+           R    2471..2478    4#    4     
+_SFUPCOMM._RUN_1
+           F    5225          4#    4     
 _SFUPCOMM._RUN_9
-           F    2955          4#    4     
+           F    3013          4#    4     
+_SFUPCOMM._STEP_1
+           F    5226          4#    4     
 _SFUPCOMM._STEP_9
-           F    2956          4#    4     
+           F    3014          4#    4     
+_SFUPCOMM.ELine_Driver._1._ADDR
+           R    4531          4#    4     
+_SFUPCOMM.ELine_Driver._1._CHANNEL
+                1             4#    
+_SFUPCOMM.ELine_Driver._1._FBUFF
+           F    5192..5223    4#    4     
+_SFUPCOMM.ELine_Driver._1._FBUSY
+           F    5227          4#    4     
+_SFUPCOMM.ELine_Driver._1._FLAGDIAG
+           F    5324..5339    4#    4     
+_SFUPCOMM.ELine_Driver._1._MEDIA
+           R    4530          4#    4     
+_SFUPCOMM.ELine_Driver._1._NEXEC
+           F    5331          4#    4     
+_SFUPCOMM.ELine_Driver._1._RBUFF
+           R    4427..4458    4#    4     
+_SFUPCOMM.ELine_Driver._1._RBUSY
+           F    5324..5339    4#    4     
+_SFUPCOMM.ELine_Driver._1._RCOMMON
+           R    4459..4466    4#    4     
+_SFUPCOMM.ELine_Driver._1._RDIAG
+           F    5326          4#    4     
+_SFUPCOMM.ELine_Driver._1._REGDIAG
+           R    4534          4#    4     
+_SFUPCOMM.ELine_Driver._1._RFULL
+           F    5325          4#    4     
+_SFUPCOMM.ELine_Driver._1._SASIERR
+           F    5189          4#    4     
+_SFUPCOMM.ELine_Driver._1._SASIMMA
+                1             4#    
+_SFUPCOMM.ELine_Driver._1._SASIMOD
+                30            4#    
+_SFUPCOMM.ELine_Driver._1._STATION
+           R    4533          4#    4     
+_SFUPCOMM.ELine_Driver._1._TBUSY
+           F    5327          4#    4     
+_SFUPCOMM.ELine_Driver._1._TDIAG
+           F    5329          4#    4     
+_SFUPCOMM.ELine_Driver._1._TFULL
+           F    5328          4#    4     
+_SFUPCOMM.ELine_Driver._1._XBUSY
+           F    5330          4#    4     
+_SFUPCOMM.ELine_Driver._ADDR
+           R    4531          4#    4     
+_SFUPCOMM.ELine_Driver._CHANNEL
+                1             4#    
+_SFUPCOMM.ELine_Driver._FBUFF
+           F    5192..5223    4#    4     
+_SFUPCOMM.ELine_Driver._FBUSY
+           F    5227          4#    4     
+_SFUPCOMM.ELine_Driver._FLAGDIAG
+           F    5324..5339    4#    4     
+_SFUPCOMM.ELine_Driver._MEDIA
+           R    4530          4#    4     
+_SFUPCOMM.ELine_Driver._NEXEC
+           F    5331          4#    4     
+_SFUPCOMM.ELine_Driver._RBUFF
+           R    4427..4458    4#    4     
+_SFUPCOMM.ELine_Driver._RBUSY
+           F    5324..5339    4#    4     
+_SFUPCOMM.ELine_Driver._RCOMMON
+           R    4459..4466    4#    4     
+_SFUPCOMM.ELine_Driver._RDIAG
+           F    5326          4#    4     
+_SFUPCOMM.ELine_Driver._REGDIAG
+           R    4534          4#    4     
+_SFUPCOMM.ELine_Driver._RFULL
+           F    5325          4#    4     
+_SFUPCOMM.ELine_Driver._SASIERR
+           F    5189          4#    4     
+_SFUPCOMM.ELine_Driver._SASIMMA
+                1             4#    
+_SFUPCOMM.ELine_Driver._SASIMOD
+                30            4#    
+_SFUPCOMM.ELine_Driver._STATION
+           R    4533          4#    4     
+_SFUPCOMM.ELine_Driver._TBUSY
+           F    5327          4#    4     
+_SFUPCOMM.ELine_Driver._TDIAG
+           F    5329          4#    4     
+_SFUPCOMM.ELine_Driver._TFULL
+           F    5328          4#    4     
+_SFUPCOMM.ELine_Driver._XBUSY
+           F    5330          4#    4     
+_SFUPCOMM.ELine_Driver.EV_ATTE
+           F    5298          4#    4     
+_SFUPCOMM.ELine_Driver.EV_BUSY
+           F    5299          4#    4     
+_SFUPCOMM.ELine_Driver.EV_CONN
+           F    5300          4#    4     
+_SFUPCOMM.ELine_Driver.EV_DIAG
+           F    5301          4#    4     
+_SFUPCOMM.ELine_Driver.EV_DISA
+           F    5302          4#    4     
+_SFUPCOMM.ELine_Driver.EV_DISC
+           F    5303          4#    4     
+_SFUPCOMM.ELine_Driver.EV_ENAB
+           F    5304          4#    4     
+_SFUPCOMM.ELine_Driver.EV_EROR
+           F    5305          4#    4     
+_SFUPCOMM.ELine_Driver.EV_NDST
+           R    4515          4#    4     
+_SFUPCOMM.ELine_Driver.EV_NEXE
+           F    5306          4#    4     
 _SFUPCOMM.IPChannel._9._ADDR
-           R    2478          4#    4     
+           R    2585          4#    4     
 _SFUPCOMM.IPChannel._9._CHANNEL
                 9             4#    
 _SFUPCOMM.IPChannel._9._FBUFF
-           F    2961..2992    4#    4     
+           F    2980..3011    4#    4     
 _SFUPCOMM.IPChannel._9._FBUSY
-           F    2957          4#    4     
+           F    3015          4#    4     
 _SFUPCOMM.IPChannel._9._FLAGDIAG
-           F    3092..3099    4#    4     
+           F    3107..3114    4#    4     
 _SFUPCOMM.IPChannel._9._MEDIA
-           R    2477          4#    4     
+           R    2584          4#    4     
 _SFUPCOMM.IPChannel._9._NEXEC
-           F    3099          4#    4     
+           F    3114          4#    4     
 _SFUPCOMM.IPChannel._9._NODE
-           R    2479          4#    4     
+           R    2586          4#    4     
 _SFUPCOMM.IPChannel._9._NODESTN
-           R    2260          4#    4     
+           R    2340          4#    4     
 _SFUPCOMM.IPChannel._9._RBUFF
-           R    2495..2526    4#    4     
+           R    2523..2554    4#    4     
 _SFUPCOMM.IPChannel._9._RBUSY
-           F    3092..3099    4#    4     
+           F    3107..3114    4#    4     
 _SFUPCOMM.IPChannel._9._RCOMMON
-           R    2443..2450    4#    4     
+           R    2471..2478    4#    4     
 _SFUPCOMM.IPChannel._9._RDIAG
-           F    3094          4#    4     
+           F    3109          4#    4     
 _SFUPCOMM.IPChannel._9._REGDIAG
-           R    2234          4#    4     
+           R    2324          4#    4     
 _SFUPCOMM.IPChannel._9._RFULL
-           F    3093          4#    4     
+           F    3108          4#    4     
 _SFUPCOMM.IPChannel._9._SASIERR
-           F    3100          4#    4     
+           F    3115          4#    4     
 _SFUPCOMM.IPChannel._9._SASIMMA
                 1             4#    
 _SFUPCOMM.IPChannel._9._SASIMOD
                 60            4#    
 _SFUPCOMM.IPChannel._9._STATION
-           R    2476..2479    4#    4     
+           R    2583..2586    4#    4     
 _SFUPCOMM.IPChannel._9._TBUSY
-           F    3095          4#    4     
+           F    3110          4#    4     
 _SFUPCOMM.IPChannel._9._TDIAG
-           F    3097          4#    4     
+           F    3112          4#    4     
 _SFUPCOMM.IPChannel._9._TFULL
-           F    3096          4#    4     
+           F    3111          4#    4     
 _SFUPCOMM.IPChannel._9._XBUSY
-           F    3098          4#    4     
+           F    3113          4#    4     
 _SFUPCOMM.IPChannel._ADDR
-           R    2478          4#    4     
+           R    2585          4#    4     
 _SFUPCOMM.IPChannel._CHANNEL
                 9             4#    
 _SFUPCOMM.IPChannel._FBUFF
-           F    2961..2992    4#    4     
+           F    2980..3011    4#    4     
 _SFUPCOMM.IPChannel._FBUSY
-           F    2957          4#    4     
+           F    3015          4#    4     
 _SFUPCOMM.IPChannel._FLAGDIAG
-           F    3092..3099    4#    4     
+           F    3107..3114    4#    4     
 _SFUPCOMM.IPChannel._MEDIA
-           R    2477          4#    4     
+           R    2584          4#    4     
 _SFUPCOMM.IPChannel._NEXEC
-           F    3099          4#    4     
+           F    3114          4#    4     
 _SFUPCOMM.IPChannel._NODE
-           R    2479          4#    4     
+           R    2586          4#    4     
 _SFUPCOMM.IPChannel._NODESTN
-           R    2260          4#    4     
+           R    2340          4#    4     
 _SFUPCOMM.IPChannel._RBUFF
-           R    2495..2526    4#    4     
+           R    2523..2554    4#    4     
 _SFUPCOMM.IPChannel._RBUSY
-           F    3092..3099    4#    4     
+           F    3107..3114    4#    4     
 _SFUPCOMM.IPChannel._RCOMMON
-           R    2443..2450    4#    4     
+           R    2471..2478    4#    4     
 _SFUPCOMM.IPChannel._RDIAG
-           F    3094          4#    4     
+           F    3109          4#    4     
 _SFUPCOMM.IPChannel._REGDIAG
-           R    2234          4#    4     
+           R    2324          4#    4     
 _SFUPCOMM.IPChannel._RFULL
-           F    3093          4#    4     
+           F    3108          4#    4     
 _SFUPCOMM.IPChannel._SASIERR
-           F    3100          4#    4     
+           F    3115          4#    4     
 _SFUPCOMM.IPChannel._SASIMMA
                 1             4#    
 _SFUPCOMM.IPChannel._SASIMOD
                 60            4#    
 _SFUPCOMM.IPChannel._STATION
-           R    2476..2479    4#    4     
+           R    2583..2586    4#    4     
 _SFUPCOMM.IPChannel._TBUSY
-           F    3095          4#    4     
+           F    3110          4#    4     
 _SFUPCOMM.IPChannel._TDIAG
-           F    3097          4#    4     
+           F    3112          4#    4     
 _SFUPCOMM.IPChannel._TFULL
-           F    3096          4#    4     
+           F    3111          4#    4     
 _SFUPCOMM.IPChannel._XBUSY
-           F    3098          4#    4     
+           F    3113          4#    4     
 _SFUPCOMM.IPChannel.EV_ATTE
-           F    4650          4#    4     
+           F    4953          4#    4     
 _SFUPCOMM.IPChannel.EV_BUSY
-           F    4651          4#    4     
+           F    4954          4#    4     
 _SFUPCOMM.IPChannel.EV_CONN
-           F    4652          4#    4     
+           F    4955          4#    4     
 _SFUPCOMM.IPChannel.EV_DIAG
-           F    4653          4#    4     
+           F    4956          4#    4     
 _SFUPCOMM.IPChannel.EV_DISA
-           F    4654          4#    4     
+           F    4957          4#    4     
 _SFUPCOMM.IPChannel.EV_DISC
-           F    4655          4#    4     
+           F    4958          4#    4     
 _SFUPCOMM.IPChannel.EV_ENAB
-           F    4656          4#    4     
+           F    4959          4#    4     
 _SFUPCOMM.IPChannel.EV_EROR
-           F    4657          4#    4     
+           F    4960          4#    4     
 _SFUPCOMM.IPChannel.EV_NDST
-           R    3429          4#    4     
+           R    3856          4#    4     
 _SFUPCOMM.IPChannel.EV_NEXE
-           F    4658          4#    4     
+           F    4961          4#    4     
 _shmsr.system.AussenTemp
-           R    2765          4#    4     
+           R    2953          4#    4     
 _shmsr.system.DateDay
-           R    2759          4#    4     
+           R    2947          4#    4     
 _shmsr.system.DateMonth
-           R    2760          4#    4     
+           R    2948          4#    4     
 _shmsr.system.DateWDay
-           R    2757          4#    4     
+           R    2945          4#    4     
 _shmsr.system.QuitSm
-           F    3675          4#    4     
-_shmsr.system.QuitWart
            F    3676          4#    4     
+_shmsr.system.QuitWart
+           F    3677          4#    4     
 _shmsr.system.SecPulse
-           F    3674          4#    4     
+           F    3675          4#    4     
 _shmsr.system.TimeHHMM
-           R    2756..2775    4#    4     
+           R    2944..2963    4#    4     
 _shmsr.system.TimeSS
-           R    2758          4#    4     
+           R    2946          4#    4     
 _shmsr.system.WatchDog
-           F    3667..3686    4#    4     
+           F    3668..3687    4#    4     
 _shmsr.work.C01
-           C    1005..1014    4#    4     
+           C    1001..1010    4#    4     
 _shmsr.work.C02
-           C    1006          4#    4     
+           C    1002          4#    4     
 _shmsr.work.C03
-           C    1007          4#    4     
+           C    1003          4#    4     
 _shmsr.work.C04
-           C    1008          4#    4     
+           C    1004          4#    4     
 _shmsr.work.C05
-           C    1009          4#    4     
+           C    1005          4#    4     
 _shmsr.work.C06
-           C    1010          4#    4     
+           C    1006          4#    4     
 _shmsr.work.C07
-           C    1011          4#    4     
+           C    1007          4#    4     
 _shmsr.work.C08
-           C    1012          4#    4     
+           C    1008          4#    4     
 _shmsr.work.C09
-           C    1013          4#    4     
+           C    1009          4#    4     
 _shmsr.work.C10
-           C    1014          4#    4     
+           C    1010          4#    4     
 _shmsr.work.F01
-           F    3687..3708    4#    4     
+           F    3688..3709    4#    4     
 _shmsr.work.F02
-           F    3688          4#    4     
-_shmsr.work.F03
            F    3689          4#    4     
-_shmsr.work.F04
+_shmsr.work.F03
            F    3690          4#    4     
-_shmsr.work.F05
+_shmsr.work.F04
            F    3691          4#    4     
-_shmsr.work.F06
+_shmsr.work.F05
            F    3692          4#    4     
-_shmsr.work.F07
+_shmsr.work.F06
            F    3693          4#    4     
-_shmsr.work.F08
+_shmsr.work.F07
            F    3694          4#    4     
-_shmsr.work.F09
+_shmsr.work.F08
            F    3695          4#    4     
-_shmsr.work.F10
+_shmsr.work.F09
            F    3696          4#    4     
-_shmsr.work.F11
+_shmsr.work.F10
            F    3697          4#    4     
-_shmsr.work.F12
+_shmsr.work.F11
            F    3698          4#    4     
-_shmsr.work.F13
+_shmsr.work.F12
            F    3699          4#    4     
-_shmsr.work.F14
+_shmsr.work.F13
            F    3700          4#    4     
-_shmsr.work.F15
+_shmsr.work.F14
            F    3701          4#    4     
-_shmsr.work.F16
+_shmsr.work.F15
            F    3702          4#    4     
-_shmsr.work.F17
+_shmsr.work.F16
            F    3703          4#    4     
-_shmsr.work.F18
+_shmsr.work.F17
            F    3704          4#    4     
-_shmsr.work.F19
+_shmsr.work.F18
            F    3705          4#    4     
-_shmsr.work.F20
+_shmsr.work.F19
            F    3706          4#    4     
-_shmsr.work.High
-           F    3708          4#    4     
-_shmsr.work.Low
+_shmsr.work.F20
            F    3707          4#    4     
+_shmsr.work.High
+           F    3709          4#    4     
+_shmsr.work.Low
+           F    3708          4#    4     
 _shmsr.work.R01
            R    3315..3345    4#    4     
 _shmsr.work.R02
@@ -757,93 +886,256 @@ _shmsr.work.tmpR10
            R    3345          4#    4     
 _shmsr.work.Zero
            R    3335          4#    4     
-_STEP_9    F    2956          4#    4     
+_STEP_1    F    5226          4#    4     
+_STEP_9    F    3014          4#    4     
 A.Alarm.ThisAlarmList.Flags
-           F    4664..4713    4#    4     
+           F    5066..5115    4#    4     
 A.Alarm.ThisAlarmList.FlagsAck
                 -1            4#    
 A.Alarm.ThisAlarmList.FlagsDel
                 -1            4#    
 A.Alarm.ThisAlarmList.Handle
-           R    3271          4#    4     
+           R    3275          4#    4     
 A.Alarm.ThisAlarmList.MaxAlarms
                 50            4#    
 A.Alarm.ThisAlarmList.MaxHistory
                 250           4#    
 A.Alarm.ThisAlarmList.MyName
-           TEXT 3035          4#    4     
-A.BACnet.Surveillance_PCD.AlBattery.OutOfService
-           F    4714          4#    
-A.BACnet.Surveillance_PCD.AlBattery.PCDInRef
-           F    4715          4#    4     
-A.BACnet.Surveillance_PCD.AlXOB.OutOfService
-           F    4716          4#    
-A.BACnet.Surveillance_PCD.AlXOB.PCDInRef
-           F    4717          4#    4     
-A.DDCSuite.Init.AckAlarm
-           F    3675          4#    4     
-A.DDCSuite.Init.ClrMaint
-           F    3676          4#    4     
-A.DDCSuite.Init.OutdoorTemp
-           R    2765          4#    4     
-A.HDLog.DateTime.Day
-           R    3435          4#    4     
-A.HDLog.DateTime.HMSM
-           R    3535          4#    4     
-A.HDLog.DateTime.Millisecond
-           R    3536          4#    4     
-A.HDLog.DateTime.Month
-           R    3537          4#    4     
-A.HDLog.DateTime.Sec1970
+           TEXT 3057          4#    4     
+A.BACnet.FuseGuard.Al230AC.OutOfService
+           F    4962          4#    
+A.BACnet.FuseGuard.Al230AC.PCDInRef
+           F    5116          4#    4     
+A.BACnet.FuseGuard.Al24AC.OutOfService
+           F    5117          4#    
+A.BACnet.FuseGuard.Al24AC.PCDInRef
+           F    5118          4#    4     
+A.BACnet.FuseGuard.Al24DC.OutOfService
+           F    5119          4#    
+A.BACnet.FuseGuard.Al24DC.PCDInRef
+           F    5120          4#    4     
+A.BACnet.FuseGuard.AlMain.OutOfService
+           F    5121          4#    
+A.BACnet.FuseGuard.AlMain.PCDInRef
+           F    5122          4#    4     
+A.BACnet.FuseGuard.AlPhase.OutOfService
+           F    5123          4#    
+A.BACnet.FuseGuard.AlPhase.PCDInRef
+           F    5124          4#    4     
+A.BACnet.GROUP__fbl_C000001_05_6E0.OutOfService
+           F    4741..4742    4#    4     
+A.BACnet.GROUP__fbl_C000001_05_6E0.PCDInRef
            R    3538          4#    4     
-A.HDLog.DateTime.Week
-           R    3539          4#    4     
-A.HDLog.DateTime.Year
-           R    3540          4#    4     
-A.HDLog.DateTime.YMD
+A.BACnet.GROUP__fbl_C000001_05_6E1.OutOfService
+           F    4743..4744    4#    4     
+A.BACnet.GROUP__fbl_C000001_05_6E1.PCDInRef
            R    3541          4#    4     
+A.BACnet.GROUP__fbl_C000001_05_6E2.OutOfService
+           F    4745..4746    4#    4     
+A.BACnet.GROUP__fbl_C000001_05_6E2.PCDInRef
+           R    3544          4#    4     
+A.BACnet.GROUP__fbl_C000001_05_6E3.OutOfService
+           F    4751..4752    4#    4     
+A.BACnet.GROUP__fbl_C000001_05_6E3.PCDInRef
+           R    3547          4#    4     
+A.BACnet.GROUP__fbl_C000001_05_6E4.OutOfService
+           F    4753..4754    4#    4     
+A.BACnet.GROUP__fbl_C000001_05_6E4.PCDInRef
+           R    3550          4#    4     
+A.BACnet.GROUP__fbl_C000001_05_6E5.OutOfService
+           F    4755..4756    4#    4     
+A.BACnet.GROUP__fbl_C000001_05_6E5.PCDInRef
+           R    3553          4#    4     
+A.BACnet.GROUP__fbl_C000001_05_6E6.OutOfService
+           F    4757..4758    4#    4     
+A.BACnet.GROUP__fbl_C000001_05_6E6.PCDInRef
+           R    3556          4#    4     
+A.BACnet.GROUP__fbl_C000001_05_6E7.OutOfService
+           F    4759..4760    4#    4     
+A.BACnet.GROUP__fbl_C000001_05_6E7.PCDInRef
+           R    3559          4#    4     
+A.BACnet.GROUP__fbl_C000001_06_6F5.OutOfService
+           F    4797..4798    4#    4     
+A.BACnet.GROUP__fbl_C000001_06_6F5.PCDInRef
+           R    3573          4#    4     
+A.BACnet.GROUP__fbl_C000001_06_6F6.OutOfService
+           F    4799..4800    4#    4     
+A.BACnet.GROUP__fbl_C000001_06_6F6.PCDInRef
+           R    3576          4#    4     
+A.BACnet.GROUP__fbl_C000001_06_6F7.OutOfService
+           F    4801..4802    4#    4     
+A.BACnet.GROUP__fbl_C000001_06_6F7.PCDInRef
+           R    3579          4#    4     
+A.BACnet.GROUP__fbl_C000001_06_6F8.OutOfService
+           F    4803..4804    4#    4     
+A.BACnet.GROUP__fbl_C000001_06_6F8.PCDInRef
+           R    3582          4#    4     
+A.BACnet.GROUP__fbl_C000001_06_6F9.OutOfService
+           F    4805..4806    4#    4     
+A.BACnet.GROUP__fbl_C000001_06_6F9.PCDInRef
+           R    3585          4#    4     
+A.BACnet.GROUP__fbl_C000001_06_6FA.OutOfService
+           F    4807..4808    4#    4     
+A.BACnet.GROUP__fbl_C000001_06_6FA.PCDInRef
+           R    3588          4#    4     
+A.BACnet.GROUP__fbl_C000001_06_6FB.OutOfService
+           F    4809..4810    4#    4     
+A.BACnet.GROUP__fbl_C000001_06_6FB.PCDInRef
+           R    3591          4#    4     
+A.BACnet.GROUP__fbl_C000001_06_6FC.OutOfService
+           F    4811..4812    4#    4     
+A.BACnet.GROUP__fbl_C000001_06_6FC.PCDInRef
+           R    3726          4#    4     
+A.BACnet.GROUP__fbl_C000001_07_70A.OutOfService
+           F    4853..4854    4#    4     
+A.BACnet.GROUP__fbl_C000001_07_70A.PCDInRef
+           R    3740          4#    4     
+A.BACnet.GROUP__fbl_C000001_07_70B.OutOfService
+           F    4855..4856    4#    4     
+A.BACnet.GROUP__fbl_C000001_07_70B.PCDInRef
+           R    3743          4#    4     
+A.BACnet.GROUP__fbl_C000001_07_70C.OutOfService
+           F    4857..4858    4#    4     
+A.BACnet.GROUP__fbl_C000001_07_70C.PCDInRef
+           R    3746          4#    4     
+A.BACnet.GROUP__fbl_C000001_07_70D.OutOfService
+           F    4859..4860    4#    4     
+A.BACnet.GROUP__fbl_C000001_07_70D.PCDInRef
+           R    3749          4#    4     
+A.BACnet.GROUP__fbl_C000001_07_70E.OutOfService
+           F    4861..4862    4#    4     
+A.BACnet.GROUP__fbl_C000001_07_70E.PCDInRef
+           R    3752          4#    4     
+A.BACnet.GROUP__fbl_C000001_07_70F.OutOfService
+           F    4863..4864    4#    4     
+A.BACnet.GROUP__fbl_C000001_07_70F.PCDInRef
+           R    3755          4#    4     
+A.BACnet.GROUP__fbl_C000001_07_710.OutOfService
+           F    4865..4866    4#    4     
+A.BACnet.GROUP__fbl_C000001_07_710.PCDInRef
+           R    3758          4#    4     
+A.BACnet.GROUP__fbl_C000001_07_711.OutOfService
+           F    4867..4868    4#    4     
+A.BACnet.GROUP__fbl_C000001_07_711.PCDInRef
+           R    3761          4#    4     
+A.BACnet.Surveillance_PCD.AlBattery.OutOfService
+           F    5125          4#    
+A.BACnet.Surveillance_PCD.AlBattery.PCDInRef
+           F    5126          4#    4     
+A.BACnet.Surveillance_PCD.AlXOB.OutOfService
+           F    5127          4#    
+A.BACnet.Surveillance_PCD.AlXOB.PCDInRef
+           F    5128          4#    4     
+A.DDCSuite.Init.AckAlarm
+           F    3676          4#    4     
+A.DDCSuite.Init.ClrMaint
+           F    3677          4#    4     
+A.DDCSuite.Init.OutdoorTemp
+           R    2953          4#    4     
+A.HDLog.DateTime.Day
+           R    3862          4#    4     
+A.HDLog.DateTime.HMSM
+           R    3863          4#    4     
+A.HDLog.DateTime.Millisecond
+           R    3864          4#    4     
+A.HDLog.DateTime.Month
+           R    3865          4#    4     
+A.HDLog.DateTime.Sec1970
+           R    3866          4#    4     
+A.HDLog.DateTime.Week
+           R    3867          4#    4     
+A.HDLog.DateTime.Year
+           R    3868          4#    4     
+A.HDLog.DateTime.YMD
+           R    3869          4#    4     
 A.HVC.Horloge_Gen.Channel
-           F    3048..3049    4#    4     
+           F    3063..3064    4#    4     
 A.HVC.Horloge_Gen.Day
-           R    2541          4#    4     
+           R    2577          4#    4     
 A.HVC.Horloge_Gen.OFFTime1
-           R    2534          4#    4     
+           R    2570          4#    4     
 A.HVC.Horloge_Gen.OFFTime2
-           R    2535          4#    4     
+           R    2571          4#    4     
 A.HVC.Horloge_Gen.OFFTime3
-           R    2536          4#    4     
+           R    2572          4#    4     
 A.HVC.Horloge_Gen.OFFTime4
-           R    2537          4#    4     
+           R    2573          4#    4     
 A.HVC.Horloge_Gen.OFFTime5
-           R    2538          4#    4     
+           R    2574          4#    4     
 A.HVC.Horloge_Gen.OFFTime6
-           R    2539          4#    4     
+           R    2575          4#    4     
 A.HVC.Horloge_Gen.OFFTime7
-           R    2540          4#    4     
+           R    2576          4#    4     
 A.HVC.Horloge_Gen.ONTime1
-           R    2527..2542    4#    4     
+           R    2563..2578    4#    4     
 A.HVC.Horloge_Gen.ONTime2
-           R    2528          4#    4     
+           R    2564          4#    4     
 A.HVC.Horloge_Gen.ONTime3
-           R    2529          4#    4     
+           R    2565          4#    4     
 A.HVC.Horloge_Gen.ONTime4
-           R    2530          4#    4     
+           R    2566          4#    4     
 A.HVC.Horloge_Gen.ONTime5
-           R    2531          4#    4     
+           R    2567          4#    4     
 A.HVC.Horloge_Gen.ONTime6
-           R    2532          4#    4     
+           R    2568          4#    4     
 A.HVC.Horloge_Gen.ONTime7
-           R    2533          4#    4     
+           R    2569          4#    4     
 A.HVC.Horloge.Date
-           R    2460          4#    4     
+           R    2430          4#    4     
 A.HVC.Horloge.DateCmd
-           F    3024          4#    4     
+           F    3039          4#    4     
 A.HVC.Horloge.DayOW
-           R    2461          4#    4     
+           R    2431          4#    4     
 A.HVC.Horloge.Time
-           R    2459..2461    4#    4     
+           R    2429..2431    4#    4     
 A.HVC.Horloge.TimeCmd
-           F    3023          4#    4     
+           F    3038          4#    4     
+Alarme.tensions_0.AC230MbAck
+           F    2767          4#    4     
+Alarme.tensions_0.AC230NoNc
+           F    2768          4#    4     
+Alarme.tensions_0.AC24MbAck
+           F    2769          4#    4     
+Alarme.tensions_0.AC24NoNc
+           F    2770          4#    4     
+Alarme.tensions_0.AlaAC230
+           F    2771          4#    4     
+Alarme.tensions_0.AlaAC24
+           F    2772          4#    4     
+Alarme.tensions_0.AlaDC24
+           F    2773          4#    4     
+Alarme.tensions_0.AlaPhase
+           F    2774          4#    4     
+Alarme.tensions_0.AlaVoltage
+           F    2775          4#    4     
+Alarme.tensions_0.DC24MbAck
+           F    2776          4#    4     
+Alarme.tensions_0.DC24NoNc
+           F    2777          4#    4     
+Alarme.tensions_0.Delay
+           R    2232          4#    4     
+Alarme.tensions_0.DI230AC
+           R    2233          4#    4     
+Alarme.tensions_0.DI24AC
+           R    2234          4#    4     
+Alarme.tensions_0.DI24DC
+           R    2235          4#    4     
+Alarme.tensions_0.DIPhase
+           R    2249          4#    4     
+Alarme.tensions_0.DIVoltage
+           R    2250          4#    4     
+Alarme.tensions_0.PhaseMbAck
+           F    2778          4#    4     
+Alarme.tensions_0.PhaseNoNc
+           F    2779          4#    4     
+Alarme.tensions_0.PhaseOvr
+           F    2780          4#    4     
+Alarme.tensions_0.VoltageMbAck
+           F    2781          4#    4     
+Alarme.tensions_0.VoltageNoNc
+           F    2782          4#    4     
+Alarme.tensions_0.VoltageOvr
+           F    2783          4#    4     
 Alarming.Init0.Enable
            F    4578          4#    4     
 Alarming.Init0.ListAck
@@ -882,6 +1174,1178 @@ ArchiveDir TEXT 5000          4#    4
 ArchiveDirHDL
            TEXT 3036          4#    4     
 destDir    TEXT 5001          4#    4     
+EChannel.Diag.Diag_0.SF_ButtonClear
+           F    5307          4#    4     
+EChannel.Diag.Diag_0.SF_ButtonFirst
+           F    5308          4#    4     
+EChannel.Diag.Diag_0.SF_ButtonLast
+           F    5309          4#    4     
+EChannel.Diag.Diag_0.SF_ButtonNext
+           F    5310          4#    4     
+EChannel.Diag.Diag_0.SF_ButtonPrev
+           F    5311          4#    4     
+EChannel.Diag.Diag_0.SF_CFG
+           F    5312          4#    4     
+EChannel.Diag.Diag_0.SF_DEX
+           F    5313          4#    4     
+EChannel.Diag.Diag_0.SF_ELDevice_Sucessfull
+           F    5314          4#    4     
+EChannel.Diag.Diag_0.SF_Mmt
+           F    5315          4#    4     
+EChannel.Diag.Diag_0.SF_NEXE
+           F    5316          4#    4     
+EChannel.Diag.Diag_0.SF_RdCfg
+           F    5317          4#    4     
+EChannel.Diag.Diag_0.SF_TBSY
+           F    5318          4#    4     
+EChannel.Diag.Diag_0.SF_WrCfg
+           F    5319          4#    4     
+EChannel.Diag.Diag_0.SR_DeviceState
+           R    4516          4#    4     
+EChannel.Diag.Diag_0.SR_DeviceStatus
+           R    4517          4#    4     
+EChannel.Diag.Diag_0.SR_ELineComCycle
+           R    4518          4#    4     
+EChannel.Diag.Diag_0.SR_FilterSBusAddr
+           R    4519          4#    4     
+EChannel.Diag.Diag_0.SR_ModDiagCfgErr
+           R    4520          4#    4     
+EChannel.Diag.Diag_0.SR_ModDiagDexErr
+           R    4521          4#    4     
+EChannel.Diag.Diag_0.SR_ModDiagMmtErr
+           R    4522          4#    4     
+EChannel.Diag.Diag_0.SR_ModDiagRdCfgErr
+           R    4523          4#    4     
+EChannel.Diag.Diag_0.SR_ModDiagWrCfgErr
+           R    4524          4#    4     
+EChannel.Driver0.SF_ButtonClear
+           F    5320          4#    4     
+EChannel.Driver0.SF_ButtonDownloadAll
+           F    5321          4#    4     
+EChannel.Driver0.SF_ButtonReconnect
+           F    5322          4#    4     
+EChannel.Driver0.SF_ButtonUploadAll
+           F    5323          4#    4     
+EChannel.Driver0.SF_ComDiag0
+           F    5324..5339    4#    4     
+EChannel.Driver0.SF_DownloadBsy
+           F    5340          4#    4     
+EChannel.Driver0.SF_ELInitNet_Sucessfull
+           F    5341          4#    4     
+EChannel.Driver0.SF_SasiSucessfull
+           F    5342          4#    4     
+EChannel.Driver0.SF_UploadBsy
+           F    5343          4#    4     
+EChannel.Driver0.SR_Activity
+           R    4525..4532    4#    4     
+EChannel.Driver0.SR_ComDiag0
+           R    4533..4534    4#    4     
+EChannel.Driver0.SR_CommunicationCycleTime
+           R    4535          4#    4     
+EChannel.Driver0.SR_DataExchTB1
+           R    4536          4#    4     
+EChannel.Driver0.SR_DataExchTB2
+           R    4537          4#    4     
+EChannel.Driver0.SR_ELInitNet_Status
+           R    4538          4#    4     
+EChannel.Driver0.SR_LongReconnectTB
+           R    4539          4#    4     
+EChannel.Driver0.SR_MemAllocTotalDevice
+           R    4540          4#    4     
+EChannel.Driver0.SR_SBusAddInErr
+           R    4541          4#    4     
+EChannel.Driver0.SR_ShortReconnectTB
+           R    4542          4#    4     
+EChannel.Driver0.SR_Synchro_Configs_Mode
+           R    4543          4#    4     
+EChannel.Driver0.SR_TimeBaseCheckCfg
+           R    4544          4#    4     
+EChannel.M01.Analogue.Sensor_00.AlaLimHigh
+           F    4963          4#    4     
+EChannel.M01.Analogue.Sensor_00.AlaLimLow
+           F    4964          4#    4     
+EChannel.M01.Analogue.Sensor_00.ConvType
+           R    3904          4#    4     
+EChannel.M01.Analogue.Sensor_00.Correction
+           R    3905          4#    4     
+EChannel.M01.Analogue.Sensor_00.GwHyst
+           R    3906          4#    4     
+EChannel.M01.Analogue.Sensor_00.GwVerz
+           R    3907          4#    4     
+EChannel.M01.Analogue.Sensor_00.LimHigh
+           R    3908          4#    4     
+EChannel.M01.Analogue.Sensor_00.LimLow
+           R    3909          4#    4     
+EChannel.M01.Analogue.Sensor_00.PhysVal
+           R    3910          4#    4     
+EChannel.M01.Analogue.Sensor_00.PhysValY1
+           R    3911          4#    4     
+EChannel.M01.Analogue.Sensor_00.PhysValY2
+           R    3912          4#    4     
+EChannel.M01.Analogue.Sensor_00.RawValX1
+           R    3913          4#    4     
+EChannel.M01.Analogue.Sensor_00.RawValX2
+           R    3914          4#    4     
+EChannel.M01.Analogue.Sensor_00.ScanFact
+           R    3915          4#    4     
+EChannel.M01.Analogue.Sensor_00.ScanTime
+           R    3916          4#    4     
+EChannel.M01.Analogue.Sensor_00.VoltGrp
+           R    3917          4#    4     
+EChannel.M01.Analogue.Sensor_01.AlaLimHigh
+           F    4965          4#    4     
+EChannel.M01.Analogue.Sensor_01.AlaLimLow
+           F    4966          4#    4     
+EChannel.M01.Analogue.Sensor_01.ConvType
+           R    3918          4#    4     
+EChannel.M01.Analogue.Sensor_01.Correction
+           R    3919          4#    4     
+EChannel.M01.Analogue.Sensor_01.GwHyst
+           R    3920          4#    4     
+EChannel.M01.Analogue.Sensor_01.GwVerz
+           R    3921          4#    4     
+EChannel.M01.Analogue.Sensor_01.LimHigh
+           R    3922          4#    4     
+EChannel.M01.Analogue.Sensor_01.LimLow
+           R    3923          4#    4     
+EChannel.M01.Analogue.Sensor_01.PhysVal
+           R    3924          4#    4     
+EChannel.M01.Analogue.Sensor_01.PhysValY1
+           R    3925          4#    4     
+EChannel.M01.Analogue.Sensor_01.PhysValY2
+           R    3926          4#    4     
+EChannel.M01.Analogue.Sensor_01.RawValX1
+           R    3927          4#    4     
+EChannel.M01.Analogue.Sensor_01.RawValX2
+           R    3928          4#    4     
+EChannel.M01.Analogue.Sensor_01.ScanFact
+           R    3929          4#    4     
+EChannel.M01.Analogue.Sensor_01.ScanTime
+           R    3930          4#    4     
+EChannel.M01.Analogue.Sensor_01.VoltGrp
+           R    3931          4#    4     
+EChannel.M01.Analogue.Sensor_02.AlaLimHigh
+           F    4967          4#    4     
+EChannel.M01.Analogue.Sensor_02.AlaLimLow
+           F    4968          4#    4     
+EChannel.M01.Analogue.Sensor_02.ConvType
+           R    3932          4#    4     
+EChannel.M01.Analogue.Sensor_02.Correction
+           R    3933          4#    4     
+EChannel.M01.Analogue.Sensor_02.GwHyst
+           R    3934          4#    4     
+EChannel.M01.Analogue.Sensor_02.GwVerz
+           R    3935          4#    4     
+EChannel.M01.Analogue.Sensor_02.LimHigh
+           R    3936          4#    4     
+EChannel.M01.Analogue.Sensor_02.LimLow
+           R    3937          4#    4     
+EChannel.M01.Analogue.Sensor_02.PhysVal
+           R    3938          4#    4     
+EChannel.M01.Analogue.Sensor_02.PhysValY1
+           R    3939          4#    4     
+EChannel.M01.Analogue.Sensor_02.PhysValY2
+           R    3940          4#    4     
+EChannel.M01.Analogue.Sensor_02.RawValX1
+           R    3941          4#    4     
+EChannel.M01.Analogue.Sensor_02.RawValX2
+           R    3942          4#    4     
+EChannel.M01.Analogue.Sensor_02.ScanFact
+           R    3943          4#    4     
+EChannel.M01.Analogue.Sensor_02.ScanTime
+           R    3944          4#    4     
+EChannel.M01.Analogue.Sensor_02.VoltGrp
+           R    3945          4#    4     
+EChannel.M01.Analogue.Sensor_03.AlaLimHigh
+           F    4969          4#    4     
+EChannel.M01.Analogue.Sensor_03.AlaLimLow
+           F    4970          4#    4     
+EChannel.M01.Analogue.Sensor_03.ConvType
+           R    3946          4#    4     
+EChannel.M01.Analogue.Sensor_03.Correction
+           R    3947          4#    4     
+EChannel.M01.Analogue.Sensor_03.GwHyst
+           R    3948          4#    4     
+EChannel.M01.Analogue.Sensor_03.GwVerz
+           R    3949          4#    4     
+EChannel.M01.Analogue.Sensor_03.LimHigh
+           R    3950          4#    4     
+EChannel.M01.Analogue.Sensor_03.LimLow
+           R    3951          4#    4     
+EChannel.M01.Analogue.Sensor_03.PhysVal
+           R    3952          4#    4     
+EChannel.M01.Analogue.Sensor_03.PhysValY1
+           R    3953          4#    4     
+EChannel.M01.Analogue.Sensor_03.PhysValY2
+           R    3954          4#    4     
+EChannel.M01.Analogue.Sensor_03.RawValX1
+           R    3955          4#    4     
+EChannel.M01.Analogue.Sensor_03.RawValX2
+           R    3956          4#    4     
+EChannel.M01.Analogue.Sensor_03.ScanFact
+           R    3957          4#    4     
+EChannel.M01.Analogue.Sensor_03.ScanTime
+           R    3958          4#    4     
+EChannel.M01.Analogue.Sensor_03.VoltGrp
+           R    3959          4#    4     
+EChannel.M01.Analogue.Sensor_04.AlaLimHigh
+           F    4971          4#    4     
+EChannel.M01.Analogue.Sensor_04.AlaLimLow
+           F    4972          4#    4     
+EChannel.M01.Analogue.Sensor_04.ConvType
+           R    3960          4#    4     
+EChannel.M01.Analogue.Sensor_04.Correction
+           R    3961          4#    4     
+EChannel.M01.Analogue.Sensor_04.GwHyst
+           R    3962          4#    4     
+EChannel.M01.Analogue.Sensor_04.GwVerz
+           R    3963          4#    4     
+EChannel.M01.Analogue.Sensor_04.LimHigh
+           R    3964          4#    4     
+EChannel.M01.Analogue.Sensor_04.LimLow
+           R    3965          4#    4     
+EChannel.M01.Analogue.Sensor_04.PhysVal
+           R    3966          4#    4     
+EChannel.M01.Analogue.Sensor_04.PhysValY1
+           R    3967          4#    4     
+EChannel.M01.Analogue.Sensor_04.PhysValY2
+           R    3968          4#    4     
+EChannel.M01.Analogue.Sensor_04.RawValX1
+           R    3969          4#    4     
+EChannel.M01.Analogue.Sensor_04.RawValX2
+           R    3970          4#    4     
+EChannel.M01.Analogue.Sensor_04.ScanFact
+           R    3971          4#    4     
+EChannel.M01.Analogue.Sensor_04.ScanTime
+           R    3972          4#    4     
+EChannel.M01.Analogue.Sensor_04.VoltGrp
+           R    3973          4#    4     
+EChannel.M01.Analogue.Sensor_05.AlaLimHigh
+           F    4973          4#    4     
+EChannel.M01.Analogue.Sensor_05.AlaLimLow
+           F    4974          4#    4     
+EChannel.M01.Analogue.Sensor_05.ConvType
+           R    3974          4#    4     
+EChannel.M01.Analogue.Sensor_05.Correction
+           R    3975          4#    4     
+EChannel.M01.Analogue.Sensor_05.GwHyst
+           R    3976          4#    4     
+EChannel.M01.Analogue.Sensor_05.GwVerz
+           R    3977          4#    4     
+EChannel.M01.Analogue.Sensor_05.LimHigh
+           R    3978          4#    4     
+EChannel.M01.Analogue.Sensor_05.LimLow
+           R    3979          4#    4     
+EChannel.M01.Analogue.Sensor_05.PhysVal
+           R    3980          4#    4     
+EChannel.M01.Analogue.Sensor_05.PhysValY1
+           R    3981          4#    4     
+EChannel.M01.Analogue.Sensor_05.PhysValY2
+           R    3982          4#    4     
+EChannel.M01.Analogue.Sensor_05.RawValX1
+           R    3983          4#    4     
+EChannel.M01.Analogue.Sensor_05.RawValX2
+           R    3984          4#    4     
+EChannel.M01.Analogue.Sensor_05.ScanFact
+           R    3985          4#    4     
+EChannel.M01.Analogue.Sensor_05.ScanTime
+           R    3986          4#    4     
+EChannel.M01.Analogue.Sensor_05.VoltGrp
+           R    3987          4#    4     
+EChannel.M01.Analogue.Sensor_06.AlaLimHigh
+           F    4975          4#    4     
+EChannel.M01.Analogue.Sensor_06.AlaLimLow
+           F    4976          4#    4     
+EChannel.M01.Analogue.Sensor_06.ConvType
+           R    3988          4#    4     
+EChannel.M01.Analogue.Sensor_06.Correction
+           R    3989          4#    4     
+EChannel.M01.Analogue.Sensor_06.GwHyst
+           R    3990          4#    4     
+EChannel.M01.Analogue.Sensor_06.GwVerz
+           R    3991          4#    4     
+EChannel.M01.Analogue.Sensor_06.LimHigh
+           R    3992          4#    4     
+EChannel.M01.Analogue.Sensor_06.LimLow
+           R    3993          4#    4     
+EChannel.M01.Analogue.Sensor_06.PhysVal
+           R    3994          4#    4     
+EChannel.M01.Analogue.Sensor_06.PhysValY1
+           R    3995          4#    4     
+EChannel.M01.Analogue.Sensor_06.PhysValY2
+           R    3996          4#    4     
+EChannel.M01.Analogue.Sensor_06.RawValX1
+           R    3997          4#    4     
+EChannel.M01.Analogue.Sensor_06.RawValX2
+           R    3998          4#    4     
+EChannel.M01.Analogue.Sensor_06.ScanFact
+           R    3999          4#    4     
+EChannel.M01.Analogue.Sensor_06.ScanTime
+           R    4000          4#    4     
+EChannel.M01.Analogue.Sensor_06.VoltGrp
+           R    4001          4#    4     
+EChannel.M01.Analogue.Sensor_07.AlaLimHigh
+           F    4977          4#    4     
+EChannel.M01.Analogue.Sensor_07.AlaLimLow
+           F    4978          4#    4     
+EChannel.M01.Analogue.Sensor_07.ConvType
+           R    4002          4#    4     
+EChannel.M01.Analogue.Sensor_07.Correction
+           R    4003          4#    4     
+EChannel.M01.Analogue.Sensor_07.GwHyst
+           R    4004          4#    4     
+EChannel.M01.Analogue.Sensor_07.GwVerz
+           R    4005          4#    4     
+EChannel.M01.Analogue.Sensor_07.LimHigh
+           R    4006          4#    4     
+EChannel.M01.Analogue.Sensor_07.LimLow
+           R    4007          4#    4     
+EChannel.M01.Analogue.Sensor_07.PhysVal
+           R    4008          4#    4     
+EChannel.M01.Analogue.Sensor_07.PhysValY1
+           R    4009          4#    4     
+EChannel.M01.Analogue.Sensor_07.PhysValY2
+           R    4010          4#    4     
+EChannel.M01.Analogue.Sensor_07.RawValX1
+           R    4011          4#    4     
+EChannel.M01.Analogue.Sensor_07.RawValX2
+           R    4012          4#    4     
+EChannel.M01.Analogue.Sensor_07.ScanFact
+           R    4013          4#    4     
+EChannel.M01.Analogue.Sensor_07.ScanTime
+           R    4014          4#    4     
+EChannel.M01.Analogue.Sensor_07.VoltGrp
+           R    4015          4#    4     
+EChannel.M01.AnalogueInput0
+           R    4016..4025    4#    4     
+EChannel.M01.AnalogueInput1
+           R    4017          4#    4     
+EChannel.M01.AnalogueInput2
+           R    4018          4#    4     
+EChannel.M01.AnalogueInput3
+           R    4019          4#    4     
+EChannel.M01.AnalogueInput4
+           R    4020          4#    4     
+EChannel.M01.AnalogueInput5
+           R    4021          4#    4     
+EChannel.M01.AnalogueInput6
+           R    4022          4#    4     
+EChannel.M01.AnalogueInput7
+           R    4023          4#    4     
+EChannel.M01.AnalogueInputStatus0_3
+           R    4024          4#    4     
+EChannel.M01.AnalogueInputStatus4_7
+           R    4025          4#    4     
+EChannel.M01.AnalogueOutput0
+           R    4026..4029    4#    4     
+EChannel.M01.AnalogueOutput1
+           R    4027          4#    4     
+EChannel.M01.AnalogueOutput2
+           R    4028          4#    4     
+EChannel.M01.AnalogueOutput3
+           R    4029          4#    4     
+EChannel.M01.Manual.AnalogueOutput0.EditManValue
+           R    4030..4033    4#    4     
+EChannel.M01.Manual.AnalogueOutput0.ManMode
+           F    4979..4982    4#    4     
+EChannel.M01.Manual.AnalogueOutput0.ManModeHw
+           F    4983..4986    4#    4     
+EChannel.M01.Manual.AnalogueOutput0.ScaleMax
+           R    4034..4037    4#    4     
+EChannel.M01.Manual.AnalogueOutput0.ScaleMin
+           R    4038..4041    4#    4     
+EChannel.M01.Manual.AnalogueOutput0.ToggleManMode
+           F    4987..4990    4#    4     
+EChannel.M01.Manual.AnalogueOutput0.Value
+           R    4042..4045    4#    4     
+EChannel.M01.Manual.AnalogueOutput1.EditManValue
+           R    4031          4#    4     
+EChannel.M01.Manual.AnalogueOutput1.ManMode
+           F    4980          4#    4     
+EChannel.M01.Manual.AnalogueOutput1.ManModeHw
+           F    4984          4#    4     
+EChannel.M01.Manual.AnalogueOutput1.ScaleMax
+           R    4035          4#    4     
+EChannel.M01.Manual.AnalogueOutput1.ScaleMin
+           R    4039          4#    4     
+EChannel.M01.Manual.AnalogueOutput1.ToggleManMode
+           F    4988          4#    4     
+EChannel.M01.Manual.AnalogueOutput1.Value
+           R    4043          4#    4     
+EChannel.M01.Manual.AnalogueOutput2.EditManValue
+           R    4032          4#    4     
+EChannel.M01.Manual.AnalogueOutput2.ManMode
+           F    4981          4#    4     
+EChannel.M01.Manual.AnalogueOutput2.ManModeHw
+           F    4985          4#    4     
+EChannel.M01.Manual.AnalogueOutput2.ScaleMax
+           R    4036          4#    4     
+EChannel.M01.Manual.AnalogueOutput2.ScaleMin
+           R    4040          4#    4     
+EChannel.M01.Manual.AnalogueOutput2.ToggleManMode
+           F    4989          4#    4     
+EChannel.M01.Manual.AnalogueOutput2.Value
+           R    4044          4#    4     
+EChannel.M01.Manual.AnalogueOutput3.EditManValue
+           R    4033          4#    4     
+EChannel.M01.Manual.AnalogueOutput3.ManMode
+           F    4982          4#    4     
+EChannel.M01.Manual.AnalogueOutput3.ManModeHw
+           F    4986          4#    4     
+EChannel.M01.Manual.AnalogueOutput3.ScaleMax
+           R    4037          4#    4     
+EChannel.M01.Manual.AnalogueOutput3.ScaleMin
+           R    4041          4#    4     
+EChannel.M01.Manual.AnalogueOutput3.ToggleManMode
+           F    4990          4#    4     
+EChannel.M01.Manual.AnalogueOutput3.Value
+           R    4045          4#    4     
+EChannel.M01.Manual.LocalOverridePermission
+           R    4046          4#    4     
+EChannel.M01.Parameters.SDB_ConfigIO
+           DB   6608          4#    4     
+EChannel.M01.Parameters.SF_ButtonDownload
+           F    4991          4#    4     
+EChannel.M01.Parameters.SF_ButtonUpload
+           F    4992          4#    4     
+EChannel.M01.Parameters.SF_DownloadBsy
+           F    4993          4#    4     
+EChannel.M01.Parameters.SF_UploadBsy
+           F    4994          4#    4     
+EChannel.M01.Parameters.SR_Address
+           R    4047          4#    4     
+EChannel.M01.Parameters.SR_ErrStatus
+           R    4048          4#    4     
+EChannel.M01.Parameters.SR_ExchangeDataModeIO
+           R    4049          4#    4     
+EChannel.M01.Parameters.SR_ExchangeDataModeMan
+           R    4050          4#    4     
+EChannel.M01.Parameters.SR_WarnStatus
+           R    4051          4#    4     
+EChannel.M02.Analogue.Sensor_00.AlaLimHigh
+           F    4995          4#    4     
+EChannel.M02.Analogue.Sensor_00.AlaLimLow
+           F    4996          4#    4     
+EChannel.M02.Analogue.Sensor_00.ConvType
+           R    4052          4#    4     
+EChannel.M02.Analogue.Sensor_00.Correction
+           R    4053          4#    4     
+EChannel.M02.Analogue.Sensor_00.GwHyst
+           R    4054          4#    4     
+EChannel.M02.Analogue.Sensor_00.GwVerz
+           R    4055          4#    4     
+EChannel.M02.Analogue.Sensor_00.LimHigh
+           R    4056          4#    4     
+EChannel.M02.Analogue.Sensor_00.LimLow
+           R    4057          4#    4     
+EChannel.M02.Analogue.Sensor_00.PhysVal
+           R    4058          4#    4     
+EChannel.M02.Analogue.Sensor_00.PhysValY1
+           R    4059          4#    4     
+EChannel.M02.Analogue.Sensor_00.PhysValY2
+           R    4060          4#    4     
+EChannel.M02.Analogue.Sensor_00.RawValX1
+           R    4061          4#    4     
+EChannel.M02.Analogue.Sensor_00.RawValX2
+           R    4062          4#    4     
+EChannel.M02.Analogue.Sensor_00.ScanFact
+           R    4063          4#    4     
+EChannel.M02.Analogue.Sensor_00.ScanTime
+           R    4064          4#    4     
+EChannel.M02.Analogue.Sensor_00.VoltGrp
+           R    4065          4#    4     
+EChannel.M02.Analogue.Sensor_01.AlaLimHigh
+           F    4997          4#    4     
+EChannel.M02.Analogue.Sensor_01.AlaLimLow
+           F    4998          4#    4     
+EChannel.M02.Analogue.Sensor_01.ConvType
+           R    4066          4#    4     
+EChannel.M02.Analogue.Sensor_01.Correction
+           R    4067          4#    4     
+EChannel.M02.Analogue.Sensor_01.GwHyst
+           R    4068          4#    4     
+EChannel.M02.Analogue.Sensor_01.GwVerz
+           R    4069          4#    4     
+EChannel.M02.Analogue.Sensor_01.LimHigh
+           R    4070          4#    4     
+EChannel.M02.Analogue.Sensor_01.LimLow
+           R    4071          4#    4     
+EChannel.M02.Analogue.Sensor_01.PhysVal
+           R    4072          4#    4     
+EChannel.M02.Analogue.Sensor_01.PhysValY1
+           R    4073          4#    4     
+EChannel.M02.Analogue.Sensor_01.PhysValY2
+           R    4074          4#    4     
+EChannel.M02.Analogue.Sensor_01.RawValX1
+           R    4075          4#    4     
+EChannel.M02.Analogue.Sensor_01.RawValX2
+           R    4076          4#    4     
+EChannel.M02.Analogue.Sensor_01.ScanFact
+           R    4077          4#    4     
+EChannel.M02.Analogue.Sensor_01.ScanTime
+           R    4078          4#    4     
+EChannel.M02.Analogue.Sensor_01.VoltGrp
+           R    4079          4#    4     
+EChannel.M02.Analogue.Sensor_02.AlaLimHigh
+           F    4999          4#    4     
+EChannel.M02.Analogue.Sensor_02.AlaLimLow
+           F    5000          4#    4     
+EChannel.M02.Analogue.Sensor_02.ConvType
+           R    4080          4#    4     
+EChannel.M02.Analogue.Sensor_02.Correction
+           R    4081          4#    4     
+EChannel.M02.Analogue.Sensor_02.GwHyst
+           R    4082          4#    4     
+EChannel.M02.Analogue.Sensor_02.GwVerz
+           R    4083          4#    4     
+EChannel.M02.Analogue.Sensor_02.LimHigh
+           R    4084          4#    4     
+EChannel.M02.Analogue.Sensor_02.LimLow
+           R    4085          4#    4     
+EChannel.M02.Analogue.Sensor_02.PhysVal
+           R    4086          4#    4     
+EChannel.M02.Analogue.Sensor_02.PhysValY1
+           R    4087          4#    4     
+EChannel.M02.Analogue.Sensor_02.PhysValY2
+           R    4088          4#    4     
+EChannel.M02.Analogue.Sensor_02.RawValX1
+           R    4089          4#    4     
+EChannel.M02.Analogue.Sensor_02.RawValX2
+           R    4090          4#    4     
+EChannel.M02.Analogue.Sensor_02.ScanFact
+           R    4091          4#    4     
+EChannel.M02.Analogue.Sensor_02.ScanTime
+           R    4092          4#    4     
+EChannel.M02.Analogue.Sensor_02.VoltGrp
+           R    4093          4#    4     
+EChannel.M02.Analogue.Sensor_03.AlaLimHigh
+           F    5001          4#    4     
+EChannel.M02.Analogue.Sensor_03.AlaLimLow
+           F    5002          4#    4     
+EChannel.M02.Analogue.Sensor_03.ConvType
+           R    4094          4#    4     
+EChannel.M02.Analogue.Sensor_03.Correction
+           R    4095          4#    4     
+EChannel.M02.Analogue.Sensor_03.GwHyst
+           R    4096          4#    4     
+EChannel.M02.Analogue.Sensor_03.GwVerz
+           R    4097          4#    4     
+EChannel.M02.Analogue.Sensor_03.LimHigh
+           R    4098          4#    4     
+EChannel.M02.Analogue.Sensor_03.LimLow
+           R    4099          4#    4     
+EChannel.M02.Analogue.Sensor_03.PhysVal
+           R    4100          4#    4     
+EChannel.M02.Analogue.Sensor_03.PhysValY1
+           R    4101          4#    4     
+EChannel.M02.Analogue.Sensor_03.PhysValY2
+           R    4102          4#    4     
+EChannel.M02.Analogue.Sensor_03.RawValX1
+           R    4103          4#    4     
+EChannel.M02.Analogue.Sensor_03.RawValX2
+           R    4104          4#    4     
+EChannel.M02.Analogue.Sensor_03.ScanFact
+           R    4105          4#    4     
+EChannel.M02.Analogue.Sensor_03.ScanTime
+           R    4106          4#    4     
+EChannel.M02.Analogue.Sensor_03.VoltGrp
+           R    4107          4#    4     
+EChannel.M02.Analogue.Sensor_04.AlaLimHigh
+           F    5003          4#    4     
+EChannel.M02.Analogue.Sensor_04.AlaLimLow
+           F    5004          4#    4     
+EChannel.M02.Analogue.Sensor_04.ConvType
+           R    4108          4#    4     
+EChannel.M02.Analogue.Sensor_04.Correction
+           R    4109          4#    4     
+EChannel.M02.Analogue.Sensor_04.GwHyst
+           R    4110          4#    4     
+EChannel.M02.Analogue.Sensor_04.GwVerz
+           R    4111          4#    4     
+EChannel.M02.Analogue.Sensor_04.LimHigh
+           R    4112          4#    4     
+EChannel.M02.Analogue.Sensor_04.LimLow
+           R    4113          4#    4     
+EChannel.M02.Analogue.Sensor_04.PhysVal
+           R    4114          4#    4     
+EChannel.M02.Analogue.Sensor_04.PhysValY1
+           R    4115          4#    4     
+EChannel.M02.Analogue.Sensor_04.PhysValY2
+           R    4116          4#    4     
+EChannel.M02.Analogue.Sensor_04.RawValX1
+           R    4117          4#    4     
+EChannel.M02.Analogue.Sensor_04.RawValX2
+           R    4118          4#    4     
+EChannel.M02.Analogue.Sensor_04.ScanFact
+           R    4119          4#    4     
+EChannel.M02.Analogue.Sensor_04.ScanTime
+           R    4120          4#    4     
+EChannel.M02.Analogue.Sensor_04.VoltGrp
+           R    4121          4#    4     
+EChannel.M02.Analogue.Sensor_05.AlaLimHigh
+           F    5005          4#    4     
+EChannel.M02.Analogue.Sensor_05.AlaLimLow
+           F    5006          4#    4     
+EChannel.M02.Analogue.Sensor_05.ConvType
+           R    4122          4#    4     
+EChannel.M02.Analogue.Sensor_05.Correction
+           R    4123          4#    4     
+EChannel.M02.Analogue.Sensor_05.GwHyst
+           R    4124          4#    4     
+EChannel.M02.Analogue.Sensor_05.GwVerz
+           R    4125          4#    4     
+EChannel.M02.Analogue.Sensor_05.LimHigh
+           R    4126          4#    4     
+EChannel.M02.Analogue.Sensor_05.LimLow
+           R    4127          4#    4     
+EChannel.M02.Analogue.Sensor_05.PhysVal
+           R    4128          4#    4     
+EChannel.M02.Analogue.Sensor_05.PhysValY1
+           R    4129          4#    4     
+EChannel.M02.Analogue.Sensor_05.PhysValY2
+           R    4130          4#    4     
+EChannel.M02.Analogue.Sensor_05.RawValX1
+           R    4131          4#    4     
+EChannel.M02.Analogue.Sensor_05.RawValX2
+           R    4132          4#    4     
+EChannel.M02.Analogue.Sensor_05.ScanFact
+           R    4133          4#    4     
+EChannel.M02.Analogue.Sensor_05.ScanTime
+           R    4134          4#    4     
+EChannel.M02.Analogue.Sensor_05.VoltGrp
+           R    4135          4#    4     
+EChannel.M02.Analogue.Sensor_06.AlaLimHigh
+           F    5007          4#    4     
+EChannel.M02.Analogue.Sensor_06.AlaLimLow
+           F    5008          4#    4     
+EChannel.M02.Analogue.Sensor_06.ConvType
+           R    4136          4#    4     
+EChannel.M02.Analogue.Sensor_06.Correction
+           R    4137          4#    4     
+EChannel.M02.Analogue.Sensor_06.GwHyst
+           R    4138          4#    4     
+EChannel.M02.Analogue.Sensor_06.GwVerz
+           R    4139          4#    4     
+EChannel.M02.Analogue.Sensor_06.LimHigh
+           R    4140          4#    4     
+EChannel.M02.Analogue.Sensor_06.LimLow
+           R    4141          4#    4     
+EChannel.M02.Analogue.Sensor_06.PhysVal
+           R    4142          4#    4     
+EChannel.M02.Analogue.Sensor_06.PhysValY1
+           R    4143          4#    4     
+EChannel.M02.Analogue.Sensor_06.PhysValY2
+           R    4144          4#    4     
+EChannel.M02.Analogue.Sensor_06.RawValX1
+           R    4145          4#    4     
+EChannel.M02.Analogue.Sensor_06.RawValX2
+           R    4146          4#    4     
+EChannel.M02.Analogue.Sensor_06.ScanFact
+           R    4147          4#    4     
+EChannel.M02.Analogue.Sensor_06.ScanTime
+           R    4148          4#    4     
+EChannel.M02.Analogue.Sensor_06.VoltGrp
+           R    4149          4#    4     
+EChannel.M02.Analogue.Sensor_07.AlaLimHigh
+           F    5009          4#    4     
+EChannel.M02.Analogue.Sensor_07.AlaLimLow
+           F    5010          4#    4     
+EChannel.M02.Analogue.Sensor_07.ConvType
+           R    4150          4#    4     
+EChannel.M02.Analogue.Sensor_07.Correction
+           R    4151          4#    4     
+EChannel.M02.Analogue.Sensor_07.GwHyst
+           R    4152          4#    4     
+EChannel.M02.Analogue.Sensor_07.GwVerz
+           R    4153          4#    4     
+EChannel.M02.Analogue.Sensor_07.LimHigh
+           R    4154          4#    4     
+EChannel.M02.Analogue.Sensor_07.LimLow
+           R    4155          4#    4     
+EChannel.M02.Analogue.Sensor_07.PhysVal
+           R    4156          4#    4     
+EChannel.M02.Analogue.Sensor_07.PhysValY1
+           R    4157          4#    4     
+EChannel.M02.Analogue.Sensor_07.PhysValY2
+           R    4158          4#    4     
+EChannel.M02.Analogue.Sensor_07.RawValX1
+           R    4159          4#    4     
+EChannel.M02.Analogue.Sensor_07.RawValX2
+           R    4160          4#    4     
+EChannel.M02.Analogue.Sensor_07.ScanFact
+           R    4161          4#    4     
+EChannel.M02.Analogue.Sensor_07.ScanTime
+           R    4162          4#    4     
+EChannel.M02.Analogue.Sensor_07.VoltGrp
+           R    4163          4#    4     
+EChannel.M02.AnalogueInput0
+           R    4164..4173    4#    4     
+EChannel.M02.AnalogueInput1
+           R    4165          4#    4     
+EChannel.M02.AnalogueInput2
+           R    4166          4#    4     
+EChannel.M02.AnalogueInput3
+           R    4167          4#    4     
+EChannel.M02.AnalogueInput4
+           R    4168          4#    4     
+EChannel.M02.AnalogueInput5
+           R    4169          4#    4     
+EChannel.M02.AnalogueInput6
+           R    4170          4#    4     
+EChannel.M02.AnalogueInput7
+           R    4171          4#    4     
+EChannel.M02.AnalogueInputStatus0_3
+           R    4172          4#    4     
+EChannel.M02.AnalogueInputStatus4_7
+           R    4173          4#    4     
+EChannel.M02.AnalogueOutput0
+           R    4174..4177    4#    4     
+EChannel.M02.AnalogueOutput1
+           R    4175          4#    4     
+EChannel.M02.AnalogueOutput2
+           R    4176          4#    4     
+EChannel.M02.AnalogueOutput3
+           R    4177          4#    4     
+EChannel.M02.Manual.AnalogueOutput0.EditManValue
+           R    4178..4181    4#    4     
+EChannel.M02.Manual.AnalogueOutput0.ManMode
+           F    5011..5014    4#    4     
+EChannel.M02.Manual.AnalogueOutput0.ManModeHw
+           F    5015..5018    4#    4     
+EChannel.M02.Manual.AnalogueOutput0.ScaleMax
+           R    4182..4185    4#    4     
+EChannel.M02.Manual.AnalogueOutput0.ScaleMin
+           R    4186..4189    4#    4     
+EChannel.M02.Manual.AnalogueOutput0.ToggleManMode
+           F    5019..5022    4#    4     
+EChannel.M02.Manual.AnalogueOutput0.Value
+           R    4190..4193    4#    4     
+EChannel.M02.Manual.AnalogueOutput1.EditManValue
+           R    4179          4#    4     
+EChannel.M02.Manual.AnalogueOutput1.ManMode
+           F    5012          4#    4     
+EChannel.M02.Manual.AnalogueOutput1.ManModeHw
+           F    5016          4#    4     
+EChannel.M02.Manual.AnalogueOutput1.ScaleMax
+           R    4183          4#    4     
+EChannel.M02.Manual.AnalogueOutput1.ScaleMin
+           R    4187          4#    4     
+EChannel.M02.Manual.AnalogueOutput1.ToggleManMode
+           F    5020          4#    4     
+EChannel.M02.Manual.AnalogueOutput1.Value
+           R    4191          4#    4     
+EChannel.M02.Manual.AnalogueOutput2.EditManValue
+           R    4180          4#    4     
+EChannel.M02.Manual.AnalogueOutput2.ManMode
+           F    5013          4#    4     
+EChannel.M02.Manual.AnalogueOutput2.ManModeHw
+           F    5017          4#    4     
+EChannel.M02.Manual.AnalogueOutput2.ScaleMax
+           R    4184          4#    4     
+EChannel.M02.Manual.AnalogueOutput2.ScaleMin
+           R    4188          4#    4     
+EChannel.M02.Manual.AnalogueOutput2.ToggleManMode
+           F    5021          4#    4     
+EChannel.M02.Manual.AnalogueOutput2.Value
+           R    4192          4#    4     
+EChannel.M02.Manual.AnalogueOutput3.EditManValue
+           R    4181          4#    4     
+EChannel.M02.Manual.AnalogueOutput3.ManMode
+           F    5014          4#    4     
+EChannel.M02.Manual.AnalogueOutput3.ManModeHw
+           F    5018          4#    4     
+EChannel.M02.Manual.AnalogueOutput3.ScaleMax
+           R    4185          4#    4     
+EChannel.M02.Manual.AnalogueOutput3.ScaleMin
+           R    4189          4#    4     
+EChannel.M02.Manual.AnalogueOutput3.ToggleManMode
+           F    5022          4#    4     
+EChannel.M02.Manual.AnalogueOutput3.Value
+           R    4193          4#    4     
+EChannel.M02.Manual.LocalOverridePermission
+           R    4194          4#    4     
+EChannel.M02.Parameters.SDB_ConfigIO
+           DB   6609          4#    4     
+EChannel.M02.Parameters.SF_ButtonDownload
+           F    5023          4#    4     
+EChannel.M02.Parameters.SF_ButtonUpload
+           F    5024          4#    4     
+EChannel.M02.Parameters.SF_DownloadBsy
+           F    5025          4#    4     
+EChannel.M02.Parameters.SF_UploadBsy
+           F    5026          4#    4     
+EChannel.M02.Parameters.SR_Address
+           R    4195          4#    4     
+EChannel.M02.Parameters.SR_ErrStatus
+           R    4196          4#    4     
+EChannel.M02.Parameters.SR_ExchangeDataModeIO
+           R    4197          4#    4     
+EChannel.M02.Parameters.SR_ExchangeDataModeMan
+           R    4198          4#    4     
+EChannel.M02.Parameters.SR_WarnStatus
+           R    4199          4#    4     
+EChannel.M03.Analogue.Sensor_00.AlaLimHigh
+           F    5027          4#    4     
+EChannel.M03.Analogue.Sensor_00.AlaLimLow
+           F    5028          4#    4     
+EChannel.M03.Analogue.Sensor_00.ConvType
+           R    4200          4#    4     
+EChannel.M03.Analogue.Sensor_00.Correction
+           R    4201          4#    4     
+EChannel.M03.Analogue.Sensor_00.GwHyst
+           R    4202          4#    4     
+EChannel.M03.Analogue.Sensor_00.GwVerz
+           R    4203          4#    4     
+EChannel.M03.Analogue.Sensor_00.LimHigh
+           R    4204          4#    4     
+EChannel.M03.Analogue.Sensor_00.LimLow
+           R    4205          4#    4     
+EChannel.M03.Analogue.Sensor_00.PhysVal
+           R    4206          4#    4     
+EChannel.M03.Analogue.Sensor_00.PhysValY1
+           R    4207          4#    4     
+EChannel.M03.Analogue.Sensor_00.PhysValY2
+           R    4208          4#    4     
+EChannel.M03.Analogue.Sensor_00.RawValX1
+           R    4209          4#    4     
+EChannel.M03.Analogue.Sensor_00.RawValX2
+           R    4210          4#    4     
+EChannel.M03.Analogue.Sensor_00.ScanFact
+           R    4211          4#    4     
+EChannel.M03.Analogue.Sensor_00.ScanTime
+           R    4212          4#    4     
+EChannel.M03.Analogue.Sensor_00.VoltGrp
+           R    4213          4#    4     
+EChannel.M03.Analogue.Sensor_01.AlaLimHigh
+           F    5029          4#    4     
+EChannel.M03.Analogue.Sensor_01.AlaLimLow
+           F    5030          4#    4     
+EChannel.M03.Analogue.Sensor_01.ConvType
+           R    4214          4#    4     
+EChannel.M03.Analogue.Sensor_01.Correction
+           R    4215          4#    4     
+EChannel.M03.Analogue.Sensor_01.GwHyst
+           R    4216          4#    4     
+EChannel.M03.Analogue.Sensor_01.GwVerz
+           R    4217          4#    4     
+EChannel.M03.Analogue.Sensor_01.LimHigh
+           R    4218          4#    4     
+EChannel.M03.Analogue.Sensor_01.LimLow
+           R    4219          4#    4     
+EChannel.M03.Analogue.Sensor_01.PhysVal
+           R    4220          4#    4     
+EChannel.M03.Analogue.Sensor_01.PhysValY1
+           R    4221          4#    4     
+EChannel.M03.Analogue.Sensor_01.PhysValY2
+           R    4222          4#    4     
+EChannel.M03.Analogue.Sensor_01.RawValX1
+           R    4223          4#    4     
+EChannel.M03.Analogue.Sensor_01.RawValX2
+           R    4224          4#    4     
+EChannel.M03.Analogue.Sensor_01.ScanFact
+           R    4225          4#    4     
+EChannel.M03.Analogue.Sensor_01.ScanTime
+           R    4226          4#    4     
+EChannel.M03.Analogue.Sensor_01.VoltGrp
+           R    4227          4#    4     
+EChannel.M03.Analogue.Sensor_02.AlaLimHigh
+           F    5031          4#    4     
+EChannel.M03.Analogue.Sensor_02.AlaLimLow
+           F    5032          4#    4     
+EChannel.M03.Analogue.Sensor_02.ConvType
+           R    4228          4#    4     
+EChannel.M03.Analogue.Sensor_02.Correction
+           R    4229          4#    4     
+EChannel.M03.Analogue.Sensor_02.GwHyst
+           R    4230          4#    4     
+EChannel.M03.Analogue.Sensor_02.GwVerz
+           R    4231          4#    4     
+EChannel.M03.Analogue.Sensor_02.LimHigh
+           R    4232          4#    4     
+EChannel.M03.Analogue.Sensor_02.LimLow
+           R    4233          4#    4     
+EChannel.M03.Analogue.Sensor_02.PhysVal
+           R    4234          4#    4     
+EChannel.M03.Analogue.Sensor_02.PhysValY1
+           R    4235          4#    4     
+EChannel.M03.Analogue.Sensor_02.PhysValY2
+           R    4236          4#    4     
+EChannel.M03.Analogue.Sensor_02.RawValX1
+           R    4237          4#    4     
+EChannel.M03.Analogue.Sensor_02.RawValX2
+           R    4238          4#    4     
+EChannel.M03.Analogue.Sensor_02.ScanFact
+           R    4239          4#    4     
+EChannel.M03.Analogue.Sensor_02.ScanTime
+           R    4240          4#    4     
+EChannel.M03.Analogue.Sensor_02.VoltGrp
+           R    4241          4#    4     
+EChannel.M03.Analogue.Sensor_03.AlaLimHigh
+           F    5033          4#    4     
+EChannel.M03.Analogue.Sensor_03.AlaLimLow
+           F    5034          4#    4     
+EChannel.M03.Analogue.Sensor_03.ConvType
+           R    4242          4#    4     
+EChannel.M03.Analogue.Sensor_03.Correction
+           R    4243          4#    4     
+EChannel.M03.Analogue.Sensor_03.GwHyst
+           R    4244          4#    4     
+EChannel.M03.Analogue.Sensor_03.GwVerz
+           R    4245          4#    4     
+EChannel.M03.Analogue.Sensor_03.LimHigh
+           R    4246          4#    4     
+EChannel.M03.Analogue.Sensor_03.LimLow
+           R    4247          4#    4     
+EChannel.M03.Analogue.Sensor_03.PhysVal
+           R    4248          4#    4     
+EChannel.M03.Analogue.Sensor_03.PhysValY1
+           R    4249          4#    4     
+EChannel.M03.Analogue.Sensor_03.PhysValY2
+           R    4250          4#    4     
+EChannel.M03.Analogue.Sensor_03.RawValX1
+           R    4251          4#    4     
+EChannel.M03.Analogue.Sensor_03.RawValX2
+           R    4252          4#    4     
+EChannel.M03.Analogue.Sensor_03.ScanFact
+           R    4253          4#    4     
+EChannel.M03.Analogue.Sensor_03.ScanTime
+           R    4254          4#    4     
+EChannel.M03.Analogue.Sensor_03.VoltGrp
+           R    4255          4#    4     
+EChannel.M03.Analogue.Sensor_04.AlaLimHigh
+           F    5035          4#    4     
+EChannel.M03.Analogue.Sensor_04.AlaLimLow
+           F    5036          4#    4     
+EChannel.M03.Analogue.Sensor_04.ConvType
+           R    4256          4#    4     
+EChannel.M03.Analogue.Sensor_04.Correction
+           R    4257          4#    4     
+EChannel.M03.Analogue.Sensor_04.GwHyst
+           R    4258          4#    4     
+EChannel.M03.Analogue.Sensor_04.GwVerz
+           R    4259          4#    4     
+EChannel.M03.Analogue.Sensor_04.LimHigh
+           R    4260          4#    4     
+EChannel.M03.Analogue.Sensor_04.LimLow
+           R    4261          4#    4     
+EChannel.M03.Analogue.Sensor_04.PhysVal
+           R    4262          4#    4     
+EChannel.M03.Analogue.Sensor_04.PhysValY1
+           R    4263          4#    4     
+EChannel.M03.Analogue.Sensor_04.PhysValY2
+           R    4264          4#    4     
+EChannel.M03.Analogue.Sensor_04.RawValX1
+           R    4265          4#    4     
+EChannel.M03.Analogue.Sensor_04.RawValX2
+           R    4266          4#    4     
+EChannel.M03.Analogue.Sensor_04.ScanFact
+           R    4267          4#    4     
+EChannel.M03.Analogue.Sensor_04.ScanTime
+           R    4268          4#    4     
+EChannel.M03.Analogue.Sensor_04.VoltGrp
+           R    4269          4#    4     
+EChannel.M03.Analogue.Sensor_05.AlaLimHigh
+           F    5037          4#    4     
+EChannel.M03.Analogue.Sensor_05.AlaLimLow
+           F    5038          4#    4     
+EChannel.M03.Analogue.Sensor_05.ConvType
+           R    4270          4#    4     
+EChannel.M03.Analogue.Sensor_05.Correction
+           R    4271          4#    4     
+EChannel.M03.Analogue.Sensor_05.GwHyst
+           R    4272          4#    4     
+EChannel.M03.Analogue.Sensor_05.GwVerz
+           R    4273          4#    4     
+EChannel.M03.Analogue.Sensor_05.LimHigh
+           R    4274          4#    4     
+EChannel.M03.Analogue.Sensor_05.LimLow
+           R    4275          4#    4     
+EChannel.M03.Analogue.Sensor_05.PhysVal
+           R    4276          4#    4     
+EChannel.M03.Analogue.Sensor_05.PhysValY1
+           R    4277          4#    4     
+EChannel.M03.Analogue.Sensor_05.PhysValY2
+           R    4278          4#    4     
+EChannel.M03.Analogue.Sensor_05.RawValX1
+           R    4279          4#    4     
+EChannel.M03.Analogue.Sensor_05.RawValX2
+           R    4280          4#    4     
+EChannel.M03.Analogue.Sensor_05.ScanFact
+           R    4281          4#    4     
+EChannel.M03.Analogue.Sensor_05.ScanTime
+           R    4282          4#    4     
+EChannel.M03.Analogue.Sensor_05.VoltGrp
+           R    4283          4#    4     
+EChannel.M03.Analogue.Sensor_06.AlaLimHigh
+           F    5039          4#    4     
+EChannel.M03.Analogue.Sensor_06.AlaLimLow
+           F    5040          4#    4     
+EChannel.M03.Analogue.Sensor_06.ConvType
+           R    4284          4#    4     
+EChannel.M03.Analogue.Sensor_06.Correction
+           R    4285          4#    4     
+EChannel.M03.Analogue.Sensor_06.GwHyst
+           R    4286          4#    4     
+EChannel.M03.Analogue.Sensor_06.GwVerz
+           R    4287          4#    4     
+EChannel.M03.Analogue.Sensor_06.LimHigh
+           R    4288          4#    4     
+EChannel.M03.Analogue.Sensor_06.LimLow
+           R    4289          4#    4     
+EChannel.M03.Analogue.Sensor_06.PhysVal
+           R    4290          4#    4     
+EChannel.M03.Analogue.Sensor_06.PhysValY1
+           R    4291          4#    4     
+EChannel.M03.Analogue.Sensor_06.PhysValY2
+           R    4292          4#    4     
+EChannel.M03.Analogue.Sensor_06.RawValX1
+           R    4293          4#    4     
+EChannel.M03.Analogue.Sensor_06.RawValX2
+           R    4294          4#    4     
+EChannel.M03.Analogue.Sensor_06.ScanFact
+           R    4295          4#    4     
+EChannel.M03.Analogue.Sensor_06.ScanTime
+           R    4296          4#    4     
+EChannel.M03.Analogue.Sensor_06.VoltGrp
+           R    4297          4#    4     
+EChannel.M03.Analogue.Sensor_07.AlaLimHigh
+           F    5041          4#    4     
+EChannel.M03.Analogue.Sensor_07.AlaLimLow
+           F    5042          4#    4     
+EChannel.M03.Analogue.Sensor_07.ConvType
+           R    4298          4#    4     
+EChannel.M03.Analogue.Sensor_07.Correction
+           R    4299          4#    4     
+EChannel.M03.Analogue.Sensor_07.GwHyst
+           R    4300          4#    4     
+EChannel.M03.Analogue.Sensor_07.GwVerz
+           R    4301          4#    4     
+EChannel.M03.Analogue.Sensor_07.LimHigh
+           R    4302          4#    4     
+EChannel.M03.Analogue.Sensor_07.LimLow
+           R    4303          4#    4     
+EChannel.M03.Analogue.Sensor_07.PhysVal
+           R    4304          4#    4     
+EChannel.M03.Analogue.Sensor_07.PhysValY1
+           R    4305          4#    4     
+EChannel.M03.Analogue.Sensor_07.PhysValY2
+           R    4306          4#    4     
+EChannel.M03.Analogue.Sensor_07.RawValX1
+           R    4307          4#    4     
+EChannel.M03.Analogue.Sensor_07.RawValX2
+           R    4308          4#    4     
+EChannel.M03.Analogue.Sensor_07.ScanFact
+           R    4309          4#    4     
+EChannel.M03.Analogue.Sensor_07.ScanTime
+           R    4310          4#    4     
+EChannel.M03.Analogue.Sensor_07.VoltGrp
+           R    4311          4#    4     
+EChannel.M03.AnalogueInput0
+           R    4312..4321    4#    4     
+EChannel.M03.AnalogueInput1
+           R    4313          4#    4     
+EChannel.M03.AnalogueInput2
+           R    4314          4#    4     
+EChannel.M03.AnalogueInput3
+           R    4315          4#    4     
+EChannel.M03.AnalogueInput4
+           R    4316          4#    4     
+EChannel.M03.AnalogueInput5
+           R    4317          4#    4     
+EChannel.M03.AnalogueInput6
+           R    4318          4#    4     
+EChannel.M03.AnalogueInput7
+           R    4319          4#    4     
+EChannel.M03.AnalogueInputStatus0_3
+           R    4320          4#    4     
+EChannel.M03.AnalogueInputStatus4_7
+           R    4321          4#    4     
+EChannel.M03.AnalogueOutput0
+           R    4322..4325    4#    4     
+EChannel.M03.AnalogueOutput1
+           R    4323          4#    4     
+EChannel.M03.AnalogueOutput2
+           R    4324          4#    4     
+EChannel.M03.AnalogueOutput3
+           R    4325          4#    4     
+EChannel.M03.Manual.AnalogueOutput0.EditManValue
+           R    4326..4329    4#    4     
+EChannel.M03.Manual.AnalogueOutput0.ManMode
+           F    5043..5046    4#    4     
+EChannel.M03.Manual.AnalogueOutput0.ManModeHw
+           F    5047..5050    4#    4     
+EChannel.M03.Manual.AnalogueOutput0.ScaleMax
+           R    4330..4333    4#    4     
+EChannel.M03.Manual.AnalogueOutput0.ScaleMin
+           R    4334..4337    4#    4     
+EChannel.M03.Manual.AnalogueOutput0.ToggleManMode
+           F    5051..5054    4#    4     
+EChannel.M03.Manual.AnalogueOutput0.Value
+           R    4338..4341    4#    4     
+EChannel.M03.Manual.AnalogueOutput1.EditManValue
+           R    4327          4#    4     
+EChannel.M03.Manual.AnalogueOutput1.ManMode
+           F    5044          4#    4     
+EChannel.M03.Manual.AnalogueOutput1.ManModeHw
+           F    5048          4#    4     
+EChannel.M03.Manual.AnalogueOutput1.ScaleMax
+           R    4331          4#    4     
+EChannel.M03.Manual.AnalogueOutput1.ScaleMin
+           R    4335          4#    4     
+EChannel.M03.Manual.AnalogueOutput1.ToggleManMode
+           F    5052          4#    4     
+EChannel.M03.Manual.AnalogueOutput1.Value
+           R    4339          4#    4     
+EChannel.M03.Manual.AnalogueOutput2.EditManValue
+           R    4328          4#    4     
+EChannel.M03.Manual.AnalogueOutput2.ManMode
+           F    5045          4#    4     
+EChannel.M03.Manual.AnalogueOutput2.ManModeHw
+           F    5049          4#    4     
+EChannel.M03.Manual.AnalogueOutput2.ScaleMax
+           R    4332          4#    4     
+EChannel.M03.Manual.AnalogueOutput2.ScaleMin
+           R    4336          4#    4     
+EChannel.M03.Manual.AnalogueOutput2.ToggleManMode
+           F    5053          4#    4     
+EChannel.M03.Manual.AnalogueOutput2.Value
+           R    4340          4#    4     
+EChannel.M03.Manual.AnalogueOutput3.EditManValue
+           R    4329          4#    4     
+EChannel.M03.Manual.AnalogueOutput3.ManMode
+           F    5046          4#    4     
+EChannel.M03.Manual.AnalogueOutput3.ManModeHw
+           F    5050          4#    4     
+EChannel.M03.Manual.AnalogueOutput3.ScaleMax
+           R    4333          4#    4     
+EChannel.M03.Manual.AnalogueOutput3.ScaleMin
+           R    4337          4#    4     
+EChannel.M03.Manual.AnalogueOutput3.ToggleManMode
+           F    5054          4#    4     
+EChannel.M03.Manual.AnalogueOutput3.Value
+           R    4341          4#    4     
+EChannel.M03.Manual.LocalOverridePermission
+           R    4342          4#    4     
+EChannel.M03.Parameters.SDB_ConfigIO
+           DB   6610          4#    4     
+EChannel.M03.Parameters.SF_ButtonDownload
+           F    5055          4#    4     
+EChannel.M03.Parameters.SF_ButtonUpload
+           F    5056          4#    4     
+EChannel.M03.Parameters.SF_DownloadBsy
+           F    5057          4#    4     
+EChannel.M03.Parameters.SF_UploadBsy
+           F    5058          4#    4     
+EChannel.M03.Parameters.SR_Address
+           R    4343          4#    4     
+EChannel.M03.Parameters.SR_ErrStatus
+           R    4344          4#    4     
+EChannel.M03.Parameters.SR_ExchangeDataModeIO
+           R    4345          4#    4     
+EChannel.M03.Parameters.SR_ExchangeDataModeMan
+           R    4346          4#    4     
+EChannel.M03.Parameters.SR_WarnStatus
+           R    4347          4#    4     
 Gen.Clear  F    3073          4#    4     
 Gen.Cons_Plateau
            R    2230          4#    4     
@@ -2266,15 +3730,19 @@ RIO.Station_A21.Sonde3_25_Cde_Clap
 RIO.Station_A21.Sonde3_25_Cde_Fr
            R    2354          3#    4     
 RIO.Station_A21.Sonde3_25_Cmd_Confort_Ch
-           R    2322          3#    4     
+           R    2256          3#    4     
 RIO.Station_A21.Sonde3_25_Cmd_Confort_Fr
-           R    2324          3#    4     
+           R    2258          3#    4     
+RIO.Station_A21.Sonde3_25_Cmd_Dec
+           R    2262          3#    4     
 RIO.Station_A21.Sonde3_25_Cmd_Mode
-           R    2326          3#    4     
+           R    2260          3#    4     
 RIO.Station_A21.Sonde3_25_Cmd_Reduit_Ch
-           R    2323          3#    4     
+           R    2257          3#    4     
 RIO.Station_A21.Sonde3_25_Cmd_Reduit_Fr
-           R    2325          3#    4     
+           R    2259          3#    4     
+RIO.Station_A21.Sonde3_25_Cmd_Temp
+           R    2261          3#    4     
 RIO.Station_A21.Sonde3_25_Defaut
            F    3886          3#    4     
 RIO.Station_A21.Sonde3_25_Lib
@@ -2296,15 +3764,19 @@ RIO.Station_A21.Sonde3_26_Cde_Clap
 RIO.Station_A21.Sonde3_26_Cde_Fr
            R    2921          3#    4     
 RIO.Station_A21.Sonde3_26_Cmd_Confort_Ch
-           R    2337          3#    4     
+           R    2330          3#    4     
 RIO.Station_A21.Sonde3_26_Cmd_Confort_Fr
-           R    2339          3#    4     
+           R    2332          3#    4     
+RIO.Station_A21.Sonde3_26_Cmd_Dec
+           R    2336          3#    4     
 RIO.Station_A21.Sonde3_26_Cmd_Mode
-           R    2341          3#    4     
+           R    2334          3#    4     
 RIO.Station_A21.Sonde3_26_Cmd_Reduit_Ch
-           R    2338          3#    4     
+           R    2331          3#    4     
 RIO.Station_A21.Sonde3_26_Cmd_Reduit_Fr
-           R    2340          3#    4     
+           R    2333          3#    4     
+RIO.Station_A21.Sonde3_26_Cmd_Temp
+           R    2335          3#    4     
 RIO.Station_A21.Sonde3_26_Defaut
            F    3888          3#    4     
 RIO.Station_A21.Sonde3_26_Lib
@@ -2326,15 +3798,19 @@ RIO.Station_A21.Sonde3_30_Cde_Clap
 RIO.Station_A21.Sonde3_30_Cde_Fr
            R    2363          3#    4     
 RIO.Station_A21.Sonde3_30_Cmd_Confort_Ch
-           R    2932          3#    4     
+           R    2390          3#    4     
 RIO.Station_A21.Sonde3_30_Cmd_Confort_Fr
-           R    2934          3#    4     
+           R    2392          3#    4     
+RIO.Station_A21.Sonde3_30_Cmd_Dec
+           R    2396          3#    4     
 RIO.Station_A21.Sonde3_30_Cmd_Mode
-           R    2936          3#    4     
+           R    2394          3#    4     
 RIO.Station_A21.Sonde3_30_Cmd_Reduit_Ch
-           R    2933          3#    4     
+           R    2391          3#    4     
 RIO.Station_A21.Sonde3_30_Cmd_Reduit_Fr
-           R    2935          3#    4     
+           R    2393          3#    4     
+RIO.Station_A21.Sonde3_30_Cmd_Temp
+           R    2395          3#    4     
 RIO.Station_A21.Sonde3_30_Defaut
            F    3890          3#    4     
 RIO.Station_A21.Sonde3_30_Lib
@@ -2356,15 +3832,19 @@ RIO.Station_A21.Sonde3_31_Cde_Clap
 RIO.Station_A21.Sonde3_31_Cde_Fr
            R    2940          3#    4     
 RIO.Station_A21.Sonde3_31_Cmd_Confort_Ch
-           R    2944          3#    4     
+           R    2397          3#    4     
 RIO.Station_A21.Sonde3_31_Cmd_Confort_Fr
-           R    2946          3#    4     
+           R    2399          3#    4     
+RIO.Station_A21.Sonde3_31_Cmd_Dec
+           R    2403          3#    4     
 RIO.Station_A21.Sonde3_31_Cmd_Mode
-           R    2948          3#    4     
+           R    2401          3#    4     
 RIO.Station_A21.Sonde3_31_Cmd_Reduit_Ch
-           R    2945          3#    4     
+           R    2398          3#    4     
 RIO.Station_A21.Sonde3_31_Cmd_Reduit_Fr
-           R    2947          3#    4     
+           R    2400          3#    4     
+RIO.Station_A21.Sonde3_31_Cmd_Temp
+           R    2402          3#    4     
 RIO.Station_A21.Sonde3_31_Defaut
            F    3892          3#    4     
 RIO.Station_A21.Sonde3_31_Lib
@@ -2414,15 +3894,19 @@ RIO.Station_A22.Sonde3_27_Cde_Clap
 RIO.Station_A22.Sonde3_27_Cde_Fr
            R    3446          3#    4     
 RIO.Station_A22.Sonde3_27_Cmd_Confort_Ch
-           R    2956          3#    4     
+           R    2404          3#    4     
 RIO.Station_A22.Sonde3_27_Cmd_Confort_Fr
-           R    2958          3#    4     
+           R    2406          3#    4     
+RIO.Station_A22.Sonde3_27_Cmd_Dec
+           R    2410          3#    4     
 RIO.Station_A22.Sonde3_27_Cmd_Mode
-           R    2960          3#    4     
+           R    2408          3#    4     
 RIO.Station_A22.Sonde3_27_Cmd_Reduit_Ch
-           R    2957          3#    4     
+           R    2405          3#    4     
 RIO.Station_A22.Sonde3_27_Cmd_Reduit_Fr
-           R    2959          3#    4     
+           R    2407          3#    4     
+RIO.Station_A22.Sonde3_27_Cmd_Temp
+           R    2409          3#    4     
 RIO.Station_A22.Sonde3_27_Defaut
            F    3894          3#    4     
 RIO.Station_A22.Sonde3_27_Lib
@@ -2444,15 +3928,19 @@ RIO.Station_A22.Sonde3_28_Cde_Clap
 RIO.Station_A22.Sonde3_28_Cde_Fr
            R    3455          3#    4     
 RIO.Station_A22.Sonde3_28_Cmd_Confort_Ch
-           R    2968          3#    4     
+           R    2411          3#    4     
 RIO.Station_A22.Sonde3_28_Cmd_Confort_Fr
-           R    2970          3#    4     
+           R    2413          3#    4     
+RIO.Station_A22.Sonde3_28_Cmd_Dec
+           R    2417          3#    4     
 RIO.Station_A22.Sonde3_28_Cmd_Mode
-           R    2972          3#    4     
+           R    2415          3#    4     
 RIO.Station_A22.Sonde3_28_Cmd_Reduit_Ch
-           R    2969          3#    4     
+           R    2412          3#    4     
 RIO.Station_A22.Sonde3_28_Cmd_Reduit_Fr
-           R    2971          3#    4     
+           R    2414          3#    4     
+RIO.Station_A22.Sonde3_28_Cmd_Temp
+           R    2416          3#    4     
 RIO.Station_A22.Sonde3_28_Defaut
            F    3896          3#    4     
 RIO.Station_A22.Sonde3_28_Lib
@@ -2474,15 +3962,19 @@ RIO.Station_A22.Sonde3_29_Cde_Clap
 RIO.Station_A22.Sonde3_29_Cde_Fr
            R    3464          3#    4     
 RIO.Station_A22.Sonde3_29_Cmd_Confort_Ch
-           R    3084          3#    4     
+           R    2438          3#    4     
 RIO.Station_A22.Sonde3_29_Cmd_Confort_Fr
-           R    3086          3#    4     
+           R    2440          3#    4     
+RIO.Station_A22.Sonde3_29_Cmd_Dec
+           R    2444          3#    4     
 RIO.Station_A22.Sonde3_29_Cmd_Mode
-           R    3088          3#    4     
+           R    2442          3#    4     
 RIO.Station_A22.Sonde3_29_Cmd_Reduit_Ch
-           R    3085          3#    4     
+           R    2439          3#    4     
 RIO.Station_A22.Sonde3_29_Cmd_Reduit_Fr
-           R    3087          3#    4     
+           R    2441          3#    4     
+RIO.Station_A22.Sonde3_29_Cmd_Temp
+           R    2443          3#    4     
 RIO.Station_A22.Sonde3_29_Defaut
            F    3898          3#    4     
 RIO.Station_A22.Sonde3_29_Lib
@@ -2504,19 +3996,23 @@ RIO.Station_A22.Sonde3_32_Cde_Clap
 RIO.Station_A22.Sonde3_32_Cde_Fr
            R    3092          3#    4     
 RIO.Station_A22.Sonde3_32_Cmd_Confort_Ch
-           R    3096          3#    4     
+           R    2445          3#    4     
 RIO.Station_A22.Sonde3_32_Cmd_Confort_Fr
-           R    3098          3#    4     
+           R    2447          3#    4     
+RIO.Station_A22.Sonde3_32_Cmd_Dec
+           R    2451          3#    4     
 RIO.Station_A22.Sonde3_32_Cmd_Mode
-           R    3100          3#    4     
+           R    2449          3#    4     
 RIO.Station_A22.Sonde3_32_Cmd_Reduit_Ch
-           R    3097          3#    4     
+           R    2446          3#    4     
 RIO.Station_A22.Sonde3_32_Cmd_Reduit_Fr
-           R    3099          3#    4     
+           R    2448          3#    4     
+RIO.Station_A22.Sonde3_32_Cmd_Temp
+           R    2450          3#    4     
 RIO.Station_A22.Sonde3_32_Defaut
            F    3900          3#    4     
 RIO.Station_A22.Sonde3_32_Lib
-           F    3408          3#    4     
+           F    3408          3#    
 RIO.Station_A22.Sonde3_32_SetPoint
            R    3090          3#    4     
 RIO.Station_A22.Sonde3_32_SP_Ch
@@ -2534,15 +4030,19 @@ RIO.Station_A22.Sonde3_33_Cde_Clap
 RIO.Station_A22.Sonde3_33_Cde_Fr
            R    3104          3#    4     
 RIO.Station_A22.Sonde3_33_Cmd_Confort_Ch
-           R    3108          3#    4     
+           R    2452          3#    4     
 RIO.Station_A22.Sonde3_33_Cmd_Confort_Fr
-           R    3110          3#    4     
+           R    2454          3#    4     
+RIO.Station_A22.Sonde3_33_Cmd_Dec
+           R    2458          3#    
 RIO.Station_A22.Sonde3_33_Cmd_Mode
-           R    3112          3#    4     
+           R    2456          3#    4     
 RIO.Station_A22.Sonde3_33_Cmd_Reduit_Ch
-           R    3109          3#    4     
+           R    2453          3#    4     
 RIO.Station_A22.Sonde3_33_Cmd_Reduit_Fr
-           R    3111          3#    4     
+           R    2455          3#    4     
+RIO.Station_A22.Sonde3_33_Cmd_Temp
+           R    2457          3#    
 RIO.Station_A22.Sonde3_33_Defaut
            F    3902          3#    4     
 RIO.Station_A22.Sonde3_33_Lib
@@ -2564,19 +4064,23 @@ RIO.Station_A22.Sonde3_34_Cde_Clap
 RIO.Station_A22.Sonde3_34_Cde_Fr
            R    3116          3#    4     
 RIO.Station_A22.Sonde3_34_Cmd_Confort_Ch
-           R    3120          3#    
+           R    2464          3#    4     
 RIO.Station_A22.Sonde3_34_Cmd_Confort_Fr
-           R    3122          3#    
+           R    2466          3#    4     
+RIO.Station_A22.Sonde3_34_Cmd_Dec
+           R    2470          3#    4     
 RIO.Station_A22.Sonde3_34_Cmd_Mode
-           R    3124          3#    
+           R    2468          3#    4     
 RIO.Station_A22.Sonde3_34_Cmd_Reduit_Ch
-           R    3121          3#    
+           R    2465          3#    4     
 RIO.Station_A22.Sonde3_34_Cmd_Reduit_Fr
-           R    3123          3#    
+           R    2467          3#    4     
+RIO.Station_A22.Sonde3_34_Cmd_Temp
+           R    2469          3#    4     
 RIO.Station_A22.Sonde3_34_Defaut
            F    3904          3#    4     
 RIO.Station_A22.Sonde3_34_Lib
-           F    3410          3#    
+           F    3410          3#    4     
 RIO.Station_A22.Sonde3_34_SetPoint
            R    3114          3#    4     
 RIO.Station_A22.Sonde3_34_SP_Ch
@@ -2651,47 +4155,79 @@ RIO.Station_A3.Sonde3_5_Temp
            R    2831          3#    4     
 RIO.Station_A3.Sonde3_5_TimeOut
            F    3662          3#    4     
+s.com.ELine_Driver.address
+           R    4531          4#    4     
+s.com.ELine_Driver.channel
+                1             4#    
+s.com.ELine_Driver.errs
+           F    5189          4#    4     
+s.com.ELine_Driver.flagdiag
+           F    5324..5339    4#    4     
+s.com.ELine_Driver.media
+           R    4530          4#    4     
+s.com.ELine_Driver.nexe
+           F    5331          4#    4     
+s.com.ELine_Driver.rbsy
+           F    5324..5339    4#    4     
+s.com.ELine_Driver.rdia
+           F    5326          4#    4     
+s.com.ELine_Driver.regdiag
+           R    4534          4#    4     
+s.com.ELine_Driver.rful
+           F    5325          4#    4     
+s.com.ELine_Driver.station
+           R    4533          4#    4     
+s.com.ELine_Driver.tbsy
+           F    5327          4#    4     
+s.com.ELine_Driver.tdia
+           F    5329          4#    4     
+s.com.ELine_Driver.tful
+           F    5328          4#    4     
+s.com.ELine_Driver.token
+           F    5227          4#    4     
+s.com.ELine_Driver.xbsy
+           F    5330          4#    4     
 s.com.IPChannel.address
-           R    2478          4#    4     
+           R    2585          4#    4     
 s.com.IPChannel.channel
                 9             4#    
 s.com.IPChannel.errs
-           F    3100          4#    4     
+           F    3115          4#    4     
 s.com.IPChannel.flagdiag
-           F    3092..3099    4#    4     
+           F    3107..3114    4#    4     
 s.com.IPChannel.media
-           R    2477          4#    4     
+           R    2584          4#    4     
 s.com.IPChannel.nexe
-           F    3099          4#    4     
+           F    3114          4#    4     
 s.com.IPChannel.nodestn
-           R    2260          4#    4     
+           R    2340          4#    4     
 s.com.IPChannel.rbsy
-           F    3092..3099    4#    4     
+           F    3107..3114    4#    4     
 s.com.IPChannel.rdia
-           F    3094          4#    4     
+           F    3109          4#    4     
 s.com.IPChannel.regdiag
-           R    2234          4#    4     
+           R    2324          4#    4     
 s.com.IPChannel.rful
-           F    3093          4#    4     
+           F    3108          4#    4     
 s.com.IPChannel.station
-           R    2476..2479    4#    4     
+           R    2583..2586    4#    4     
 s.com.IPChannel.tbsy
-           F    3095          4#    4     
+           F    3110          4#    4     
 s.com.IPChannel.tdia
-           F    3097          4#    4     
+           F    3112          4#    4     
 s.com.IPChannel.tful
-           F    3096          4#    4     
+           F    3111          4#    4     
 s.com.IPChannel.token
-           F    2957          4#    4     
+           F    3015          4#    4     
 s.com.IPChannel.xbsy
-           F    3098          4#    4     
+           F    3113          4#    4     
 S.CPU.Cpu       0             1#    
 S.CPU.Eline_System
                 0             1#    
 S.CPU.EnergyMonitoringEnabled
                 0             1#    
 S.CPU.FirstCounter
-           C    50            1#    
+           C    90            1#    
 S.CPU.FirstDynCounter
            C    1000          1#    
 S.CPU.FirstDynDB
@@ -2738,9 +4274,9 @@ S.CPU.LastDynRegister
 S.CPU.LastDynText
            TEXT 3499          1#    
 S.CPU.LastDynTimer
-           T    49            1#    
+           T    89            1#    
 S.CPU.LastTimer
-           T    49            1#    
+           T    89            1#    
 S.CPU.LastVolatileFlag
                 -1            1#    
 S.CPU.MaxCounter
@@ -2778,34 +4314,36 @@ S.CPU.Use16BitAddressing
                 1             1#    
 S.CPU.Xob1Enable
                 0             1#    
+S.Eline.ELine_Driver.DB.DeviceNumber
+                0             4#    
 s.file.MemoryM1.busy
-           F    2903          4#    4     
+           F    2952          4#    4     
 s.file.MemoryM1.debug
-           R    3417          4#    4     
+           R    3780          4#    4     
 s.file.MemoryM1.enable
-           F    4634          4#    4     
+           F    4937          4#    4     
 s.file.MemoryM1.fboxbusy
-           F    4635          4#    4     
+           F    4938          4#    4     
 s.file.MemoryM1.fboxerr
-           R    3418          4#    4     
+           R    3781          4#    4     
 s.file.MemoryM1.free
-           R    3274          4#    4     
+           R    3278          4#    4     
 s.file.MemoryM1.fsbusy
-           F    2907          4#    4     
+           F    2956          4#    4     
 s.file.MemoryM1.memory
-           F    2913          4#    4     
+           F    2963          4#    4     
 s.file.MemoryM1.released
-           R    3275          4#    4     
+           R    3279          4#    4     
 s.file.MemoryM1.slot
                 11            4#    
 s.file.MemoryM1.status
-           R    3276          4#    4     
+           R    3280          4#    4     
 s.file.MemoryM1.total
-           R    3272..3276    4#    4     
+           R    3276..3280    4#    4     
 s.file.MemoryM1.used
-           R    3273          4#    4     
+           R    3277          4#    4     
 s.file.MemoryM1.xdrive
-           TEXT 3034          4#    4     
+           TEXT 3056          4#    4     
 S.HVC.Clock.AllPHDay
            F    2822          7#    7     
 S.HVC.Clock.ClkTest
@@ -2813,29 +4351,29 @@ S.HVC.Clock.ClkTest
 S.HVC.Clock.ClkTest1
            F    2832          7#    7     
 S.HVC.Clock.Day
-           R    2402          7#    7     
+           R    4385          7#    7     
 S.HVC.Clock.DayInYear
-           R    2411          7#    7     
+           R    4394          7#    7     
 S.HVC.Clock.DayOW
-           R    2392          7#    7     
+           R    4375          7#    7     
 S.HVC.Clock.DHHMM
-           R    2408          7#    7     
+           R    4391          7#    7     
 S.HVC.Clock.HHMM
-           R    2397          7#    7     
+           R    4380          7#    7     
 S.HVC.Clock.HHMMSS
-           R    2390..2392    7#    7     
+           R    4373..4375    7#    7     
 S.HVC.Clock.Hour
-           R    2403          7#    7     
+           R    4386          7#    7     
 S.HVC.Clock.MinODay
-           R    2413          7#    7     
+           R    4396          7#    7     
 S.HVC.Clock.Minute
-           R    2404          7#    4     7     
+           R    4387          7#    4     7     
 S.HVC.Clock.MMDD
-           R    2396          7#    7     
+           R    4379          7#    7     
 S.HVC.Clock.MMDDHHMM
-           R    2409          7#    7     
+           R    4392          7#    7     
 S.HVC.Clock.Month
-           R    2401          7#    7     
+           R    4384          7#    7     
 S.HVC.Clock.PHDay
            F    2825          7#    7     
 S.HVC.Clock.PHDay1
@@ -2843,23 +4381,23 @@ S.HVC.Clock.PHDay1
 S.HVC.Clock.Season
            F    2827          7#    7     
 S.HVC.Clock.SecODay
-           R    2410          7#    7     
+           R    4393          7#    7     
 S.HVC.Clock.Second
-           R    2405          7#    7     
+           R    4388          7#    7     
 S.HVC.Clock.SecTick
            F    2828          7#    7     
 S.HVC.Clock.Week
-           R    2406          7#    7     
+           R    4389          7#    7     
 S.HVC.Clock.WWD
-           R    2407          7#    7     
+           R    4390          7#    7     
 S.HVC.Clock.Year
-           R    2399          7#    7     
+           R    4382          7#    7     
 S.HVC.Clock.YYMMDD
-           R    2395..2410    7#    7     
+           R    4378..4393    7#    7     
 S.HVC.Clock.YYYYear
-           R    2400          7#    7     
+           R    4383          7#    7     
 S.HVC.Clock.YYYYMMDD
-           R    2391          7#    7     
+           R    4374          7#    7     
 S.IO.AnalogueInput
            R    2000..2001    1#    1     
 S.IO.DigitalInput
@@ -2880,6 +4418,18 @@ S.ODM.ReadTimeout
                 1000          1#    
 s.odm.RegChannel
            R    2176          6#    6     
+S.PRJ.1_NORD.IPChannel
+                9             1#    
+S.PRJ.1_NORD.IPNode
+                14            1#    
+S.PRJ.1_NORD.SbusStation
+                14            1#    
+S.PRJ.1_SUD.IPChannel
+                9             1#    
+S.PRJ.1_SUD.IPNode
+                13            1#    
+S.PRJ.1_SUD.SbusStation
+                13            1#    
 S.PRJ.1er_3EME_SUD.SbusStation
                 0             1#    
 S.PRJ.2ème_3EME_NORD.IPChannel
@@ -2888,6 +4438,18 @@ S.PRJ.2ème_3EME_NORD.IPNode
                 1             1#    
 S.PRJ.2ème_3EME_NORD.SbusStation
                 1             1#    
+S.PRJ.2_NORD.IPChannel
+                9             1#    
+S.PRJ.2_NORD.IPNode
+                16            1#    
+S.PRJ.2_NORD.SbusStation
+                16            1#    
+S.PRJ.2_SUD.IPChannel
+                9             1#    
+S.PRJ.2_SUD.IPNode
+                15            1#    
+S.PRJ.2_SUD.SbusStation
+                15            1#    
 S.PRJ.3ème_4EME_SUD.IPChannel
                 9             1#    
 S.PRJ.3ème_4EME_SUD.IPNode
@@ -3243,19 +4805,19 @@ S.RIO.3S_Station_A21.Slot4.SwitchInput
 S.RIO.3S_Station_A21.Sonde3_25
            R    2351..2359    3#    2     3     
 S.RIO.3S_Station_A21.Sonde3_25_Cmd
-           R    2322..2326    3#    2     3     
+           R    2256..2262    3#    2     3     
 S.RIO.3S_Station_A21.Sonde3_26
            R    2918..2924    3#    2     3     
 S.RIO.3S_Station_A21.Sonde3_26_Cmd
-           R    2337..2341    3#    2     3     
+           R    2330..2336    3#    2     3     
 S.RIO.3S_Station_A21.Sonde3_30
            R    2360..2368    3#    2     3     
 S.RIO.3S_Station_A21.Sonde3_30_Cmd
-           R    2932..2936    3#    2     3     
+           R    2390..2396    3#    2     3     
 S.RIO.3S_Station_A21.Sonde3_31
            R    2937..2943    3#    2     3     
 S.RIO.3S_Station_A21.Sonde3_31_Cmd
-           R    2944..2948    3#    2     3     
+           R    2397..2403    3#    2     3     
 S.RIO.3S_Station_A21.Trans_sonde3_23
            R    2345..2347    3#    2     3     
 S.RIO.3S_Station_A21.trans_sonde3_24
@@ -3295,27 +4857,27 @@ S.RIO.3S_Station_A22.Slot4.SwitchInput
 S.RIO.3S_Station_A22.Sonde3_27
            R    3443..3451    3#    2     3     
 S.RIO.3S_Station_A22.Sonde3_27_Cmd
-           R    2956..2960    3#    2     3     
+           R    2404..2410    3#    2     3     
 S.RIO.3S_Station_A22.Sonde3_28
            R    3452..3460    3#    2     3     
 S.RIO.3S_Station_A22.Sonde3_28_Cmd
-           R    2968..2972    3#    2     3     
+           R    2411..2417    3#    2     3     
 S.RIO.3S_Station_A22.Sonde3_29
            R    3461..3469    3#    2     3     
 S.RIO.3S_Station_A22.Sonde3_29_Cmd
-           R    3084..3088    3#    2     3     
+           R    2438..2444    3#    2     3     
 S.RIO.3S_Station_A22.Sonde3_32
            R    3089..3095    3#    2     3     
 S.RIO.3S_Station_A22.Sonde3_32_Cmd
-           R    3096..3100    3#    2     3     
+           R    2445..2451    3#    2     3     
 S.RIO.3S_Station_A22.Sonde3_33
            R    3101..3107    3#    2     3     
 S.RIO.3S_Station_A22.Sonde3_33_Cmd
-           R    3108..3112    3#    2     3     
+           R    2452..2458    3#    2     3     
 S.RIO.3S_Station_A22.Sonde3_34
            R    3113..3119    3#    2     3     
 S.RIO.3S_Station_A22.Sonde3_34_Cmd
-           R    3120..3124    3#    2     3     
+           R    2464..2470    3#    2     3     
 S.RIO.3S_Station_A3.Cons_Gen
            R    2281          3#    2     3     
 S.RIO.3S_Station_A3.DataExchange
@@ -3395,12 +4957,20 @@ Sonde3_1_Temp
            R    2376          4#    4     
 Sonde3_1_TimeOut
            F    3501          4#    4     
+Sonde3_12_Dec
+           R    4348          4#    4     
+Sonde3_12_Temp
+           R    4349          4#    4     
+Sonde3_13_Dec
+           R    4350          4#    4     
+Sonde3_13_Temp
+           R    4351          4#    4     
 Sonde3_19_Cde_Ch
-           R    2377          4#    4     
-Sonde3_19_Cde_Clap
-           R    201           4#    
-Sonde3_19_Cde_Fr
            R    200           4#    
+Sonde3_19_Cde_Clap
+           R    202           4#    
+Sonde3_19_Cde_Fr
+           R    201           4#    
 Sonde3_19_Confort_Ch
            R    2908          4#    4     
 Sonde3_19_Confort_Fr
@@ -3514,7 +5084,7 @@ sonde3_210_Cde_Fr
 sonde3_210_SetPoint
            R    2180          4#    4     
 sonde3_210_Temp
-           R    202           4#    
+           R    2377          4#    4     
 Sonde3_22_Cde_Ch
            R    2182          4#    4     
 Sonde3_22_Cde_Clap
@@ -3619,6 +5189,8 @@ Sonde3_25_Confort_Ch
            R    3203          4#    4     
 Sonde3_25_Confort_Fr
            R    3204          4#    4     
+Sonde3_25_Dec
+           R    2251          4#    4     
 Sonde3_25_Defaut
            F    4212          4#    4     
 Sonde3_25_Lib
@@ -3649,6 +5221,8 @@ Sonde3_26_Confort_Ch
            R    3210          4#    4     
 Sonde3_26_Confort_Fr
            R    3211          4#    4     
+Sonde3_26_Dec
+           R    2252          4#    4     
 Sonde3_26_Defaut
            F    4215          4#    4     
 Sonde3_26_Lib
@@ -3681,6 +5255,8 @@ Sonde3_27_Confort_Ch
            R    3285          4#    4     
 Sonde3_27_Confort_Fr
            R    3286          4#    4     
+Sonde3_27_Dec
+           R    2253          4#    4     
 Sonde3_27_Defaut
            F    4322          4#    4     
 Sonde3_27_Lib
@@ -3713,6 +5289,8 @@ Sonde3_28_Confort_Ch
            R    3290          4#    4     
 Sonde3_28_Confort_Fr
            R    3291          4#    4     
+Sonde3_28_Dec
+           R    2263          4#    4     
 Sonde3_28_Defaut
            F    4324          4#    4     
 Sonde3_28_Lib
@@ -3745,6 +5323,8 @@ Sonde3_29_Confort_Ch
            R    3295          4#    4     
 Sonde3_29_Confort_Fr
            R    3296          4#    4     
+Sonde3_29_Dec
+           R    2305          4#    4     
 Sonde3_29_Defaut
            F    4326          4#    4     
 Sonde3_29_Lib
@@ -3807,6 +5387,8 @@ Sonde3_30_Confort_Ch
            R    3217          4#    4     
 Sonde3_30_Confort_Fr
            R    3218          4#    4     
+Sonde3_30_Dec
+           R    2306          4#    4     
 Sonde3_30_Defaut
            F    4218          4#    4     
 Sonde3_30_Lib
@@ -3837,6 +5419,8 @@ Sonde3_31_Confort_Ch
            R    3224          4#    4     
 Sonde3_31_Confort_Fr
            R    3225          4#    4     
+Sonde3_31_Dec
+           R    2321          4#    4     
 Sonde3_31_Defaut
            F    4221          4#    4     
 Sonde3_31_Lib
@@ -3867,6 +5451,8 @@ Sonde3_32_Confort_Ch
            R    3300          4#    4     
 Sonde3_32_Confort_Fr
            R    3301          4#    4     
+Sonde3_32_Dec
+           R    2322          4#    4     
 Sonde3_32_Defaut
            F    4328          4#    4     
 Sonde3_32_Lib
@@ -3927,6 +5513,8 @@ Sonde3_34_Confort_Ch
            R    3310          4#    4     
 Sonde3_34_Confort_Fr
            R    3311          4#    4     
+Sonde3_34_Dec
+           R    2323          4#    4     
 Sonde3_34_Defaut
            F    4332          4#    4     
 Sonde3_34_Lib
@@ -3947,6 +5535,22 @@ Sonde3_34_Temp
            R    2681          4#    4     
 Sonde3_34_TimeOut
            F    4333          4#    4     
+Sonde3_35_Dec
+           R    204           4#    
+Sonde3_35_Temp
+           R    203           4#    
+Sonde3_36_Dec
+           R    206           4#    
+Sonde3_36_Temp
+           R    205           4#    
+Sonde3_37_Dec
+           R    208           4#    
+Sonde3_37_Temp
+           R    207           4#    
+Sonde3_38_Dec
+           R    4352          4#    4     
+Sonde3_38_Temp
+           R    4353          4#    4     
 sonde3_4_Cde_Ch
            R    2426          4#    4     
 sonde3_4_Cde_Clap
@@ -3977,6 +5581,10 @@ sonde3_4_Temp
            R    2463          4#    4     
 Sonde3_4_TimeOut
            F    3756          4#    4     
+Sonde3_41_Dec
+           R    4354          4#    4     
+Sonde3_41_Temp
+           R    4355          4#    4     
 sonde3_5_Cde_Ch
            R    2868          4#    4     
 sonde3_5_Cde_Clap
@@ -4007,5 +5615,9 @@ sonde3_5_Temp
            R    2879          4#    4     
 Sonde3_5_TimeOut
            F    3759          4#    4     
+System.SbusEline.En
+           F    5059          4#    4     
+System.SbusEline.Man
+           F    5060          4#    4     
 
 Linkage complete. 0 errors, 0 warnings.

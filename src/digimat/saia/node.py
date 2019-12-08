@@ -1,4 +1,5 @@
 from __future__ import print_function  # Python 2/3 compatibility
+from __future__ import division
 
 import time
 import socket
@@ -90,7 +91,7 @@ class SAIANodeRequestHandler(object):
         self.logger.error('%s:no handler!', self.__class__.__name__)
 
     def bin2dwordlist(self, data):
-        return list(struct.unpack('>%dL' % (len(data) / 4), data))
+        return list(struct.unpack('>%dL' % (len(data) // 4), data))
 
     def invoke(self, sequence, data):
         self._sequence=sequence
@@ -528,6 +529,7 @@ class SAIANode(object):
         except:
             pass
 
+    # TODO: don't works anymore in Python3?
     def isInteractiveMode(self):
         try:
             if sys.ps1:

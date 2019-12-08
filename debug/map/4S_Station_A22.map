@@ -1,23 +1,23 @@
 SAIA PG5 LINKER V2.2.140                                               Page 1
 User: INDEA
-File: 4S_Station_A22.pcd   Linked: 21/06/17 08:46 
+File: 4S_Station_A22.pcd   Linked: 19/10/17 16:42 
 
         CODE    CODE    TXT/DB  EXTEN
 FILE    START   SEG     SEG     SEG     ASSEMBLY         FILE
 NUMBER  LINE    LINES   BYTES   BYTES   DATE AND TIME    NAME
 --------------------------------------------------------------------------------
-1       0       0       1676    0       21/06/17 08:46   _4S_Station_A22.src
-2       0       0       444     0       21/06/17 08:46   4S_Station_A22.srcrio
-3       0       0       0       0       21/06/17 08:46   _RIO Symbols.sy5
-4       0       7457    2106    1328    21/06/17 08:46   ST22A.fbd
-5       7457    1079    230     16      21/06/17 08:46   heavac5.srx
-6       8536    78      12      0       14/10/14 11:02   sfuplib3.src
+1       0       0       1676    0       19/10/17 16:42   _4S_Station_A22.src
+2       0       0       444     0       19/10/17 16:42   4S_Station_A22.srcrio
+3       0       0       0       0       19/10/17 16:42   _RIO Symbols.sy5
+4       0       7190    2106    1328    19/10/17 16:42   ST22A.fbd
+5       7190    1079    230     16      19/10/17 16:42   heavac5.srx
+6       8269    78      12      0       14/10/14 11:02   sfuplib3.src
 --------------------------------------------------------------------------------
 
-CODE SEGMENT SIZE:      9259 LINES (37036 BYTES)
+CODE SEGMENT SIZE:      8983 LINES (35932 BYTES)
 TEXT/DB SEGMENT SIZE:   4468 BYTES
 EXTENSION MEM SIZE:     1344 BYTES
-PUBLIC SYMBOLS:         872
+PUBLIC SYMBOLS:         869
 
 PUBLIC SYMBOLS
 ___ETR___  F    2181          6#    6     
@@ -267,7 +267,7 @@ __Saia_Sfup__.rTmpCalcRemainder
 __Saia_Sfup__.rTmpCalcResult
            R    2179          6#    6     
 __SAIASystemBuildTime__
-                0ACA1968FH    1#    6     
+                01E18658AH    1#    6     
 __SASMVERS__    22140         1#    
 __TIME_BASE__   100           1#    
 __TIME_BASE_EXTN__
@@ -862,30 +862,6 @@ EnOcean.PEHA.ANT_0.UnusedID
            R    2547          4#    4     
 EnOcean.PEHA.ANT_0.UnusedIDClear
            F    2354          4#    4     
-EnOcean.Sensortec.RFx06_P_18.LearnCmd
-           F    2355          4#    4     
-EnOcean.Sensortec.RFx06_P_18.LearnMode
-           F    2356          4#    4     
-EnOcean.Sensortec.RFx06_P_18.RcvDate
-           R    2548          4#    4     
-EnOcean.Sensortec.RFx06_P_18.RcvID
-           R    2549          4#    4     
-EnOcean.Sensortec.RFx06_P_18.RcvTime
-           R    2550          4#    4     
-EnOcean.Sensortec.RFx06_P_18.TempCorr
-           R    2551          4#    4     
-EnOcean.Sensortec.RFx06_P_19.LearnCmd
-           F    2357          4#    4     
-EnOcean.Sensortec.RFx06_P_19.LearnMode
-           F    2358          4#    4     
-EnOcean.Sensortec.RFx06_P_19.RcvDate
-           R    2552          4#    4     
-EnOcean.Sensortec.RFx06_P_19.RcvID
-           R    2553          4#    4     
-EnOcean.Sensortec.RFx06_P_19.RcvTime
-           R    2554          4#    4     
-EnOcean.Sensortec.RFx06_P_19.TempCorr
-           R    2555          4#    4     
 EnOcean.Sensortec.RFx06_P_20.LearnCmd
            F    2359          4#    4     
 EnOcean.Sensortec.RFx06_P_20.LearnMode
@@ -922,18 +898,6 @@ EnOcean.Sensortec.RFx06_P_22.RcvTime
            R    2566          4#    4     
 EnOcean.Sensortec.RFx06_P_22.TempCorr
            R    2567          4#    4     
-EnOcean.Sensortec.RFx06_P_23.LearnCmd
-           F    2090          4#    4     
-EnOcean.Sensortec.RFx06_P_23.LearnMode
-           F    2091          4#    4     
-EnOcean.Sensortec.RFx06_P_23.RcvDate
-           R    2016          4#    4     
-EnOcean.Sensortec.RFx06_P_23.RcvID
-           R    2017          4#    4     
-EnOcean.Sensortec.RFx06_P_23.RcvTime
-           R    2018          4#    4     
-EnOcean.Sensortec.RFx06_P_23.TempCorr
-           R    2019          4#    4     
 EnOcean.Temp.T4_18.Defaut
            F    2365          4#    4     
 EnOcean.Temp.T4_18.SetPoint_App
@@ -1109,15 +1073,19 @@ RIO.Sonde4_18_Cde_Clap
 RIO.Sonde4_18_Cde_Fr
            R    2637          3#    4     
 RIO.Sonde4_18_Cmd_Confort_Ch
-           R    2641          3#    4     
+           R    2548          3#    4     
 RIO.Sonde4_18_Cmd_Confort_Fr
-           R    2643          3#    4     
+           R    2550          3#    4     
+RIO.Sonde4_18_Cmd_Dec
+           R    2554          3#    4     
 RIO.Sonde4_18_Cmd_Mode
-           R    2645          3#    4     
+           R    2552          3#    4     
 RIO.Sonde4_18_Cmd_Reduit_Ch
-           R    2642          3#    4     
+           R    2549          3#    4     
 RIO.Sonde4_18_Cmd_Reduit_Fr
-           R    2644          3#    4     
+           R    2551          3#    4     
+RIO.Sonde4_18_Cmd_Temp
+           R    2553          3#    4     
 RIO.Sonde4_18_Defaut
            F    2408          3#    4     
 RIO.Sonde4_18_Lib
@@ -1139,15 +1107,19 @@ RIO.Sonde4_19_Cde_Clap
 RIO.Sonde4_19_Cde_Fr
            R    2649          3#    4     
 RIO.Sonde4_19_Cmd_Confort_Ch
-           R    2653          3#    4     
+           R    2882          3#    4     
 RIO.Sonde4_19_Cmd_Confort_Fr
-           R    2655          3#    4     
+           R    2884          3#    4     
+RIO.Sonde4_19_Cmd_Dec
+           R    2888          3#    4     
 RIO.Sonde4_19_Cmd_Mode
-           R    2657          3#    4     
+           R    2886          3#    4     
 RIO.Sonde4_19_Cmd_Reduit_Ch
-           R    2654          3#    4     
+           R    2883          3#    4     
 RIO.Sonde4_19_Cmd_Reduit_Fr
-           R    2656          3#    4     
+           R    2885          3#    4     
+RIO.Sonde4_19_Cmd_Temp
+           R    2887          3#    4     
 RIO.Sonde4_19_Defaut
            F    2410          3#    4     
 RIO.Sonde4_19_Lib
@@ -1259,15 +1231,19 @@ RIO.Sonde4_23_Cde_Clap
 RIO.Sonde4_23_Cde_Fr
            R    2786          3#    4     
 RIO.Sonde4_23_Cmd_Confort_Ch
-           R    2790          3#    4     
+           R    2889          3#    4     
 RIO.Sonde4_23_Cmd_Confort_Fr
-           R    2792          3#    4     
+           R    2891          3#    4     
+RIO.Sonde4_23_Cmd_Dec
+           R    2895          3#    4     
 RIO.Sonde4_23_Cmd_Mode
-           R    2794          3#    4     
+           R    2893          3#    4     
 RIO.Sonde4_23_Cmd_Reduit_Ch
-           R    2791          3#    4     
+           R    2890          3#    4     
 RIO.Sonde4_23_Cmd_Reduit_Fr
-           R    2793          3#    4     
+           R    2892          3#    4     
+RIO.Sonde4_23_Cmd_Temp
+           R    2894          3#    4     
 RIO.Sonde4_23_Defaut
            F    2418          3#    4     
 RIO.Sonde4_23_Lib
@@ -1489,12 +1465,18 @@ S.IO.Slot4.SwitchInput
            F    2074..2089    1#    1     2     
 S.ODM.Initialized
                 0             1#    
+S.PRJ.1_NORD.SbusStation
+                14            1#    
 S.PRJ.1_SUD.SbusStation
                 13            1#    
 S.PRJ.1er_3EME_SUD.SbusStation
                 0             1#    
 S.PRJ.2ème_3EME_NORD.SbusStation
                 1             1#    
+S.PRJ.2_NORD.SbusStation
+                16            1#    
+S.PRJ.2_SUD.SbusStation
+                15            1#    
 S.PRJ.3ème_4EME_SUD.SbusStation
                 2             1#    
 S.PRJ.4ème_4EME_NORD.SbusStation
@@ -1526,11 +1508,11 @@ S.RIO.DigGen
 S.RIO.Sonde4_18
            R    2634..2640    3#    2     3     
 S.RIO.Sonde4_18_Cmd
-           R    2641..2645    3#    2     3     
+           R    2548..2554    3#    2     3     
 S.RIO.Sonde4_19
            R    2646..2652    3#    2     3     
 S.RIO.Sonde4_19_Cmd
-           R    2653..2657    3#    2     3     
+           R    2882..2888    3#    2     3     
 S.RIO.Sonde4_20
            R    2658..2664    3#    2     3     
 S.RIO.Sonde4_20_Cmd
@@ -1546,7 +1528,7 @@ S.RIO.Sonde4_22_Cmd
 S.RIO.Sonde4_23
            R    2783..2789    3#    2     3     
 S.RIO.Sonde4_23_Cmd
-           R    2790..2794    3#    2     3     
+           R    2889..2895    3#    2     3     
 S.RIO.VAV  R    2700..2705    3#    2     3     
 S.SYS.SASMVERS  2002140       1#    
 Sonde4_18.Cde_Ch
@@ -1559,6 +1541,8 @@ Sonde4_18.Confort_Ch
            R    2581          4#    4     
 Sonde4_18.Confort_Fr
            R    2582          4#    4     
+Sonde4_18.Decalage
+           R    2185          4#    4     
 Sonde4_18.Lib
            F    2375          4#    4     
 Sonde4_18.Mode
@@ -1571,6 +1555,8 @@ Sonde4_18.SP_Ch
            R    2031          4#    4     
 Sonde4_18.SP_Fr
            R    2032          4#    4     
+Sonde4_18.Temp
+           R    2186          4#    4     
 Sonde4_19.Cde_Ch
            R    2586          4#    4     
 Sonde4_19.Cde_Clap
@@ -1581,6 +1567,8 @@ Sonde4_19.Confort_Ch
            R    2589          4#    4     
 Sonde4_19.Confort_Fr
            R    2590          4#    4     
+Sonde4_19.Decalage
+           R    2187          4#    4     
 Sonde4_19.Lib
            F    2376          4#    4     
 Sonde4_19.Mode
@@ -1593,6 +1581,8 @@ Sonde4_19.SP_Ch
            R    2626          4#    4     
 Sonde4_19.SP_Fr
            R    2627          4#    4     
+Sonde4_19.Temp
+           R    2229          4#    4     
 Sonde4_20.Cde_Ch
            R    2594          4#    4     
 Sonde4_20.Cde_Clap
@@ -1669,6 +1659,8 @@ Sonde4_23.Confort_Ch
            R    2025          4#    4     
 Sonde4_23.Confort_Fr
            R    2026          4#    4     
+Sonde4_23.Decalage
+           R    2230          4#    4     
 Sonde4_23.Lib
            F    2094          4#    4     
 Sonde4_23.Mode
@@ -1681,6 +1673,8 @@ Sonde4_23.SP_Ch
            R    2030          4#    4     
 Sonde4_23.SP_Fr
            R    2033          4#    4     
+Sonde4_23.Temp
+           R    2231          4#    4     
 Sud4.ConsTA
            R    2618          4#    4     
 Sud4.Horl  F    2380          4#    4     

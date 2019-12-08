@@ -2,8 +2,8 @@
 Python digimat.saia
 ===================
 
-This is a Python 2.7 (Python 3 not fully compatible yet, but will be in the future) module allowing to create **client** and/or **server** `SAIA EtherSBus <https://wiki.wireshark.org/EtherSBus>`_  nodes.
-This code allow you to create low cost (and hopefully reliable) communication services with any EtherSBus device, reading and writing data from/to them. By data (items),
+This is a Python 3 module allowing anyone to create **client** and/or **server** `SAIA EtherSBus <https://wiki.wireshark.org/EtherSBus>`_  nodes.
+This code allow you to create low cost (and reliable) communication services with any EtherSBus device, reading and writing data from/to them. By data (items),
 we mean inputs, outputs, flags, registers, timers and counters. In the exemple below, a local SBus node with address 253 (station number, or localid, or lid in our terminology) is created. 
 
 .. code-block:: python
@@ -17,8 +17,7 @@ from your node.  To give you an idea, you will find a basic `Python interactive 
 
 .. image:: https://st-sa.ch/img/figures/digimat-saia-asciinema.png
    :width: 360px
-   :target: https://asciinema.org/a/0q7jfTE6Ooj7RPpVBL6bWfIj2
-
+   :target: https://asciinema.org/a/221576
 
 When done, shutdown your node properly.
 
@@ -63,7 +62,7 @@ Optional features
 * Automatic remote node information retrieval (trough READ_DBX blocks transfers),
   allowing to guess the PG5 compiler generated .map symbol file name ;) you will learn to love your .map files
 * PG5 symbols files (.map) parsing, allowing flags, registers, timers and counters symbolic access !
-* Dynamic objects creation iat runtime when .map file is loaded to enhance Python 
+* Dynamic objects creation at runtime when .map file is loaded to enhance Python 
   interactive sessions experience (autocompletion)
 * Logging for local or remote debugging trough TCP/IP.
 
@@ -93,14 +92,15 @@ some good starting points may include :
 * `SAIA faq <http://www.sbc-support.ch/faq>`_
 * The protocol specification *should* be theorically available upon request per email to SAIA at support [at] saia-pcd [dot] com, 
   but you will need to sign a non disclosure agreement. Ask for the "**Utilization Agreement for Saia S-Bus Developer Documentation**" document.
+  We have never received any response to thoses requests ;(
 
 Using the SAIA PG5 debugger may also help understanding how things works. Wireshark has an excellent protocol decoder 
 and you will easily find some .pcap samples by googling "sbus pcap". Really useful.
 
 Don't forget that the SAIA dynamic addressing won't be your friend here as you must know the address of the variable
 you want to access (read/write). Consider fixing your variables to "static" addresses in your PG5 configuration (**read SAIA FAQ 101533**, to knows actions that may affect variables
-address change). We have implemented some helpers to provide limited symbolic access using the PD5 .map file if you have it (see chapter "Symbolic Adressing" below).
-This said, have a look on the *Symbolic Addressing* chapter below. There are some tricks available to help you using items tag name ;)
+address change). We have implemented some helpers to provide limited symbolic access using the PG5 .map file if you have it (see chapter "Symbolic Adressing" below).
+There are some tricks available to help you using items tag name ;)
 
 Oh, and of course, EtherSBus communication has to be enabled on your PCD device ;)
 
@@ -119,9 +119,9 @@ EtherSBus Node (Server)
 =======================
 
 Once created, the **SAIANode** object will implicitely start a background task responsible for protocol and bus variables management.
-The task must be stop()ed before the program termination. The node contains a server (allowing other nodes to read an write 
-data to it). The node can also donnect to other remote SBus servers, to read/write remote data. Each server (local or remote)
-has it's own memory representation (SAIAMemory). Local-node memory is accessible trough node.memory (which is a shortcut to node.server.memory).
+The task must be stop()ed before the program termination, to shutdown the background task. The node contains a server (allowing other nodes to read an write 
+data to it), and may also connect (acting as a client) to other remote SBus servers to read/write remote data. Each server (local-node or remote-node)
+has it's own memory representation (SAIAMemory) in the SAIANode object. Local-node memory is accessible trough node.memory (which is a shortcut to node.server.memory).
 
 The **SAIAMemory** object handle every SBus variables (**inputs**, **outputs**, **flags**, **registers**, **timers**, **counters**). The SAIAMemory object provide a **SAIAItemFlags** object, 
 accessible trough a .flags property, itself providing access to every registered SAIAItemFlag object (item). The same principle is used for inputs 
@@ -423,7 +423,7 @@ other EtherSBus servers online on the LAN
 
 This will periodically broadcast a READ_STATIONNUMBER on the network (255.255.255.255) using a SAIATransferDiscoverNodes transfer service.
 When discovering mode is active, any response to this message received by the local node (not comming from a local network interface) will be 
-accepted an the corresponding remote server will be automatically delared for you. For convenience, the discover process is automatically started in Python interactive mode. In fact,
+accepted and the corresponding remote server will be automatically declared for you. For convenience, the discover process is automatically started in Python interactive mode. In fact,
 you can decide if network scanning should be active or not at the node creation
 
 .. code-block:: python

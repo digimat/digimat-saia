@@ -41,7 +41,7 @@ class SAIAItemQueue(Queue):
 
 class SAIAItemFlag(SAIABooleanItem):
     def onInit(self):
-        pass
+        super(SAIAItemFlag, self).onInit()
 
     def pull(self):
         request=SAIARequestReadFlags(self.server.link)
@@ -63,6 +63,7 @@ class SAIAItemFlag(SAIABooleanItem):
 
 class SAIAItemInput(SAIABooleanItem):
     def onInit(self):
+        super(SAIABooleanItem, self).onInit()
         self.setReadOnly()
 
     def pull(self):
@@ -73,7 +74,7 @@ class SAIAItemInput(SAIABooleanItem):
 
 class SAIAItemOutput(SAIABooleanItem):
     def onInit(self):
-        pass
+        super(SAIAItemOutput, self).onInit()
 
     def pull(self):
         request=SAIARequestReadOutputs(self.server.link)
@@ -88,7 +89,7 @@ class SAIAItemOutput(SAIABooleanItem):
 
 class SAIAItemRegister(SAIAAnalogItem):
     def onInit(self):
-        pass
+        super(SAIAItemRegister, self).onInit()
 
     def pull(self):
         request=SAIARequestReadRegisters(self.server.link)
@@ -110,6 +111,7 @@ class SAIAItemRegister(SAIAAnalogItem):
 
 class SAIAItemTimer(SAIAAnalogItem):
     def onInit(self):
+        super(SAIAItemTimer, self).onInit()
         if self.parent.isLocalNodeMode():
             self._stampTimer=0
 
@@ -156,7 +158,7 @@ class SAIAItemTimer(SAIAAnalogItem):
 
 class SAIAItemCounter(SAIAAnalogItem):
     def onInit(self):
-        pass
+        super(SAIAItemCounter, self).onInit()
 
     def pull(self):
         request=SAIARequestReadCounters(self.server.link)
