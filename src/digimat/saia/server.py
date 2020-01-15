@@ -215,7 +215,8 @@ class SAIALink(object):
                 if self.isWaitingResponse():
                     if self._request.validateMessage(mseq):
                         try:
-                            (code,)=struct.unpack('>B', payload[0])
+                            # (code,)=struct.unpack('>B', payload[0])
+                            code=struct.unpack('%dB' % len(payload), payload)[0]
                             if code==0:
                                 self._alive=True
                                 self.logger.debug('%s-->ACK(mseq=%d)' % (self.server.host, mseq))
@@ -225,6 +226,7 @@ class SAIALink(object):
                                 self.reset(False)
                         except:
                             self.logger.exception('processAck/Nak')
+                            self.logger.warning(str(payload))
 
         except:
             self.logger.exception('onMessage')
@@ -389,12 +391,18 @@ class SAIAServer(object):
                     mapfile=self.deviceName+'.map'
                 if mapfile:
                     path=self.node.getMapFileStoragePath()
+                    self.logger.debug('Trying to load map file %s/%s...' % (path, mapfile))
                     self._symbols.load(mapfile, path=path)
-                    self.logger.info('%d symbols loaded from file [%s/%s] for server %s' % (self._symbols.count(), path, mapfile, self))
+                    if self._symbols.count()>0:
+                        self.logger.info('%d symbols loaded from file [%s/%s] for server %s' % (self._symbols.count(), path, mapfile, self))
+                    else:
+                        self.logger.error('Unable to load symbols from file [%s/%s] for server %s' % (path, mapfile, self))
+
                     if self.node.isInteractiveMode():
                         self.logger.info('Interactive mode : dynamic mount symbols on server.symbols object')
                         self._symbols.mount()
         except:
+            self.logger.exception('Error trying to load mapfile!')
             pass
 
     def setDeviceInfo(self, key, value):
@@ -486,6 +494,9 @@ class SAIAServer(object):
     def dump(self):
         self.memory.dump()
 
+    def table(self):
+        self.memory.table()
+
     def run(self):
         transfer=SAIATransferFromRequest(SAIARequestRunCpuAll(self.link))
         return self.submitTransfer(transfer)
@@ -562,7 +573,7 @@ class SAIAServers(object):
     def declareRange(self, ip, count, lid=None, port=SAIAServer.UDP_DEFAULT_PORT):
         servers=[]
         try:
-            ip=ipaddress.ip_address(unicode(ip))
+            ip=ipaddress.ip_address(ip)
             for n in range(count):
                 server=self.declare(str(ip), lid=lid, port=port)
                 servers.append(server)
@@ -611,6 +622,10 @@ class SAIAServers(object):
         for server in self._servers:
             server.dump()
 
+    def table(self):
+        for server in self._servers:
+            server.table()
+
     def assignServerLid(self, server, lid):
         s=self.getFromLid(lid)
         if s and s!=server:
@@ -633,10 +648,6 @@ class SAIAServers(object):
             pass
 
     def strip_accents(self, text):
-        try:
-            text = unicode(text, 'utf-8')
-        except:
-            pass
         text = unicodedata.normalize('NFD', text)
         text = text.encode('ascii', 'ignore')
         text = text.decode("utf-8")

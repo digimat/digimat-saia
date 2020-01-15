@@ -1,10 +1,10 @@
 from __future__ import print_function  # Python 2/3 compatibility
 
 import time
+from prettytable import PrettyTable
 
 from threading import RLock
 from threading import Event
-
 
 from .formaters import SAIAValueFormaterFloat32
 from .formaters import SAIAValueFormaterSwappedFloat32
@@ -529,6 +529,21 @@ class SAIAItems(object):
         with self._lock:
             for item in self._items:
                 print(item)
+
+    def table(self):
+        with self._lock:
+            if self.count()>0:
+                t=PrettyTable()
+                t.field_names = ['index', 'tag', 'value', 'age']
+                t.align['index']='r'
+                t.align['tag']='l'
+                t.align['value']='r'
+                t.align['age']='l'
+
+                for item in self._items:
+                    t.add_row([item.index, item.tag, item.formatedvalue, item.age()])
+
+                print(t)
 
     def clear(self):
         with self._lock:

@@ -115,7 +115,8 @@ class SAIATransfer(object):
                             self._request=None
                             if request.isSuccess():
                                 data=request.reply
-                                self.processDataAndContinueTransfer(data)
+                                if data:
+                                    self.processDataAndContinueTransfer(data)
                                 if self._request:
                                     activity=True
                                 else:

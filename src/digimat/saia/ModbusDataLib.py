@@ -116,16 +116,20 @@ def bin2boollist(binval):
     Accepts a packed binary and outputs a list of boolean values.
     E.g. '\x2F' --> [True, True, True, True, False, True, False, False]
     """
-    # Split the string into a list of characters.
-    chararray = list(binval)
-
-    # TODO: python3
-    # chararray=binval
 
     boollist = []
+    chararray=list(struct.unpack('%dB' % len(binval), binval))
+
+    # Split the string into a list of characters.
+    # chararray = list(binval)
+    # Python2/3 difference : chararray is a int array (3) and a chr array (2)
+    # Python3: [boollist.extend(boolhexlist[chr(i)]) for i in chararray]
+    # Python2: [boollist.extend(boolhexlist[i]) for i in chararray]
+
     # Next, look up the boolean equivalents and add them to the output list.
-    # TODO: python3 [boollist.extend(boolhexlist[chr(i)]) for i in chararray]
-    [boollist.extend(boolhexlist[i]) for i in chararray]
+    for c in chararray:
+        boollist.extend(boolhexlist[chr(c)])
+
     return boollist
 
 
@@ -213,8 +217,7 @@ def coilvalue(state):
     """
     if (state == 0):
         return '\x00\x00'
-    else:
-        return '\xFF\x00'
+    return '\xFF\x00'
 
 
 #############################################################

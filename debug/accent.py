@@ -39,6 +39,6 @@ t=Test()
 
 
 text=u'_____hello les 2ème amis     ___'
-print t.strip_accents(text)
-print t.text_to_id(text)
-print ".", t.normalizeTag(text), "."
+print(t.strip_accents(text))
+print(t.text_to_id(text))
+print(".", t.normalizeTag(text), ".")

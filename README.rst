@@ -3,7 +3,7 @@ Python digimat.saia
 ===================
 
 This is a Python 3 module allowing anyone to create **client** and/or **server** `SAIA EtherSBus <https://wiki.wireshark.org/EtherSBus>`_  nodes.
-This code allow you to create low cost (and reliable) communication services with any EtherSBus device, reading and writing data from/to them. By data (items),
+This code allow you to create low cost, fast and reliable communication services with any EtherSBus device, reading and writing data from/to them. By data (items),
 we mean inputs, outputs, flags, registers, timers and counters. In the exemple below, a local SBus node with address 253 (station number, or localid, or lid in our terminology) is created. 
 
 .. code-block:: python
@@ -26,7 +26,7 @@ When done, shutdown your node properly.
     >>> node.stop()
     >>> quit()
 
-Please consider this work as *in progress* (**currently only partially tested**).  Always use the latest version of this package, as it is frequently updated ! 
+Please consider this work as *in progress*.  Always use the latest version of this package, as it is frequently updated ! 
 Warning : if you observe a socket error at node start, this is probably due to the fact that the listening port is already opened on your machine from
 an other process. The default listening port is 5050. Try changing it to see if this fix the problem
 
@@ -113,6 +113,8 @@ Nothing specific here, just use pip (which will also install modules dependencie
 .. code-block:: bash
 
     pip install -U digimat.saia
+
+On Windows, you will need to install (if not already done) the Microsoft Visual C++ Build Tool, required to install some dependencies.
 
 
 EtherSBus Node (Server)
@@ -581,8 +583,11 @@ You can apply some basic output filtering with optional "--filter string" parame
 
 If you want to completely disable the logger, just pass a logger=SAIALogger().null() parameter.  Limited dump-debug can 
 also be done with objects .dump() methods. Try node.dump(), node.memory.dump(), node.memory.flags.dump(), 
-node.servers.dump(), server.dump(), etc. For debugging purposes, you can simulate a remote node 
-by registering a remote pointing on yourselfi (woo!)
+node.servers.dump(), server.dump(), etc. You can also use .table() methods instead of .dump() to get a more "human readable" output style,
+a bit like mysql does.
+
+For debugging purposes, you can simulate a remote node 
+by registering a remote pointing on yourself (woo!)
 
 .. code-block:: python
 
@@ -671,9 +676,14 @@ you can run the demo node shown above with this simple command line
 TODO
 ====
 
-Documentation is very incomplete. Don't know if this is useful for someone. Tell it to us.
+Documentation is very incomplete. Don't know if this is useful for someone. Tell it to us, and if you like it, don't
+hesitate to talk about the pypi/digimat.saia module on social networks.
+
 There is still some more locking mecanisms to implement making the background task really thread safe. The
-Python GIL make things yet wrongly safe. Python 3 compatibility.
+Python GIL make things yet wrongly safe (but this works very fine).
 
 We have no way to test what 'S-Bus gateway' feature is. When enabled, a PCD may be able? to expose S-Bus
 sub nodes on its EtherSBus interface. This "proxy" mode access is not supported yet.
+
+A nice idea would be to develop an user interface based on `npyscreen <https://npyscreen.readthedocs.io/#>`_ allowing
+rapid online debugging with saia devices ! 

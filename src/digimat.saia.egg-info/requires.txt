@@ -1,5 +1,7 @@
 future
 netifaces
 ipaddress
+ptable
+unidecode
 digimat.jobs
 setuptools

@@ -63,7 +63,7 @@ class SAIAItemFlag(SAIABooleanItem):
 
 class SAIAItemInput(SAIABooleanItem):
     def onInit(self):
-        super(SAIABooleanItem, self).onInit()
+        super(SAIAItemInput, self).onInit()
         self.setReadOnly()
 
     def pull(self):
@@ -477,6 +477,12 @@ class SAIAMemory(object):
         for items in self.items():
             if items:
                 items.dump()
+
+    def table(self):
+        allitems=self.items()
+        if allitems:
+            for items in allitems:
+                items.table()
 
     def __repr__(self):
         return '<%s(%d items, queues %dR:%dR!:%dW)>' % (self.__class__.__name__,

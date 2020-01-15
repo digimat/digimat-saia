@@ -1,10 +1,11 @@
-from __future__ import print_function  # Python 2/3 compatibility
+  # Python 2/3 compatibility
 import os
 from threading import RLock
 from datetime import datetime
 
 import re
 import unicodedata
+import unidecode
 
 
 class SAIASymbol(object):
@@ -103,7 +104,7 @@ class SAIATagMount(object):
 
     def strip_accents(self, text):
         try:
-            text = unicode(text, 'utf-8')
+            text = str(text, 'utf-8')
         except:
             pass
         text = unicodedata.normalize('NFD', text)
@@ -124,8 +125,6 @@ class SAIATagMount(object):
             tag=tag.replace('.', '_')
             tag=tag.replace('__', '_')
             tag=tag.strip('_')
-            # if tag[0].isdigit():
-                # tag='i_'+tag
             return tag
         finally:
             return tag
@@ -224,7 +223,7 @@ class SAIASymbols(object):
 
     def all(self):
         with self._lock:
-            return self._symbols.values()
+            return list(self._symbols.values())
 
     def count(self):
         with self._lock:
@@ -348,7 +347,7 @@ class SAIASymbols(object):
     def load(self, filename, path=None):
         try:
             if not self._symbols:
-                fpath=filename
+                fpath=unidecode.unidecode(filename)
                 if path:
                     fpath=os.path.join(path, filename)
                 self._filepath=os.path.expanduser(fpath)

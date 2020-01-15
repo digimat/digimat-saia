@@ -4,6 +4,7 @@ from __future__ import division
 import time
 import socket
 import struct
+import os
 import sys
 import netifaces
 
@@ -432,6 +433,7 @@ class SAIANode(object):
     def __init__(self, lid=253, port=SAIAServer.UDP_DEFAULT_PORT, logger=None, autostart=True, scanner=None, broadcastAddress='255.255.255.255'):
         self._socket=None
         self._lid=int(lid)
+        self._debug=False
 
         if logger is None:
             logger=SAIALogger().tcp()
@@ -462,6 +464,9 @@ class SAIANode(object):
 
         if autostart:
             self.start()
+
+    def debug(self, state=True):
+        self._debug=state
 
     @property
     def logger(self):
@@ -538,10 +543,17 @@ class SAIANode(object):
             interpreter = False
             if sys.flags.interactive:
                 interpreter = True
+        try:
+            if os.path.basename(sys.argv[0])=='bpython':
+                interpreter=True
+        except:
+            pass
+
         return interpreter
 
     def setMapFileStoragePath(self, path):
         self._mapFileStoragePath=path
+        self.logger.info('Using [%s] as .map file storage path' % path)
 
     def getMapFileStoragePath(self):
         try:
@@ -585,7 +597,7 @@ class SAIANode(object):
         self._socket=None
 
     def data2strhex(self, data):
-        return ' '.join(x.encode('hex') for x in data)
+        return ' '.join(hex(x) for x in data)
 
     def sendMessageToHost(self, data, host, port=None):
         try:
@@ -594,7 +606,8 @@ class SAIANode(object):
                 if port is None:
                     port=self._port
                 size=s.sendto(data, (host, port))
-                # self.logger.debug('-->%s:%d %s' % (host, port, self.data2strhex(data)))
+                if self._debug:
+                    self.logger.debug('-->%s:%d %s' % (host, port, self.data2strhex(data)))
                 if size==len(data):
                     return True
                 self.logger.error('sendMessageToHost(%s)' % host)
@@ -642,7 +655,8 @@ class SAIANode(object):
                 host=address[0]
                 port=address[1]
                 (mtype, mseq, payload)=self.decodeMessage(data)
-                # self.logger.debug('<--%s:%d seq=%d %s' % (host, port, mseq, self.data2strhex(data)))
+                if self._debug:
+                    self.logger.debug('<--%s:%d seq=%d %s' % (host, port, mseq, self.data2strhex(data)))
 
                 # 0=REQUEST
                 if mtype==0:
@@ -694,7 +708,7 @@ class SAIANode(object):
         # during data burst, and more sleepy when idle
         try:
             if activity:
-                self._activityCounter=3
+                self._activityCounter=8
 
             if self._activityCounter>0:
                 # bypass default job manager sleep (0.1)
@@ -748,6 +762,10 @@ class SAIANode(object):
     def dump(self):
         self.server.dump()
         self.servers.dump()
+
+    def table(self):
+        self.server.table()
+        self.servers.table()
 
     def serveForEver(self):
         try:
