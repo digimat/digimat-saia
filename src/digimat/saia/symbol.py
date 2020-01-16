@@ -3,6 +3,8 @@ import os
 from threading import RLock
 from datetime import datetime
 
+from prettytable import PrettyTable
+
 import re
 import unicodedata
 import unidecode
@@ -399,6 +401,23 @@ class SAIASymbols(object):
                 except:
                     pass
         return symbols
+
+    def table(self, key=None):
+        if key:
+            symbols=self.search(key)
+        else:
+            symbols=self.all()
+
+        if symbols and len(symbols)>0:
+            t=PrettyTable()
+            t.field_names = ['tag', 't', 'index']
+            t.align['tag']='l'
+            t.align['index']='r'
+
+            for symbol in symbols:
+                t.add_row([symbol.tag, symbol.attribute, symbol.index])
+
+            print(t)
 
     def __repr__(self):
         stamp=self.buildDateTime

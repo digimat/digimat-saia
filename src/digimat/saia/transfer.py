@@ -27,6 +27,9 @@ class SAIATransfer(object):
     def logger(self):
         return self.server.logger
 
+    def isDebug(self):
+        return self.server.isDebug()
+
     @property
     def link(self):
         return self.server.link
@@ -69,7 +72,8 @@ class SAIATransfer(object):
             self._done=False
             self._start=True
             self.heartbeat()
-            self.logger.debug('%s:start()' % self.__class__.__name__)
+            if self.isDebug():
+                self.logger.debug('%s:start()' % self.__class__.__name__)
             self.initiateTransfer()
         except:
             self.stop(False)
@@ -77,7 +81,11 @@ class SAIATransfer(object):
     def stop(self, result=False):
         self._start=False
         self._done=True
-        self.logger.debug('%s:stop(%d)' % (self.__class__.__name__, result))
+        if not result:
+            self.logger.warning('%s:stop(%d)' % (self.__class__.__name__, result))
+        elif self.isDebug():
+            self.logger.debug('%s:stop(%d)' % (self.__class__.__name__, result))
+
         if result:
             try:
                 self.finalizeTransferAndComputePayload()
@@ -229,6 +237,9 @@ class SAIATransferQueue(object):
     def server(self):
         return self._server
 
+    def isDebug(self):
+        return self.server.isDebug()
+
     @property
     def logger(self):
         return self.server.logger
@@ -242,8 +253,9 @@ class SAIATransferQueue(object):
     def submit(self, transfer):
         assert isinstance(transfer, SAIATransfer)
         self._queue.put(transfer)
-        self.logger.debug('queue:%s (size=%d)' % (transfer.__class__.__name__,
-                                self._queue.qsize()))
+        if self.isDebug():
+            self.logger.debug('queue:%s (size=%d)' % (transfer.__class__.__name__,
+                                    self._queue.qsize()))
 
     def getNextTransfer(self):
         try:

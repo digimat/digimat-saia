@@ -50,6 +50,9 @@ class SAIALink(object):
     def server(self):
         return self._server
 
+    def isDebug(self):
+        return self.server.isDebug()
+
     @property
     def logger(self):
         return self.server.logger
@@ -119,7 +122,9 @@ class SAIALink(object):
                     port=self.server.port
                     if self._request._broadcast:
                         host=self.server.node.broadcastAddress
-                    self.logger.debug('%s<--%s' % (host, self._request))
+
+                    if self.isDebug():
+                        self.logger.debug('%s<--%s' % (host, self._request))
 
                     if self.server.node.sendMessageToHost(data, host, port=port):
                         self._timeoutXmitInhibit=time.time()+self._delayXmitInhibit
@@ -205,7 +210,8 @@ class SAIALink(object):
                     if self._request.validateMessage(mseq, payload):
                         try:
                             self._alive=True
-                            self.logger.debug('%s-->%s:processResponse(%d bytes)' % (self.server.host, self._request, len(payload)))
+                            if self.isDebug():
+                                self.logger.debug('%s-->%s:processResponse(%d bytes)' % (self.server.host, self._request, len(payload)))
                             result=self._request.processResponse(payload)
                             self.reset(result)
                         except:
@@ -219,10 +225,12 @@ class SAIALink(object):
                             code=struct.unpack('%dB' % len(payload), payload)[0]
                             if code==0:
                                 self._alive=True
-                                self.logger.debug('%s-->ACK(mseq=%d)' % (self.server.host, mseq))
+                                if self.isDebug():
+                                    self.logger.debug('%s-->ACK(mseq=%d)' % (self.server.host, mseq))
                                 self.reset(True)
                             else:
-                                self.logger.error('%s-->ACK(mseq=%d, code=%d)' % (self.server.host, mseq, code))
+                                if self.isDebug():
+                                    self.logger.error('%s-->ACK(mseq=%d, code=%d)' % (self.server.host, mseq, code))
                                 self.reset(False)
                         except:
                             self.logger.exception('processAck/Nak')
@@ -334,6 +342,9 @@ class SAIAServer(object):
     def node(self):
         return self._node
 
+    def isDebug(self):
+        return self.node.isDebug()
+
     @property
     def logger(self):
         return self.node.logger
@@ -369,6 +380,9 @@ class SAIAServer(object):
     @property
     def counters(self):
         return self.memory.counters
+
+    def setReadOnly(self, state=True):
+        self.memory.setReadOnly(state)
 
     def isLocalNodeMode(self):
         return self._memory.isLocalNodeMode()

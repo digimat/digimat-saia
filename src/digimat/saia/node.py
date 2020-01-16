@@ -430,10 +430,10 @@ class SAIALogger(object):
 
 
 class SAIANode(object):
-    def __init__(self, lid=253, port=SAIAServer.UDP_DEFAULT_PORT, logger=None, autostart=True, scanner=None, broadcastAddress='255.255.255.255'):
+    def __init__(self, lid=253, port=SAIAServer.UDP_DEFAULT_PORT, logger=None, autostart=True, scanner=None, broadcastAddress='255.255.255.255', debug=False):
         self._socket=None
         self._lid=int(lid)
-        self._debug=False
+        self._debug=debug
 
         if logger is None:
             logger=SAIALogger().tcp()
@@ -462,11 +462,22 @@ class SAIANode(object):
         if not SAIASBusCRCTableCheck():
             self.logger.error('SAIA CRC table consistency failure!')
 
+        self.logger.info('*** Thanks for using the digimat.saia module !')
+        self.logger.info('*** https://pypi.org/project/digimat.saia/')
+        self.logger.info('*** https://www.digimat.ch')
+
         if autostart:
             self.start()
 
     def debug(self, state=True):
         self._debug=state
+
+    def nodebug(self):
+        self.debug(False)
+
+    def isDebug(self):
+        if self._debug:
+            return True
 
     @property
     def logger(self):

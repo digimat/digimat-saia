@@ -26,7 +26,7 @@ When done, shutdown your node properly.
     >>> node.stop()
     >>> quit()
 
-Please consider this work as *in progress*.  Always use the latest version of this package, as it is frequently updated ! 
+Please consider this work as *in progress* (but stable enough to provide reliable communication services).  Always use the latest version of this package, as it is frequently updated ! 
 Warning : if you observe a socket error at node start, this is probably due to the fact that the listening port is already opened on your machine from
 an other process. The default listening port is 5050. Try changing it to see if this fix the problem
 
@@ -157,6 +157,10 @@ Each item provide some helpers methods to facilitate value manipulation
     >>> myflag.value=True
     >>> myflag.value
     1
+    >>> myflag.isSet()
+    True
+    >>> myflag.isClear()
+    False
 
 By default, "on-the-fly-item-creation" is active. This means that any data item (flag, input, output, register) which is accessed (locally or remotely)
 will be dynamically instanciated if it doesn't exists.  This can create a large amount of unwanted memory consumption in case of abuse or bug. This mode can
@@ -179,7 +183,7 @@ Items can be manually-created by "declaring" them, individually or by range
     <SAIAItemFlag(index=101, value=OFF, age=3s)>,
     <SAIAItemFlag(index=102, value=OFF, age=3s)>]
 
-You will also later discover a .declareForTagMatching() feature. Inputs, Outputs and Flags are boolean items. 
+You will also later discover a powerful .declareForTagMatching() feature allowing to works with symbols names instead of indexes. Inputs, Outputs and Flags are boolean items. 
 Registers, Timers and Counters are simple "32 bits uint values".
 
 .. code-block:: python
@@ -308,8 +312,19 @@ A timeout can be passed to the read() function. **Changing** (**writing**) the r
 
 For a non local object, **this will automatically queue a write order** in the SAIAServer object with the new given value. **The actual value of the item
 remains unchanged**. **When the write order has been executed**, **a refresh order is immediately triggered**, thus **allowing the actual value to be updated**. 
-This tend to keep the value synchonized with the remote value, even if something goes wrong. As for read() orders, the read-after-write is
+This tend to keep the value synchronized with the remote value, even if something goes wrong. As for read() orders, the read-after-write is
 processed with **more priority** than standard pooling requests (more responsive). Please note that this approach *can* be problematic to write fast ON/OFF bursts.
+
+If for any reason you want to deny writes to your remote server, you can lock your remote server memory as needed, 
+allowing you to avoid some unwanted critical problems ;)
+
+.. code-block:: python
+
+    >>> server.setReadOnly()
+    >>> server.flags.setReadOnly()
+    >>> server.registers.setReadOnly()
+    >>> server.registers[100].setReadOnly()
+    >>> server.flags[10].setReadOnly()
 
 The background manager try to be as reactive and idle as possible, keeping ressources for your application. We tried to
 trap most of the possible errors, allowing using this module to be used as a standalone service. Note that automatic SAIA address 
@@ -552,6 +567,7 @@ tag name.
     >>> registers=server.registers.declareForTagMatching('sonde')
     >>> len(registers)
     626
+    >>> registers=server.registers['*sonde']  # equivalent trick, using a '*' prefix
 
 The *searched argument* may also be a compiled regex
 
@@ -581,13 +597,49 @@ You can apply some basic output filtering with optional "--filter string" parame
 
     >>> node=SAIANode(253, logger=mylogger)
 
+By default, the logging output is limited to maximize performance. You can enable (or disable) full messages logging with
+
+.. code-block:: python
+
+    >>> node.debug()
+    >>> node.debug(True)
+    >>> node.debug(False)
+
+    # or at node creation with
+    >>> node=SAIANode(..., debug=True)
+
 If you want to completely disable the logger, just pass a logger=SAIALogger().null() parameter.  Limited dump-debug can 
 also be done with objects .dump() methods. Try node.dump(), node.memory.dump(), node.memory.flags.dump(), 
-node.servers.dump(), server.dump(), etc. You can also use .table() methods instead of .dump() to get a more "human readable" output style,
+node.servers.dump(), server.dump(), server.registers.dump(), server.flags.dump(), etc. You can also use .table() methods instead of .dump() to get a more "human readable" output style,
 a bit like mysql does.
 
-For debugging purposes, you can simulate a remote node 
-by registering a remote pointing on yourself (woo!)
+.. code-block:: python
+
+    >>> node.table()
+    +-------+-------------------------+-------+------+
+    | index | tag                     | value | age  |
+    +-------+-------------------------+-------+------+
+    |  5848 | ep16.s2.zone01.t1.tm_me |   234 | 3.9s |
+    |  5859 | ep16.s2.zone02.t1.tm_me |   236 | 3.8s |
+    |  5870 | ep16.s2.zone03.t1.tm_me |   233 | 3.7s |
+    |  5881 | ep16.s2.zone04.t1.tm_me |   238 | 3.7s |
+    |  5965 | ep16.s2.zone21.t1.tm_me |   241 | 3.3s |
+    |  5974 | ep16.s2.zone89.t1.tm_me |   246 | 3.3s |
+    |  5983 | ep16.s2.zone90.t1.tm_me |   243 | 3.2s |
+    |  5992 | ep16.s2.zone91.t1.tm_me |   242 | 3.2s |
+    |  6001 | ep16.s2.zone96.t1.tm_me |   230 | 3.1s |
+    |  6010 | ep16.s2.zone98.t1.tm_me |   238 | 3.1s |
+    +-------+-------------------------+-------+------+
+
+If you want to ping yours servers (your remote nodes), you can use the builtin server's ping command which force sending an immediate read-status request to the remote device, then wait for
+the response and return True if someting was received. Remeber that you can log the communication traffic by enabling the debug mode on your node (with node.debug())
+
+.. code-block:: python
+
+    >>> server.ping()
+    True
+
+For debugging purposes, you can simulate a remote node by registering a remote pointing on yourself (woo!)
 
 .. code-block:: python
 
@@ -651,8 +703,6 @@ Here is a minimal empty node implementation, stopable with <CTRL-C>
 
     while node.isRunning():
         try:
-            # time.sleep(3.0)
-
             # using integrated node.sleep() will 
             # handle CTRL-C and propagate node.stop()
             node.sleep(3.0)
@@ -661,7 +711,7 @@ Here is a minimal empty node implementation, stopable with <CTRL-C>
         except:
             break
 
-    # node.stop()
+    node.stop()
 
 
 Open your SAIA Debugger on this node, and try reading/writing some items. 
@@ -676,14 +726,20 @@ you can run the demo node shown above with this simple command line
 TODO
 ====
 
-Documentation is very incomplete. Don't know if this is useful for someone. Tell it to us, and if you like it, don't
-hesitate to talk about the pypi/digimat.saia module on social networks.
+Documentation is very incomplete. Don't know if this is useful for someone. Tell it to us.
 
 There is still some more locking mecanisms to implement making the background task really thread safe. The
-Python GIL make things yet wrongly safe (but this works very fine).
+Python GIL make things yet wrongly safe (but it works very fine).
 
-We have no way to test what 'S-Bus gateway' feature is. When enabled, a PCD may be able? to expose S-Bus
-sub nodes on its EtherSBus interface. This "proxy" mode access is not supported yet.
+We have no way to test what the 'S-Bus gateway' feature is. When enabled, a PCD may be able? to expose S-Bus
+sub nodes on its EtherSBus interface. This "proxy" mode access? is not supported yet.
 
 A nice idea would be to develop an user interface based on `npyscreen <https://npyscreen.readthedocs.io/#>`_ allowing
 rapid online debugging with saia devices ! 
+
+
+SUPPORTING
+==========
+
+If you like this module, or find a useful way to use it, please tell it to the world by posting a message 
+on your favorites social networks, including a link to this `digimat.saia's page <https://pypi.org/project/digimat.saia/>`_ !

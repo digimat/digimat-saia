@@ -83,7 +83,7 @@ class SAIAItem(object):
         self._readOnly=state
 
     def isReadOnly(self):
-        if self._readOnly:
+        if self._readOnly or self.parent.isReadOnly():
             return True
 
     def signalPush(self, value):
@@ -141,6 +141,12 @@ class SAIAItem(object):
             with self._parent._lock:
                 if self._value!=value:
                     self.signalPush(value)
+
+    @property
+    def bool(self):
+        if self.value:
+            return True
+        return False
 
     @property
     def pushValue(self):
@@ -217,8 +223,22 @@ class SAIABooleanItem(SAIAItem):
     def on(self):
         self.value=True
 
+    def isOn(self):
+        if self.value:
+            return True
+        return False
+
     def off(self):
         self.value=False
+
+    def isSet(self):
+        return self.bool
+
+    def isOff(self):
+        return not self.bool
+
+    def isClear(self):
+        return self.isOff()
 
     def set(self):
         self.on()
@@ -393,7 +413,7 @@ class SAIAItems(object):
         self._readOnly=state
 
     def isReadOnly(self):
-        if self._readOnly:
+        if self._readOnly or self.memory.isReadOnly():
             return True
 
     def setRefreshDelay(self, delay):
@@ -456,6 +476,12 @@ class SAIAItems(object):
         item=self.item(index)
         if item:
             return item
+        try:
+            # allow items['*pattern'] usage
+            if index[0]=='*':
+                return self.declareForTagMatching(index[1:])
+        except:
+            pass
         if self.memory.isOnTheFlyItemCreationEnabled():
             return self.declare(index)
 
@@ -541,7 +567,8 @@ class SAIAItems(object):
                 t.align['age']='l'
 
                 for item in self._items:
-                    t.add_row([item.index, item.tag, item.formatedvalue, item.age()])
+                    age='%.01fs' % item.age()
+                    t.add_row([item.index, item.tag, item.formatedvalue, age])
 
                 print(t)
 
