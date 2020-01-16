@@ -536,7 +536,11 @@ class SAIARequestWriteItems(SAIARequest):
 
 class SAIARequestWriteBooleanItems(SAIARequestWriteItems):
     def encode(self):
-        data=boollist2bin(self._values).encode()
+        data=boollist2bin(self._values)
+
+        # TODO: not ideal, but fix zthe problem for python2->3 conversion
+        # as when need bytes instead of str
+        data=struct.pack('%dB' % len(data), *[ord(c) for c in data])
 
         # bytecount = number item to write (as msg length + 2)
         bytecount=len(data)+2

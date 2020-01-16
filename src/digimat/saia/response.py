@@ -169,6 +169,11 @@ class SAIAResponseReadBooleanItem(SAIAReply):
             values.append(self._items[self._address+n].value)
 
         data=boollist2bin(values)
+
+        # TODO: not ideal, but fix zthe problem for python2->3 conversion
+        # as when need bytes instead of str
+        data=struct.pack('%dB' % len(data), *[ord(c) for c in data])
+
         return struct.pack('>%ds' % len(data), data)
 
 
