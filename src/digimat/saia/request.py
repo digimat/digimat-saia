@@ -536,7 +536,7 @@ class SAIARequestWriteItems(SAIARequest):
 
 class SAIARequestWriteBooleanItems(SAIARequestWriteItems):
     def encode(self):
-        data=boollist2bin(self._values)
+        data=boollist2bin(self._values).encode()
 
         # bytecount = number item to write (as msg length + 2)
         bytecount=len(data)+2
