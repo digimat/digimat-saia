@@ -23,7 +23,8 @@ class SAIAReply(object):
         self._data=None
         self._ready=False
         self.onInit()
-        self.logger.debug('localnode-->%s(seq=%d)' % (self.__class__.__name__, sequence))
+        if node.isDebug():
+            self.logger.debug('localnode-->%s(seq=%d)' % (self.__class__.__name__, sequence))
 
     def onInit(self):
         pass
@@ -130,8 +131,8 @@ class SAIAResponseReadProgramVersion(SAIAReply):
         self.setup(SAIA_CPU_TYPE, SAIA_FW_VERSION)
 
     def setup(self, cputype=SAIA_CPU_TYPE, fwversion=SAIA_FW_VERSION):
-        self._cputype=cputype
-        self._fwversion=fwversion
+        self._cputype=cputype.encode()
+        self._fwversion=fwversion.encode()
         self.ready()
 
     def encode(self):

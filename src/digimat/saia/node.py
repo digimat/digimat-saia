@@ -98,7 +98,8 @@ class SAIANodeRequestHandler(object):
         self._sequence=sequence
 
         try:
-            self.logger.debug('localnode<--%s(seq=%d)' % (self.__class__.__name__, self.sequence))
+            if self.node.isDebug():
+                self.logger.debug('localnode<--%s(seq=%d)' % (self.__class__.__name__, self.sequence))
             response=self.handler(data)
             if response:
                 return response
