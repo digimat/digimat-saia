@@ -484,6 +484,10 @@ class SAIAMemory(object):
             for items in allitems:
                 items.table()
 
+    def isPendingPushRequest(self):
+        if not self._queuePendingPush.empty():
+            return True
+
     def __repr__(self):
         return '<%s(%d items, queues %dR:%dR!:%dW)>' % (self.__class__.__name__,
             self.count(),

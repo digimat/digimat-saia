@@ -579,7 +579,6 @@ The *searched argument* may also be a compiled regex
 If for any reason you want to *pause* one remote server communications, you can use the server.pause(60) call (seconds). This is for example
 internally used to stop server communications when a station address conflict (duplicate address) is detected.
 
-
 Dumping & Debugging
 ===================
 
@@ -638,6 +637,21 @@ the response and return True if someting was received. Remeber that you can log 
 
     >>> server.ping()
     True
+
+There are some useful helpers to check for dead servers or items
+
+.. code-block:: python
+
+    >>> server.isAlive()
+    True
+    >>> server.flags[10].isAlive()
+    True
+    >>> onlineServers=node.servers.alive()
+    >>> offlineServer=node.servers.dead()
+    >>> onlineFlags=server.flags.alive()
+    >>> offlineRegisters=server.registers.dead()
+
+An item is considered as alive if the item.age() is less than 1.5 times it's refresh delay (=90s by default).
 
 For debugging purposes, you can simulate a remote node by registering a remote pointing on yourself (woo!)
 

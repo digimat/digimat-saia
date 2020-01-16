@@ -447,6 +447,9 @@ class SAIAServer(object):
     def isAlive(self):
         return self.link.isAlive()
 
+    def isPendingPushRequest(self):
+        return self.memory.isPendingPushRequest()
+
     def onMessage(self, mtype, mseq, payload):
         return self.link.onMessage(mtype, mseq, payload)
 
@@ -571,6 +574,21 @@ class SAIAServers(object):
 
     def all(self):
         return self._servers
+
+    def alive(self):
+        return [server for server in self.all() if server.isAlive()]
+
+    def dead(self):
+        return [server for server in self.all() if not server.isAlive()]
+
+    def isAlive(self):
+        if not self.dead():
+            return True
+
+    def isPendingPushRequest(self):
+        for server in self.all():
+            if server.isPendingPushRequest():
+                return True
 
     def __iter__(self):
         return iter(self.all())
