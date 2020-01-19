@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: digimat.saia
-Version: 0.1.32
+Version: 0.1.34
 Summary: SAIA Burgess PCD EtherSBus Client+Server communication module
 Home-page: https://github.com/digimat/digimat-saia
 Author: Frederic Hess
@@ -20,8 +20,8 @@ Description: ===================
             >>> node=SAIANode(253)
         
         Congratulations ! You just have powered up your first EtherSNode device with 2 lines of code. A **background task handle now for you all the network SBus frames**. 
-        Open your SAIA PG5 Debugger and try to read/write some data to your node. Of course, you can also talk to other SBus devices directly 
-        from your node.  To give you an idea, you will find a basic `Python interactive session demo here <https://asciinema.org/a/0q7jfTE6Ooj7RPpVBL6bWfIj2>`_. 
+        Open your SAIA PG5 Debugger and try to read/write some data **to** your node. Of course, you can also talk to other SAIA PCD EtherSBus devices directly 
+        from your node trough le LAN (remote servers). This will come later (see "EtherSBus Client" chapter below). To give you an idea on how to use this module, you will find a basic `Python interactive session demo here <https://asciinema.org/a/0q7jfTE6Ooj7RPpVBL6bWfIj2>`_. 
         
         .. image:: https://st-sa.ch/img/figures/digimat-saia-asciinema.png
            :width: 360px
@@ -51,9 +51,9 @@ Description: ===================
         * EtherSbus Server (expose local data to other EtherSBus nodes)
         * EtherSBus Client (remote access to N remote EtherSBus nodes)
         * Local Server AND Remote Client(s) simultaneous communication support
-        * Read/Write of local and remote Inputs/Outputs/Flags/Registers/Timers/Counters data values trough simple objects .value get/set
+        * Read/Write of local and remote Inputs/Outputs/Flags/Registers/Timers/Counters data values trough simple objects ".value" get/set
         * Background task (thread) managing every server+clients messages once the node is started
-        * Registers value encoders allowing working transparently with float, float32 and some other 32 bits encodings
+        * Registers value encoders allowing working transparently with float, float32 and some other encodings
         * Automatic pooling in the background of every declared remote items (manual refresh is also possible)
         * Node station address automatic resolution
         * Automatic read/write requests aggregations (using one message for multiple items transfer)
@@ -91,9 +91,9 @@ Description: ===================
         before starting a deeper implementation on our `Digimat <https://www.st-sa.ch/digimat.html>`_ HVAC BMS infrastructures. SAIA Burgess
         has absolutely **no implication** on this project and cannot be held responsible for any problem of any kind if you decide to use this module.
         
-        At this time, we don't have access to any S-Bus or EtherSBus protocol official specifications. If you own such documentation,
-        please forward it to us (fhess [at] st-sa [dot] ch), as SAIA doesn't want to provide it ;( If you need to learn about this protocol,
-        some good starting points may include :
+        At this time, we don't have access to any S-Bus or EtherSBus protocol official specifications. This is the result of a "blind" protocol analysis, with
+        no information given by SAIA (no pain, no gain). If you own such documentation, please forward it to us (fhess [at] st-sa [dot] ch), 
+        as SAIA doesn't want to provide it to us ;( If you need to learn about this protocol, some good starting points may include :
         
         * `WireShark EtherSBus plugin source code <https://github.com/boundary/wireshark/blob/master/epan/dissectors/packet-sbus.c>`_
         * `SBPoll Python EtherSBus source code <http://mblogic.sourceforge.net/mbtools/sbpoll.html>`_
@@ -122,7 +122,7 @@ Description: ===================
         
             pip install -U digimat.saia
         
-        On Windows, you will need to install (if not already done) the Microsoft Visual C++ Build Tool, required to install some dependencies.
+        On Windows, you will need to install (if not already done) the Microsoft Visual C++ Build Tool, required to install some dependencies. This can take some time to install it.
         
         
         EtherSBus Node (Server)
@@ -302,9 +302,10 @@ Description: ===================
         
         You can query the elapsed time (in seconds) since the last value update (refresh) with the myRemoteFlag.age() method.  If you really need to get the very 
         actual value of an item (and not the last refreshed one), you need to initiate an item.refresh() and then 
-        wait *a certain amount of time* allowing the read queue to be processed by the background task. 
-        If you have declared thousand of items, this *may* take a while. The whole thing can be done with a simple item.read(),
-        returning the just refrehed item.value (or None in case of timeout)
+        wait *a certain amount of time* allowing the read queue to be processed by the background task. This is a crucial point, everything is done asynchronously : modifying the
+        value of a register, for example with register.value=100, simply queue a write order and returns (immediately). The write will be processed as soon as possible, but later.
+        If you have declared thousand of items, this *may* take a while. The whole thing can also be done more synchrounously with a simple item.read(),
+        returning the just refreshed item.value (or None in case of timeout)
         
         .. code-block:: python
         
@@ -334,8 +335,8 @@ Description: ===================
             >>> server.registers[100].setReadOnly()
             >>> server.flags[10].setReadOnly()
         
-        The background manager try to be as reactive and idle as possible, keeping ressources for your application. We tried to
-        trap most of the possible errors, allowing using this module to be used as a standalone service. Note that automatic SAIA address 
+        The background manager try to be as reactive and idle as possible, keeping ressources for your application. Performance is really good, even with a lot of servers and/or items declared. 
+        We tried to trap most of the possible errors, allowing using this module to be used as a standalone service. Note that automatic SAIA address 
         resolution is implemented, so that only remote IP address is required to register a remote node. If known, the SAIA station address *can* be
         given during registration (this will avoid the initial address resolution requests to get the server address).
         
@@ -366,14 +367,18 @@ Description: ===================
             82 (0x52)
             >>> server.isRunning()
             True
+            >>> server.isStopped()
+            False
+            >>> server.isHalted()
+            False
         
         If your remote servers are stopped, this can be annoying ;) You can start them with the .run() method without 
         using the PG5 or the Debugger programs (assuming that *you* know what your are doing) 
         
         .. code-block:: python
         
-            >>> server.run()
-            >>> servers.run()
+            >>> server.run()    # .stop() and .restart() are also available -- be careful
+            >>> servers.run()   # .stop() and .restart() are also available -- be careful
         
         
         Data Transfers with Remote Servers
@@ -654,14 +659,15 @@ Description: ===================
             True
             >>> server.flags[10].isAlive()
             True
+            >>> node.servers.isAlive()
+            True # every server is alive
             >>> onlineServers=node.servers.alive()
             >>> offlineServer=node.servers.dead()
             >>> onlineFlags=server.flags.alive()
             >>> offlineRegisters=server.registers.dead()
         
-        An item is considered as alive if the item.age() is less than 1.5 times it's refresh delay (=90s by default).
-        
-        For debugging purposes, you can simulate a remote node by registering a remote pointing on yourself (woo!)
+        An item is considered as alive if the item.age() is less than 1.5 times it's refresh delay (=90s by default). And now, a bit of brain manipulation. i
+        For debugging purposes, you can simulate a remote node by registering a remote server pointing on yourself (woo!)
         
         .. code-block:: python
         
@@ -675,12 +681,13 @@ Description: ===================
             >>> remoteFlag.value=1
         
             # network data synchronisation is done by the background manager task
+            # so,  remoteFlag and localFlag are two different registers but mirrored
         
             >>> localFlag.value
             True
         
-        In this example, localFlag and remoteFlag points to the same data, but the remoteFlag is a networked synchonized 
-        mirror representation of the localFlag.
+        In this example, localFlag and remoteFlag points to the same "value", but the remoteFlag is a networked synchronized 
+        mirror representation of the localFlag. Don't know if this feature could be useful yet, but this is fun.
         
         SAIA* objects *.__repr__* magic method are redefined to provide some useful information about the current state of the object.
         This can be useful to gather some informations about your data

@@ -158,10 +158,11 @@ class SAIAItem(object):
             return time.time()-self._stamp
 
     def isAlive(self, maxAge=None):
-        if maxAge is None:
-            maxAge=self.getRefreshDelay()*1.5
-        if self.age()<=maxAge:
-            return True
+        if self.server.isAlive():
+            if maxAge is None:
+                maxAge=self.getRefreshDelay()*1.5
+            if self.age()<=maxAge:
+                return True
 
     def pull(self):
         return False
@@ -462,10 +463,12 @@ class SAIAItems(object):
         return self._items
 
     def alive(self, maxAge=None):
-        return [item for item in self.all() if item.isAlive(maxAge)]
+        with self._lock:
+            return [item for item in self.all() if item.isAlive(maxAge)]
 
     def dead(self, maxAge=None):
-        return [item for item in self.all() if not item.isAlive(maxAge)]
+        with self._lock:
+            return [item for item in self.all() if not item.isAlive(maxAge)]
 
     def __iter__(self):
         return iter(self.all())

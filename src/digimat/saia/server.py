@@ -12,6 +12,8 @@ from threading import RLock
 from .request import SAIARequest
 from .request import SAIARequestReadStationNumber
 from .request import SAIARequestRunCpuAll
+from .request import SAIARequestStopCpuAll
+from .request import SAIARequestRestartCpuAll
 from .request import SAIARequestReadPcdStatusOwn
 
 from .transfer import SAIATransferQueue
@@ -198,9 +200,12 @@ class SAIALink(object):
         except:
             self.logger.exception('decodeMessage')
 
-    def onMessage(self, mtype, mseq, payload):
+    def resetWatchdog(self):
+        self._alive=True
+        self._timeoutWatchdog=time.time()+20.0
+
+    defonMessage(self, mtype, mseq, payload):
         try:
-            self._timeoutWatchdog=time.time()+20.0
             if mtype==0:    # Request
                 # must be intercepted at higher level
                 pass
@@ -209,7 +214,7 @@ class SAIALink(object):
                 if self.isWaitingResponse():
                     if self._request.validateMessage(mseq, payload):
                         try:
-                            self._alive=True
+                            self.resetWatchdog()
                             if self.isDebug():
                                 self.logger.debug('%s-->%s:processResponse(%d bytes)' % (self.server.host, self._request, len(payload)))
                             result=self._request.processResponse(payload)
@@ -224,7 +229,7 @@ class SAIALink(object):
                             # (code,)=struct.unpack('>B', payload[0])
                             code=struct.unpack('%dB' % len(payload), payload)[0]
                             if code==0:
-                                self._alive=True
+                                self.resetWatchdog()
                                 if self.isDebug():
                                     self.logger.debug('%s-->ACK(mseq=%d)' % (self.server.host, mseq))
                                 self.reset(True)
@@ -312,6 +317,14 @@ class SAIAServer(object):
 
     def isRunning(self):
         if self.status==0x52:
+            return True
+
+    def isStopped(self):
+        if self.status==0x53:
+            return True
+
+    def isHalted(self):
+        if self.status==0x48:
             return True
 
     @property
@@ -518,6 +531,14 @@ class SAIAServer(object):
         transfer=SAIATransferFromRequest(SAIARequestRunCpuAll(self.link))
         return self.submitTransfer(transfer)
 
+    def stop(self):
+        transfer=SAIATransferFromRequest(SAIARequestStopCpuAll(self.link))
+        return self.submitTransfer(transfer)
+
+    def restart(self):
+        transfer=SAIATransferFromRequest(SAIARequestRestartCpuAll(self.link))
+        return self.submitTransfer(transfer)
+
     def refreshStatus(self):
         self._timeoutStatus=time.time()+5.0
         transfer=SAIATransferFromRequest(SAIARequestReadPcdStatusOwn(self.link))
@@ -530,8 +551,8 @@ class SAIAServer(object):
     def __repr__(self):
         count=self._transfers.count()
         if count:
-            return '<%s(host=%s, lid=%d, status=0x%02X, %d pending xfers)>' % (self.__class__.__name__, self.host, self.lid, self.status, count)
-        return '<%s(host=%s, lid=%d, status=0x%02X)>' % (self.__class__.__name__, self.host, self.lid, self.status)
+            return '<%s(host=%s, lid=%d, status=0x%02X, alive=%d, %d pending xfers)>' % (self.__class__.__name__, self.host, self.lid, self.status, self.isAlive(), count)
+        return '<%s(host=%s, lid=%d, alive=%d, status=0x%02X)>' % (self.__class__.__name__, self.host, self.lid, self.isAlive(), self.status)
 
 
 class SAIAServers(object):
@@ -649,6 +670,14 @@ class SAIAServers(object):
     def run(self):
         for server in self._servers:
             server.run()
+
+    def stop(self):
+        for server in self._servers:
+            server.stop()
+
+    def restart(self):
+        for server in self._servers:
+            server.restart()
 
     def dump(self):
         for server in self._servers:

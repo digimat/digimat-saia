@@ -108,6 +108,8 @@ class SAIARequest(object):
     COMMAND_RESTART_COLD_FLAG = 0xa6
 
     COMMAND_RUN_CPU_ALL = 0x30
+    COMMAND_STOP_CPU_ALL = 0x44
+    COMMAND_RESTART_CPU_ALL = 0x6b
     COMMAND_READ_DBX = 0x9f
 
     COMMAND_READ_PCD_STATUS_OWN = 0x1b
@@ -338,6 +340,24 @@ class SAIARequestReadPcdStatusOwn(SAIARequest):
 class SAIARequestRunCpuAll(SAIARequest):
     def onInit(self):
         self._command=SAIARequest.COMMAND_RUN_CPU_ALL
+        self.ready()
+
+    def encode(self):
+        return None
+
+
+class SAIARequestStopCpuAll(SAIARequest):
+    def onInit(self):
+        self._command=SAIARequest.COMMAND_STOP_CPU_ALL
+        self.ready()
+
+    def encode(self):
+        return None
+
+
+class SAIARequestRestartCpuAll(SAIARequest):
+    def onInit(self):
+        self._command=SAIARequest.COMMAND_RESTART_CPU_ALL
         self.ready()
 
     def encode(self):

@@ -200,6 +200,8 @@ hexbininvert = {
 # Create a new dictionary by inverting hexbininvert.
 #
 def MakeBinHex():
-    return dict([(j, i) for i, j in hexbininvert.iteritems()])
+    return dict([(j, i) for i, j in hexbininvert.items()])
+    # return dict([(j, i) for i, j in hexbininvert.iteritems()])
+
 
 binhexinvert = MakeBinHex()

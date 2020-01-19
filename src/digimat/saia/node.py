@@ -8,9 +8,10 @@ import os
 import sys
 import netifaces
 
+import pkg_resources
+
 import logging
 import logging.handlers
-
 from digimat.jobs import JobManager
 
 from .singleton import Singleton
@@ -463,9 +464,10 @@ class SAIANode(object):
         if not SAIASBusCRCTableCheck():
             self.logger.error('SAIA CRC table consistency failure!')
 
-        self.logger.info('*** Thanks for using the digimat.saia module !')
-        self.logger.info('*** https://pypi.org/project/digimat.saia/')
-        self.logger.info('*** https://www.digimat.ch')
+        self.logger.info('*** Thanks for using the digimat.saia module v%s !' % self.version())
+        self.logger.debug('*** https://pypi.org/project/digimat.saia/')
+        self.logger.debug('*** https://github.com/digimat/digimat-saia')
+        self.logger.debug('*** https://www.digimat.ch')
 
         if autostart:
             self.start()
@@ -479,6 +481,9 @@ class SAIANode(object):
     def isDebug(self):
         if self._debug:
             return True
+
+    def version(self):
+        return pkg_resources.get_distribution('digimat.saia')
 
     @property
     def logger(self):
@@ -663,7 +668,6 @@ class SAIANode(object):
             s=self.open()
             (data, address)=s.recvfrom(4096)
             if data:
-                # TODO: data is str in Python2 (OK), but bytes in Python3 (BAD). Use data.decode('utf-8')???
                 host=address[0]
                 port=address[1]
                 (mtype, mseq, payload)=self.decodeMessage(data)
@@ -761,7 +765,7 @@ class SAIANode(object):
         except:
             pass
 
-    def sleep(self, delay):
+    def sleep(self, delay=1.0):
         try:
             self._jobSAIA.sleep(delay)
         except:
