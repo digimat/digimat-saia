@@ -204,7 +204,7 @@ class SAIALink(object):
         self._alive=True
         self._timeoutWatchdog=time.time()+20.0
 
-    defonMessage(self, mtype, mseq, payload):
+    def onMessage(self, mtype, mseq, payload):
         try:
             if mtype==0:    # Request
                 # must be intercepted at higher level

@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: digimat.saia
-Version: 0.1.34
+Version: 0.1.35
 Summary: SAIA Burgess PCD EtherSBus Client+Server communication module
 Home-page: https://github.com/digimat/digimat-saia
 Author: Frederic Hess
