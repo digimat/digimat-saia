@@ -278,7 +278,17 @@ Now the best part. The node object allow access to (as many) remote EtherSBus no
     >>> server2=node.servers.declare('192.168.0.101')
     >>> myRemoteFlag=server1.memory.flags[5]
 
-The declaration process provide a **SAIAServer** object, containing a **SAIAMemory** object to access remote items. Thus, **local and remote data can be manipulated 
+The declaration process provide a **SAIAServer** object, containing a **SAIAMemory** object to access remote items. You don't have to store your servers
+into variables. You can always retrieve later your servers from the ip or the address (lid)
+
+.. code-block:: python
+
+    >>> pcd=node.servers['192.168.0.100']   # access by ip
+    >>> pcd=node.servers[50]                # acess by address (lid)
+
+In any case, redeclaring a server that was already declared don't create a double. The existing server, if found, is returned. Same concept with items (flags, registers, ...).
+
+Thus, **local and remote data can be manipulated 
 in the same manner**. When a remote data item (input, output, flag, register, timer or counter) is declared, an **automatic pooling mecanism** is launched in 
 the background task (manager). An **optimiser mecanism try to group many items per request**, avoiding to launch 1 request for 1 item refresh.
 

@@ -72,6 +72,14 @@ class SAIALink(object):
     def setXmitInhibitDelay(self, delay):
         self._delayXmitInhibit=delay
 
+    def checkAlive(self):
+        if self.isAlive() and time.time()>=self._timeoutWatchdog:
+            self._alive=False
+            # The status isn't reliable anymore
+            self.server.setStatus(0)
+            if not self.server.isLocalNodeMode():
+                self.logger.error('%s:link dead!' % self.server)
+
     def reset(self, success=False):
         try:
             self._request.stop(success)
@@ -79,22 +87,27 @@ class SAIALink(object):
             pass
         self._request=None
         self.setState(SAIALink.COMMSTATE_IDLE)
+        self.checkAlive()
 
     def isAlive(self):
         if self._alive:
             return True
+        return False
 
     def isIdle(self):
         if self._state==SAIALink.COMMSTATE_IDLE:
             return True
+        return False
 
     def isWaitingResponse(self):
         if self._state==SAIALink.COMMSTATE_WAITRESPONSE:
             return True
+        return False
 
     def isTimeout(self):
         if time.time()>=self._timeout:
             return True
+        return False
 
     def age(self):
         return time.time()-self._timeout
@@ -108,10 +121,7 @@ class SAIALink(object):
     def manager(self):
         try:
             if self._state==SAIALink.COMMSTATE_IDLE:
-                if self.isAlive() and time.time()>=self._timeoutWatchdog:
-                    self._alive=False
-                    if not self.server.isLocalNodeMode():
-                        self.logger.error('%s:link dead!' % self.server)
+                self.checkAlive()
                 return
 
             elif self._state==SAIALink.COMMSTATE_PENDINGREQUEST:
@@ -281,6 +291,7 @@ class SAIAServer(object):
                 return True
         except:
             pass
+        return False
 
     @property
     def lid(self):
@@ -318,14 +329,17 @@ class SAIAServer(object):
     def isRunning(self):
         if self.status==0x52:
             return True
+        return False
 
     def isStopped(self):
         if self.status==0x53:
             return True
+        return False
 
     def isHalted(self):
         if self.status==0x48:
             return True
+        return False
 
     @property
     def symbols(self):
@@ -521,6 +535,9 @@ class SAIAServer(object):
     def submitTransferDiscoverNodes(self):
         return self.submitTransfer(SAIATransferDiscoverNodes(self))
 
+    def discover(self):
+        self.submitTransferDiscoverNodes()
+
     def dump(self):
         self.memory.dump()
 
@@ -605,11 +622,13 @@ class SAIAServers(object):
     def isAlive(self):
         if not self.dead():
             return True
+        return False
 
     def isPendingPushRequest(self):
         for server in self.all():
             if server.isPendingPushRequest():
                 return True
+        return False
 
     def __iter__(self):
         return iter(self.all())

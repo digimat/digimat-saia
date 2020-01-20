@@ -83,6 +83,7 @@ class SAIAReply(object):
     def isReady(self):
         if self._ready:
             return True
+        return False
 
     def build(self):
         try:

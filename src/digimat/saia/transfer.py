@@ -52,10 +52,12 @@ class SAIATransfer(object):
     def isActive(self):
         if self._start:
             return True
+        return False
 
     def isDone(self):
         if self._done:
             return True
+        return False
 
     def heartbeat(self):
         self._timeoutWatchdog=time.time()+15.0

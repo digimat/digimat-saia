@@ -85,6 +85,7 @@ class SAIAItem(object):
     def isReadOnly(self):
         if self._readOnly or self.parent.isReadOnly():
             return True
+        return False
 
     def signalPush(self, value):
         if self.parent.isLocalNodeMode():
@@ -99,6 +100,7 @@ class SAIAItem(object):
     def isPendingPushRequest(self):
         if self._eventPush.isSet():
             return True
+        return False
 
     def clearPush(self):
         self._eventPush.clear()
@@ -116,6 +118,7 @@ class SAIAItem(object):
     def isPendingPullRequest(self):
         if self._eventPull.isSet():
             return True
+        return False
 
     def setValue(self, value, force=False):
         # we must be able to setValue from a readItemResponse
@@ -163,6 +166,7 @@ class SAIAItem(object):
                 maxAge=self.getRefreshDelay()*1.5
             if self.age()<=maxAge:
                 return True
+        return False
 
     def pull(self):
         return False
@@ -422,6 +426,7 @@ class SAIAItems(object):
     def isReadOnly(self):
         if self._readOnly or self.memory.isReadOnly():
             return True
+        return False
 
     def setRefreshDelay(self, delay):
         self._delayRefresh=delay
@@ -458,6 +463,7 @@ class SAIAItems(object):
     def isIndexValid(self, index):
         if self.validateIndex(index) is not None:
             return True
+        return False
 
     def all(self):
         return self._items
@@ -486,6 +492,7 @@ class SAIAItems(object):
     def isItemDeclared(self, index):
         if self.item(index):
             return True
+        return False
 
     def __getitem__(self, index):
         item=self.item(index)

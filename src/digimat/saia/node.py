@@ -481,6 +481,7 @@ class SAIANode(object):
     def isDebug(self):
         if self._debug:
             return True
+        return False
 
     def version(self):
         return pkg_resources.get_distribution('digimat.saia')
@@ -550,6 +551,7 @@ class SAIANode(object):
                 return True
         except:
             pass
+        return False
 
     # TODO: don't works anymore in Python3?
     def isInteractiveMode(self):
@@ -764,6 +766,7 @@ class SAIANode(object):
             return self._jobSAIA.isRunning()
         except:
             pass
+        return False
 
     def sleep(self, delay=1.0):
         try:

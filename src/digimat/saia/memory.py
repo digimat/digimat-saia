@@ -154,6 +154,7 @@ class SAIAItemTimer(SAIAAnalogItem):
     def isTimeout(self):
         if self.value<=0:
             return True
+        return False
 
 
 class SAIAItemCounter(SAIAAnalogItem):
@@ -381,6 +382,7 @@ class SAIAMemory(object):
     def isReadOnly(self):
         if self._readOnly:
             return True
+        return False
 
     def enableOnTheFlyItemCreation(self, state=True):
         self._enableOnTheFlyItemCreation=state
@@ -391,6 +393,7 @@ class SAIAMemory(object):
     def isOnTheFlyItemCreationEnabled(self):
         if self._enableOnTheFlyItemCreation:
             return True
+        return False
 
     def all(self):
         return (self._inputs, self._outputs, self._flags, self._registers, self._timers, self._counters)
@@ -487,6 +490,7 @@ class SAIAMemory(object):
     def isPendingPushRequest(self):
         if not self._queuePendingPush.empty():
             return True
+        return False
 
     def __repr__(self):
         return '<%s(%d items, queues %dR:%dR!:%dW)>' % (self.__class__.__name__,

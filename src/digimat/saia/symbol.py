@@ -50,18 +50,22 @@ class SAIASymbol(object):
     def isFlag(self):
         if self.attribute==SAIASymbol.ATTRIBUTE_FLAG:
             return True
+        return False
 
     def isRegister(self):
         if self.attribute==SAIASymbol.ATTRIBUTE_REGISTER:
             return True
+        return False
 
     def isTimer(self):
         if self.attribute==SAIASymbol.ATTRIBUTE_TIMER:
             return True
+        return False
 
     def isCounter(self):
         if self.attribute==SAIASymbol.ATTRIBUTE_COUNTER:
             return True
+        return False
 
     def load(self, data):
         try:
@@ -83,6 +87,7 @@ class SAIASymbol(object):
             else:
                 if self._value is not None:
                     return True
+        return False
 
     def __repr__(self):
         if self.attribute:

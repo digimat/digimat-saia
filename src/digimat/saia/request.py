@@ -217,18 +217,22 @@ class SAIARequest(object):
     def isReady(self):
         if self._ready:
             return True
+        return False
 
     def isActive(self):
         if self._start and not self.isDone():
             return True
+        return False
 
     def isDone(self):
         if self._done:
             return True
+        return False
 
     def isSuccess(self):
         if self.isDone() and self._result:
             return True
+        return False
 
     def build(self):
         try:
