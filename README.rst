@@ -284,7 +284,7 @@ into variables. You can always retrieve later your servers from the ip or the ad
 .. code-block:: python
 
     >>> pcd=node.servers['192.168.0.100']   # access by ip
-    >>> pcd=node.servers[50]                # acess by address (lid)
+    >>> pcd=node.servers[50]                # access by address (lid)
 
 In any case, redeclaring a server that was already declared don't create a double. The existing server, if found, is returned. Same concept with items (flags, registers, ...).
 

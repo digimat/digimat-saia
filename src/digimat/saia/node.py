@@ -726,11 +726,11 @@ class SAIANode(object):
         # during data burst, and more sleepy when idle
         try:
             if activity:
-                self._activityCounter=8
+                self._activityCounter=32
 
             if self._activityCounter>0:
                 # bypass default job manager sleep (0.1)
-                self.sleep(0.01)
+                self.sleep(0.001)
                 self._activityCounter-=1
                 return True
         except:
