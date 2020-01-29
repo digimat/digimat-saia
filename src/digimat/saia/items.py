@@ -26,7 +26,7 @@ class SAIAItem(object):
         self._eventPull=Event()
         self._eventValue=Event()
         self.onInit()
-        self.logger.debug('creating %s' % (self))
+        self.logger.debug('%s->creating %s' % (self.server.host, self))
 
     @property
     def parent(self):
@@ -209,11 +209,11 @@ class SAIAItem(object):
     def __repr__(self):
         tag=self.tag
         if tag:
-            return '<%s(index=%d, tag=%s, value=%s, age=%ds, refresh=%ds)>' % (self.__class__.__name__,
-                self.index, tag, self.strValue(), self.age(), self.getRefreshDelay())
+            return '<%s(index=%d, tag=%s, value=%s, age=%ds, refresh=%.01fs, alive=%d)>' % (self.__class__.__name__,
+                self.index, tag, self.strValue(), self.age(), self.getRefreshDelay(), self.isAlive())
         else:
-            return '<%s(index=%d, value=%s, age=%ds, refresh=%ds)>' % (self.__class__.__name__,
-                self.index, self.strValue(), self.age(), self.getRefreshDelay())
+            return '<%s(index=%d, value=%s, age=%ds, refresh=%.01fs, alive=%d)>' % (self.__class__.__name__,
+                self.index, self.strValue(), self.age(), self.getRefreshDelay(), self.isAlive())
 
     @property
     def formatedvalue(self):
@@ -530,6 +530,10 @@ class SAIAItems(object):
                 items.append(item)
             return items
 
+    def declareFromTo(self, indexFrom, indexTo, value=0):
+        count=abs(indexTo-indexFrom)+1
+        return self.declareRange(indexFrom, count, value)
+
     def searchSymbolsWithTag(self, key):
         return
 
@@ -600,7 +604,7 @@ class SAIAItems(object):
                 item.clear()
 
     def __repr__(self):
-        return '<%s(%d items, max=%d, readOnly=%d, current=%d, refresh=%ds)>' % (self.__class__.__name__,
+        return '<%s(%d items, max=%d, readOnly=%d, current=%d, refresh=%.01fs)>' % (self.__class__.__name__,
                     self.count(),
                     self._maxsize,
                     bool(self._readOnly),

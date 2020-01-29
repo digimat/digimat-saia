@@ -456,7 +456,7 @@ class SAIAMemory(object):
         except:
             self.logger.exception('items:manager')
 
-        if self.server.link.isIdle():
+        if self.server.isAlive() and self.server.link.isIdle():
             item=self.getNextPendingPush()
             if item:
                 if item.push():

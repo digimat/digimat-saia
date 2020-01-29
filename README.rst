@@ -13,7 +13,7 @@ we mean inputs, outputs, flags, registers, timers and counters. In the exemple b
 
 Congratulations ! You just have powered up your first EtherSNode device with 2 lines of code. A **background task handle now for you all the network SBus frames**. 
 Open your SAIA PG5 Debugger and try to read/write some data **to** your node. Of course, you can also talk to other SAIA PCD EtherSBus devices directly 
-from your node trough le LAN (remote servers). This will come later (see "EtherSBus Client" chapter below). To give you an idea on how to use this module, you will find a basic `Python interactive session demo here <https://asciinema.org/a/0q7jfTE6Ooj7RPpVBL6bWfIj2>`_. 
+from your node trough le LAN (read/write flags, registers, ... on remote PCDs). This will be explained below (see "EtherSBus Client" chapter). To give you an idea on how to use this module, you will find a basic `Python interactive session demo here <https://asciinema.org/a/0q7jfTE6Ooj7RPpVBL6bWfIj2>`_. 
 
 .. image:: https://st-sa.ch/img/figures/digimat-saia-asciinema.png
    :width: 360px
@@ -594,6 +594,7 @@ The *searched argument* may also be a compiled regex
 If for any reason you want to *pause* one remote server communications, you can use the server.pause(60) call (seconds). This is for example
 internally used to stop server communications when a station address conflict (duplicate address) is detected.
 
+
 Dumping & Debugging
 ===================
 
@@ -645,6 +646,15 @@ a bit like mysql does.
     |  6010 | ep16.s2.zone98.t1.tm_me |   238 | 3.1s |
     +-------+-------------------------+-------+------+
 
+There is a little secret trick implemented in the SAIAServers object allowing you to be more efficient in interactive mode, simplifying 
+the access to flags, registers and other items. Don't use this on your non interactive scripts.
+
+.. code-block:: python
+
+    >>> pcd=node.servers['192.168.0.100']
+    >>> register=pcd.r50 # equivalent to pcd.registers[50] or pcd.registers.declare(50)
+    >>> flag=pcd.f1000 # equivalent to pcd.flags[1000] or pcd.flags.declare(1000)
+
 If you want to ping yours servers (your remote nodes), you can use the builtin server's ping command which force sending an immediate read-status request to the remote device, then wait for
 the response and return True if someting was received. Remeber that you can log the communication traffic by enabling the debug mode on your node (with node.debug())
 
@@ -668,7 +678,7 @@ There are some useful helpers to check for dead servers or items
     >>> onlineFlags=server.flags.alive()
     >>> offlineRegisters=server.registers.dead()
 
-An item is considered as alive if the item.age() is less than 1.5 times it's refresh delay (=90s by default). And now, a bit of brain manipulation. i
+An item is considered as alive if it's server is alive and if the item.age() is less than 1.5 times it's refresh delay (=90s by default). And now, a bit of brain manipulation. 
 For debugging purposes, you can simulate a remote node by registering a remote server pointing on yourself (woo!)
 
 .. code-block:: python
@@ -683,7 +693,7 @@ For debugging purposes, you can simulate a remote node by registering a remote s
     >>> remoteFlag.value=1
 
     # network data synchronisation is done by the background manager task
-    # so,  remoteFlag and localFlag are two different registers but mirrored
+    # so, remoteFlag and localFlag are two different registers but mirrored
 
     >>> localFlag.value
     True

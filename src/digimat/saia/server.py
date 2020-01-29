@@ -46,6 +46,7 @@ class SAIALink(object):
         self._alive=False
         self._retry=0
         self._msgseq=0
+        self._msgcount=0
         self.reset()
 
     @property
@@ -139,11 +140,12 @@ class SAIALink(object):
                         self.logger.debug('%s<--%s' % (host, self._request))
 
                     if self.server.node.sendMessageToHost(data, host, port=port):
+                        self._msgcount+=1
                         self._timeoutXmitInhibit=time.time()+self._delayXmitInhibit
                         if self._request._broadcast:
                             self.setState(SAIALink.COMMSTATE_SUCCESS)
                         else:
-                            self.setState(SAIALink.COMMSTATE_WAITRESPONSE, 1.0)
+                            self.setState(SAIALink.COMMSTATE_WAITRESPONSE, 3.0)
                         return
                     else:
                         self.setState(SAIALink.COMMSTATE_ERROR)
@@ -255,7 +257,7 @@ class SAIALink(object):
             self.logger.exception('onMessage')
 
     def __repr__(self):
-        return '<%s(state=%d, alive=%d, mseq=%d)' % (self.__class__.__name__, self._state, bool(self.isAlive()), self._msgseq)
+        return '<%s(state=%d, alive=%d, mseq=%d, mcount=%d)' % (self.__class__.__name__, self._state, bool(self.isAlive()), self._msgseq, self._msgcount)
 
 
 class SAIAServer(object):
@@ -408,6 +410,28 @@ class SAIAServer(object):
     def counters(self):
         return self.memory.counters
 
+    # secret helper allowing things like register=server.r8 to access registers[8]
+    def __getattr__(self, name):
+        try:
+            itemtype=name[0].lower()
+            index=int(name[1:])
+            item=None
+            if index>=0:
+                if itemtype=='r':
+                    item=self.registers.declare(index)
+                elif itemtype=='f':
+                    item=self.flags.declare(index)
+                elif itemtype=='t':
+                    item=self.timers.declare(index)
+                elif itemtype=='c':
+                    item=self.counters.declare(index)
+
+            if item:
+                return item
+        except:
+            pass
+        raise AttributeError("'{}' object has no attribute '{}'".format(type(self).__name__, name))
+
     def setReadOnly(self, state=True):
         self.memory.setReadOnly(state)
 
@@ -437,7 +461,7 @@ class SAIAServer(object):
                     if self._symbols.count()>0:
                         self.logger.info('%d symbols loaded from file [%s/%s] for server %s' % (self._symbols.count(), path, mapfile, self))
                     else:
-                        self.logger.error('Unable to load symbols from file [%s/%s] for server %s' % (path, mapfile, self))
+                        self.logger.warning('Unable to load symbols from file [%s/%s] for server %s' % (path, mapfile, self))
 
                     if self.node.isInteractiveMode():
                         self.logger.info('Interactive mode : dynamic mount symbols on server.symbols object')
