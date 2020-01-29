@@ -146,7 +146,7 @@ class SAIALink(object):
                             self.setState(SAIALink.COMMSTATE_SUCCESS)
                         else:
                             self.setState(SAIALink.COMMSTATE_WAITRESPONSE, 3.0)
-                        return
+                        return True
                     else:
                         self.setState(SAIALink.COMMSTATE_ERROR)
                         self.server.pause(15.0)
@@ -158,7 +158,7 @@ class SAIALink(object):
                 if self.isTimeout():
                     self.logger.error('%s-->%s:timeout!' % (self.server.host, self._request.__class__.__name__))
                     self.setState(SAIALink.COMMSTATE_PENDINGREQUEST)
-                return
+                return True
 
             elif self._state==SAIALink.COMMSTATE_ERROR:
                 if self.isElapsed(3.0):
@@ -168,7 +168,7 @@ class SAIALink(object):
 
             elif self._state==SAIALink.COMMSTATE_SUCCESS:
                 self.reset(True)
-                return
+                return True
 
             else:
                 self.logger.error('link:unkown state %d' % self._state)
