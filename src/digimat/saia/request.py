@@ -413,9 +413,9 @@ class SAIARequestReadDBX(SAIARequest):
 
 
 class SAIARequestReadItems(SAIARequest):
-    def setup(self, item, maxcount=1):
+    def setup(self, item, maxcount=1, holes=False):
         self._item=item
-        self._count=self.optimizePullCount(maxcount)
+        self._count=self.optimizePullCount(maxcount, holes)
         self.ready()
 
     @property
@@ -425,22 +425,30 @@ class SAIARequestReadItems(SAIARequest):
     def items(self):
         return self.item.parent
 
-    def optimizePullCount(self, maxcount):
+    def optimizePullCount(self, maxcount, holes=False):
         """
-        Try to increase item read count
-        Only consecutive items are taken in account (no hole allowed)
+        Try to increase item read/write count to minimize number of messages
+        By default, only consecutive items are taken in account (no hole allowed)
+        Warning : holes can produce unwanted errors since this allows reading of
+        potentially unexisting items (don't know if this is problematic)
         """
 
         try:
-            count=1
             item=self.item
-            while count<maxcount:
-                item=item.next()
-                # if not item or not item.isPendingPullRequest():
-                # better try to systematically read multiples items
-                if not item:
-                    break
-                count+=1
+
+            if holes:
+                while maxcount>0:
+                    if item.next(maxcount-1):
+                        count=maxcount
+                        break
+                    maxcount-=1
+            else:
+                count=1
+                while count<maxcount:
+                    item=item.next()
+                    if item is None:
+                        break
+                    count+=1
 
             return count
         except:

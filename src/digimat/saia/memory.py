@@ -45,7 +45,7 @@ class SAIAItemFlag(SAIABooleanItem):
 
     def pull(self):
         request=SAIARequestReadFlags(self.server.link)
-        request.setup(self, maxcount=96)
+        request.setup(self, maxcount=96, holes=True)
         return request.initiate()
 
     def push(self):
@@ -68,7 +68,7 @@ class SAIAItemInput(SAIABooleanItem):
 
     def pull(self):
         request=SAIARequestReadInputs(self.server.link)
-        request.setup(self, maxcount=96)
+        request.setup(self, maxcount=96, holes=True)
         return request.initiate()
 
 
@@ -78,7 +78,7 @@ class SAIAItemOutput(SAIABooleanItem):
 
     def pull(self):
         request=SAIARequestReadOutputs(self.server.link)
-        request.setup(self, maxcount=96)
+        request.setup(self, maxcount=96, holes=True)
         return request.initiate()
 
     def push(self):
@@ -93,7 +93,7 @@ class SAIAItemRegister(SAIAAnalogItem):
 
     def pull(self):
         request=SAIARequestReadRegisters(self.server.link)
-        request.setup(self, maxcount=32)
+        request.setup(self, maxcount=32, holes=True)
         return request.initiate()
 
     def push(self):
@@ -117,7 +117,7 @@ class SAIAItemTimer(SAIAAnalogItem):
 
     def pull(self):
         request=SAIARequestReadTimers(self.server.link)
-        request.setup(self, maxcount=32)
+        request.setup(self, maxcount=32, holes=True)
         return request.initiate()
 
     def push(self):
@@ -163,7 +163,7 @@ class SAIAItemCounter(SAIAAnalogItem):
 
     def pull(self):
         request=SAIARequestReadCounters(self.server.link)
-        request.setup(self, maxcount=32)
+        request.setup(self, maxcount=32, holes=True)
         return request.initiate()
 
     def push(self):

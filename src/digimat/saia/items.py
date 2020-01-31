@@ -122,7 +122,7 @@ class SAIAItem(object):
 
     def setValue(self, value, force=False):
         # we must be able to setValue from a readItemResponse
-        if value is not None and force or not self.isReadOnly():
+        if value is not None and (force or not self.isReadOnly()):
             value=self.validateValue(value)
             with self._parent._lock:
                 self._stamp=time.time()
@@ -163,7 +163,7 @@ class SAIAItem(object):
     def isAlive(self, maxAge=None):
         if self.server.isAlive():
             if maxAge is None:
-                maxAge=self.getRefreshDelay()*1.5
+                maxAge=max(self.getRefreshDelay()*1.5, 15.0)
             if self.age()<=maxAge:
                 return True
         return False
@@ -515,7 +515,7 @@ class SAIAItems(object):
                 return item
 
             item=self._itemType(self, index, value)
-            item.setReadOnly(self._readOnly)
+            # item.setReadOnly(self._readOnly)
             with self._lock:
                 self._items.append(item)
                 self._indexItem[index]=item

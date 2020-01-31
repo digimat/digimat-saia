@@ -504,6 +504,17 @@ in all SAIAItem objects index access, so that syntaxes like this are perfectly w
     >>> flag.index
     4634
 
+The SAIASymbols class may be used to retrieve any *existing item in a .map file*, allowing to declare easily 
+any existing flag or registers in a given address range. The trick is to pass a range or an array of addresses (indexes) to
+the symbols.register retrieve method. This will return an array of registers instead of a simple register. This returns
+only items that are declared in the .map file.
+
+.. code-block:: python
+
+    >>> for symbol in server.symbols.register(range(1000, 2000)):
+    >>>    server.registers.declare(symbol.address)
+
+
 Use it carefully. For ease of use, symbolic access is implemented *case insensitive*. In interactive mode,
 you can try to **mount** flags and registers symbols (SAIASymbol) as SAIASymbols object variables
 so that the **interpreter autocompletion** will save you some precious keystroke

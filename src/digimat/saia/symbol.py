@@ -196,7 +196,7 @@ class SAIASymbols(object):
         self._stamp=None
 
     def unload(self):
-        """release loaded symbolsi (freeing allocated memory)"""
+        """release loaded symbols (freeing allocated memory)"""
         self._symbols={}
         self._index={}
         self._flags=SAIATagMountFlags(self)
@@ -364,6 +364,20 @@ class SAIASymbols(object):
             pass
 
     def getWithAttribute(self, attribute, key):
+        try:
+            # if key is iterable (a range, an array) return an array
+            if not isinstance(key, str):
+                keys=iter(key)
+
+                symbols=[]
+                for key in keys:
+                    symbol=self.getWithAttribute(attribute, key)
+                    if symbol:
+                        symbols.append(symbol)
+                return symbols
+        except:
+            pass
+
         symbol=self.get(key)
         if not symbol:
             with self._lock:

@@ -238,6 +238,9 @@ class SAIALink(object):
                 if self.isWaitingResponse():
                     if self._request.validateMessage(mseq):
                         try:
+                            # TODO: reading an unknown register (i.e. 40000) returns an ACK??? instead of a NAK or a RESPONSE
+                            # TODO: there should by an error signification in the payload
+
                             # (code,)=struct.unpack('>B', payload[0])
                             code=struct.unpack('%dB' % len(payload), payload)[0]
                             if code==0:
