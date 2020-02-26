@@ -20,11 +20,13 @@ class SAIAItem(object):
         self._value=self.validateValue(value)
         self._pushValue=None
         self._stamp=0
+        self._inhibitTimeout=0
         self._readOnly=readOnly
         self._delayRefresh=delayRefresh
         self._eventPush=Event()
         self._eventPull=Event()
         self._eventValue=Event()
+        self._eventRaised=Event()
         self.onInit()
         self.logger.debug('%s->creating %s' % (self.server.host, self))
 
@@ -126,6 +128,8 @@ class SAIAItem(object):
             value=self.validateValue(value)
             with self._parent._lock:
                 self._stamp=time.time()
+                if not self._value and value:
+                    self._eventRaised.set()
                 self._value=value
             self._eventValue.set()
 
@@ -144,6 +148,12 @@ class SAIAItem(object):
             with self._parent._lock:
                 if self._value!=value:
                     self.signalPush(value)
+
+    def isRaised(self):
+        raised=self._eventRaised.isSet()
+        if raised:
+            self._eventRaised.clear()
+        return raised
 
     @property
     def bool(self):
@@ -175,8 +185,16 @@ class SAIAItem(object):
         return False
 
     def manager(self):
-        if self.age()>self.getRefreshDelay():
-            self.signalPull()
+        age=self.age()
+        if age>self.getRefreshDelay():
+            if age<180:
+                self.signalPull()
+            else:
+                # special case for non responsive items, avoiding
+                # permanent retries
+                if time.time()>=self._inhibitTimeout:
+                    self.signalPull()
+                    self._inhibitTimeout=time.time()+10.0
 
     def refresh(self, urgent=False):
         self.signalPull(urgent)
@@ -208,12 +226,13 @@ class SAIAItem(object):
 
     def __repr__(self):
         tag=self.tag
+        raised=self._eventRaised.isSet()
         if tag:
-            return '<%s(index=%d, tag=%s, value=%s, age=%ds, refresh=%.01fs, alive=%d)>' % (self.__class__.__name__,
-                self.index, tag, self.strValue(), self.age(), self.getRefreshDelay(), self.isAlive())
+            return '<%s(index=%d, tag=%s, value=%s, age=%ds, refresh=%.01fs, alive=%d, raised=%d)>' % (self.__class__.__name__,
+                self.index, tag, self.strValue(), self.age(), self.getRefreshDelay(), self.isAlive(), raised)
         else:
-            return '<%s(index=%d, value=%s, age=%ds, refresh=%.01fs, alive=%d)>' % (self.__class__.__name__,
-                self.index, self.strValue(), self.age(), self.getRefreshDelay(), self.isAlive())
+            return '<%s(index=%d, value=%s, age=%ds, refresh=%.01fs, alive=%d, raised=%d)>' % (self.__class__.__name__,
+                self.index, self.strValue(), self.age(), self.getRefreshDelay(), self.isAlive(), raised)
 
     @property
     def formatedvalue(self):
@@ -402,6 +421,7 @@ class SAIAItems(object):
         self._readOnly=readOnly
         self._items=[]
         self._indexItem={}
+        self._timeoutSort=0
         self._currentItem=0
         self._delayRefresh=60
 
@@ -519,6 +539,7 @@ class SAIAItems(object):
             with self._lock:
                 self._items.append(item)
                 self._indexItem[index]=item
+                self._timeoutSort=time.time()+10.0
                 item.signalPull()
                 return item
 
@@ -575,6 +596,13 @@ class SAIAItems(object):
                     self.logger.exception('manager()')
             except:
                 self._currentItem=0
+                if self._timeoutSort>0:
+                    with self._lock:
+                        if time.time()>self._timeoutSort:
+                            # sortimg indexes is useful for request index optimisers
+                            self.logger.info('%s re-sorting items indexes' % self)
+                            self._items.sort(key=lambda i: i.index)
+                            self._timeoutSort=0
                 break
 
     def dump(self):

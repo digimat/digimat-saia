@@ -279,7 +279,7 @@ class SAIARequest(object):
         pass
 
     def onFailure(self):
-        pass
+        self.logger.error('%s<--%s:ERROR' % (self.server.host, self.__class__.__name__))
 
     def start(self):
         self._start=True
@@ -322,9 +322,6 @@ class SAIARequestReadStationNumber(SAIARequest):
         (lid,)=struct.unpack('>B', payload)
         self.server.setLid(lid)
         return True
-
-    def onFailure(self):
-        pass
 
 
 class SAIARequestReadPcdStatusOwn(SAIARequest):
@@ -381,9 +378,6 @@ class SAIARequestRestartCpuAll(SAIARequest):
 
     # def processResponse(self, payload):
         # return True
-
-    # def onFailure(self):
-        # pass
 
 
 class SAIARequestReadDBX(SAIARequest):
@@ -453,6 +447,7 @@ class SAIARequestReadItems(SAIARequest):
             return count
         except:
             pass
+
         return 1
 
     def encode(self):
@@ -472,7 +467,7 @@ class SAIARequestReadItems(SAIARequest):
 
         for n in range(count):
             # decode only pre-declared (existing) items
-            # this allow sending grouped read requests
+            # this allows sending grouped read requests
             item=items.item(index0+n)
             if item:
                 item.setValue(values[n], force=True)
@@ -562,15 +557,12 @@ class SAIARequestWriteItems(SAIARequest):
         # after push (write oending value), we need a refresh to update the actual value
         self.refreshItems()
 
-    def onFailure(self):
-        pass
-
 
 class SAIARequestWriteBooleanItems(SAIARequestWriteItems):
     def encode(self):
         data=boollist2bin(self._values)
 
-        # TODO: not ideal, but fix zthe problem for python2->3 conversion
+        # TODO: not ideal, but fix the problem for python2->3 conversion
         # as when need bytes instead of str
         data=struct.pack('%dB' % len(data), *[ord(c) for c in data])
 

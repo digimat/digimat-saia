@@ -464,7 +464,7 @@ class SAIANode(object):
         if not SAIASBusCRCTableCheck():
             self.logger.error('SAIA CRC table consistency failure!')
 
-        self.logger.info('*** Thanks for using the digimat.saia module v%s !' % self.version())
+        self.logger.info('*** Thanks for using the digimat.saia module v%s !' % self.version)
         self.logger.debug('*** https://pypi.org/project/digimat.saia/')
         self.logger.debug('*** https://github.com/digimat/digimat-saia')
         self.logger.debug('*** https://www.digimat.ch')
@@ -483,8 +483,16 @@ class SAIANode(object):
             return True
         return False
 
+    def getVersion(self):
+        try:
+            distribution=pkg_resources.get_distribution('digimat.saia')
+            return distribution.parsed_version
+        except:
+            pass
+
+    @property
     def version(self):
-        return pkg_resources.get_distribution('digimat.saia')
+        return self.getVersion()
 
     @property
     def logger(self):
@@ -674,7 +682,7 @@ class SAIANode(object):
                 port=address[1]
                 (mtype, mseq, payload)=self.decodeMessage(data)
                 if self._debug:
-                    self.logger.debug('<--%s:%d seq=%d %s' % (host, port, mseq, self.data2strhex(data)))
+                    self.logger.debug('<--%s:%d seq=%d mtype=%d %s' % (host, port, mseq, mtype, self.data2strhex(data)))
 
                 # 0=REQUEST
                 if mtype==0:

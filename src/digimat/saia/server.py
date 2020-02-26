@@ -238,11 +238,14 @@ class SAIALink(object):
                 if self.isWaitingResponse():
                     if self._request.validateMessage(mseq):
                         try:
-                            # TODO: reading an unknown register (i.e. 40000) returns an ACK??? instead of a NAK or a RESPONSE
-                            # TODO: there should by an error signification in the payload
-
                             # (code,)=struct.unpack('>B', payload[0])
-                            code=struct.unpack('%dB' % len(payload), payload)[0]
+                            data=struct.unpack('%dB' % len(payload), payload)
+
+                            code=data[0]
+                            # FIXME: meaning not clear yet (try to read an unexistant item,
+                            # like register 40000 -> returns am ACK with code=0 and code2=1)
+                            code2=data[1]
+
                             if code==0:
                                 self.resetWatchdog()
                                 if self.isDebug():
@@ -250,10 +253,10 @@ class SAIALink(object):
                                 self.reset(True)
                             else:
                                 if self.isDebug():
-                                    self.logger.error('%s-->ACK(mseq=%d, code=%d)' % (self.server.host, mseq, code))
+                                    self.logger.error('%s-->NACK(mseq=%d, code=%d)' % (self.server.host, mseq, code))
                                 self.reset(False)
                         except:
-                            self.logger.exception('processAck/Nak')
+                            self.logger.exception('processAck/Nak()')
                             self.logger.warning(str(payload))
 
         except:
