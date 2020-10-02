@@ -244,7 +244,7 @@ class SAIALink(object):
                             code=data[0]
                             # FIXME: meaning not clear yet (try to read an unexistant item,
                             # like register 40000 -> returns am ACK with code=0 and code2=1)
-                            code2=data[1]
+                            # code2=data[1]
 
                             if code==0:
                                 self.resetWatchdog()

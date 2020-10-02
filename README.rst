@@ -13,11 +13,11 @@ we mean inputs, outputs, flags, registers, timers and counters. In the exemple b
 
 Congratulations ! You just have powered up your first EtherSNode device with 2 lines of code. A **background task handle now for you all the network SBus frames**. 
 Open your SAIA PG5 Debugger and try to read/write some data **to** your node. Of course, you can also talk to other SAIA PCD EtherSBus devices directly 
-from your node trough le LAN (read/write flags, registers, ... on remote PCDs). This will be explained below (see "EtherSBus Client" chapter). To give you an idea on how to use this module, you will find a basic `Python interactive session demo here <https://asciinema.org/a/0q7jfTE6Ooj7RPpVBL6bWfIj2>`_. 
+from your node trough le LAN (read/write flags, registers, ... on remote PCDs). This will be explained below (see "EtherSBus Client" chapter). To give you an idea on how to use this module, you will find a basic `Python interactive session demo here <https://www.youtube.com/watch?v=QEPai3HXICY>`_. 
 
 .. image:: https://st-sa.ch/img/figures/digimat-saia-asciinema.png
    :width: 360px
-   :target: https://asciinema.org/a/221576
+   :target: https://www.youtube.com/watch?v=QEPai3HXICY
 
 When done, shutdown your node properly.
 

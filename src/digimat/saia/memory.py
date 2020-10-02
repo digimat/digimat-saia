@@ -427,7 +427,7 @@ class SAIAMemory(object):
             pass
 
     def getNextPendingPull(self):
-        count=32
+        count=64
         try:
             while count>0:
                 item=self._queuePendingPriorityPull.get(False)

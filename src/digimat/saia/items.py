@@ -27,6 +27,7 @@ class SAIAItem(object):
         self._eventPull=Event()
         self._eventValue=Event()
         self._eventRaised=Event()
+        self._eventChanged=Event()
         self.onInit()
         self.logger.debug('%s->creating %s' % (self.server.host, self))
 
@@ -127,9 +128,13 @@ class SAIAItem(object):
         if value is not None and (force or not self.isReadOnly()):
             value=self.validateValue(value)
             with self._parent._lock:
+                # only if we have already received a value
+                if self._stamp>0 or self.server.isLocalNodeMode():
+                    if not self._value and value:
+                        self._eventRaised.set()
+                    if value!=self._value:
+                        self._eventChanged.set()
                 self._stamp=time.time()
-                if not self._value and value:
-                    self._eventRaised.set()
                 self._value=value
             self._eventValue.set()
 
@@ -154,6 +159,12 @@ class SAIAItem(object):
         if raised:
             self._eventRaised.clear()
         return raised
+
+    def isChanged(self):
+        changed=self._eventChanged.isSet()
+        if changed:
+            self._eventChanged.clear()
+        return changed
 
     @property
     def bool(self):
@@ -186,7 +197,7 @@ class SAIAItem(object):
 
     def manager(self):
         age=self.age()
-        if age>self.getRefreshDelay():
+        if age>=self.getRefreshDelay():
             if age<180:
                 self.signalPull()
             else:
@@ -227,12 +238,13 @@ class SAIAItem(object):
     def __repr__(self):
         tag=self.tag
         raised=self._eventRaised.isSet()
+        changed=self._eventChanged.isSet()
         if tag:
-            return '<%s(index=%d, tag=%s, value=%s, age=%ds, refresh=%.01fs, alive=%d, raised=%d)>' % (self.__class__.__name__,
-                self.index, tag, self.strValue(), self.age(), self.getRefreshDelay(), self.isAlive(), raised)
+            return '<%s(index=%d, tag=%s, value=%s, age=%ds, refresh=%.01fs, alive=%d, raised=%d, changed=%d)>' % (self.__class__.__name__,
+                self.index, tag, self.strValue(), self.age(), self.getRefreshDelay(), self.isAlive(), raised, changed)
         else:
-            return '<%s(index=%d, value=%s, age=%ds, refresh=%.01fs, alive=%d, raised=%d)>' % (self.__class__.__name__,
-                self.index, self.strValue(), self.age(), self.getRefreshDelay(), self.isAlive(), raised)
+            return '<%s(index=%d, value=%s, age=%ds, refresh=%.01fs, alive=%d, raised=%d, changed=%d)>' % (self.__class__.__name__,
+                self.index, self.strValue(), self.age(), self.getRefreshDelay(), self.isAlive(), raised, changed)
 
     @property
     def formatedvalue(self):
@@ -582,7 +594,7 @@ class SAIAItems(object):
                 item.refresh()
 
     def manager(self):
-        count=min(32, len(self._items))
+        count=min(64, len(self._items))
         while count>0:
             count-=1
             try:
