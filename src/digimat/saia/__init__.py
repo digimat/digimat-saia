@@ -2,6 +2,7 @@ from .node import SAIANode
 from .symbol import SAIASymbols
 from .server import SAIAServer
 from .items import SAIAItem
+from .items import SAIAItemGroup
 
 from .formaters import SAIAValueFormaterFloat32
 from .formaters import SAIAValueFormaterSwappedFloat32

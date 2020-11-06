@@ -58,7 +58,7 @@ class SAIAItemFlag(SAIABooleanItem):
         try:
             return self.server.symbols.flag(self.index).tag
         except:
-            pass
+            return 'f%d' % self.index
 
 
 class SAIAItemInput(SAIABooleanItem):
@@ -106,7 +106,7 @@ class SAIAItemRegister(SAIAAnalogItem):
         try:
             return self.server.symbols.register(self.index).tag
         except:
-            pass
+            return 'r%d' % self.index
 
 
 class SAIAItemTimer(SAIAAnalogItem):
@@ -130,7 +130,7 @@ class SAIAItemTimer(SAIAAnalogItem):
         try:
             return self.server.symbols.timer(self.index).tag
         except:
-            pass
+            return 't%d' % self.index
 
     def decrementTimer(self):
         if self.parent.isLocalNodeMode():
@@ -176,7 +176,7 @@ class SAIAItemCounter(SAIAAnalogItem):
         try:
             return self.server.symbols.counter(self.index).tag
         except:
-            pass
+            return 'c%d' % self.index
 
     def increment(self, value=1):
         v0=self.value

@@ -13,6 +13,126 @@ from .formaters import SAIAValueFormaterFFP
 from .formaters import SAIAValueFormater
 
 
+class SAIAItemGroup(object):
+    def __init__(self, items=None):
+        self._items=[]
+        self._itemsIndexById={}
+        self.add(items)
+
+    @property
+    def logger(self):
+        # may fails if no items
+        try:
+            return self._item[0].logger
+        except:
+            pass
+
+    def all(self):
+        return self._items
+
+    def count(self):
+        return len(self._items)
+
+    def __len__(self):
+        return self.count()
+
+    def __iter__(self):
+        return iter(self.all())
+
+    def __getitem__(self, key):
+        try:
+            return self._items[key]
+        except:
+            pass
+
+    def add(self, item):
+        if item:
+            try:
+                # accept arrays
+                for i in item:
+                    self.add(i)
+                return
+            except:
+                pass
+
+            self._itemsIndexById[id(item)]=self.count()
+            self._items.append(item)
+            return item
+
+    def refresh(self, urgent=False):
+        if self._items:
+            for item in self.all():
+                item.clearUpdated()
+                item.refresh(urgent)
+
+    def read(self, timeout=15.0):
+        if self._items:
+            timeout=time.time()+timeout
+            self.refresh(True)
+            for item in self.all():
+                t=timeout-time.time()
+                if t<0 or not item.waitUpdated(t):
+                    return False
+            return True
+
+    def isRaised(self, reset=True):
+        if self._items:
+            for item in self.all():
+                if item.isRaised(reset):
+                    return item
+        return False
+
+    def isChanged(self, reset=True):
+        if self._items:
+            for item in self.all():
+                if item.isChanged(reset):
+                    return item
+        return False
+
+    def isUpdated(self, reset=True):
+        if self._items:
+            for item in self.all():
+                if item.isUpdated(reset):
+                    return item
+        return False
+
+    def isAlive(self, maxAge=None):
+        if self._items:
+            for item in self.all():
+                if not item.isAlive(maxAge):
+                    return False
+            return True
+
+    def dump(self):
+        if self._items:
+            for item in self.all():
+                print(item)
+
+    def table(self):
+        if self._items:
+            t=PrettyTable()
+            t.field_names = ['#', 'server', 'index', 'tag', 'value', 'age']
+            t.align['#']='l'
+            t.align['server']='l'
+            t.align['index']='r'
+            t.align['tag']='l'
+            t.align['value']='r'
+            t.align['age']='l'
+
+            for n in range(self.count()):
+                item=self._items[n]
+                deviceName=item.server.deviceName
+                if not deviceName:
+                    deviceName=item.server.host
+                age='%.01fs' % item.age()
+                t.add_row([n, deviceName, item.index, item.tag, item.formatedvalue, age])
+
+            print(t)
+
+    def __repr__(self):
+        return '<%s(%d items)>' % (self.__class__.__name__, self.count())
+
+
 class SAIAItem(object):
     def __init__(self, parent, index, value=0, delayRefresh=None, readOnly=False):
         self._parent=parent
@@ -28,6 +148,7 @@ class SAIAItem(object):
         self._eventValue=Event()
         self._eventRaised=Event()
         self._eventChanged=Event()
+        self._eventUpdated=Event()
         self.onInit()
         self.logger.debug('%s->creating %s' % (self.server.host, self))
 
@@ -137,6 +258,7 @@ class SAIAItem(object):
                 self._stamp=time.time()
                 self._value=value
             self._eventValue.set()
+            self._eventUpdated.set()
 
     def getValue(self):
         with self._parent._lock:
@@ -154,17 +276,35 @@ class SAIAItem(object):
                 if self._value!=value:
                     self.signalPush(value)
 
-    def isRaised(self):
+    def isRaised(self, reset=True):
         raised=self._eventRaised.isSet()
-        if raised:
+        if raised and reset:
             self._eventRaised.clear()
         return raised
 
-    def isChanged(self):
+    def isChanged(self, reset=True):
         changed=self._eventChanged.isSet()
-        if changed:
+        if changed and reset:
             self._eventChanged.clear()
         return changed
+
+    def isUpdated(self, reset=True):
+        if self._eventUpdated.isSet():
+            if reset:
+                self.clearUpdated()
+            return True
+        return False
+
+    def clearUpdated(self):
+        self._eventUpdated.clear()
+
+    def waitUpdated(self, timeout=3.0):
+        try:
+            self._eventUpdated.wait(timeout)
+            return True
+        except:
+            pass
+        return False
 
     @property
     def bool(self):
@@ -555,6 +695,14 @@ class SAIAItems(object):
                 item.signalPull()
                 return item
 
+    def declareFromList(self, indexes, value=0):
+        items=[]
+        for index in indexes:
+            item=self.declare(index, value)
+            if item:
+                items.append(item)
+        return items
+
     def declareRange(self, index, count, value=0):
         with self._lock:
             items=[]
@@ -626,15 +774,20 @@ class SAIAItems(object):
         with self._lock:
             if self.count()>0:
                 t=PrettyTable()
-                t.field_names = ['index', 'tag', 'value', 'age']
+                t.field_names = ['server', 'index', 'tag', 'value', 'age']
+                t.align['server']='l'
                 t.align['index']='r'
                 t.align['tag']='l'
                 t.align['value']='r'
                 t.align['age']='l'
 
+                deviceName=self.server.deviceName
+                if not deviceName:
+                    deviceName=self.server.host
+
                 for item in self._items:
                     age='%.01fs' % item.age()
-                    t.add_row([item.index, item.tag, item.formatedvalue, age])
+                    t.add_row([deviceName, item.index, item.tag, item.formatedvalue, age])
 
                 print(t)
 
