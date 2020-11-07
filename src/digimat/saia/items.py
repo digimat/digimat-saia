@@ -108,7 +108,7 @@ class SAIAItemGroup(object):
             for item in self.all():
                 print(item)
 
-    def table(self):
+    def table(self, key=None):
         if self._items:
             t=PrettyTable()
             t.field_names = ['#', 'server', 'index', 'tag', 'value', 'age']
@@ -121,6 +121,8 @@ class SAIAItemGroup(object):
 
             for n in range(self.count()):
                 item=self._items[n]
+                if key and not item.match(key):
+                    continue
                 deviceName=item.server.deviceName
                 if not deviceName:
                     deviceName=item.server.host
@@ -185,6 +187,20 @@ class SAIAItem(object):
         return none if index-1 don't exists
         """
         return self.parent.item(self.index-n)
+
+    def match(self, key):
+        try:
+            if key in self.tag:
+                return True
+        except:
+            pass
+
+        try:
+            if int(key)==self.index:
+                return True
+        except:
+            pass
+        return False
 
     def onInit(self):
         pass
@@ -770,7 +786,7 @@ class SAIAItems(object):
             for item in self._items:
                 print(item)
 
-    def table(self):
+    def table(self, key=None):
         with self._lock:
             if self.count()>0:
                 t=PrettyTable()
@@ -786,6 +802,8 @@ class SAIAItems(object):
                     deviceName=self.server.host
 
                 for item in self._items:
+                    if key and not item.match(key):
+                        continue
                     age='%.01fs' % item.age()
                     t.add_row([deviceName, item.index, item.tag, item.formatedvalue, age])
 

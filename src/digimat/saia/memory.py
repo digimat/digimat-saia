@@ -481,11 +481,11 @@ class SAIAMemory(object):
             if items:
                 items.dump()
 
-    def table(self):
+    def table(self, key=None):
         allitems=self.items()
         if allitems:
             for items in allitems:
-                items.table()
+                items.table(key)
 
     def isPendingPushRequest(self):
         if not self._queuePendingPush.empty():

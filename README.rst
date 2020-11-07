@@ -26,7 +26,6 @@ When done, shutdown your node properly.
     >>> node.stop()
     >>> quit()
 
-Please consider this work as *in progress* (but stable enough to provide reliable communication services).  Always use the latest version of this package, as it is frequently updated ! 
 Warning : if you observe a socket error at node start, this is probably due to the fact that the listening port is already opened on your machine from
 an other process. The default listening port is 5050. Try changing it to see if this fix the problem
 
@@ -114,7 +113,7 @@ Nothing specific here, just use pip (which will also install modules dependencie
 
     pip install -U digimat.saia
 
-On Windows, you will need to install (if not already done) the Microsoft Visual C++ Build Tool, required to install some dependencies. This can take some time to install it.
+On Windows, you will need to install (if not already done) the `Microsoft Visual C++ Build Tool <https://visualstudio.microsoft.com/fr/downloads/>`_, required to install some dependencies. This can take some time to install it.
 
 
 EtherSBus Node (Server)
@@ -657,8 +656,9 @@ a bit like mysql does.
     |  6010 | ep16.s2.zone98.t1.tm_me |   238 | 3.1s |
     +-------+-------------------------+-------+------+
 
-There is a little secret trick implemented in the SAIAServers object allowing you to be more efficient in interactive mode, simplifying 
-the access to flags, registers and other items. Don't use this on your non interactive scripts.
+You can pass a "filter" argument to the .table() method to filter results, i.e node.table('temperature'). There is a little secret trick implemented 
+in the SAIAServers object allowing you to be more efficient in interactive mode, simplifying the access 
+to flags, registers and other items. Don't use this on your non interactive scripts.
 
 .. code-block:: python
 
@@ -737,6 +737,80 @@ This can be useful to gather some informations about your data
 
     >>> server.flags[28]
     <SAIAItemFlag(index=28, value=OFF, age=8s, refresh=60s)>
+
+
+Items groups
+============
+
+The module is providing a concept of item group (item collection), allowing you to give more flexibility
+on how to read/poll declared items. When your project has a lot of items to manage, this is not always
+easy to deal with the background refresh timing of some items. Do you remember the SAIAItem .read() and .refresh()
+methods described above ? As a reminder, these refresh orders are **processed with more priority** than other "standard" polling-read, providing better responsiveness.
+Remember that the communication process is always fully asynchronous, so that a blocking read is equivalent to "tag some items as poll-urgent and
+wait a certain amount of time until they are all refreshed by the background task". 
+
+The SAIAItemGroup object provides a simple way to use this specific "urgent" polling for groups of items. An item group is an instance of the SAIAItemGroup object
+
+.. code-block:: python
+
+   >>> from digimat.saia import SAIAItemGroup
+   >>> group=SAIAItemGroup()
+
+which can be populated with any declared item (registers, flags, ...), via the .add() method, one by one
+or by array
+
+.. code-block:: python
+
+   >>> group.add(myflag)
+   >>> group.add([myflag, myregister])
+   >>> group.add(server.registers.declareRange(100, 200))
+   
+   # note that you can pass items in the group constructor
+   >>> group=SAIAItemGroup(server.registers.declareForTagMatching('temperature'))
+
+   # note that the SAIANode and the SAIAServer objects provide a method 
+   # helper to create a group instance
+   >>> group=node.group(myflag)
+
+A group provide the same .dump() and .table() methods exposed above, allowing to trace this specific data content. An item can
+be added to more than one group if needed. Groups can be compared to "vitual structures" that expose some useful methods
+to deal with the whole item content
+
+.. code-block:: python
+
+   # force a backgroud high priority refresh of every group's items (non blocking) 
+   >>> group.refresh()
+
+   # force a blocking read (refresh and wait for refresh done) 
+   # of every group's items (blocking)
+   >>> group.read()
+   >>> True
+
+   # you can pass the maximum blocking time (s) allowed 
+   # return False if every item hasn't be refreshed
+   >>> group.read(3.0)
+   >>> True
+   >>> group.table()
+       +----+--------+-------+-------------------------+-------+------+
+       | #  | server | index | tag                     | value | age  |
+       +----+--------+-------+-------------------------+-------+------+
+       | 0  | 1_SUD  |  5994 | ep16.s1.zone01.t1.tm_me |   181 | 2.7s |
+       | 1  | 1_SUD  |  6005 | ep16.s1.zone02.t1.tm_me |   197 | 2.7s |
+       | 2  | 1_SUD  |  6016 | ep16.s1.zone03.t1.tm_me |   208 | 2.7s |
+       | 3  | 1_SUD  |  6027 | ep16.s1.zone11.t1.tm_me |   206 | 2.7s |
+       | 4  | 1_SUD  |  6038 | ep16.s1.zone12.t1.tm_me |   218 | 2.7s |
+       | 5  | 1_SUD  |  6049 | ep16.s1.zone13.t1.tm_me |   206 | 2.7s |
+       +----+--------+-------+-------------------------+-------+------+
+
+A group object is iterable and accessable as an array, allowing you to process items one by one. There are some useful other methods
+
++-----------------------+-------------------------------------------------------------------------------------------------+
+| **.isAlive()**        | check is **every** item of the group is alive                                                   |
++-----------------------+-------------------------------------------------------------------------------------------------+
+| **.isChanged()**      | return the **next** item of the group who's value was changed (see above), or None if no more   |
++-----------------------+-------------------------------------------------------------------------------------------------+
+| **.isRaised()**       | return the **next** item of the group who's value was raised (see above), or None if no more    |
++-----------------------+-------------------------------------------------------------------------------------------------+
 
 
 Demo Node

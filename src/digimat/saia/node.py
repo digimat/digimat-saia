@@ -36,6 +36,8 @@ from .response import SAIAResponseReadCounters
 from .response import SAIAResponseACK
 from .response import SAIAResponseNAK
 
+from .items import SAIAItemGroup
+
 from .ModbusDataLib import bin2boollist
 
 
@@ -530,6 +532,10 @@ class SAIANode(object):
     def registers(self):
         return self.memory.registers
 
+    # simple group constructor
+    def group(self, items=None):
+        return SAIAItemGroup(items)
+
     @property
     def broadcastAddress(self):
         return self._broadcastAddress
@@ -790,9 +796,9 @@ class SAIANode(object):
         self.server.dump()
         self.servers.dump()
 
-    def table(self):
-        self.server.table()
-        self.servers.table()
+    def table(self, key=None):
+        self.server.table(key)
+        self.servers.table(key)
 
     def serveForEver(self):
         try:

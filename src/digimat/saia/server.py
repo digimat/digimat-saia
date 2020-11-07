@@ -25,6 +25,8 @@ from .request import SAIASBusCRC
 from .memory import SAIAMemory
 from .symbol import SAIASymbols
 
+from .items import SAIAItemGroup
+
 
 class SAIALink(object):
 
@@ -416,6 +418,10 @@ class SAIAServer(object):
     def counters(self):
         return self.memory.counters
 
+    # simple group constructor
+    def group(self, items=None):
+        return SAIAItemGroup(items)
+
     # secret helper allowing things like register=server.r8 to access registers[8]
     def __getattr__(self, name):
         try:
@@ -571,8 +577,8 @@ class SAIAServer(object):
     def dump(self):
         self.memory.dump()
 
-    def table(self):
-        self.memory.table()
+    def table(self, key=None):
+        self.memory.table(key)
 
     def run(self):
         transfer=SAIATransferFromRequest(SAIARequestRunCpuAll(self.link))
@@ -732,9 +738,9 @@ class SAIAServers(object):
         for server in self._servers:
             server.dump()
 
-    def table(self):
+    def table(self, key=None):
         for server in self._servers:
-            server.table()
+            server.table(key)
 
     def assignServerLid(self, server, lid):
         s=self.getFromLid(lid)
